@@ -6,7 +6,13 @@
 # Requires the `playwright` package resolvable from apps/web (see
 # scripts/e2e-smoke.mjs header). Playwright is a declared devDependency
 # (Phase C) — no manual symlinks.
-set -u
+#
+# Exit code: the pipeline status is captured and returned explicitly.
+# (Before the Next.js 15 upgrade the script ended with a bare
+# `echo "log saved"`, which masked ANY failure inside the block —
+# including a failing Playwright run — as exit 0. The CI e2e job
+# depends on this runner failing loudly.)
+set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 WEB="$ROOT/apps/web"
 PORT=3100
@@ -46,4 +52,6 @@ trap cleanup EXIT
   echo "--- playwright smoke ---"
   E2E_BASE_URL="http://127.0.0.1:$PORT" node scripts/e2e-smoke.mjs
 } 2>&1 | tee "$LOG"
+status=$?
 echo "log saved: $LOG"
+exit "$status"

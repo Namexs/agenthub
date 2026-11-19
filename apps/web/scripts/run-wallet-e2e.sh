@@ -85,4 +85,11 @@ done
   echo "--- playwright wallet E2E ---"
   WALLET_E2E_BASE_URL="http://127.0.0.1:$PORT" node scripts/wallet-e2e.mjs
 } 2>&1 | tee "$LOG"
+# Exit code: the pipeline status is captured and returned explicitly.
+# (Before the Next.js 15 upgrade the script ended with a bare
+# `echo "log saved"`, which masked ANY failure inside the block as
+# exit 0 despite `pipefail` — the echo ran last and succeeded. The
+# CI e2e job depends on this runner failing loudly.)
+status=$?
 echo "log saved: $LOG"
+exit "$status"

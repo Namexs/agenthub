@@ -1,10 +1,13 @@
 name: CI
 
-# NOTE: this repo has NO GitHub remote yet, so this workflow has NEVER
-# run on GitHub. Every step below is verified locally instead — see
+# Remote: https://github.com/Namexs/agenthub — the first GitHub run
+# (2026-11-19, run #44531037033) was green 9/9 jobs. Every step below
+# is ALSO verified locally — see
 # agenthub-final-pretestnet/CI_EVIDENCE.md for the per-step commands,
-# logs, and results. Do not claim "CI passed" until a remote exists and
-# a real run is green.
+# logs, and results. The `e2e` job is new in the Next.js 15 upgrade:
+# its steps are reproduced locally (see
+# agenthub-next15-upgrade/NEXT15_UPGRADE_REPORT.md), but it has not
+# run on GitHub yet — do not claim it green there until a real run is.
 
 on:
   push:
@@ -202,6 +205,52 @@ jobs:
           # Gitleaks scans the full history, not just the tip.
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+
+  e2e:
+    name: E2E (smoke + wallet, real build + anvil)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FOUNDRY_VERSION }}
+      - run: pnpm install --frozen-lockfile
+      # Playwright browsers are NOT in the repo or the pnpm store —
+      # install Chromium + its OS dependencies (`--with-deps` runs
+      # apt-get; sudo is available on ubuntu-latest runners). Run via
+      # the web workspace so the PINNED playwright (1.65.1) is used —
+      # a bare `npx playwright` from the repo root would download the
+      # latest version instead.
+      - run: pnpm --filter @agenthub/web exec playwright install --with-deps chromium
+      # The runners build the production app, start it, and drive it
+      # with Playwright: smoke (23 checks, unconnected render) and
+      # wallet (25 checks, the real wagmi injected() path against a
+      # local anvil deployment — throwaway anvil test keys only, no
+      # production wallet or key). Both runners exit non-zero on any
+      # failure (their exit-code propagation was fixed in the
+      # Next.js 15 upgrade — the old trailing `echo "log saved"`
+      # masked failures as exit 0).
+      - run: bash apps/web/scripts/run-e2e-smoke.sh
+      - run: bash apps/web/scripts/run-wallet-e2e.sh
+      - name: Upload E2E logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-logs
+          path: |
+            agenthub-final-pretestnet/logs/phase8-e2e-smoke.log
+            agenthub-final-release/logs/phase-f-wallet-e2e.log
+          if-no-files-found: warn
 
   manifest:
     name: Package manifest check
