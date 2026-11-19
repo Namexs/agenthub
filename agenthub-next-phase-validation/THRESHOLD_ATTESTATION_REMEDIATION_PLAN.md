@@ -16,18 +16,18 @@ threshold attestation before any attested quest with rewardPoints >
 Evidence (all read from the code at HEAD `d584a8e`, no contract changed):
 
 - `QuestManager.completeQuestWithAttestation(uint256 questId, uint256
-  deadline, bytes calldata signature)` takes **one** signature
+deadline, bytes calldata signature)` takes **one** signature
   (`src/QuestManager.sol:195`).
 - `_verifyAttestation` (`src/QuestManager.sol:212-236`) recovers **one**
   signer via `ECDSA.tryRecover`, checks `hasRole(VERIFIER_ROLE,
-  signer)`, consumes the account nonce once, and emits one
+signer)`, consumes the account nonce once, and emits one
   `AttestationUsed` event.
 - The `Quest` struct (`src/interfaces/IQuestManager.sol:35-53`) has no
   threshold field: `id, creator, title, description, questType,
-  validationKind, validator, rewardPoints, badgeId, startTime,
-  endTime, maxCompletions, completions, active`.
+validationKind, validator, rewardPoints, badgeId, startTime,
+endTime, maxCompletions, completions, active`.
 - A repo-wide grep for `threshold | quorum | m-of-n | multi-sig |
-  multi-verifier | signatures` over `packages/contracts/src/` and the
+multi-verifier | signatures` over `packages/contracts/src/` and the
   deploy script returns only Reputation level thresholds and
   TokenBalanceValidator (token, threshold) pairs — nothing attestation
   related. No threshold code exists anywhere in the contracts.
@@ -49,11 +49,11 @@ gate requires threshold first.
 
 - The attestation struct is UNCHANGED:
   `Attestation(address account, uint256 questId, uint256 nonce,
-  uint256 deadline)`. All M signers sign the **same digest** (same
+uint256 deadline)`. All M signers sign the **same digest** (same
   account, quest, nonce, deadline). No new EIP-712 type, no domain
   change.
 - `completeQuestWithAttestation` accepts `bytes[] calldata
-  signatures` and requires at least M **distinct** `VERIFIER_ROLE`
+signatures` and requires at least M **distinct** `VERIFIER_ROLE`
   signers over that digest.
 - Distinctness is enforced by comparing recovered addresses pairwise
   (O(M²) is fine for M ≤ 3). A duplicate signer **reverts**
@@ -66,7 +66,7 @@ gate requires threshold first.
   (each must still recover to a valid VERIFIER_ROLE signer — a junk
   signature anywhere in the array reverts, so callers cannot smuggle
   garbage). Array length is capped (`MAX_ATTESTATION_SIGNATURES =
-  5`) to bound gas and calldata.
+5`) to bound gas and calldata.
 - Events: emit `AttestationUsed(account, questId, nonce, signer)`
   once per distinct signer (keeps the existing per-signer accounting
   and SOP weekly review working unchanged).
@@ -105,13 +105,13 @@ gate requires threshold first.
 
 ## 3. Contract changes required
 
-| File | Change |
-| ---- | ------ |
-| `src/interfaces/IQuestManager.sol` | `Quest` struct gains `uint8 attestationThreshold`; `completeQuestWithAttestation` signature becomes `(uint256 questId, uint256 deadline, bytes[] calldata signatures)`; new errors `DuplicateAttestationSigner(address)`, `InsufficientAttestations(uint256 provided, uint256 required)`, `AttestationThresholdOutOfRange(uint256)`; `MAX_ATTESTATION_SIGNATURES` constant. |
-| `src/QuestManager.sol` | `createQuest` validates + stores the threshold; `_verifyAttestation` becomes `_verifyAttestations(account, questId, deadline, signatures, threshold)` (loop: recover → role-check → distinctness → count; revert unless count ≥ threshold); nonce consumption + events as in §2.1. |
-| `src/AgentGate.sol`, `src/Reputation.sol`, `src/Achievement.sol` | No changes. |
-| `script/DeployAgentHub.s.sol` | No changes (no new constructor args, no new roles). |
-| Tests (`test/Attestation.t.sol`, `test/VerifierSecurity.t.sol`, `test/AttackSimulation.t.sol`, `test/QuestManager.t.sol`) | See §6. Existing single-signature tests must be updated to the new `bytes[]` call shape (mechanical), plus new threshold tests. |
+| File                                                                                                                      | Change                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/interfaces/IQuestManager.sol`                                                                                        | `Quest` struct gains `uint8 attestationThreshold`; `completeQuestWithAttestation` signature becomes `(uint256 questId, uint256 deadline, bytes[] calldata signatures)`; new errors `DuplicateAttestationSigner(address)`, `InsufficientAttestations(uint256 provided, uint256 required)`, `AttestationThresholdOutOfRange(uint256)`; `MAX_ATTESTATION_SIGNATURES` constant. |
+| `src/QuestManager.sol`                                                                                                    | `createQuest` validates + stores the threshold; `_verifyAttestation` becomes `_verifyAttestations(account, questId, deadline, signatures, threshold)` (loop: recover → role-check → distinctness → count; revert unless count ≥ threshold); nonce consumption + events as in §2.1.                                                                                          |
+| `src/AgentGate.sol`, `src/Reputation.sol`, `src/Achievement.sol`                                                          | No changes.                                                                                                                                                                                                                                                                                                                                                                 |
+| `script/DeployAgentHub.s.sol`                                                                                             | No changes (no new constructor args, no new roles).                                                                                                                                                                                                                                                                                                                         |
+| Tests (`test/Attestation.t.sol`, `test/VerifierSecurity.t.sol`, `test/AttackSimulation.t.sol`, `test/QuestManager.t.sol`) | See §6. Existing single-signature tests must be updated to the new `bytes[]` call shape (mechanical), plus new threshold tests.                                                                                                                                                                                                                                             |
 
 **ABI break (deliberate):** replacing the single-`bytes` function with
 a `bytes[]` function breaks existing clients and the committed frontend
