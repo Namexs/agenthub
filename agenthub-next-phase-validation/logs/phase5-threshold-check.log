@@ -1,0 +1,9 @@
+Phase 5 — threshold attestation verification (2026-11-19, HEAD d584a8e)
+- completeQuestWithAttestation(uint256 questId, uint256 deadline, bytes calldata signature): ONE signature — src/QuestManager.sol:195
+- _verifyAttestation recovers ONE signer, checks hasRole(VERIFIER_ROLE, signer), consumes nonce once — src/QuestManager.sol:212-236
+- Quest struct has NO threshold field (id, creator, title, description, questType, validationKind, validator, rewardPoints, badgeId, startTime, endTime, maxCompletions, completions, active) — src/interfaces/IQuestManager.sol:35-53
+- grep threshold|quorum|m-of-n|multi-sig|multi-verifier|signatures over packages/contracts/src/ + deploy script: only Reputation level thresholds + TokenBalanceValidator (token, threshold) — NOTHING attestation-related
+- R-010 (FINAL_SECURITY_FINDINGS.md:333): Low, OPEN, pre-mainnet — "Single-verifier attestation (no threshold)"
+- VERIFIER_SECURITY_SOP.md §6: "Status: recommendation + design sketch, NOT implemented."
+- Frontend ABI matches single-signature shape (apps/web/lib/abis/QuestManager.ts: completeQuestWithAttestation)
+- CONCLUSION: M-of-N threshold attestation is NOT implemented. Remediation plan written (no contract changed).
