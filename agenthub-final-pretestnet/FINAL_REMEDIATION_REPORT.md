@@ -1,9 +1,10 @@
 # AGENTHUB — Final Pre-Testnet Remediation & Integration Report
 
 **Date:** 2026-11-19. **Baseline:** HEAD `c5bed05` (218 Foundry +
-24 Vitest, Slither 10: 4 Low + 6 Info). **Final:** HEAD `ea4f5d4`
-(before Phase 3 certification — see `PACKAGE_MANIFEST.md` for the
-certified final commit).
+24 Vitest, Slither 10: 4 Low + 6 Info). **Final commit:** see
+`PACKAGE_MANIFEST.md` §1 — the manifest certifies the exact
+commit; the repo HEAD at packaging is its descendant, adding only
+the manifest itself and its verification logs.
 **Decision: CONDITIONAL GO for BNB Testnet staging.**
 **Mainnet: NO-GO** (see §7).
 
@@ -208,7 +209,8 @@ issues, not hook bugs.
 **Change:** `.github/workflows/ci.yml` rewritten: 8 jobs (web,
 shared, format, audit, contracts, fuzz [NEW, pinned seed 42],
 slither [NEW, `--fail-medium`], secrets [NEW, gitleaks, full
-history]). Pinned toolchains (Node 20.17.6, pnpm 9.15.4, Foundry
+history]) — a 9th job, `manifest` (manifest-check), was added in
+Phase 3 (see below). Pinned toolchains (Node 20.17.6, pnpm 9.15.4, Foundry
 1.9.0, Slither 0.11.6, Python 3.12). Minimal permissions, frozen
 lockfile, timeouts, concurrency.
 
@@ -266,9 +268,21 @@ smoke tests, rollback/incident notes, and the 9-item mainnet gate.
 
 ### Phase 3 — Git & package integrity (LAST)
 
-See `PACKAGE_MANIFEST.md` (regenerated in Phase 3) and §8. The
-manifest certifies the final commit; the source ZIP is built from
-it; the secret scan ran before the ZIP.
+**Change:** a 9th CI job, `manifest`, was added
+(`./scripts/verify-manifest.sh`, full-history checkout) — the job
+Phase 4 deliberately deferred until the manifest existed. The
+stale "4 Low + 6 Info" comment in the slither job was fixed to
+"4 Low + 8 Info". The manifest was then regenerated for the final
+content commit (see `PACKAGE_MANIFEST.md` §1 for the exact
+commit): **288 tracked files, SHA-256 100% match**, both
+submodule gitlinks OK (forge-std `8948d45`, OZ `dbb6104`).
+Gitleaks full-history scan before packaging: **0 leaks**.
+The source ZIP was built with `git archive` from the final commit
+(same pattern as previous ZIPs — submodules excluded, documented
+in the manifest §3) and verified file-by-file against the
+manifest: **0 mismatches** across all 288 listed files.
+Verification logs: `logs/phase3-manifest-verify.log`,
+`logs/phase3-secrets.log`.
 
 ## 3. Source changes — file inventory (120 files, +25,243 / −371)
 

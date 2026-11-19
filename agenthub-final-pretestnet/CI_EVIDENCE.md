@@ -17,16 +17,17 @@ reasons (not repo reasons) — see §3.
 
 `.github/workflows/ci.yml` was rewritten (8 jobs, was 5):
 
-| Job         | Steps                                            | New in Phase 4                                       |
-| ----------- | ------------------------------------------------ | ---------------------------------------------------- |
-| `web`       | lint, typecheck, **vitest**, build (chain 97)    | vitest step (M4 tests existed but CI never ran them) |
-| `shared`    | lint, typecheck, **vitest**                      | vitest step                                          |
-| `format`    | prettier check, forge fmt check                  | — (unchanged)                                        |
-| `audit`     | `pnpm audit --audit-level=high`                  | — (unchanged; see §3 for the local result)           |
-| `contracts` | forge build, forge test                          | — (unchanged)                                        |
-| `fuzz`      | `forge test --fuzz-runs 10000 --fuzz-seed 42`    | **new job**                                          |
-| `slither`   | `slither . --exclude-dependencies --fail-medium` | **new job**                                          |
-| `secrets`   | gitleaks over full history (`fetch-depth: 0`)    | **new job**                                          |
+| Job         | Steps                                             | New in Phase 4                                       |
+| ----------- | ------------------------------------------------- | ---------------------------------------------------- |
+| `web`       | lint, typecheck, **vitest**, build (chain 97)     | vitest step (M4 tests existed but CI never ran them) |
+| `shared`    | lint, typecheck, **vitest**                       | vitest step                                          |
+| `format`    | prettier check, forge fmt check                   | — (unchanged)                                        |
+| `audit`     | `pnpm audit --audit-level=high`                   | — (unchanged; see §3 for the local result)           |
+| `contracts` | forge build, forge test                           | — (unchanged)                                        |
+| `fuzz`      | `forge test --fuzz-runs 10000 --fuzz-seed 42`     | **new job**                                          |
+| `slither`   | `slither . --exclude-dependencies --fail-medium`  | **new job**                                          |
+| `secrets`   | gitleaks over full history (`fetch-depth: 0`)     | **new job**                                          |
+| `manifest`  | `./scripts/verify-manifest.sh` (`fetch-depth: 0`) | **new job — added in Phase 3, not Phase 4** (see §9) |
 
 Other hardening:
 
@@ -332,3 +333,14 @@ hardening itself, not regressions — see `FINAL_SECURITY_FINDINGS.md`
   requirement.
 - **CI has still never run on GitHub.** The first real run needs a
   remote + a push; until then this document is the evidence.
+
+## 9. Addendum (Phase 3, 2026-11-19): the 9th job
+
+Phase 4 deliberately did NOT add a manifest-check job (the manifest
+is regenerated in Phase 3 LAST, so the check would have failed on
+every commit until then). Phase 3 added it: job `manifest` runs
+`./scripts/verify-manifest.sh` with a full-history checkout. Local
+evidence: `logs/phase3-manifest-verify.log` — 288 files checked,
+100% match, both submodule gitlinks OK. The workflow now has
+**9 jobs**. The "8 jobs" wording in §2 and §8 above describes the
+workflow as Phase 4 left it; it is kept as the Phase 4 record.
