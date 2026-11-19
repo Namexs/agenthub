@@ -12,7 +12,12 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 /// Requires DEPLOYER_PRIVATE_KEY in the environment (see .env.example).
 contract DeployMock is Script {
     function run() external returns (MockAgentId mock) {
-        require(block.chainid != 56, "DeployMock: mainnet forbidden, use official Agent ID");
+        // L4 fix (Phase 1 audit): allowlist, not denylist. The mock may only
+        // ever be deployed to BSC testnet (97) or local Anvil (31337).
+        require(
+            block.chainid == 97 || block.chainid == 31337,
+            "DeployMock: only BSC testnet (97) or Anvil (31337)"
+        );
         uint256 deployerKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         vm.startBroadcast(deployerKey);
         mock = new MockAgentId();
