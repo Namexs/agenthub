@@ -1,0 +1,8 @@
+Scope: 4 of 5 workspace projects
+packages/contracts lint$ forge fmt --check
+packages/contracts lint: Done
+packages/shared lint$ eslint src --ext .ts
+packages/shared lint: Done
+apps/web lint$ next lint
+apps/web lint: ✔ No ESLint warnings or errors
+apps/web lint: Done

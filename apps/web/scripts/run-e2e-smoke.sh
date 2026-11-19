@@ -4,8 +4,8 @@
 # agenthub-final-pretestnet/logs/phase8-e2e-smoke.log.
 #
 # Requires the `playwright` package resolvable from apps/web (see
-# scripts/e2e-smoke.mjs header). On this VM it is symlinked from
-# ~/workspace/.tmp/test-deps/node_modules.
+# scripts/e2e-smoke.mjs header). Playwright is a declared devDependency
+# (Phase C) — no manual symlinks.
 set -u
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 WEB="$ROOT/apps/web"

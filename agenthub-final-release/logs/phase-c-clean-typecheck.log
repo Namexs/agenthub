@@ -1,0 +1,242 @@
+Scope: 4 of 5 workspace projects
+packages/contracts typecheck$ forge build
+packages/contracts typecheck: Compiling 31 files with Solc 0.8.24
+packages/contracts typecheck: Solc 0.8.24 finished in 21.92s
+packages/contracts typecheck: Compiler run successful with warnings:
+packages/contracts typecheck: Warning (2018): Function state mutability can be restricted to view
+packages/contracts typecheck:   --> script/ValidateSafe.s.sol:41:5:
+packages/contracts typecheck:    |
+packages/contracts typecheck: 41 |     function runWith(address safe, address expectedSingleton, bytes32 expectedProxyCodehash)
+packages/contracts typecheck:    |     ^ (Relevant source part starts here and spans across multiple lines).
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:140:37
+packages/contracts typecheck:     │
+packages/contracts typecheck: 140 │         if (startTime >= endTime || endTime <= block.timestamp) revert InvalidQuestParams();
+packages/contracts typecheck:     │                                     ━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:283:9
+packages/contracts typecheck:     │
+packages/contracts typecheck: 283 │         reputation.addPoints(msg.sender, quest.rewardPoints, questId);
+packages/contracts typecheck:     │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+packages/contracts typecheck: warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:288:15
+packages/contracts typecheck:     │
+packages/contracts typecheck: 288 │             ? achievement.issue(msg.sender, quest.badgeId)
+packages/contracts typecheck:     │               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+packages/contracts typecheck: warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:290:9
+packages/contracts typecheck:     │
+packages/contracts typecheck: 290 │         emit QuestCompleted(questId, msg.sender, quest.rewardPoints, badgeTokenId);
+packages/contracts typecheck:     │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:213:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 213 │         if (deadline < block.timestamp) revert AttestationExpired(deadline, block.timestamp);
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:214:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 214 │         if (deadline > block.timestamp + MAX_ATTESTATION_LIFETIME) {
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:234:9
+packages/contracts typecheck:     │
+packages/contracts typecheck: 234 │         emit AttestationUsed(account, questId, nonce, signer);
+packages/contracts typecheck:     │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:244:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 244 │         if (block.timestamp < quest.startTime) revert QuestNotStarted(questId);
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:245:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 245 │         if (block.timestamp > quest.endTime) revert QuestEnded(questId);
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:255:21
+packages/contracts typecheck:     │
+packages/contracts typecheck: 255 │                 if (block.timestamp < readyAt) {
+packages/contracts typecheck:     │                     ━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+packages/contracts typecheck:     ╭▸ src/QuestManager.sol:399:16
+packages/contracts typecheck:     │
+packages/contracts typecheck: 399 │         return block.timestamp >= ready ? 0 : ready;
+packages/contracts typecheck:     │                ━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+packages/contracts typecheck: warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+packages/contracts typecheck:    ╭▸ src/AgentGate.sol:93:9
+packages/contracts typecheck:    │
+packages/contracts typecheck: 93 │         emit AgentHolderVerified(msg.sender);
+packages/contracts typecheck:    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+packages/contracts typecheck: warning[unsafe-oz-erc721-mint]: `ERC721._mint` does not check that the recipient can receive the token; use `_safeMint`
+packages/contracts typecheck:    ╭▸ src/Achievement.sol:76:9
+packages/contracts typecheck:    │
+packages/contracts typecheck: 76 │         _mint(account, tokenId);
+packages/contracts typecheck:    │         ━━━━━━━━━━━━━━━━━━━━━━━
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/unsafe-oz-erc721-mint
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/Attestation.t.sol:415:28
+packages/contracts typecheck:     │
+packages/contracts typecheck: 415 │         uint256 deadline = block.timestamp + 1 days;
+packages/contracts typecheck:     │                            ━━━━━━━━━━━━━━━
+packages/contracts typecheck:     ‡
+packages/contracts typecheck: 433 │         vm.warp(block.timestamp + 1 days);
+packages/contracts typecheck:     │         ───────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/Attestation.t.sol:426:83
+packages/contracts typecheck:     │
+packages/contracts typecheck: 426 │                 IQuestManager.CooldownActive.selector, alice, dailyAttestedQuest, block.timestamp + 1 days
+packages/contracts typecheck:     │                                                                                   ━━━━━━━━━━━━━━━
+packages/contracts typecheck:     ‡
+packages/contracts typecheck: 433 │         vm.warp(block.timestamp + 1 days);
+packages/contracts typecheck:     │         ───────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/Attestation.t.sol:433:17
+packages/contracts typecheck:     │
+packages/contracts typecheck: 433 │         vm.warp(block.timestamp + 1 days);
+packages/contracts typecheck:     │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:58:13
+packages/contracts typecheck:    │
+packages/contracts typecheck: 58 │             block.timestamp,
+packages/contracts typecheck:    │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:    ‡
+packages/contracts typecheck: 75 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:59:13
+packages/contracts typecheck:    │
+packages/contracts typecheck: 59 │             block.timestamp + window,
+packages/contracts typecheck:    │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:    ‡
+packages/contracts typecheck: 75 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:75:21
+packages/contracts typecheck:    │
+packages/contracts typecheck: 75 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:58:13
+packages/contracts typecheck:    │
+packages/contracts typecheck: 58 │             block.timestamp,
+packages/contracts typecheck:    │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:    ‡
+packages/contracts typecheck: 91 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:59:13
+packages/contracts typecheck:    │
+packages/contracts typecheck: 59 │             block.timestamp + window,
+packages/contracts typecheck:    │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:    ‡
+packages/contracts typecheck: 91 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:    ╭▸ test/EconomicAttack.t.sol:91:21
+packages/contracts typecheck:    │
+packages/contracts typecheck: 91 │             vm.warp(block.timestamp + 1 hours);
+packages/contracts typecheck:    │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+packages/contracts typecheck:    │
+packages/contracts typecheck:    ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/Integration.t.sol:141:17
+packages/contracts typecheck:     │
+packages/contracts typecheck: 141 │         vm.warp(block.timestamp + TIMELOCK_DELAY);
+packages/contracts typecheck:     │         ────────━━━━━━━━━━━━━━━────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/QuestManager.t.sol:145:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 145 │             block.timestamp,
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:     ‡
+packages/contracts typecheck: 427 │         vm.warp(block.timestamp + 6 days);
+packages/contracts typecheck:     │         ───────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/QuestManager.t.sol:146:13
+packages/contracts typecheck:     │
+packages/contracts typecheck: 146 │             block.timestamp + 90 days,
+packages/contracts typecheck:     │             ━━━━━━━━━━━━━━━
+packages/contracts typecheck:     ‡
+packages/contracts typecheck: 427 │         vm.warp(block.timestamp + 6 days);
+packages/contracts typecheck:     │         ───────────────────────────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/QuestManager.t.sol:427:17
+packages/contracts typecheck:     │
+packages/contracts typecheck: 427 │         vm.warp(block.timestamp + 6 days);
+packages/contracts typecheck:     │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+packages/contracts typecheck:     ╭▸ test/ValidatorRegistry.t.sol:127:17
+packages/contracts typecheck:     │
+packages/contracts typecheck: 127 │         vm.warp(block.timestamp + 1 days);
+packages/contracts typecheck:     │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+packages/contracts typecheck:     │
+packages/contracts typecheck:     ├ help: capture it with `vm.getBlockTimestamp()` instead
+packages/contracts typecheck:     ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+packages/contracts typecheck: Done
+packages/shared typecheck$ tsc --project tsconfig.json --noEmit
+packages/shared typecheck: Done
+apps/web typecheck$ tsc --project tsconfig.json --noEmit
+apps/web typecheck: Done

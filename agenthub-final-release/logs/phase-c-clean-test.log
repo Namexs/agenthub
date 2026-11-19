@@ -1,0 +1,343 @@
+Scope: 4 of 5 workspace projects
+packages/contracts test$ forge test
+packages/contracts test: Compiling 90 files with Solc 0.8.24
+packages/contracts test: Solc 0.8.24 finished in 20.93s
+packages/contracts test: Compiler run successful with warnings:
+packages/contracts test: Warning (2018): Function state mutability can be restricted to view
+packages/contracts test:   --> script/ValidateSafe.s.sol:41:5:
+packages/contracts test:    |
+packages/contracts test: 41 |     function runWith(address safe, address expectedSingleton, bytes32 expectedProxyCodehash)
+packages/contracts test:    |     ^ (Relevant source part starts here and spans across multiple lines).
+packages/contracts test: Ran 11 tests for test/AccessControl.t.sol:AccessControlTest
+packages/contracts test: [PASS] test_AchievementPauseRoleMatrix() (gas: 96372)
+packages/contracts test: [PASS] test_AddPointsRoleMatrix() (gas: 159144)
+packages/contracts test: [PASS] test_CreateQuestRoleMatrix() (gas: 377050)
+packages/contracts test: [PASS] test_DeactivateQuestRoleMatrix() (gas: 365780)
+packages/contracts test: [PASS] test_DefineBadgeRoleMatrix() (gas: 147511)
+packages/contracts test: [PASS] test_GrantRoleRequiresAdmin() (gas: 194774)
+packages/contracts test: [PASS] test_IssueRoleMatrix() (gas: 227560)
+packages/contracts test: [PASS] test_PauseUnpauseRoleMatrix() (gas: 196044)
+packages/contracts test: [PASS] test_RenounceRoleIsIrreversibleForCaller() (gas: 82803)
+packages/contracts test: [PASS] test_ReputationPauseRoleMatrix() (gas: 134644)
+packages/contracts test: [PASS] test_VerifierRoleMatrix() (gas: 260269)
+packages/contracts test: Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 61.10ms (49.04ms CPU time)
+packages/contracts test: Ran 17 tests for test/SafeValidation.t.sol:SafeValidationTest
+packages/contracts test: [PASS] test_ExplicitPathRejectsProductionChain() (gas: 703990)
+packages/contracts test: [PASS] test_ExplicitPathRejectsWrongCodehash() (gas: 727879)
+packages/contracts test: [PASS] test_ExplicitPathRejectsWrongSingleton() (gas: 729474)
+packages/contracts test: [PASS] test_ValidateSafeAcceptsExplicitPathLocal() (gas: 741197)
+packages/contracts test: [PASS] test_ValidateSafeAcceptsGenuineV130() (gas: 691531)
+packages/contracts test: [PASS] test_ValidateSafeAcceptsGenuineV141() (gas: 633960)
+packages/contracts test: [PASS] test_ValidateSafeRejectsEoa() (gas: 37858)
+packages/contracts test: [PASS] test_ValidateSafeRejectsFakeInterface() (gas: 337255)
+packages/contracts test: [PASS] test_ValidateSafeRejectsMismatchedExplicitValues() (gas: 729308)
+packages/contracts test: [PASS] test_ValidateSafeRejectsMockProxyOnCanonicalPath() (gas: 730945)
+packages/contracts test: [PASS] test_ValidateSafeRejectsNonSafeContract() (gas: 1167781)
+packages/contracts test: [PASS] test_ValidateSafeRejectsSpoofedMasterCopy() (gas: 398720)
+packages/contracts test: [PASS] test_ValidateSafeRejectsThresholdAboveOwners() (gas: 308230)
+packages/contracts test: [PASS] test_ValidateSafeRejectsThresholdOne() (gas: 336429)
+packages/contracts test: [PASS] test_ValidateSafeRejectsWrongChain() (gas: 597916)
+packages/contracts test: [PASS] test_ValidateSafeRejectsWrongVersion() (gas: 625664)
+packages/contracts test: [PASS] test_ValidateSafeRejectsZeroAddress() (gas: 33442)
+packages/contracts test: Suite result: ok. 17 passed; 0 failed; 0 skipped; finished in 62.86ms (62.01ms CPU time)
+packages/contracts test: Ran 14 tests for test/ValidatorAllowlist.t.sol:ValidatorAllowlistTest
+packages/contracts test: [PASS] testFuzz_RandomAddressesAreNotApproved(address) (runs: 256, μ: 16061, ~: 16061)
+packages/contracts test: [PASS] test_ApproveIsIdempotent() (gas: 201372)
+packages/contracts test: [PASS] test_ApproveValidatorByAdminWorks() (gas: 171495)
+packages/contracts test: [PASS] test_ApproveValidatorOnlyAdmin() (gas: 146109)
+packages/contracts test: [PASS] test_ApproveValidatorRejectsEoa() (gas: 40047)
+packages/contracts test: [PASS] test_ApproveValidatorRejectsZeroAddress() (gas: 35458)
+packages/contracts test: [PASS] test_CreateQuestAcceptsApprovedValidator() (gas: 686017)
+packages/contracts test: [PASS] test_CreateQuestRejectsUnapprovedValidator() (gas: 46377)
+packages/contracts test: [PASS] test_ReapprovalRestoresCompletion() (gas: 906649)
+packages/contracts test: [PASS] test_RevocationBlocksCompletionOfExistingQuest() (gas: 790872)
+packages/contracts test: [PASS] test_RevokeIsIdempotent() (gas: 252240)
+packages/contracts test: [PASS] test_RevokeValidatorByAdminWorks() (gas: 197710)
+packages/contracts test: [PASS] test_RevokeValidatorOnlyAdmin() (gas: 280812)
+packages/contracts test: [PASS] test_UnapprovedRubberStampCannotBeSmuggled() (gas: 176833)
+packages/contracts test: Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 77.21ms (67.93ms CPU time)
+packages/contracts test: Ran 11 tests for test/ValidatorRegistry.t.sol:ValidatorRegistryTest
+packages/contracts test: [PASS] test_ApproveRejectsEmptyDocumentation() (gas: 39513)
+packages/contracts test: [PASS] test_ApproveRejectsEmptyName() (gas: 39243)
+packages/contracts test: [PASS] test_ApproveRejectsEmptyVersion() (gas: 39499)
+packages/contracts test: [PASS] test_ApproveStoresMetadata() (gas: 235927)
+packages/contracts test: [PASS] test_EmergencyRevokeByNonPauserReverts() (gas: 212473)
+packages/contracts test: [PASS] test_EmergencyRevokeByPauserBlocksCompletions() (gas: 560775)
+packages/contracts test: [PASS] test_EmergencyRevokeIdempotent() (gas: 216837)
+packages/contracts test: [PASS] test_InvalidBoolValidatorReverts() (gas: 609364)
+packages/contracts test: [PASS] test_ReapproveUpdatesMetadata() (gas: 274750)
+packages/contracts test: [PASS] test_RevokeKeepsMetadata() (gas: 213332)
+packages/contracts test: [PASS] test_StateChangingValidatorBlocked() (gas: 1040500199)
+packages/contracts test: Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 3.47ms (1.68ms CPU time)
+packages/contracts test: Ran 5 tests for test/VerifierSecurity.t.sol:VerifierSecurityTest
+packages/contracts test: [PASS] test_AttestationUsedEventAttributesSigner() (gas: 261606)
+packages/contracts test: [PASS] test_DeadlineAtCurrentBlockAccepted() (gas: 264583)
+packages/contracts test: [PASS] test_FrontRunnerCannotSubmitOthersAttestation() (gas: 393912)
+packages/contracts test: [PASS] test_NoncesAreIsolatedPerAccount() (gas: 538039)
+packages/contracts test: [PASS] test_VerifierCannotSubmitForUser() (gas: 113114)
+packages/contracts test: Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 28.15ms (26.15ms CPU time)
+packages/contracts test: Ran 9 tests for test/PauserRole.t.sol:PauserRoleTest
+packages/contracts test: [PASS] test_AdminHandoverCorrect() (gas: 217468)
+packages/contracts test: [PASS] test_DefaultPauserIsMultisig() (gas: 16112)
+packages/contracts test: [PASS] test_DeployerHasNoOperationalRoleAfterHandover() (gas: 207252)
+packages/contracts test: [PASS] test_NonRoleCannotPause() (gas: 130193)
+packages/contracts test: [PASS] test_NonRoleCannotUnpause() (gas: 183322)
+packages/contracts test: [PASS] test_OnlyMultisigCanPause() (gas: 63125)
+packages/contracts test: [PASS] test_PauseStopsCompletionsUntilTimelockUnpause() (gas: 758577)
+packages/contracts test: [PASS] test_RoleRevocationWorks() (gas: 194384)
+packages/contracts test: [PASS] test_TimelockDelayEnforced() (gas: 252623)
+packages/contracts test: Suite result: ok. 9 passed; 0 failed; 0 skipped; finished in 6.42ms (1.65ms CPU time)
+packages/contracts test: Ran 14 tests for test/Validator.t.sol:ValidatorTest
+packages/contracts test: [PASS] testFuzz_TokenBalanceThreshold(uint256,uint256) (runs: 256, μ: 550731, ~: 551230)
+packages/contracts test: [PASS] test_AlwaysTrueValidatorBehavesLikeCheckIn() (gas: 762217)
+packages/contracts test: [PASS] test_GarbageValidatorFailsClosed() (gas: 609241)
+packages/contracts test: [PASS] test_OnChainQuestCompletionAfterGainingBalance() (gas: 996293)
+packages/contracts test: [PASS] test_OnChainQuestCompletionWithValidator() (gas: 892271)
+packages/contracts test: [PASS] test_OnChainQuestRechecksBalanceEveryCompletion() (gas: 1173641)
+packages/contracts test: [PASS] test_OnChainQuestRejectsInsufficientBalance() (gas: 789585)
+packages/contracts test: [PASS] test_ReentrantValidatorCannotDoubleAward() (gas: 913806)
+packages/contracts test: [PASS] test_RevertingValidatorFailsClosed() (gas: 677007)
+packages/contracts test: [PASS] test_TokenBalanceValidatorAcceptsHolderAtThreshold() (gas: 272088)
+packages/contracts test: [PASS] test_TokenBalanceValidatorFailsClosedOnGarbageToken() (gas: 349445)
+packages/contracts test: [PASS] test_TokenBalanceValidatorFailsClosedOnRevertingToken() (gas: 382646)
+packages/contracts test: [PASS] test_TokenBalanceValidatorRejectsEoaToken() (gas: 107888)
+packages/contracts test: [PASS] test_TokenBalanceValidatorRejectsZeroToken() (gas: 102780)
+packages/contracts test: Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 104.40ms (101.17ms CPU time)
+packages/contracts test: Ran 5 tests for test/MockAgentId.t.sol:MockAgentIdTest
+packages/contracts test: [PASS] testFuzz_MintGrantsBalance(address) (runs: 256, μ: 96098, ~: 96160)
+packages/contracts test: [PASS] test_MintGrantsOwnership() (gas: 105104)
+packages/contracts test: [PASS] test_NonHolderHasZeroBalance() (gas: 12831)
+packages/contracts test: [PASS] test_OnlyOwnerCanMint() (gas: 36708)
+packages/contracts test: [PASS] test_TransferIsBlocked_Soulbound() (gas: 125287)
+packages/contracts test: Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 43.24ms (42.24ms CPU time)
+packages/contracts test: Ran 40 tests for test/QuestManager.t.sol:QuestManagerTest
+packages/contracts test: [PASS] testFuzz_CreateQuestStoresParams(uint256,uint256,uint256) (runs: 256, μ: 339324, ~: 339501)
+packages/contracts test: [PASS] test_BadgeAlreadyHeldIsSkippedNotReverted() (gas: 643836)
+packages/contracts test: [PASS] test_CommunityQuestIsOneTimePerAccount() (gas: 735429)
+packages/contracts test: [PASS] test_CompleteNonexistentQuestReverts() (gas: 42132)
+packages/contracts test: [PASS] test_CompleteOneTimeAwardsPointsAndBadge() (gas: 677949)
+packages/contracts test: [PASS] test_CompleteQuestRequiresAgentId() (gas: 326745)
+packages/contracts test: [PASS] test_CompleteQuestRevertsForAttestedQuest() (gas: 318336)
+packages/contracts test: [PASS] test_CompleteWithAttestationRevertsForCheckInQuest() (gas: 308773)
+packages/contracts test: [PASS] test_ConstructorRejectsEoaDependencies() (gas: 1008862)
+packages/contracts test: [PASS] test_ConstructorRejectsZeroAddresses() (gas: 335945)
+packages/contracts test: [PASS] test_CreateAttestedQuestStoresKind() (gas: 306011)
+packages/contracts test: [PASS] test_CreateQuestRejectsBadWindow() (gas: 38069)
+packages/contracts test: [PASS] test_CreateQuestRejectsEmptyTitle() (gas: 37642)
+packages/contracts test: [PASS] test_CreateQuestRejectsEndedQuest() (gas: 38037)
+packages/contracts test: [PASS] test_CreateQuestRejectsOnChainWithEoaValidator() (gas: 43210)
+packages/contracts test: [PASS] test_CreateQuestRejectsOnChainWithoutValidator() (gas: 38629)
+packages/contracts test: [PASS] test_CreateQuestRejectsOversizedDescription() (gas: 44694)
+packages/contracts test: [PASS] test_CreateQuestRejectsOversizedTitle() (gas: 38941)
+packages/contracts test: [PASS] test_CreateQuestRejectsRewardAboveCap() (gas: 43265)
+packages/contracts test: [PASS] test_CreateQuestRejectsUndefinedBadge() (gas: 43930)
+packages/contracts test: [PASS] test_CreateQuestRejectsValidatorForAttested() (gas: 41090)
+packages/contracts test: [PASS] test_CreateQuestRejectsValidatorForCheckIn() (gas: 41122)
+packages/contracts test: [PASS] test_CreateQuestRejectsZeroReward() (gas: 37886)
+packages/contracts test: [PASS] test_CreateQuestRequiresCreatorRole() (gas: 43837)
+packages/contracts test: [PASS] test_CreateQuestStoresAllFields() (gas: 367879)
+packages/contracts test: [PASS] test_DailyCooldownEnforced() (gas: 651430)
+packages/contracts test: [PASS] test_DeactivateByCreatorOrAdminOnly() (gas: 370662)
+packages/contracts test: [PASS] test_DeactivatedQuestCannotComplete() (gas: 347612)
+packages/contracts test: [PASS] test_DuplicateOneTimeReverts() (gas: 551910)
+packages/contracts test: [PASS] test_GetQuestRevertsForUnknownId() (gas: 14906)
+packages/contracts test: [PASS] test_MaxCompletionsCapEnforced() (gas: 565511)
+packages/contracts test: [PASS] test_NextCompletionAtForCompletedOneTimeIsMax() (gas: 516354)
+packages/contracts test: [PASS] test_NextCompletionAtForFreshUserIsZero() (gas: 264045)
+packages/contracts test: [PASS] test_OnlyPauserCanPauseAndOnlyAdminCanUnpause() (gas: 118349)
+packages/contracts test: [PASS] test_PauseBlocksCompletionButNotReads() (gas: 656459)
+packages/contracts test: [PASS] test_QuestCompletedEventCarriesBadgeTokenId() (gas: 595278)
+packages/contracts test: [PASS] test_QuestCompletedEventHasZeroTokenIdWithoutBadge() (gas: 491109)
+packages/contracts test: [PASS] test_QuestEndedReverts() (gas: 324094)
+packages/contracts test: [PASS] test_QuestNotStartedReverts() (gas: 321276)
+packages/contracts test: [PASS] test_WeeklyCooldownEnforced() (gas: 649429)
+packages/contracts test: Suite result: ok. 40 passed; 0 failed; 0 skipped; finished in 171.43ms (169.40ms CPU time)
+packages/contracts test: Ran 15 tests for test/Reputation.t.sol:ReputationTest
+packages/contracts test: [PASS] testFuzz_AddPointsAccumulates(uint256,uint256) (runs: 256, μ: 163659, ~: 163982)
+packages/contracts test: [PASS] test_AddPointsAcceptsExactlyCap() (gas: 97474)
+packages/contracts test: [PASS] test_AddPointsEmitsEventWithQuestId() (gas: 88799)
+packages/contracts test: [PASS] test_AddPointsIncreasesTotalAndEvents() (gas: 172402)
+packages/contracts test: [PASS] test_AddPointsRejectsAboveCap() (gas: 44998)
+packages/contracts test: [PASS] test_AddPointsRejectsZeroAccount() (gas: 37201)
+packages/contracts test: [PASS] test_AddPointsRejectsZeroPoints() (gas: 39627)
+packages/contracts test: [PASS] test_AddPointsRequiresScoreSourceRole() (gas: 93243)
+packages/contracts test: [PASS] test_ConstructorRejectsZeroAdmin() (gas: 135548)
+packages/contracts test: [PASS] test_InitialStateIsZero() (gas: 39342)
+packages/contracts test: [PASS] test_LevelThresholdGetter() (gas: 42447)
+packages/contracts test: [PASS] test_LevelThresholdRejectsInvalidLevel() (gas: 18667)
+packages/contracts test: [PASS] test_LevelsFollowThresholds() (gas: 318921)
+packages/contracts test: [PASS] test_PauseBlocksAddPointsButNotReads() (gas: 210986)
+packages/contracts test: [PASS] test_RevokingScoreSourceStopsPoints() (gas: 78190)
+packages/contracts test: Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 90.11ms (88.23ms CPU time)
+packages/contracts test: Ran 7 tests for test/AttackSimulation.t.sol:AttackSimulationTest
+packages/contracts test: [PASS] test_AgentIdTransferBlockedSoNoDoubleClaim() (gas: 556967)
+packages/contracts test: [PASS] test_DelegatedCompletionImpossible() (gas: 970790)
+packages/contracts test: [PASS] test_DownstreamRevertIsAtomic() (gas: 3526846)
+packages/contracts test: [PASS] test_GasExhaustionIsAtomic() (gas: 698821)
+packages/contracts test: [PASS] test_MaliciousAgentIdFailsClosed() (gas: 7341888)
+packages/contracts test: [PASS] test_MintCallbackCompletionBoundedToOne() (gas: 1106523)
+packages/contracts test: [PASS] test_ReentrancyViaBadgeCallbackImpossible() (gas: 864475)
+packages/contracts test: Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 72.99ms (6.25ms CPU time)
+packages/contracts test: Ran 18 tests for test/AgentGate.t.sol:AgentGateTest
+packages/contracts test: [PASS] testFuzz_GateAgreesWithDirectBalance(address,bool) (runs: 256, μ: 71736, ~: 107562)
+packages/contracts test: [PASS] test_ConstructorRejectsAddressWithoutCode() (gas: 117262)
+packages/contracts test: [PASS] test_ConstructorRejectsWrongChain() (gas: 117823)
+packages/contracts test: [PASS] test_ConstructorRejectsZeroAddress() (gas: 112082)
+packages/contracts test: [PASS] test_ConstructorRejectsZeroChainId() (gas: 117639)
+packages/contracts test: [PASS] test_ConstructorStoresImmutableConfig() (gas: 18745)
+packages/contracts test: [PASS] test_FakeAgentIdContractIsIgnored() (gas: 145542)
+packages/contracts test: [PASS] test_GarbageReturnFailsClosed() (gas: 436386)
+packages/contracts test: [PASS] test_HolderIsHolder() (gas: 117040)
+packages/contracts test: [PASS] test_NonHolderIsNotHolder() (gas: 16616)
+packages/contracts test: [PASS] test_ReentrantAgentIdCannotChangeState() (gas: 1024222749)
+packages/contracts test: [PASS] test_RequireAgentHolderPassesForHolder() (gas: 97783)
+packages/contracts test: [PASS] test_RequireAgentHolderRevertsForNonHolder() (gas: 17308)
+packages/contracts test: [PASS] test_RevertingAgentIdFailsClosed() (gas: 479516)
+packages/contracts test: [PASS] test_VerifyEmitsEvent() (gas: 124601)
+packages/contracts test: [PASS] test_VerifyRevertsForNonHolder() (gas: 38586)
+packages/contracts test: [PASS] test_WrongChainReturnsFalseAndReverts() (gas: 127804)
+packages/contracts test: [PASS] test_ZeroAccountIsNotHolder() (gas: 8558)
+packages/contracts test: Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 74.57ms (73.15ms CPU time)
+packages/contracts test: Ran 10 tests for test/AgentGateMainnet.t.sol:AgentGateMainnetTest
+packages/contracts test: [PASS] test_LocalAcceptsMock() (gas: 346540)
+packages/contracts test: [PASS] test_MainnetAcceptsOfficialAgentId() (gas: 479549)
+packages/contracts test: [PASS] test_MainnetRejectsArbitraryContract() (gas: 1247005)
+packages/contracts test: [PASS] test_MainnetRejectsFakeNft() (gas: 239443)
+packages/contracts test: [PASS] test_MainnetRejectsMockAddress() (gas: 118419)
+packages/contracts test: [PASS] test_OfficialAddressConstantMatchesKnownAddress() (gas: 16660)
+packages/contracts test: [PASS] test_TestnetAcceptsMock() (gas: 361088)
+packages/contracts test: [PASS] test_UnsupportedChainReverts() (gas: 118145)
+packages/contracts test: [PASS] test_UnsupportedChainRevertsPolygon() (gas: 118189)
+packages/contracts test: [PASS] test_WrongChainStillCheckedBeforeMainnetLock() (gas: 117870)
+packages/contracts test: Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 7.44ms (1.31ms CPU time)
+packages/contracts test: Ran 21 tests for test/DeployScript.t.sol:DeployScriptTest
+packages/contracts test: [PASS] test_DeployAcceptsThresholdThreeOfThree() (gas: 8148449)
+packages/contracts test: [PASS] test_DeployDefaultsPauserToMultisig() (gas: 7495319)
+packages/contracts test: [PASS] test_DeployExplicitPauserOverridesDefault() (gas: 7494633)
+packages/contracts test: [PASS] test_DeployRejectsEoaMultisig() (gas: 55947)
+packages/contracts test: [PASS] test_DeployRejectsExplicitSafeValuesOnProduction() (gas: 606898)
+packages/contracts test: [PASS] test_DeployRejectsMissingLocalSafeConfig() (gas: 50038)
+packages/contracts test: [PASS] test_DeployRejectsNonSafeContract() (gas: 1185932)
+packages/contracts test: [PASS] test_DeployRejectsThresholdAboveOwners() (gas: 324044)
+packages/contracts test: [PASS] test_DeployRejectsThresholdOneSafe() (gas: 351119)
+packages/contracts test: [PASS] test_DeployRejectsUnsupportedChain() (gas: 51237)
+packages/contracts test: [PASS] test_DeployRejectsZeroCreator() (gas: 50974)
+packages/contracts test: [PASS] test_DeployRejectsZeroMultisig() (gas: 50952)
+packages/contracts test: [PASS] test_DeployWithExplicitAgentIdSkipsMock() (gas: 7612056)
+packages/contracts test: [PASS] test_DeployWithoutVerifierSkipsRole() (gas: 7450144)
+packages/contracts test: [PASS] test_DeployedStackWorksEndToEnd() (gas: 8021545)
+packages/contracts test: [PASS] test_LocalDeployWiresEverything() (gas: 7857662)
+packages/contracts test: [PASS] test_MainnetAcceptsOfficialAgentId() (gas: 8177099)
+packages/contracts test: [PASS] test_MainnetRejectsMockAgentId() (gas: 1764357)
+packages/contracts test: [PASS] test_MainnetRejectsZeroAgentId() (gas: 633332)
+packages/contracts test: [PASS] test_RunEnvDrivenPaths() (gas: 23301360)
+packages/contracts test: [PASS] test_TestnetAcceptsMock() (gas: 8030088)
+packages/contracts test: Suite result: ok. 21 passed; 0 failed; 0 skipped; finished in 112.34ms (107.94ms CPU time)
+packages/contracts test: Ran 6 tests for test/EconomicAttack.t.sol:EconomicAttackTest
+packages/contracts test: [PASS] test_CappedQuestTotalEmissionBounded() (gas: 763170)
+packages/contracts test: [PASS] test_CooldownFarmingBoundedToOnePerDay() (gas: 42996304)
+packages/contracts test: [PASS] test_CreatorCannotExceedRewardCap() (gas: 43252)
+packages/contracts test: [PASS] test_MaxRewardQuestEmissionBounded() (gas: 706214)
+packages/contracts test: [PASS] test_SybilWithoutAgentIdsEarnsNothing() (gas: 893029)
+packages/contracts test: [PASS] test_WeeklyFarmingBoundedToOnePerWeek() (gas: 39261359)
+packages/contracts test: Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 180.10ms (132.18ms CPU time)
+packages/contracts test: Ran 19 tests for test/Achievement.t.sol:AchievementTest
+packages/contracts test: [PASS] testFuzz_IssueGrantsUniqueTokenIds(uint8) (runs: 256, μ: 914643, ~: 740824)
+packages/contracts test: [PASS] test_ApproveRevertsSoulbound() (gas: 187110)
+packages/contracts test: [PASS] test_BadgeOfRevertsForNonexistentToken() (gas: 11242)
+packages/contracts test: [PASS] test_ConstructorRejectsZeroAdmin() (gas: 295704)
+packages/contracts test: [PASS] test_DefineBadgeRejectsDuplicate() (gas: 38881)
+packages/contracts test: [PASS] test_DefineBadgeRejectsEmptyName() (gas: 38269)
+packages/contracts test: [PASS] test_DefineBadgeRejectsZeroId() (gas: 36238)
+packages/contracts test: [PASS] test_DefineBadgeRequiresManagerRole() (gas: 42289)
+packages/contracts test: [PASS] test_DefineBadgeStoresMetadata() (gas: 21184)
+packages/contracts test: [PASS] test_IssueEmitsEvent() (gas: 145013)
+packages/contracts test: [PASS] test_IssueMintsSoulboundToken() (gas: 204107)
+packages/contracts test: [PASS] test_IssueRejectsDuplicateBadge() (gas: 187950)
+packages/contracts test: [PASS] test_IssueRejectsUndefinedBadge() (gas: 47123)
+packages/contracts test: [PASS] test_IssueRejectsZeroAccount() (gas: 42118)
+packages/contracts test: [PASS] test_IssueRequiresIssuerRole() (gas: 85312)
+packages/contracts test: [PASS] test_IssueToNonReceiverContractSucceeds() (gas: 245373)
+packages/contracts test: [PASS] test_PauseBlocksIssueButNotReads() (gas: 273476)
+packages/contracts test: [PASS] test_TokenURIRevertsForNonexistentToken() (gas: 13246)
+packages/contracts test: [PASS] test_TransferRevertsSoulbound() (gas: 205621)
+packages/contracts test: Suite result: ok. 19 passed; 0 failed; 0 skipped; finished in 632.48ms (631.05ms CPU time)
+packages/contracts test: Ran 7 tests for test/Integration.t.sol:IntegrationTest
+packages/contracts test: [PASS] test_DeployerLostAdminAfterRenounce() (gas: 153596)
+packages/contracts test: [PASS] test_EmergencyPauseIsFastUnpauseNeedsTimelock() (gas: 865796)
+packages/contracts test: [PASS] test_EndToEndCompletionAwardsPointsAndBadge() (gas: 709113)
+packages/contracts test: [PASS] test_NonProposerCannotSchedule() (gas: 53348)
+packages/contracts test: [PASS] test_TimelockCanGrantRoleAfterDelay() (gas: 574993)
+packages/contracts test: [PASS] test_TimelockCanGrantVerifierRoleAfterDelay() (gas: 185137)
+packages/contracts test: [PASS] test_TimelockRejectsShortDelay() (gas: 52978)
+packages/contracts test: Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 3.34ms (1.84ms CPU time)
+packages/contracts test: Ran 24 tests for test/Attestation.t.sol:AttestationTest
+packages/contracts test: [PASS] testFuzz_ValidAttestationAlwaysCompletes(uint256) (runs: 256, μ: 406777, ~: 407058)
+packages/contracts test: [PASS] testFuzz_WrongNonceAlwaysRejected(uint256) (runs: 256, μ: 95461, ~: 95459)
+packages/contracts test: [PASS] test_AttestedCompletionEmitsQuestCompleted() (gas: 379791)
+packages/contracts test: [PASS] test_AttestedCompletionWhilePausedReverts() (gas: 175662)
+packages/contracts test: [PASS] test_AttestedCompletionWithValidSignature() (gas: 430341)
+packages/contracts test: [PASS] test_AttestedFarmingBoundedByCooldown() (gas: 541500)
+packages/contracts test: [PASS] test_CrossChainReplayRejected() (gas: 86779)
+packages/contracts test: [PASS] test_CrossContractReplayRejected() (gas: 2827139)
+packages/contracts test: [PASS] test_DeadlineAtMaxLifetimeAccepted() (gas: 390285)
+packages/contracts test: [PASS] test_DeadlineTooFarReverts() (gas: 89331)
+packages/contracts test: [PASS] test_EmptySignatureRejected() (gas: 50298)
+packages/contracts test: [PASS] test_ExpiredAttestationReverts() (gas: 73982)
+packages/contracts test: [PASS] test_FailedCompletionDoesNotBurnNonce() (gas: 656198)
+packages/contracts test: [PASS] test_MalleableSignatureRejected() (gas: 82112)
+packages/contracts test: [PASS] test_NonHolderCannotCompleteWithAttestation() (gas: 132153)
+packages/contracts test: [PASS] test_OnlyAdminCanGrantVerifierRole() (gas: 50950)
+packages/contracts test: [PASS] test_ReplaySameAttestationReverts() (gas: 463369)
+packages/contracts test: [PASS] test_ShortSignatureRejected() (gas: 50904)
+packages/contracts test: [PASS] test_UnauthorizedSignerRejected() (gas: 102074)
+packages/contracts test: [PASS] test_VerifierRotationInvalidatesOldAttestations() (gas: 554930)
+packages/contracts test: [PASS] test_WrongAccountRejected() (gas: 99522)
+packages/contracts test: [PASS] test_WrongNonceRejected() (gas: 112302)
+packages/contracts test: [PASS] test_WrongQuestRejected() (gas: 86874)
+packages/contracts test: [PASS] test_ZeroSignatureRejected() (gas: 54872)
+packages/contracts test: Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 491.61ms (623.42ms CPU time)
+packages/contracts test: Ran 2 tests for test/Invariant.t.sol:InvariantTest
+packages/contracts test: [PASS]
+packages/contracts test: InvariantTest invariants:
+packages/contracts test: [PASS] invariant_BadgesMatchGhost
+packages/contracts test: [PASS] invariant_CompletionsMatchAndRespectCap
+packages/contracts test: [PASS] invariant_EventsMatchGhost
+packages/contracts test: [PASS] invariant_NonHolderEarnsNothing
+packages/contracts test: [PASS] invariant_PointsMatchGhost
+packages/contracts test:  InvariantTest invariants (runs: 256, calls: 32768, reverts: 0)
+packages/contracts test: ╭------------------+---------------+-------+---------+----------╮
+packages/contracts test: | Contract         | Selector      | Calls | Reverts | Discards |
+packages/contracts test: +===============================================================+
+packages/contracts test: | InvariantHandler | completeQuest | 16428 | 0       | 0        |
+packages/contracts test: |------------------+---------------+-------+---------+----------|
+packages/contracts test: | InvariantHandler | warpTime      | 16340 | 0       | 0        |
+packages/contracts test: ╰------------------+---------------+-------+---------+----------╯
+packages/contracts test: [PASS] test_HandlerActuallyCompletesQuests() (gas: 1304581)
+packages/contracts test: Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 49.73s (49.67s CPU time)
+packages/contracts test: Ran 19 test suites in 49.74s (51.95s CPU time): 255 tests passed, 0 failed, 0 skipped (255 total tests)
+packages/contracts test: Done
+packages/shared test$ vitest run
+packages/shared test: [1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-clean/packages/shared[39m
+packages/shared test:  [32m✓[39m src/constants.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+packages/shared test: [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+packages/shared test: [2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+packages/shared test: [2m   Start at [22m 11:37:53
+packages/shared test: [2m   Duration [22m 434ms[2m (transform 84ms, setup 0ms, import 105ms, tests 39ms, environment 0ms)[22m
+packages/shared test: Done
+apps/web test$ vitest run
+apps/web test: [1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-clean/apps/web[39m
+apps/web test:  [32m✓[39m lib/quests.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 159[2mms[22m[39m
+apps/web test:  [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m4 tests[22m[2m | [22m[33m4 skipped[39m[2m)[22m
+apps/web test:  [32m✓[39m lib/attestation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 558[2mms[22m[39m
+apps/web test:  [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 573[2mms[22m[39m
+apps/web test:      [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 308[2mms[22m[39m
+apps/web test:  [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m50 tests[22m[2m)[22m[33m 601[2mms[22m[39m
+apps/web test:  [32m✓[39m lib/events.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+apps/web test:  [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+apps/web test:  [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 295[2mms[22m[39m
+apps/web test: [2m Test Files [22m [1m[32m7 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (8)[39m
+apps/web test: [2m      Tests [22m [1m[32m136 passed[39m[22m[2m | [22m[33m4 skipped[39m[90m (140)[39m
+apps/web test: [2m   Start at [22m 11:37:54
+apps/web test: [2m   Duration [22m 7.90s[2m (transform 2.16s, setup 0ms, import 8.86s, tests 2.30s, environment 3.30s)[22m
+apps/web test: Done
