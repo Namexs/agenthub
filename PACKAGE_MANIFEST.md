@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `0f0a030ec5404199881c701ec8543342025f9fb7`
-- Date: 2026-11-19T08:02:41+00:00
-- Subject: fix(scripts): exclude submodule gitlinks from the manifest file list
+- Commit: `18e1aa410b21373e82f06bb759b33d00a48fa340`
+- Date: 2026-11-19T08:03:36+00:00
+- Subject: fix(scripts): verify-manifest checks the recorded commit's tree, not the working tree
 
 ## 2. Submodules
 
@@ -24,16 +24,24 @@ separately with `git submodule status` after cloning with
 
 ## 3. How to verify
 
+The verification script checks the RECORDED COMMIT's tree (via git),
+not the working tree — so it works from any checkout that contains
+this manifest and the git history. HEAD does not need to equal the
+recorded commit.
+
 ```bash
 git clone --recurse-submodules <repo-url> agenthub
 cd agenthub
-git checkout 0f0a030ec5404199881c701ec8543342025f9fb7
 ./scripts/verify-manifest.sh
 ```
 
-The script recomputes the sha256 of every file listed in §4 and
-compares it to this manifest, checks the submodule commits, and
-checks that HEAD is the described commit.
+The script recomputes the sha256 of every file listed in §4 from the
+recorded commit (git cat-file) and compares it to this manifest, and
+checks the submodule gitlink commits against §2.
+
+To also confirm your WORKING TREE matches the recorded commit, run
+`git status` (clean) and `git rev-parse HEAD` (should print the
+commit above, or a descendant of it).
 
 ### Honest note about ZIPs and git archive
 
@@ -165,8 +173,8 @@ ea8f67912b914e2b855e5d602cc79ff2f829fdfadb9e0f6fc166301b4142ce86  packages/contr
 ed72c4af65ee1b2b48d1fc680fdc01a4750689f3737ecac315220cdc61a1037f  packages/shared/tsconfig.json
 56bccee34a2f16f60999e391c11c0e76ee8387ae772d07c3c8f7ecd242fa5c32  pnpm-lock.yaml
 60ce4d1dbf137701a4683d171391c51662700c2f3e32a7caab8b2efc22540e65  pnpm-workspace.yaml
-14ec6bc58194d18d3fd8ce69ae0951b12026962883f6a8cf121d8070984bdd69  scripts/generate-manifest.sh
-579501a97de95f7cc21d862af146691eb84bfd23bc23a0a4e0c61ad9186ab1b0  scripts/verify-manifest.sh
+9d76d5366f6c7d3f76d317091ea38824933f47ebc0b8cff660b6730a351e3f02  scripts/generate-manifest.sh
+422f47cea4edec9662cf22056a0fd81d0981c7fe09f2bb60d49a35e35c4f0184  scripts/verify-manifest.sh
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  security-remediation-package/logs/forge-fmt-check.txt
 1071d74553325eb7bee879e5337fe4b3f7e2fc596907b11674b50e6b224cb9b9  security-remediation-package/logs/forge-script-dryrun-local.txt
 62d660c03907b63d345253bdd28de0a6662c7694b0f22400800c1482a4373d48  security-remediation-package/logs/forge-script-dryrun-testnet-fork.txt
