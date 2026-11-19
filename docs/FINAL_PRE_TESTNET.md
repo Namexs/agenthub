@@ -91,8 +91,8 @@ notes partial coverage via the VERIFIER_ROLE SOP (§4 of that doc).
 - **Enforced at creation AND completion** — revoking a validator takes
   effect immediately, even for quests created while it was approved.
 - New suite `test/ValidatorAllowlist.t.sol` (14 tests); `IQuestManager`
-  + `IQuestValidator` (TRUST comment) updated; `Validator.t.sol` and
-  `Invariant.t.sol` updated to approve validators.
+  - `IQuestValidator` (TRUST comment) updated; `Validator.t.sol` and
+    `Invariant.t.sol` updated to approve validators.
 - Documented: `QUEST_VALIDATION_DESIGN.md` §2.4 (design, initial list =
   TokenBalanceValidator instances, add/remove process) and
   `DEPLOYMENT_PLAN.md` §4/§6 (trust assumption + post-deploy approval
@@ -124,20 +124,20 @@ vitest).
 
 ## 3. Verification results (item 9 — all real numbers)
 
-| Check | Result | Log |
-|---|---|---|
-| Foundry full suite (unseeded) | **218 passed, 0 failed** (16 suites, 51.53s) | `logs/final-forge-test.log` |
-| Foundry fuzz 10,000 runs | **218 passed, 0 failed** (63.11s) | `logs/final-forge-fuzz-10k.log` |
-| Foundry seeded runs (item 8) | **5 × 218 passed, 0 failed** (seeds 1, 42, 12345, 987654321, 20261119) | `logs/transient-run-seed-*.log` |
-| Aggregate `pnpm test` | **exit 0** — forge 218/218 + vitest shared 8/8 + vitest web 16/16 | `logs/final-pnpm-test.log` |
-| Vitest (web + shared) | **24 passed, 0 failed** | `logs/final-pnpm-test.log` |
-| Slither 0.11.6 | **10 findings: 0 Critical/High/Medium, 4 Low, 6 Informational** — identical set to the 76572c6 baseline (only line-number shifts + cyclomatic complexity 13→14, Informational, from the allowlist branch) | `logs/final-slither.log`, `logs/final-slither.json` |
-| `pnpm lint` | exit 0 | `logs/final-pnpm-lint.log` |
-| `pnpm typecheck` | exit 0 | `logs/final-pnpm-typecheck.log` |
-| `pnpm format:check` | exit 0 (was failing pre-existing at baseline — see §5) | `logs/final-pnpm-format2.log` (first failing run: `logs/final-pnpm-format.log`) |
-| `forge fmt --check` | exit 0 | `logs/final-forge-fmt.log` |
-| Web build (`NODE_OPTIONS=--max-old-space-size=1024`) | exit 0 | `logs/final-pnpm-build.log` |
-| Manifest verification | **209 hashes, 0 mismatches** | (run at commit time; see §2 items 1–2) |
+| Check                                                | Result                                                                                                                                                                                                    | Log                                                                             |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Foundry full suite (unseeded)                        | **218 passed, 0 failed** (16 suites, 51.53s)                                                                                                                                                              | `logs/final-forge-test.log`                                                     |
+| Foundry fuzz 10,000 runs                             | **218 passed, 0 failed** (63.11s)                                                                                                                                                                         | `logs/final-forge-fuzz-10k.log`                                                 |
+| Foundry seeded runs (item 8)                         | **5 × 218 passed, 0 failed** (seeds 1, 42, 12345, 987654321, 20261119)                                                                                                                                    | `logs/transient-run-seed-*.log`                                                 |
+| Aggregate `pnpm test`                                | **exit 0** — forge 218/218 + vitest shared 8/8 + vitest web 16/16                                                                                                                                         | `logs/final-pnpm-test.log`                                                      |
+| Vitest (web + shared)                                | **24 passed, 0 failed**                                                                                                                                                                                   | `logs/final-pnpm-test.log`                                                      |
+| Slither 0.11.6                                       | **10 findings: 0 Critical/High/Medium, 4 Low, 6 Informational** — identical set to the 76572c6 baseline (only line-number shifts + cyclomatic complexity 13→14, Informational, from the allowlist branch) | `logs/final-slither.log`, `logs/final-slither.json`                             |
+| `pnpm lint`                                          | exit 0                                                                                                                                                                                                    | `logs/final-pnpm-lint.log`                                                      |
+| `pnpm typecheck`                                     | exit 0                                                                                                                                                                                                    | `logs/final-pnpm-typecheck.log`                                                 |
+| `pnpm format:check`                                  | exit 0 (was failing pre-existing at baseline — see §5)                                                                                                                                                    | `logs/final-pnpm-format2.log` (first failing run: `logs/final-pnpm-format.log`) |
+| `forge fmt --check`                                  | exit 0                                                                                                                                                                                                    | `logs/final-forge-fmt.log`                                                      |
+| Web build (`NODE_OPTIONS=--max-old-space-size=1024`) | exit 0                                                                                                                                                                                                    | `logs/final-pnpm-build.log`                                                     |
+| Manifest verification                                | **209 hashes, 0 mismatches**                                                                                                                                                                              | (run at commit time; see §2 items 1–2)                                          |
 
 Baseline preserved: **no existing test was deleted or weakened**. The
 suite grew 193 → 218 purely by addition (14 allowlist + 11 Safe).
@@ -210,7 +210,7 @@ incidents remains unidentified, and the root cause remains unknown.
   downloads), copy back `package.json` + `pnpm-lock.yaml`, then
   `pnpm install` in the repo. Note: `pnpm add --lockfile-only` still
   installed `node_modules` (501 MB) — use `pnpm install
-  --lockfile-only` instead. `pnpm install` in the repo exits 255
+--lockfile-only` instead. `pnpm install` in the repo exits 255
   (EPERM on `.modules.yaml` at the very end) but installs
   functionally — vitest 3.2.4 verified working.
 - **`pnpm format:check` was already failing at the 76572c6 baseline**
