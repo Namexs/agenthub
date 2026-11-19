@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `b64ebec5479a6e76ecc17f4e8dd5912eb02795cb`
-- Date: 2026-11-19T12:51:53+00:00
-- Subject: docs(phase-i): final acceptance report — full suite green, CONDITIONAL GO testnet / NO-GO mainnet
+- Commit: `ad9f02561c17bb4cf9140d9d11fe196297e9f460`
+- Date: 2026-11-19T13:37:31+00:00
+- Subject: docs(phase-3): Next.js 15 upgrade + E2E CI report with evidence logs
 
 ## 2. Submodules
 
@@ -62,7 +62,7 @@ generated from the described commit and committed separately.
 
 ```
 71b0c24e741a6869d28e708d2ebc99dd13d70e358044bc6f9d067fe29de48121  .env.example
-eab20229750b9dea7a332679239580fe13a3a62c9434e555030a1968f3154763  .github/workflows/ci.yml
+861f5fe44ddb7bee0936c437a127af849c25622a6d4892a725994a7665d34265  .github/workflows/ci.yml
 0ef8594dc352d75c9a6f255244ad1bcb34ef204139b8abb64e210610013849e4  .gitignore
 451129679ece8e4b45f8202fd01d248895a288dc897fd86e4eb76958516515b5  .gitleaks.toml
 3b3ed7a285cb067ae6a88d62c70a32114054406a2cc1a77822d713ebf073abd5  .gitmodules
@@ -197,6 +197,7 @@ bf9f353d7683e293112df78ef3506edd512754810fbfa84e298d9051e0103d3b  agenthub-final
 92f345d81857c52fe12acae45dde27fe9cc75efd0fa49ce3bfa261599e007b32  agenthub-final-release/logs/phase-i-fuzz.log
 a756fa416c9b45f1bc533fb6171aa71cf5e111468b50f72f7f43d78984a0f438  agenthub-final-release/logs/phase-i-gitleaks.log
 d42a335e7340a79e63ee37ccfbc845071705284818c298a18dae4d4b0a73e563  agenthub-final-release/logs/phase-i-install.log
+bc57b5c7212331437076071f3171901e55dffa7b12b67b03e2e6ec9bba1c064a  agenthub-final-release/logs/phase-i-manifest-regen-verify.log
 9d20d69a898fbc24f801c5068d17a6ea654608a8d51571d5b658898c8d916141  agenthub-final-release/logs/phase-i-manifest-verify.log
 ebae029b3471024019da9c102d5f4ce1f358e7f33a55fe9e997731c260c62db7  agenthub-final-release/logs/phase-i-osv-audit.json
 4165f0a0cc96f2bf7849599a37d985246cfa7914a6c2c578d96b072a28797c5c  agenthub-final-release/logs/phase-i-osv-retry1.log
@@ -206,6 +207,25 @@ b984cac94864269ae9154f0c1321c6b8d43f481fe166e65249b6db6245991f37  agenthub-final
 07ad8261c1b637bd333e2398fdf8a258245e69caea0c9aeab7cd17773513a876  agenthub-final-release/logs/phase-i-wallet-e2e-detail.log
 bebf5345d9ea8fc3f06f34d844bda9ed591ab0a3f3f3b9465c1ba7fe63d4d027  agenthub-final-release/logs/phase-i-wallet-e2e.log
 ed34177c0411e2ebba3b943b26af323e6aa9366f2fdcea89f23e00496b6503b0  agenthub-final-release/logs/phase-i-web.log
+5594301758b687295028137f6ae2ad3104b97f71591d9824db0809bac8820b97  agenthub-next15-upgrade/NEXT15_UPGRADE_REPORT.md
+3e21b0e4b8bb402d9186f4044a413c8b02f367a49d1bd86cb3686b509db27b27  agenthub-next15-upgrade/logs/phase1-anvil-run.log
+32391d9baa943678aca980391fd4879f04aa6b8b7269cd8b8aa55bcbf1a63e63  agenthub-next15-upgrade/logs/phase1-audit-allowlist-test.log
+b18570f776b390012c05adff1d1bcf8360026999b6c3daf566be68a11a06e300  agenthub-next15-upgrade/logs/phase1-build-format.log
+b39453cfff86f02494a1859f7e734a60587c887ffa33aeb35d5c2aa96c699ffa  agenthub-next15-upgrade/logs/phase1-contracts.log
+21c8a465f15fb4e4a8f00f735c3da60752e58a1bbd12903c46f0d3160cb77e1d  agenthub-next15-upgrade/logs/phase1-e2e-smoke-run.log
+b43c301419760fd18981e93c733b6f5113a3a18fc985a581e6f51ffe495e6e68  agenthub-next15-upgrade/logs/phase1-fuzz.log
+5560075c97e3b779d5530b1f4b9289a9ef8dd77908e1f5c0cd3c45f6e3da422b  agenthub-next15-upgrade/logs/phase1-install.log
+16cedb9a04d6713fba8eb8671c5bac81ed3271c734f412acf830629dc8c28368  agenthub-next15-upgrade/logs/phase1-lockfile-regen.log
+86a7d88d693ffe519582ae759ffe995fdb2747b4c0ea24a672924e5e9a6566c0  agenthub-next15-upgrade/logs/phase1-osv.log
+550c8461fe3f0234a8e2f8517554cef39c6dab5be607a748765b1b1388c2b242  agenthub-next15-upgrade/logs/phase1-slither.log
+400c0302cab59715f0cf399004ee9138a35e998d995da940c6c373fccbbb0d56  agenthub-next15-upgrade/logs/phase1-wallet-e2e-run.log
+92754746816e8acf5e8923154dace6da901c8da9e9fd4ae558ef3f83b209f7b4  agenthub-next15-upgrade/logs/phase1-web-shared.log
+ef89bb2d5d169cb6f664b07af116dc3e065b4bc5b7411a293e9ea85285d3ca15  agenthub-next15-upgrade/logs/phase2-ci-e2e-negative.log
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  agenthub-next15-upgrade/logs/phase2-ci-e2e-playwright.log
+120e23b2dff0cb0ebd1fed94017250d383dda6490eb5bca2ef9385f8641e2623  agenthub-next15-upgrade/logs/phase2-ci-e2e-setup.log
+ffe34e30e311ad53988fcca1b57663b5652d8cac1eb6e636885b10afc555a858  agenthub-next15-upgrade/logs/phase2-ci-e2e-smoke-run.log
+c41d2266780b44749accfc3d530f1fae69abf722b81386a0269452bdb9e1322b  agenthub-next15-upgrade/logs/phase2-ci-e2e-wallet-run.log
+4e9057cf4757a25bfa1d04c5c6690e234b5b54f8a69ef5095130dbad67ec0170  agenthub-next15-upgrade/test-results/osv-audit-next15.json
 095bf4f329fb52297db3093f463cdfdd12013aa3a10ae372662ecb86ae0fbc4c  apps/agenthub-final-pretestnet/logs/phase7-anvil-integration.log
 5d95e1bd9f4c9f3f07c229437f0ed734911545122077c586bd169601479f2915  apps/web/.eslintrc.json
 94bebdf81745c357ef978f40d0cd970bb2d3f38053396c001c4d1197a1715ebb  apps/web/app/campaigns/page.tsx
@@ -261,16 +281,16 @@ c860f34ff6758617c6c1928773f7dc06bee0d48d03c7589b43f3038fa9b4b547  apps/web/lib/p
 b906ca6fa9d71044b3badf6eedf50cd9c91f21f509143363e4317880a80a8105  apps/web/lib/quests.ts
 1c16495393376c450bbd8ca3039beade61e645e46f6aeb1f172f2ba8b70f6b7c  apps/web/lib/utils.ts
 c95e7d6f5883aafea14211f739d2b4df25630c8902b495f308065cc75bcf891d  apps/web/lib/wagmi.ts
-9dd9d642cdb87d4d5b3173217e0c45429b3e47a6f5cf5fb0ead6c644ec5fed01  apps/web/next-env.d.ts
+85ae5aee75f011967cf2d25cbc342f62d69314e9d925f7f4aa3456fc2cffcca6  apps/web/next-env.d.ts
 477b6db4cf2a6f6348e5886612c21969aa2ac475b14f97d35a485edec6488251  apps/web/next.config.mjs
-2bc34c246513c4d0c912b396228071e96df7f7f948dd08e369164d485fac3adf  apps/web/package.json
+bd9850bf2b81967534481677f6c0c5eb150735d421ff86577c4dca8a65926b7b  apps/web/package.json
 d127326841374d40a73c218d84f269aa0831a5da618e785a8ba781a6d2a7d0c1  apps/web/postcss.config.mjs
 8ecc99fa131e6f20cc1fccbd892cf2901e193787124f166209332bacf0d21c5e  apps/web/public/favicon.svg
 25da8febc9546e60d69be94637603d95fc420f89523880c83bb61b485648d8d0  apps/web/scripts/anvil-integration.mjs
 fdc73c3f1337365cc5c03aa7194ca55b2494385c46bfd0c4c412a7cdd3f41b33  apps/web/scripts/e2e-smoke.mjs
 61550cdc3b60c9821e592ac741b1671433281ec42f7597211ce82f99fabc8a0b  apps/web/scripts/run-anvil-integration.sh
-15a7801afb2e5bd51f1e3c2569ecdd5e5d3e7d1223c40913368a16cf29617834  apps/web/scripts/run-e2e-smoke.sh
-4c34e3eb1c76fca25bc3491292e3458b5bcd3e8f63844f61bcf3a7ddaa2d9e7b  apps/web/scripts/run-wallet-e2e.sh
+d7dd2f654be8ea8ebb7907b35107ac4f5c833ff8a77bcd93c0db8b5ba2b8138b  apps/web/scripts/run-e2e-smoke.sh
+6dd03c0013f1138afc9b8dec5f65965efa8a87e09099464c3369ffb1e3f3458d  apps/web/scripts/run-wallet-e2e.sh
 388b54d5ea117037caad7903afb6db0e0d535c191e2a05e9d6ffd0cd093071c7  apps/web/scripts/sign-attestation.mjs
 a5c877f17020a1902daf7422c030a7a4e3a32760122bf1285daa4511fdf94549  apps/web/scripts/wallet-e2e.mjs
 a6bc2a487cab1c3edf9e75485fad8bc72e0c346a37cf752338d43cb20c975c14  apps/web/tailwind.config.js
@@ -312,7 +332,7 @@ c269cc35338d8b871ff461d283567b7881543c8376c6016e9f47c729cc2dbc0f  final-pre-test
 7e9dc20bb0c6fc1a48062110b0fc46b811a9f61416ad47232c97951badefa06d  final-pre-testnet-package/logs/transient-run-seed-42.log
 e14ed3f2cd1cc1a11d573506cf708804d389f49a08555fa9c6987b8142c7908a  final-pre-testnet-package/logs/transient-run-seed-987654321.log
 6a3f6770b37009986e75fb9e0025c50fb86d7ca207aa526a6c49d90f654d02ec  final-pre-testnet-package/reports/FINAL_PRE_TESTNET.md
-551320a5c1e255b02ea93b63eb59d38feea188694103fde3ab8f1602fcd931e2  package.json
+542a57fc65e3f17a95f04ff7916e21e5c95d4e26de300562896a07d5b619ca9a  package.json
 27e7f29b145b44ea22fb11ce601addee932f0445859fe7171e2d96f9922ef777  packages/config/eslint/base.cjs
 317f4cdd20fc16b05a850f28f20153634cc59fdf60da3cf85b24d59a5ee9a369  packages/config/eslint/next.cjs
 0fd6eb4ab60fe05e0d69d2a106ee0312421d3e987a768ec6d291e8fe15c45c23  packages/config/package.json
@@ -374,12 +394,12 @@ d3e9350239cf1c3b97883ce1f37eb83f3427cf96e2c14713318efd4c217a0527  packages/share
 14f7b0957492be0ab27454718a5f237f26ae70d162fe321e4815e28dcc6fc55d  packages/shared/src/types.ts
 ed72c4af65ee1b2b48d1fc680fdc01a4750689f3737ecac315220cdc61a1037f  packages/shared/tsconfig.json
 3857fedea71765290871cd70d480e480b15a733388cf2bd427e71790316e2f6c  packages/shared/vitest.config.ts
-7ec73b85a3e8fe479f99a14e6fe53741edaa04419ef06970282f81972fd49004  pnpm-lock.yaml
+3de75cb9499a9c45af604575f0d950692b0207c4322aaca00688a08a84d3aa91  pnpm-lock.yaml
 60ce4d1dbf137701a4683d171391c51662700c2f3e32a7caab8b2efc22540e65  pnpm-workspace.yaml
 9d76d5366f6c7d3f76d317091ea38824933f47ebc0b8cff660b6730a351e3f02  scripts/generate-manifest.sh
 b742bbaa8c27f79b1cac91c67896dabf233efe9c8f727b8582e4342d673e16a6  scripts/osv-audit.mjs
-a58695d1b4d528f37fa99acd3ed5231cfadaf3c7e0928a3a0b87247ca66f350a  scripts/pnpm-audit-allowlist.fixture.json
-2b8c225ae28fa93756111892e39356a3999da3aa075bf03de6f743543d97ea33  scripts/pnpm-audit-allowlist.mjs
+d27c3ada548d1f1295faa01b955044ee0e178da0762171ed0e76aef6399d75c3  scripts/pnpm-audit-allowlist.fixture.json
+7fce62205b8244d4322130db540bd2bf8d9f91a3c915f140beb3eb513a9736e8  scripts/pnpm-audit-allowlist.mjs
 422f47cea4edec9662cf22056a0fd81d0981c7fe09f2bb60d49a35e35c4f0184  scripts/verify-manifest.sh
 29b290b39cc735dc0c0c9cc7c091fcc017b75fcac7f840ff2404658811fbabae  security-remediation-package/README.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  security-remediation-package/logs/forge-fmt-check.txt
