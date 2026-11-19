@@ -114,26 +114,43 @@ contract InvariantTest is StdInvariant, Test {
         vm.startPrank(creator);
         questIds.push(
             qm.createQuest(
-                "OneTime", "one-time + badge", IQuestManager.QuestType.OneTime, 100, BADGE_ID,
-                block.timestamp, block.timestamp + 90 days, 0
+                "OneTime",
+                "one-time + badge",
+                IQuestManager.QuestType.OneTime,
+                100,
+                BADGE_ID,
+                block.timestamp,
+                block.timestamp + 90 days,
+                0
             )
         );
         questIds.push(
             qm.createQuest(
-                "Daily", "daily", IQuestManager.QuestType.DailyCheckIn, 10, 0,
-                block.timestamp, block.timestamp + 90 days, 0
+                "Daily",
+                "daily",
+                IQuestManager.QuestType.DailyCheckIn,
+                10,
+                0,
+                block.timestamp,
+                block.timestamp + 90 days,
+                0
             )
         );
         questIds.push(
             qm.createQuest(
-                "Weekly", "weekly", IQuestManager.QuestType.Weekly, 70, 0,
-                block.timestamp, block.timestamp + 90 days, 0
+                "Weekly", "weekly", IQuestManager.QuestType.Weekly, 70, 0, block.timestamp, block.timestamp + 90 days, 0
             )
         );
         questIds.push(
             qm.createQuest(
-                "Capped", "capped at 2", IQuestManager.QuestType.OneTime, 50, 0,
-                block.timestamp, block.timestamp + 90 days, 2
+                "Capped",
+                "capped at 2",
+                IQuestManager.QuestType.OneTime,
+                50,
+                0,
+                block.timestamp,
+                block.timestamp + 90 days,
+                2
             )
         );
         vm.stopPrank();
@@ -174,22 +191,14 @@ contract InvariantTest is StdInvariant, Test {
     /// successful completions — no phantom points, no lost points.
     function invariant_PointsMatchGhost() public view {
         for (uint256 i = 0; i < actors.length; i++) {
-            assertEq(
-                reputation.points(actors[i]),
-                handler.expectedPoints(actors[i]),
-                "points diverged from ghost"
-            );
+            assertEq(reputation.points(actors[i]), handler.expectedPoints(actors[i]), "points diverged from ghost");
         }
     }
 
     /// @notice Event counts match successful completions exactly.
     function invariant_EventsMatchGhost() public view {
         for (uint256 i = 0; i < actors.length; i++) {
-            assertEq(
-                reputation.totalEvents(actors[i]),
-                handler.expectedEvents(actors[i]),
-                "events diverged from ghost"
-            );
+            assertEq(reputation.totalEvents(actors[i]), handler.expectedEvents(actors[i]), "events diverged from ghost");
         }
     }
 
@@ -197,11 +206,7 @@ contract InvariantTest is StdInvariant, Test {
     function invariant_CompletionsMatchAndRespectCap() public view {
         for (uint256 i = 0; i < questIds.length; i++) {
             uint256 id = questIds[i];
-            assertEq(
-                qm.getQuest(id).completions,
-                handler.expectedCompletions(id),
-                "completions diverged from ghost"
-            );
+            assertEq(qm.getQuest(id).completions, handler.expectedCompletions(id), "completions diverged from ghost");
             uint256 cap = handler.questCap(id);
             if (cap > 0) {
                 assertLe(qm.getQuest(id).completions, cap, "cap exceeded");

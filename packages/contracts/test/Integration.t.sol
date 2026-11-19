@@ -116,18 +116,14 @@ contract IntegrationTest is Test {
         assertFalse(reputation.hasRole(reputation.SCORE_SOURCE_ROLE(), deployer));
         assertFalse(achievement.hasRole(achievement.ISSUER_ROLE(), deployer));
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, deployer, adminRole
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, deployer, adminRole)
         );
         qm.grantRole(creatorRole, alice);
     }
 
     function test_TimelockCanGrantRoleAfterDelay() public {
         // Multisig schedules a role grant through the timelock.
-        bytes memory payload = abi.encodeWithSelector(
-            IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob
-        );
+        bytes memory payload = abi.encodeWithSelector(IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob);
         bytes32 salt = bytes32(uint256(1));
         vm.prank(multisig);
         timelock.schedule(address(qm), 0, payload, bytes32(0), salt, TIMELOCK_DELAY);
@@ -145,36 +141,33 @@ contract IntegrationTest is Test {
         assertTrue(qm.hasRole(qm.QUEST_CREATOR_ROLE(), bob));
         vm.prank(bob);
         uint256 id = qm.createQuest(
-            "Bob Quest", "created via timelock-granted role",
-            IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 7 days, 0
+            "Bob Quest",
+            "created via timelock-granted role",
+            IQuestManager.QuestType.OneTime,
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 7 days,
+            0
         );
         assertEq(qm.getQuest(id).creator, bob);
     }
 
     function test_TimelockRejectsShortDelay() public {
-        bytes memory payload = abi.encodeWithSelector(
-            IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob
-        );
+        bytes memory payload = abi.encodeWithSelector(IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob);
         vm.prank(multisig);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                TimelockController.TimelockInsufficientDelay.selector, 1 days, TIMELOCK_DELAY
-            )
+            abi.encodeWithSelector(TimelockController.TimelockInsufficientDelay.selector, 1 days, TIMELOCK_DELAY)
         );
         timelock.schedule(address(qm), 0, payload, bytes32(0), bytes32(uint256(2)), 1 days);
     }
 
     function test_NonProposerCannotSchedule() public {
-        bytes memory payload = abi.encodeWithSelector(
-            IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob
-        );
+        bytes memory payload = abi.encodeWithSelector(IAccessControl.grantRole.selector, qm.QUEST_CREATOR_ROLE(), bob);
         bytes32 proposerRole = timelock.PROPOSER_ROLE();
         vm.prank(alice);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, alice, proposerRole
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, proposerRole)
         );
         timelock.schedule(address(qm), 0, payload, bytes32(0), bytes32(uint256(3)), TIMELOCK_DELAY);
     }
@@ -193,9 +186,7 @@ contract IntegrationTest is Test {
         bytes32 adminRole = qm.DEFAULT_ADMIN_ROLE();
         vm.prank(multisig);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, multisig, adminRole
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, multisig, adminRole)
         );
         qm.unpause();
 

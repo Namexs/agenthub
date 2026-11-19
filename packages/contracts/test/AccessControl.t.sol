@@ -48,11 +48,7 @@ contract AccessControlTest is Test {
     }
 
     function _expectUnauthorized(address account, bytes32 role) internal {
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, account, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, account, role));
     }
 
     // --- QuestManager ---
@@ -61,22 +57,15 @@ contract AccessControlTest is Test {
         bytes32 role = qm.QUEST_CREATOR_ROLE();
         vm.prank(stranger);
         _expectUnauthorized(stranger, role);
-        qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 1 days, 0
-        );
+        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
         // Admin WITHOUT the creator role also fails.
         vm.prank(admin);
         _expectUnauthorized(admin, role);
-        qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 1 days, 0
-        );
+        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
         // Creator succeeds.
         vm.prank(creator);
         uint256 id = qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 1 days, 0
+            "T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0
         );
         assertEq(qm.getQuest(id).creator, creator);
     }
@@ -84,13 +73,10 @@ contract AccessControlTest is Test {
     function test_DeactivateQuestRoleMatrix() public {
         vm.prank(creator);
         uint256 id = qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 1 days, 0
+            "T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0
         );
         vm.prank(stranger);
-        vm.expectRevert(
-            abi.encodeWithSelector(IQuestManager.NotQuestCreatorOrAdmin.selector, stranger, id)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.NotQuestCreatorOrAdmin.selector, stranger, id));
         qm.deactivateQuest(id);
         // Creator succeeds on their own quest.
         vm.prank(creator);
@@ -218,9 +204,6 @@ contract AccessControlTest is Test {
         assertFalse(qm.hasRole(creatorRole, creator));
         vm.prank(creator);
         _expectUnauthorized(creator, creatorRole);
-        qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0,
-            block.timestamp, block.timestamp + 1 days, 0
-        );
+        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
     }
 }

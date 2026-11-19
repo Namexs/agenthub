@@ -95,21 +95,12 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
     }
 
     /// @notice Resolve the ERC721/AccessControl supportsInterface diamond.
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, AccessControl)
-        returns (bool)
-    {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
     /// @notice Soulbound: only mint (from == 0) and burn (to == 0) allowed.
-    function _update(address to, uint256 tokenId, address auth)
-        internal
-        override
-        returns (address)
-    {
+    function _update(address to, uint256 tokenId, address auth) internal override returns (address) {
         address from = _ownerOf(tokenId);
         if (from != address(0) && to != address(0)) revert Soulbound();
         return super._update(to, tokenId, auth);

@@ -66,10 +66,7 @@ contract ReentrantReceiver {
         badgeId = badgeId_;
     }
 
-    function onERC721Received(address, address, uint256, bytes calldata)
-        external
-        returns (bytes4)
-    {
+    function onERC721Received(address, address, uint256, bytes calldata) external returns (bytes4) {
         callbackCount++;
         // Attempt 1: reenter badge issuance.
         try achievement.issue(address(this), badgeId) {} catch {}
@@ -93,10 +90,7 @@ contract MaliciousHolder {
         questId = questId_;
     }
 
-    function onERC721Received(address, address, uint256, bytes calldata)
-        external
-        returns (bytes4)
-    {
+    function onERC721Received(address, address, uint256, bytes calldata) external returns (bytes4) {
         callbackCount++;
         // Attempt completion from inside the mint callback.
         try qm.completeQuest(questId) {} catch {}

@@ -45,19 +45,16 @@ contract ReentrantAgentId {
         // Attempt to reenter the gate with a state-changing call. Inside the
         // gate's view call this runs in a static context and must revert.
         try gate.verify() {
-            // Should never succeed.
-        } catch {
+        // Should never succeed.
+        }
+            catch {
             // Expected: the inner call reverts (static context / not a holder).
         }
         return 1;
     }
 
     /// @dev Accept mock Agent IDs (MockAgentId uses _safeMint).
-    function onERC721Received(address, address, uint256, bytes calldata)
-        external
-        pure
-        returns (bytes4)
-    {
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
         return this.onERC721Received.selector;
     }
 }
@@ -92,9 +89,7 @@ contract AgentGateTest is Test {
     }
 
     function test_ConstructorRejectsWrongChain() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(IAgentGate.WrongChain.selector, 56, block.chainid)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAgentGate.WrongChain.selector, 56, block.chainid));
         new AgentGate(address(mock), 56);
     }
 
@@ -151,9 +146,7 @@ contract AgentGateTest is Test {
         assertTrue(gate.isAgentHolder(alice));
         vm.chainId(1);
         assertFalse(gate.isAgentHolder(alice));
-        vm.expectRevert(
-            abi.encodeWithSelector(IAgentGate.WrongChain.selector, gate.expectedChainId(), 1)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAgentGate.WrongChain.selector, gate.expectedChainId(), 1));
         gate.requireAgentHolder(alice);
     }
 
@@ -194,9 +187,8 @@ contract AgentGateTest is Test {
         AgentGate evilGate = new AgentGate(address(evil), block.chainid);
 
         vm.recordLogs();
-        (bool ok, bytes memory ret) = address(evilGate).staticcall(
-            abi.encodeWithSelector(AgentGate.isAgentHolder.selector, alice)
-        );
+        (bool ok, bytes memory ret) =
+            address(evilGate).staticcall(abi.encodeWithSelector(AgentGate.isAgentHolder.selector, alice));
         Vm.Log[] memory logs = vm.getRecordedLogs();
 
         assertTrue(ok, "staticcall should succeed");

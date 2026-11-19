@@ -44,9 +44,8 @@ contract AgentGate is IAgentGate {
     function isAgentHolder(address account) public view returns (bool) {
         if (account == address(0)) return false;
         if (block.chainid != expectedChainId) return false;
-        (bool success, bytes memory data) = agentIdContract.staticcall(
-            abi.encodeWithSelector(IERC721Balance.balanceOf.selector, account)
-        );
+        (bool success, bytes memory data) =
+            agentIdContract.staticcall(abi.encodeWithSelector(IERC721Balance.balanceOf.selector, account));
         if (!success || data.length < 32) return false;
         uint256 holderBalance;
         assembly {

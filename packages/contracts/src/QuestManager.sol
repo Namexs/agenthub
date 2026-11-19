@@ -43,10 +43,9 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     mapping(address => mapping(uint256 => uint256)) private _completionCount;
 
     constructor(address gate_, address reputation_, address achievement_, address admin_) {
-        if (
-            gate_ == address(0) || reputation_ == address(0) || achievement_ == address(0)
-                || admin_ == address(0)
-        ) revert ZeroAddress();
+        if (gate_ == address(0) || reputation_ == address(0) || achievement_ == address(0) || admin_ == address(0)) {
+            revert ZeroAddress();
+        }
         gate = IAgentGate(gate_);
         reputation = IReputation(reputation_);
         achievement = IAchievement(achievement_);
@@ -113,8 +112,7 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (quest.questType == QuestType.OneTime || quest.questType == QuestType.Community) {
             if (_completed[msg.sender][questId]) revert AlreadyCompleted(msg.sender, questId);
         } else {
-            uint256 cooldown =
-                quest.questType == QuestType.DailyCheckIn ? DAILY_COOLDOWN : WEEKLY_COOLDOWN;
+            uint256 cooldown = quest.questType == QuestType.DailyCheckIn ? DAILY_COOLDOWN : WEEKLY_COOLDOWN;
             if (_completionCount[msg.sender][questId] > 0) {
                 uint256 readyAt = _lastCompletedAt[msg.sender][questId] + cooldown;
                 if (block.timestamp < readyAt) {
@@ -176,8 +174,7 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (quest.questType == QuestType.OneTime || quest.questType == QuestType.Community) {
             return _completed[account][questId] ? type(uint256).max : 0;
         }
-        uint256 cooldown =
-            quest.questType == QuestType.DailyCheckIn ? DAILY_COOLDOWN : WEEKLY_COOLDOWN;
+        uint256 cooldown = quest.questType == QuestType.DailyCheckIn ? DAILY_COOLDOWN : WEEKLY_COOLDOWN;
         if (_completionCount[account][questId] == 0) return 0;
         uint256 ready = _lastCompletedAt[account][questId] + cooldown;
         return block.timestamp >= ready ? 0 : ready;

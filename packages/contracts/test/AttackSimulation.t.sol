@@ -57,8 +57,14 @@ contract AttackSimulationTest is Test {
     function _createQuest(uint256 reward, uint256 badgeId) internal returns (uint256) {
         vm.prank(creator);
         return qm.createQuest(
-            "Quest", "attack target", IQuestManager.QuestType.OneTime, reward, badgeId,
-            block.timestamp, block.timestamp + 30 days, 0
+            "Quest",
+            "attack target",
+            IQuestManager.QuestType.OneTime,
+            reward,
+            badgeId,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
         );
     }
 
@@ -67,8 +73,7 @@ contract AttackSimulationTest is Test {
     /// reentry code never runs and exactly one badge is minted.
     function test_ReentrancyViaBadgeCallbackImpossible() public {
         uint256 questId = _createQuest(100, BADGE_ID);
-        ReentrantReceiver receiver =
-            new ReentrantReceiver(address(achievement), address(qm), questId, BADGE_ID);
+        ReentrantReceiver receiver = new ReentrantReceiver(address(achievement), address(qm), questId, BADGE_ID);
         // Grant ISSUER_ROLE to this test so it can issue directly to the
         // receiver (simulating what QuestManager does internally).
         achievement.grantRole(achievement.ISSUER_ROLE(), address(this));
@@ -90,11 +95,7 @@ contract AttackSimulationTest is Test {
         assertEq(reputation.points(address(holder)), 100);
         assertTrue(achievement.hasBadge(address(holder), BADGE_ID));
         // Any further attempt reverts.
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IQuestManager.AlreadyCompleted.selector, address(holder), questId
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.AlreadyCompleted.selector, address(holder), questId));
         holder.attack();
         assertEq(reputation.points(address(holder)), 100, "double award via reentry");
     }
@@ -104,16 +105,14 @@ contract AttackSimulationTest is Test {
     function test_MaliciousAgentIdFailsClosed() public {
         // --- Garbage returndata ---
         AgentGate garbageGate = new AgentGate(address(new GarbageAgentId()), block.chainid);
-        QuestManager garbageQm = new QuestManager(
-            address(garbageGate), address(reputation), address(achievement), admin
-        );
+        QuestManager garbageQm =
+            new QuestManager(address(garbageGate), address(reputation), address(achievement), admin);
         reputation.grantRole(reputation.SCORE_SOURCE_ROLE(), address(garbageQm));
         achievement.grantRole(achievement.ISSUER_ROLE(), address(garbageQm));
         garbageQm.grantRole(garbageQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 gid = garbageQm.createQuest(
-            "G", "g", IQuestManager.QuestType.OneTime, 100, 0,
-            block.timestamp, block.timestamp + 30 days, 0
+            "G", "g", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 30 days, 0
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -122,16 +121,14 @@ contract AttackSimulationTest is Test {
 
         // --- Reverting balanceOf ---
         AgentGate revertingGate = new AgentGate(address(new RevertingAgentId()), block.chainid);
-        QuestManager revertingQm = new QuestManager(
-            address(revertingGate), address(reputation), address(achievement), admin
-        );
+        QuestManager revertingQm =
+            new QuestManager(address(revertingGate), address(reputation), address(achievement), admin);
         reputation.grantRole(reputation.SCORE_SOURCE_ROLE(), address(revertingQm));
         achievement.grantRole(achievement.ISSUER_ROLE(), address(revertingQm));
         revertingQm.grantRole(revertingQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 rid = revertingQm.createQuest(
-            "R", "r", IQuestManager.QuestType.OneTime, 100, 0,
-            block.timestamp, block.timestamp + 30 days, 0
+            "R", "r", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 30 days, 0
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -144,15 +141,12 @@ contract AttackSimulationTest is Test {
     /// recorded, no badge issued, no partial state.
     function test_DownstreamRevertIsAtomic() public {
         RevertingReputation badRep = new RevertingReputation();
-        QuestManager atomicQm = new QuestManager(
-            address(gate), address(badRep), address(achievement), admin
-        );
+        QuestManager atomicQm = new QuestManager(address(gate), address(badRep), address(achievement), admin);
         achievement.grantRole(achievement.ISSUER_ROLE(), address(atomicQm));
         atomicQm.grantRole(atomicQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 id = atomicQm.createQuest(
-            "A", "a", IQuestManager.QuestType.OneTime, 100, BADGE_ID,
-            block.timestamp, block.timestamp + 30 days, 0
+            "A", "a", IQuestManager.QuestType.OneTime, 100, BADGE_ID, block.timestamp, block.timestamp + 30 days, 0
         );
         vm.prank(alice);
         vm.expectRevert(RevertingReputation.DownstreamBoom.selector);
@@ -167,8 +161,7 @@ contract AttackSimulationTest is Test {
     /// works afterwards with a normal gas limit.
     function test_GasExhaustionIsAtomic() public {
         uint256 questId = _createQuest(100, BADGE_ID);
-        bytes memory payload =
-            abi.encodeWithSelector(IQuestManager.completeQuest.selector, questId);
+        bytes memory payload = abi.encodeWithSelector(IQuestManager.completeQuest.selector, questId);
         vm.prank(alice);
         (bool success,) = address(qm).call{gas: 5_000}(payload);
         assertFalse(success, "completion succeeded on 5k gas");

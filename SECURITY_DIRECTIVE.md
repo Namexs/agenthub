@@ -92,6 +92,7 @@ Siapkan paket hasil audit dalam satu folder: `security-review-package/`
 (di repo root). Isi: seluruh laporan, bukti pengujian, dan daftar perubahan.
 
 WAJIB:
+
 1. Seluruh laporan audit dalam file Markdown.
 2. Bukti perintah pengujian + hasil aktualnya (log perintah).
 3. Nama file, fungsi, dan baris kode untuk setiap temuan.
@@ -104,6 +105,7 @@ WAJIB:
 10. Jangan deploy mainnet atau pakai dana sungguhan.
 
 Ringkasan akhir paket:
+
 - Jumlah Critical, High, Medium, Low.
 - Jumlah temuan yang sudah diperbaiki.
 - Jumlah temuan yang masih terbuka.

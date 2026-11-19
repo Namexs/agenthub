@@ -47,19 +47,11 @@ contract ReputationTest is Test {
     function test_AddPointsRequiresScoreSourceRole() public {
         bytes32 role = reputation.SCORE_SOURCE_ROLE();
         vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role));
         reputation.addPoints(alice, 100, 1);
         // Even the admin cannot add points directly — by design.
         vm.prank(admin);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, admin, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, admin, role));
         reputation.addPoints(admin, 100, 1);
         assertEq(reputation.points(alice), 0);
         assertEq(reputation.points(admin), 0);
@@ -148,9 +140,7 @@ contract ReputationTest is Test {
         reputation.revokeRole(role, questManager);
         vm.prank(questManager);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, questManager, role
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, questManager, role)
         );
         reputation.addPoints(alice, 100, 1);
     }

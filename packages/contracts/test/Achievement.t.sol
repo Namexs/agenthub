@@ -39,11 +39,7 @@ contract AchievementTest is Test {
     function test_DefineBadgeRequiresManagerRole() public {
         bytes32 role = achievement.BADGE_MANAGER_ROLE();
         vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role));
         achievement.defineBadge(2, "X", "ipfs://x");
     }
 
@@ -55,9 +51,7 @@ contract AchievementTest is Test {
 
     function test_DefineBadgeRejectsDuplicate() public {
         vm.prank(admin);
-        vm.expectRevert(
-            abi.encodeWithSelector(IAchievement.BadgeAlreadyDefined.selector, BADGE_ID)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAchievement.BadgeAlreadyDefined.selector, BADGE_ID));
         achievement.defineBadge(BADGE_ID, "Again", "ipfs://again");
     }
 
@@ -88,19 +82,11 @@ contract AchievementTest is Test {
     function test_IssueRequiresIssuerRole() public {
         bytes32 role = achievement.ISSUER_ROLE();
         vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role));
         achievement.issue(alice, BADGE_ID);
         // Even the admin cannot issue directly — only the QuestManager role.
         vm.prank(admin);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector, admin, role
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, admin, role));
         achievement.issue(alice, BADGE_ID);
     }
 
@@ -120,9 +106,7 @@ contract AchievementTest is Test {
         vm.prank(issuer);
         achievement.issue(alice, BADGE_ID);
         vm.prank(issuer);
-        vm.expectRevert(
-            abi.encodeWithSelector(IAchievement.AlreadyHasBadge.selector, alice, BADGE_ID)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IAchievement.AlreadyHasBadge.selector, alice, BADGE_ID));
         achievement.issue(alice, BADGE_ID);
         assertEq(achievement.balanceOf(alice), 1);
     }
@@ -163,16 +147,12 @@ contract AchievementTest is Test {
     }
 
     function test_BadgeOfRevertsForNonexistentToken() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(IERC721Errors.ERC721NonexistentToken.selector, 999)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IERC721Errors.ERC721NonexistentToken.selector, 999));
         achievement.badgeOf(999);
     }
 
     function test_TokenURIRevertsForNonexistentToken() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(IERC721Errors.ERC721NonexistentToken.selector, 999)
-        );
+        vm.expectRevert(abi.encodeWithSelector(IERC721Errors.ERC721NonexistentToken.selector, 999));
         achievement.tokenURI(999);
     }
 

@@ -18,8 +18,8 @@ packages/contracts/docs/
 
 # Env / secrets — NEVER commit real keys
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 *.pem
 *.key
 

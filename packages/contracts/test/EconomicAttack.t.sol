@@ -42,16 +42,13 @@ contract EconomicAttackTest is Test {
         vm.warp(1_000_000);
     }
 
-    function _createQuest(
-        IQuestManager.QuestType questType,
-        uint256 reward,
-        uint256 maxCompletions,
-        uint256 window
-    ) internal returns (uint256) {
+    function _createQuest(IQuestManager.QuestType questType, uint256 reward, uint256 maxCompletions, uint256 window)
+        internal
+        returns (uint256)
+    {
         vm.prank(creator);
         return qm.createQuest(
-            "Q", "economic target", questType, reward, 0,
-            block.timestamp, block.timestamp + window, maxCompletions
+            "Q", "economic target", questType, reward, 0, block.timestamp, block.timestamp + window, maxCompletions
         );
     }
 
@@ -99,8 +96,7 @@ contract EconomicAttackTest is Test {
         vm.prank(carol);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestFull.selector, id));
         qm.completeQuest(id);
-        uint256 total = reputation.points(alice) + reputation.points(bob)
-            + reputation.points(carol);
+        uint256 total = reputation.points(alice) + reputation.points(bob) + reputation.points(carol);
         assertEq(total, 100, "emission exceeded cap * reward");
     }
 
@@ -139,8 +135,14 @@ contract EconomicAttackTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            "Inflation", "too big", IQuestManager.QuestType.OneTime, tooMuch, 0,
-            block.timestamp, block.timestamp + 30 days, 0
+            "Inflation",
+            "too big",
+            IQuestManager.QuestType.OneTime,
+            tooMuch,
+            0,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
         );
     }
 }
