@@ -11,18 +11,18 @@
 
 | Gate (§7 directive)                    | Status     | Evidence                                                                                                                                                                                                                 |
 | -------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0 unresolved Critical/High             | ✅ PASS    | 0 Critical; 1 High (SEC-001) fixed + regression-tested; remediation added no new Critical/High (Slither re-run in the final verification confirms — see below)                                                           |
+| 0 unresolved Critical/High             | ✅ PASS    | 0 Critical; 1 High (SEC-001) fixed + regression-tested; remediation + cleanup added no new Critical/High (Slither re-run in the final verification confirms — see below)                                              |
 | Medium fixed or mitigated + documented | ✅ PASS    | 1 Medium (SEC-002) fixed + regression-tested; 1 Medium (unused-return) found + fixed during remediation; M4 (vitest) is now CLOSED — see below                                                                           |
 | All tests pass                         | ✅ PASS    | `forge test`: **218 passed, 0 failed** (16 suites; 193 remediation baseline + 14 validator allowlist + 11 Safe validation); **Vitest: 24 passed** (8 shared + 16 web); web lint/typecheck pass                           |
 | Invariants hold                        | ✅ PASS    | 5 invariants over ~32,768 randomized handler calls, 0 violations (re-verified in the final pre-testnet runs)                                                                                                             |
-| Static analysis findings reviewed      | ✅ PASS    | Slither 0.11.6: **10 findings, 0 Critical/High/Medium, 4 Low, 6 Informational** — verified at 76572c6; re-run in the final pre-testnet verification (item 9) to confirm the allowlist + Safe changes add no new findings |
+| Static analysis findings reviewed      | ✅ PASS    | Slither 0.11.6: **10 findings, 0 Critical/High/Medium, 4 Low, 6 Informational** — verified at 76572c6 and re-verified in the final pre-testnet verification (item 9): identical finding set, only line-number shifts + cyclomatic complexity 13→14 (Informational) from the allowlist branch; 0 new findings |
 | No secrets exposed                     | ✅ PASS    | No keys/secrets in the repo; `.gitignore` covers `.env.*`; grep-verified (see review package logs)                                                                                                                       |
 | No unverified dependencies             | ⚠️ PARTIAL | OpenZeppelin 5.0.2 (pinned, audited upstream) + npm deps pinned in lockfile; **`pnpm audit` never ran locally** (registry 403) — CI audit job covers it on runners                                                       |
 
 **Overall: GO for BSC testnet staging** (once the user provides tBNB + a
-deployer key) — **pending the final pre-testnet verification** (item 9:
-full re-run + Slither confirmation) and the user's own decision on the
-transient-failure caveat (see `FINAL_PRE_TESTNET.md`). **NOT YET GO for
+deployer key). The final pre-testnet verification (item 9) is complete and
+green; the remaining call is the user's own decision on the
+transient-failure caveat (see `FINAL_PRE_TESTNET.md` §4). **NOT YET GO for
 mainnet** — see the pre-mainnet list.
 
 ## Pre-testnet checklist (blocking)

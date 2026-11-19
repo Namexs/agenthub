@@ -1,0 +1,30 @@
+
+> agenthub@0.1.0 format:check /home/hatch/workspace/agenthub
+> prettier --check "**/*.{ts,tsx,js,jsx,json,md,css}" --ignore-path .prettierignore
+
+Checking formatting...
+[warn] docs/DEPLOYMENT_PLAN.md
+[warn] docs/NEW_THREAT_MODEL.md
+[warn] docs/QUEST_VALIDATION_DESIGN.md
+[warn] docs/REGRESSION_RESULTS.md
+[warn] docs/REMEDIATION_REPORT.md
+[warn] docs/SECURITY_DEPLOYMENT_GATE.md
+[warn] docs/VERIFIER_ROLE_SOP.md
+[warn] final-pre-testnet-package/logs/final-slither.json
+[warn] SECURITY_REMEDIATION_DIRECTIVE.md
+[warn] security-remediation-package/logs/slither.json
+[warn] security-remediation-package/README.md
+[warn] security-remediation-package/reports/DEPLOYMENT_PLAN.md
+[warn] security-remediation-package/reports/NEW_THREAT_MODEL.md
+[warn] security-remediation-package/reports/QUEST_VALIDATION_DESIGN.md
+[warn] security-remediation-package/reports/REGRESSION_RESULTS.md
+[warn] security-remediation-package/reports/REMEDIATION_REPORT.md
+[warn] security-remediation-package/reports/SECURITY_REMEDIATION_DIRECTIVE.md
+[warn] security-retest-report/FUZZ_RESULTS.md
+[warn] security-retest-report/logs/slither-retest.json
+[warn] security-retest-report/REGRESSION_RESULTS.md
+[warn] security-retest-report/RETEST_SUMMARY.md
+[warn] security-retest-report/SECURITY_REGRESSION_FINDINGS.md
+[warn] security-retest-report/SLITHER_COMPARISON.md
+[warn] Code style issues found in 23 files. Run Prettier with --write to fix.
+ ELIFECYCLE  Command failed with exit code 1.
