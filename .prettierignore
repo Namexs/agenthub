@@ -11,3 +11,8 @@ packages/contracts/cache
 packages/contracts/broadcast
 # Review-package evidence logs must stay byte-identical to tool output.
 security-review-package/logs/
+# Frozen evidence packages: reports + logs must stay byte-identical to
+# the tool output / the state they were frozen at. Do not reformat.
+security-retest-report/
+security-remediation-package/
+final-pre-testnet-package/

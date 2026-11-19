@@ -25,21 +25,21 @@ and post-deploy verification (`_verifyWiring` — reverts on any mismatch).
 
 ## 2. Role wiring (final state)
 
-| Contract | Role | Holder |
-|---|---|---|
-| Reputation | DEFAULT_ADMIN_ROLE | Timelock |
-| Reputation | SCORE_SOURCE_ROLE | QuestManager |
-| Achievement | DEFAULT_ADMIN_ROLE | Timelock |
-| Achievement | ISSUER_ROLE | QuestManager |
-| Achievement | BADGE_MANAGER_ROLE | Admin multisig |
-| QuestManager | DEFAULT_ADMIN_ROLE | Timelock |
-| QuestManager | QUEST_CREATOR_ROLE | Quest creator address |
-| QuestManager | PAUSER_ROLE | Pauser address (fast pause, no timelock) |
-| QuestManager | VERIFIER_ROLE | First verifier (optional; more via timelock) |
-| Timelock | DEFAULT_ADMIN_ROLE | Timelock itself |
-| Timelock | PROPOSER_ROLE / CANCELLER_ROLE | Admin multisig |
-| Timelock | EXECUTOR_ROLE | Admin multisig |
-| **All** | **any role** | **Deployer: NONE** |
+| Contract     | Role                           | Holder                                       |
+| ------------ | ------------------------------ | -------------------------------------------- |
+| Reputation   | DEFAULT_ADMIN_ROLE             | Timelock                                     |
+| Reputation   | SCORE_SOURCE_ROLE              | QuestManager                                 |
+| Achievement  | DEFAULT_ADMIN_ROLE             | Timelock                                     |
+| Achievement  | ISSUER_ROLE                    | QuestManager                                 |
+| Achievement  | BADGE_MANAGER_ROLE             | Admin multisig                               |
+| QuestManager | DEFAULT_ADMIN_ROLE             | Timelock                                     |
+| QuestManager | QUEST_CREATOR_ROLE             | Quest creator address                        |
+| QuestManager | PAUSER_ROLE                    | Pauser address (fast pause, no timelock)     |
+| QuestManager | VERIFIER_ROLE                  | First verifier (optional; more via timelock) |
+| Timelock     | DEFAULT_ADMIN_ROLE             | Timelock itself                              |
+| Timelock     | PROPOSER_ROLE / CANCELLER_ROLE | Admin multisig                               |
+| Timelock     | EXECUTOR_ROLE                  | Admin multisig                               |
+| **All**      | **any role**                   | **Deployer: NONE**                           |
 
 The deployer holds zero privileges after deployment (SEC-002). Admin actions
 (role grants, quest-type changes, unpausing after a timelock delay) go
@@ -65,15 +65,15 @@ forge script script/DeployAgentHub.s.sol \
 
 Environment variables:
 
-| Variable | Required | Notes |
-|---|---|---|
-| `DEPLOYER_PRIVATE_KEY` | yes | Dedicated deployer key, funded only for this deployment. |
-| `ADMIN_MULTISIG` | yes | Multisig address (timelock proposer/executor + badge manager). **Validated before any deployment:** the script statically calls `getThreshold()` and `getOwners()` and requires a real Safe with threshold ≥ 2 (see `script/SafeValidation.sol`, `MIN_SAFE_THRESHOLD = 2`); a non-Safe or 1-of-n address reverts the deploy. A standalone pre-check exists: `forge script script/ValidateSafe.s.sol --sig "run(address)" <addr>`. |
-| `QUEST_CREATOR` | yes | Address that creates quests. |
-| `PAUSER` | yes | Address that can pause QuestManager instantly. |
-| `VERIFIER` | no | First attestation verifier (VERIFIER_ROLE). |
-| `AGENT_ID_ADDRESS` | no | Agent ID contract. Unset on 97/31337 = deploy MockAgentId. On 56 MUST be `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`. |
-| `CONFIRM_MAINNET_DEPLOY` | on 56 | Must be `true` on chain 56, otherwise the script reverts. |
+| Variable                 | Required | Notes                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEPLOYER_PRIVATE_KEY`   | yes      | Dedicated deployer key, funded only for this deployment.                                                                                                                                                                                                                                                                                                                                                                          |
+| `ADMIN_MULTISIG`         | yes      | Multisig address (timelock proposer/executor + badge manager). **Validated before any deployment:** the script statically calls `getThreshold()` and `getOwners()` and requires a real Safe with threshold ≥ 2 (see `script/SafeValidation.sol`, `MIN_SAFE_THRESHOLD = 2`); a non-Safe or 1-of-n address reverts the deploy. A standalone pre-check exists: `forge script script/ValidateSafe.s.sol --sig "run(address)" <addr>`. |
+| `QUEST_CREATOR`          | yes      | Address that creates quests.                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `PAUSER`                 | yes      | Address that can pause QuestManager instantly.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `VERIFIER`               | no       | First attestation verifier (VERIFIER_ROLE).                                                                                                                                                                                                                                                                                                                                                                                       |
+| `AGENT_ID_ADDRESS`       | no       | Agent ID contract. Unset on 97/31337 = deploy MockAgentId. On 56 MUST be `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`.                                                                                                                                                                                                                                                                                                            |
+| `CONFIRM_MAINNET_DEPLOY` | on 56    | Must be `true` on chain 56, otherwise the script reverts.                                                                                                                                                                                                                                                                                                                                                                         |
 
 Dry-run evidence (2026-11-19): local simulation 8,467,332 gas; BSC testnet
 fork (publicnode) `SIMULATION COMPLETE`, 10,294,857 gas (~0.00103 BNB),

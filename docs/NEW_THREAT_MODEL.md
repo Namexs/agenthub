@@ -11,16 +11,17 @@ phishing, etc.) are NOT repeated here — read the original model for those.
 
 ## Closed threats
 
-| ID | Threat | Closed by |
-|---|---|---|
-| T-QUEST-01 | Completing a quest without doing the task (bare `completeQuest` call awarded points + badges) | ValidationKind: Attested quests require an EIP-712 attestation; OnChain quests require a live validator check; CheckIn quests are explicitly labeled self-check-in. |
-| T-GATE-01 | AgentGate deployed against the wrong ERC-721 on mainnet, trusting its holders as Agent ID holders | Mainnet pins `OFFICIAL_AGENT_ID` (`AgentGate.sol:55-56`); chain allowlist {56, 97, 31337}; deployment script enforces the same at the script level. |
-| T-DEPLOY-01 | Manual deployment wiring errors (wrong roles, deployer keeps admin) | `DeployAgentHub.s.sol` deploys + wires + verifies in one run; `_verifyWiring` reverts on any mismatch; deployer renounces everywhere. |
-| T-DEPLOY-02 | Accidental mainnet deployment (wrong `--rpc-url`) | `CONFIRM_MAINNET_DEPLOY=true` opt-in required on chain 56; without it the script reverts before any broadcast. |
+| ID          | Threat                                                                                            | Closed by                                                                                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T-QUEST-01  | Completing a quest without doing the task (bare `completeQuest` call awarded points + badges)     | ValidationKind: Attested quests require an EIP-712 attestation; OnChain quests require a live validator check; CheckIn quests are explicitly labeled self-check-in. |
+| T-GATE-01   | AgentGate deployed against the wrong ERC-721 on mainnet, trusting its holders as Agent ID holders | Mainnet pins `OFFICIAL_AGENT_ID` (`AgentGate.sol:55-56`); chain allowlist {56, 97, 31337}; deployment script enforces the same at the script level.                 |
+| T-DEPLOY-01 | Manual deployment wiring errors (wrong roles, deployer keeps admin)                               | `DeployAgentHub.s.sol` deploys + wires + verifies in one run; `_verifyWiring` reverts on any mismatch; deployer renounces everywhere.                               |
+| T-DEPLOY-02 | Accidental mainnet deployment (wrong `--rpc-url`)                                                 | `CONFIRM_MAINNET_DEPLOY=true` opt-in required on chain 56; without it the script reverts before any broadcast.                                                      |
 
 ## New threats introduced by the remediation
 
 ### T-ATT-01 — Dishonest or compromised verifier (Attested quests)
+
 **Severity: High (residual, accepted with controls).**
 An attestation proves "an authorized verifier signed this completion" — not
 that the verifier told the truth. A compromised verifier key can mint
@@ -34,6 +35,7 @@ and it must be governed operationally (key hygiene, named verifiers, fast
 revocation). Owner decision required before any Attested quest goes live.
 
 ### T-ATT-02 — Attestation replay across contexts
+
 **Severity: Medium. Status: MITIGATED by design + tests.**
 A signature captured for one quest/account/chain/deployment could be replayed
 elsewhere. **Controls:** EIP-712 domain separator binds chainId + verifying
@@ -43,6 +45,7 @@ cross-contract replay (second QuestManager), wrong account/quest/nonce,
 double-use replay — all rejected (`Attestation.t.sol`).
 
 ### T-ATT-03 — Malleable or malformed signatures
+
 **Severity: Medium. Status: MITIGATED.**
 A flipped-`s` signature or a short/empty signature could recover a different
 (or zero) address. **Controls:** `ECDSA.tryRecover` rejects malleable
@@ -51,6 +54,7 @@ signatures; zero/invalid signer rejected; `AttestationExpired` /
 signature, empty/zero/short signatures (`Attestation.t.sol`).
 
 ### T-VAL-01 — Malicious or buggy validator (OnChain quests)
+
 **Severity: Medium. Status: MITIGATED structurally, residual trust documented.**
 A validator can return `true` always (quest ≡ CheckIn), revert (quest
 uncompletable — a DoS on that quest only), return garbage, or attempt
@@ -64,6 +68,7 @@ reverting / garbage / reentrant / always-true validators (`Validator.t.sol`).
 validators and hold creators accountable.
 
 ### T-VAL-02 — Validator condition changes between check and use
+
 **Severity: Low. Status: MITIGATED.**
 The condition is checked live inside the completion transaction, so there is
 no check-then-use gap within a single completion. Across completions, the
@@ -72,6 +77,7 @@ cannot complete again). **Test:** live re-check via transfer away/back
 (`Validator.t.sol`).
 
 ### T-NONCE-01 — Nonce griefing (failed completion burns the nonce)
+
 **Severity: Low. Status: MITIGATED.**
 If a nonce were consumed before completion effects, a failed completion
 (e.g. quest filled) would waste the user's attestation. **Control:** the
@@ -80,6 +86,7 @@ run after that — a revert anywhere rolls the nonce consumption back.
 **Test:** failed completion does not burn the nonce (`Attestation.t.sol`).
 
 ### T-DEPLOY-03 — Deployment script misconfiguration
+
 **Severity: Medium. Status: MITIGATED.**
 Wrong env vars (multisig/creator/pauser/verifier addresses) would wire roles
 to the wrong accounts. **Controls:** zero-address checks for all required
@@ -90,22 +97,24 @@ to the intended person — addresses must be double-checked out-of-band before
 broadcasting. See `DEPLOYMENT_PLAN.md` §5.
 
 ### T-DEPLOY-04 — Timelock self-administration lockout
+
 **Severity: Low. Status: MITIGATED.**
 The timelock has no optional admin (DEFAULT_ADMIN_ROLE held only by the
 timelock itself). If the multisig lost its proposer role, no new proposals
 could be made. **Control:** the multisig holds PROPOSER_ROLE + EXECUTOR_ROLE
-+ CANCELLER_ROLE (proposers get CANCELLER_ROLE automatically); role changes
-go through timelocked proposals executed by the multisig itself, so the
-multisig can always propose its own recovery as long as it holds PROPOSER_ROLE.
-**Residual:** if the multisig key itself is lost, the timelock is unrecoverable
-— standard multisig custody risk, not specific to this design.
+
+- CANCELLER_ROLE (proposers get CANCELLER_ROLE automatically); role changes
+  go through timelocked proposals executed by the multisig itself, so the
+  multisig can always propose its own recovery as long as it holds PROPOSER_ROLE.
+  **Residual:** if the multisig key itself is lost, the timelock is unrecoverable
+  — standard multisig custody risk, not specific to this design.
 
 ## Changed threats
 
-| ID | Change |
-|---|---|
-| T-FARM-01 (quest farming) | Unchanged bounds (caps, duplicates, cooldowns) now apply per kind; Attested farming additionally needs a fresh attestation per completion, OnChain farming needs the live condition. The "complete without doing the task" farming vector is closed for Attested/OnChain quests. |
-| T-GATE-02 (wrong-chain gate) | Strengthened: the chain allowlist {56, 97, 31337} now rejects arbitrary chains at construction, in addition to the existing WrongChain check. |
+| ID                           | Change                                                                                                                                                                                                                                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T-FARM-01 (quest farming)    | Unchanged bounds (caps, duplicates, cooldowns) now apply per kind; Attested farming additionally needs a fresh attestation per completion, OnChain farming needs the live condition. The "complete without doing the task" farming vector is closed for Attested/OnChain quests. |
+| T-GATE-02 (wrong-chain gate) | Strengthened: the chain allowlist {56, 97, 31337} now rejects arbitrary chains at construction, in addition to the existing WrongChain check.                                                                                                                                    |
 
 ## Unchanged residual risks (from the original model)
 

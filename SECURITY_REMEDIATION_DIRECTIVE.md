@@ -16,6 +16,7 @@ Contoh: quest "bagikan postingan di X" bisa diklaim hanya dengan memanggil
 fungsi. Dampak: reputasi dan badge kehilangan kredibilitas.
 
 Perbaikan: bedakan quest:
+
 1. **On-chain:** penyelesaian divalidasi melalui kondisi/transaksi on-chain.
 2. **Off-chain:** wajib attestation dari verifier resmi.
 3. **Check-in:** didefinisikan eksplisit sebagai self-check-in, bukan bukti
@@ -35,6 +36,7 @@ Mainnet: `0x60B9262456de011f7d15a54cdd8c48baaa8b022f`. Validasi frontend
 saat deploy mainnet → pemegang NFT palsu lolos pemeriksaan identitas.
 
 Perbaikan:
+
 - Chain 56 WAJIB alamat Agent ID resmi.
 - Chain 97 boleh MockAgentId.
 - Chain 31337 boleh mock lokal.
@@ -44,6 +46,7 @@ Perbaikan:
 ### TEMUAN 3 — Dependency validation (P2)
 
 Constructor QuestManager:
+
 - Validasi dependency bukan zero address.
 - Validasi dependency merupakan kontrak.
 - Pemeriksaan integrasi untuk Gate, Reputation, Achievement.
@@ -53,6 +56,7 @@ Constructor QuestManager:
 
 Buat deployment script untuk AgentGate, Reputation, Achievement,
 QuestManager:
+
 - Urutan deployment benar.
 - Role diberikan ke alamat yang tepat.
 - SCORE_SOURCE_ROLE dan ISSUER_ROLE ke QuestManager.

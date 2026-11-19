@@ -38,11 +38,11 @@ enum ValidationKind {
 `OnChain`) — `QuestManager.sol:98-151`. The kind rules are enforced at
 creation:
 
-| Kind | Validator address | Completion path |
-|---|---|---|
-| `CheckIn` | must be `address(0)` | `completeQuest` |
-| `OnChain` | must be a contract (code length > 0) | `completeQuest` (validator checked live) |
-| `Attested` | must be `address(0)` | `completeQuestWithAttestation` only |
+| Kind       | Validator address                    | Completion path                          |
+| ---------- | ------------------------------------ | ---------------------------------------- |
+| `CheckIn`  | must be `address(0)`                 | `completeQuest`                          |
+| `OnChain`  | must be a contract (code length > 0) | `completeQuest` (validator checked live) |
+| `Attested` | must be `address(0)`                 | `completeQuestWithAttestation` only      |
 
 `completeQuest` reverts with `AttestationRequired` on an Attested quest
 (`QuestManager.sol:153-160`), and `completeQuestWithAttestation` reverts with
@@ -213,5 +213,5 @@ are completable once per account; Daily/Weekly quests enforce a cooldown;
 `maxCompletions` caps total awards. Attested farming is additionally bounded
 by the verifier (each completion needs a fresh attestation) and by the
 cooldown. OnChain farming is bounded by the live condition. None of this
-prevents a determined user from completing many *different* quests — that is
+prevents a determined user from completing many _different_ quests — that is
 the product working as intended.

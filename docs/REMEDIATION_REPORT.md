@@ -128,12 +128,12 @@ if (expectedChainId_ == BSC_MAINNET_CHAIN_ID && agentId_ != OFFICIAL_AGENT_ID) {
 }
 ```
 
-| Chain | Accepted Agent ID |
-|---|---|
+| Chain            | Accepted Agent ID                                 |
+| ---------------- | ------------------------------------------------- |
 | 56 (BSC mainnet) | ONLY `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
-| 97 (BSC testnet) | MockAgentId (or any contract — testnet only) |
-| 31337 (local) | Local mock |
-| any other | Rejected (`UnsupportedChain`) |
+| 97 (BSC testnet) | MockAgentId (or any contract — testnet only)      |
+| 31337 (local)    | Local mock                                        |
+| any other        | Rejected (`UnsupportedChain`)                     |
 
 New errors in `IAgentGate.sol:21-23`: `UnofficialAgentId`,
 `UnsupportedChain`. The official address is the EIP-55 checksummed form,

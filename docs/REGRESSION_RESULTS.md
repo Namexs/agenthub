@@ -7,23 +7,23 @@
 
 ## 1. Per-suite results (baseline vs after)
 
-| Suite | Baseline | After | Delta | Notes |
-|---|---|---|---|---|
-| AccessControl | 10 | 11 | +1 | Verifier role matrix |
-| Achievement | 19 | 19 | 0 | Unchanged |
-| AgentGate | 18 | 18 | 0 | Unchanged |
-| AgentGateMainnet | — | 10 | +10 | NEW — TEMUAN 2 |
-| AttackSimulation | 7 | 7 | 0 | Call sites updated (§3) |
-| Attestation | — | 24 | +24 | NEW — TEMUAN 1 |
-| DeployScript | — | 15 | +15 | NEW — TEMUAN 4 |
-| EconomicAttack | 6 | 6 | 0 | Call sites updated (§3) |
-| Integration | 6 | 7 | +1 | Timelock verifier grant |
-| Invariant | 2 | 2 | 0 | 5th (OnChain) quest added (§3) |
-| MockAgentId | 5 | 5 | 0 | Unchanged |
-| QuestManager | 32 | 40 | +8 | Kind/dependency rules |
-| Reputation | 15 | 15 | 0 | Unchanged |
-| Validator | — | 14 | +14 | NEW — TEMUAN 1 |
-| **Total** | **120** | **193** | **+73** | |
+| Suite            | Baseline | After   | Delta   | Notes                          |
+| ---------------- | -------- | ------- | ------- | ------------------------------ |
+| AccessControl    | 10       | 11      | +1      | Verifier role matrix           |
+| Achievement      | 19       | 19      | 0       | Unchanged                      |
+| AgentGate        | 18       | 18      | 0       | Unchanged                      |
+| AgentGateMainnet | —        | 10      | +10     | NEW — TEMUAN 2                 |
+| AttackSimulation | 7        | 7       | 0       | Call sites updated (§3)        |
+| Attestation      | —        | 24      | +24     | NEW — TEMUAN 1                 |
+| DeployScript     | —        | 15      | +15     | NEW — TEMUAN 4                 |
+| EconomicAttack   | 6        | 6       | 0       | Call sites updated (§3)        |
+| Integration      | 6        | 7       | +1      | Timelock verifier grant        |
+| Invariant        | 2        | 2       | 0       | 5th (OnChain) quest added (§3) |
+| MockAgentId      | 5        | 5       | 0       | Unchanged                      |
+| QuestManager     | 32       | 40      | +8      | Kind/dependency rules          |
+| Reputation       | 15       | 15      | 0       | Unchanged                      |
+| Validator        | —        | 14      | +14     | NEW — TEMUAN 1                 |
+| **Total**        | **120**  | **193** | **+73** |                                |
 
 Counts verified two ways: `forge test` output (14 suites, 193 tests) and
 `grep -cE "function test(Fuzz)?_"` per file against the baseline commit
@@ -34,6 +34,7 @@ Full-suite log: `security-remediation-package/logs/forge-test-full-after-temuan4
 ## 2. New tests by finding
 
 ### TEMUAN 1 — Quest completion validation (47 new tests)
+
 - `Attestation.t.sol` (24): valid completion + events; replay rejection;
   wrong nonce / account / quest; cross-chain replay (chainId 56 domain);
   cross-contract replay (second QuestManager); unauthorized signer; verifier
@@ -59,16 +60,19 @@ Full-suite log: `security-remediation-package/logs/forge-test-full-after-temuan4
   revokes; a verifier cannot create quests or pause.
 
 ### TEMUAN 2 — Agent ID pinning (10 new tests)
+
 - `AgentGateMainnet.t.sol` (10): official constant pinned; mainnet accepts
   the official address; mainnet rejects the mock, a fake ERC-721, and an
   arbitrary contract; testnet + local accept the mock; chains 1 and 137
   rejected; `WrongChain` still fires before the mainnet lock on chain 31337.
 
 ### TEMUAN 3 — Dependency validation (covered above)
+
 - `test_ConstructorRejectsEoaDependencies` (QuestManager.t.sol, counted in
   the 8 above) + `test_DeployedStackWorksEndToEnd` (DeployScript.t.sol).
 
 ### TEMUAN 4 — Deployment script (15 new tests)
+
 - `DeployScript.t.sol` (15): full local deploy wires everything (roles,
   timelock delay, deployer keeps nothing); end-to-end completion through
   the deployed stack; explicit Agent ID skips the mock; no-verifier deploy
@@ -83,6 +87,7 @@ Full-suite log: `security-remediation-package/logs/forge-test-full-after-temuan4
   No broadcast. Logs in `security-remediation-package/logs/`.
 
 ### Integration (1 new test)
+
 - `test_TimelockCanGrantVerifierRoleAfterDelay` + a VERIFIER_ROLE assertion
   in `test_DeployerLostAdminAfterRenounce` (Integration.t.sol).
 
@@ -134,7 +139,7 @@ No other existing test was modified. `AttackSimulation.t.sol` and
    `test_ZeroSignatureRejected` / `test_ShortSignatureRejected`
    (Attestation): after the Slither-driven change of
    `InvalidAttestationSignature()` to `InvalidAttestationSignature(bytes32
-   errorArg)` (§6), the selector-only `expectRevert` no longer matched the
+errorArg)` (§6), the selector-only `expectRevert` no longer matched the
    4+32-byte revert data. Fixed by expecting the full error with the exact
    argument (flipped `s` for malleable, length for empty/short, 0 for
    zero). Test update, not a weakening — the assertions are now stricter.
@@ -174,13 +179,13 @@ Full output: `security-remediation-package/logs/slither.txt` (+ `slither.json`).
 
 **Result: 10 findings — 0 Critical, 0 High, 0 Medium, 4 Low, 6 Informational.**
 
-| Impact | Detector | Count | Assessment |
-|---|---|---|---|
-| Low | `timestamp` | 4 | `block.timestamp` comparisons for quest windows, attestation deadlines, cooldowns. Inherent to the design; BSC block times (~0.75s) make miner manipulation of day-scale windows irrelevant. Pre-existing pattern (3 in baseline), +1 for the attestation deadline checks. |
-| Informational | `assembly` | 2 | Inline asm in `AgentGate.isAgentHolder` (pre-existing, SEC-001 fail-closed pattern) and `TokenBalanceValidator.validate` (same pattern). Intentional. |
-| Informational | `low-level-calls` | 2 | `staticcall` in the same two functions. Intentional (fail-closed + state-change-free). |
-| Informational | `cyclomatic-complexity` | 1 | `_completeQuest` complexity 13 (was 12 in baseline — the validator branch added one path). Accepted: splitting it would obscure the checks-effects-interactions order. |
-| Informational | `pragma` | 1 | Two solc constraints (^0.8.20 OZ, ^0.8.24 project). Pre-existing. |
+| Impact        | Detector                | Count | Assessment                                                                                                                                                                                                                                                                 |
+| ------------- | ----------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Low           | `timestamp`             | 4     | `block.timestamp` comparisons for quest windows, attestation deadlines, cooldowns. Inherent to the design; BSC block times (~0.75s) make miner manipulation of day-scale windows irrelevant. Pre-existing pattern (3 in baseline), +1 for the attestation deadline checks. |
+| Informational | `assembly`              | 2     | Inline asm in `AgentGate.isAgentHolder` (pre-existing, SEC-001 fail-closed pattern) and `TokenBalanceValidator.validate` (same pattern). Intentional.                                                                                                                      |
+| Informational | `low-level-calls`       | 2     | `staticcall` in the same two functions. Intentional (fail-closed + state-change-free).                                                                                                                                                                                     |
+| Informational | `cyclomatic-complexity` | 1     | `_completeQuest` complexity 13 (was 12 in baseline — the validator branch added one path). Accepted: splitting it would obscure the checks-effects-interactions order.                                                                                                     |
+| Informational | `pragma`                | 1     | Two solc constraints (^0.8.20 OZ, ^0.8.24 project). Pre-existing.                                                                                                                                                                                                          |
 
 **Baseline comparison:** the pre-remediation run had 7 findings (0
 Critical/High/Medium, 3 Low, 4 Informational). The remediation adds 3
@@ -201,18 +206,19 @@ gone, 10 findings remain, all Low/Informational.
 Run 2026-11-19 with pnpm 9.15.4 (reinstalled via npm — pnpm is ephemeral
 on this VM and had been removed):
 
-| Command | Result |
-|---|---|
-| `pnpm typecheck` | exit 0 |
-| `pnpm lint` | exit 0 — "No ESLint warnings or errors" |
-| `pnpm test` | exit 0 (contracts `forge test` + web placeholder: "no unit tests yet — vitest lands in Phase 2") |
-| `pnpm build` | exit 0 (with `NODE_OPTIONS=--max-old-space-size=1024`) |
+| Command          | Result                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| `pnpm typecheck` | exit 0                                                                                           |
+| `pnpm lint`      | exit 0 — "No ESLint warnings or errors"                                                          |
+| `pnpm test`      | exit 0 (contracts `forge test` + web placeholder: "no unit tests yet — vitest lands in Phase 2") |
+| `pnpm build`     | exit 0 (with `NODE_OPTIONS=--max-old-space-size=1024`)                                           |
 
 Logs: `security-remediation-package/logs/pnpm-*.txt`.
 
 Notes:
+
 - `pnpm install` ends with the known VM quirk `EPERM: operation not
-  permitted, chown '.../node_modules/.modules.yaml.<tmp>'` (also seen in
+permitted, chown '.../node_modules/.modules.yaml.<tmp>'` (also seen in
   the Phase 1 audit) — the install itself completes (903 packages resolved,
   0 downloaded) and all commands above run. Not a repo defect.
 - `pnpm typecheck` needs `forge` on PATH (the contracts package's

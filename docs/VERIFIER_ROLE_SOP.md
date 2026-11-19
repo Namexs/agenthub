@@ -31,13 +31,13 @@ Rules that follow from that:
 
 ## 2. Who can do what
 
-| Action | Who | Delay | Mechanism |
-|---|---|---|---|
-| Grant `VERIFIER_ROLE` | Timelock (admin multisig proposes) | 2 days | Timelock proposal → `QuestManager.grantRole(VERIFIER_ROLE, addr)` |
-| Revoke `VERIFIER_ROLE` | Timelock (admin multisig proposes) | 2 days | Timelock proposal → `QuestManager.revokeRole(VERIFIER_ROLE, addr)` |
-| Pause QuestManager (emergency stop) | `PAUSER_ROLE` holder | **None** | `QuestManager.pause()` — the fast path |
-| Unpause QuestManager | Timelock | 2 days | Timelock proposal → `QuestManager.unpause()` |
-| Sign attestations | Current `VERIFIER_ROLE` holders | — | Off-chain EIP-712 signing (§5) |
+| Action                              | Who                                | Delay    | Mechanism                                                          |
+| ----------------------------------- | ---------------------------------- | -------- | ------------------------------------------------------------------ |
+| Grant `VERIFIER_ROLE`               | Timelock (admin multisig proposes) | 2 days   | Timelock proposal → `QuestManager.grantRole(VERIFIER_ROLE, addr)`  |
+| Revoke `VERIFIER_ROLE`              | Timelock (admin multisig proposes) | 2 days   | Timelock proposal → `QuestManager.revokeRole(VERIFIER_ROLE, addr)` |
+| Pause QuestManager (emergency stop) | `PAUSER_ROLE` holder               | **None** | `QuestManager.pause()` — the fast path                             |
+| Unpause QuestManager                | Timelock                           | 2 days   | Timelock proposal → `QuestManager.unpause()`                       |
+| Sign attestations                   | Current `VERIFIER_ROLE` holders    | —        | Off-chain EIP-712 signing (§5)                                     |
 
 The 2-day timelock delay applies to every role change. There is no fast
 revocation: **pause is the emergency control**, revocation is the permanent
@@ -127,8 +127,8 @@ so a fresh attestation from the new signer uses the same current nonce.
    attestations — a shorter deadline bounds the damage if the signature
    leaks.
 4. **Sign the EIP-712 struct** `Attestation(account, questId, nonce,
-   deadline)` in the domain `("AGENTHUB QuestManager", "1", chainId,
-   QuestManager address)`. Use the project's signing tooling (never a
+deadline)` in the domain `("AGENTHUB QuestManager", "1", chainId,
+QuestManager address)`. Use the project's signing tooling (never a
    raw `eth_sign` of a hash — the domain binding is what prevents
    cross-chain and cross-contract replay).
 5. **Deliver the signature to the user** over the normal channel. The
@@ -144,9 +144,9 @@ so a fresh attestation from the new signer uses the same current nonce.
 Keep this table current. It is the off-chain record of who may attest;
 the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 
-| Verifier | Address | Purpose | Active since | Active until | Notes |
-|---|---|---|---|---|---|
-| _(none yet)_ | — | — | — | — | First verifier is set at deployment via the `VERIFIER` env var (optional); add the row here when it is. |
+| Verifier     | Address | Purpose | Active since | Active until | Notes                                                                                                   |
+| ------------ | ------- | ------- | ------------ | ------------ | ------------------------------------------------------------------------------------------------------- |
+| _(none yet)_ | —       | —       | —            | —            | First verifier is set at deployment via the `VERIFIER` env var (optional); add the row here when it is. |
 
 ## 8. Monitoring (what to watch)
 
@@ -164,6 +164,7 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 ## 9. Checklists
 
 ### Grant
+
 - [ ] Key generated per §1, address confirmed out-of-band
 - [ ] §7 registry row added
 - [ ] Timelock proposal created + executed (2-day delay observed)
@@ -171,6 +172,7 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 - [ ] Test attestation completed end-to-end
 
 ### Rotate
+
 - [ ] New key generated per §1, address confirmed out-of-band
 - [ ] New verifier granted + verified (§3 steps 2–5)
 - [ ] Old signer stops issuing; cutover announced
@@ -179,6 +181,7 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 - [ ] §7 updated; old key material destroyed
 
 ### Emergency revoke
+
 - [ ] QuestManager paused immediately (time + reason logged)
 - [ ] Evidence preserved (signer, timeline, anomalous completions)
 - [ ] Revocation proposed via timelock
