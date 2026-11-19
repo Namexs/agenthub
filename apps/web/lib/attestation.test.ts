@@ -5,7 +5,9 @@ import {
   ATTESTATION_DOMAIN_VERSION,
   ATTESTATION_TYPES,
   MAX_ATTESTATION_LIFETIME_SECONDS,
+  MAX_ATTESTATION_SIGNATURES,
   checkAttestation,
+  checkAttestations,
   recoverAttestationSigner,
   type AttestationInput,
 } from './attestation';
@@ -21,6 +23,12 @@ import {
 
 const VERIFIER_KEY = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d' as const; // 0x7099…
 const VERIFIER = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8' as const;
+// PHASE 6 (R-010): second verifier key (anvil account #2, bob) and a
+// synthetic third key — its address is derived, never hardcoded.
+const VERIFIER2_KEY = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a' as const;
+const VERIFIER2 = '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC' as const;
+const VERIFIER3_KEY = '0x3333333333333333333333333333333333333333333333333333333333333333' as const;
+const VERIFIER3 = privateKeyToAccount(VERIFIER3_KEY).address;
 const ALICE = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266' as const;
 const QUEST_MANAGER = '0x5FbDB2315678afecb367f032d93F642f64180aa3' as const;
 const CHAIN_ID = 31337;
@@ -195,6 +203,142 @@ describe('checkAttestation', () => {
     );
     expect(result.valid).toBe(false);
     expect(result.errors).toHaveLength(2);
+  });
+});
+
+describe('checkAttestations (multi-signature, Phase 6 / R-010)', () => {
+  async function signPair() {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const sig2 = await signAttestation(base, VERIFIER2_KEY);
+    return { base, sig1, sig2 };
+  }
+
+  it('accepts a valid pair from two distinct signers for threshold 2', async () => {
+    const { base, sig1, sig2 } = await signPair();
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1, sig2] },
+      2,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(true);
+    expect(result.signers).toEqual([VERIFIER, VERIFIER2]);
+    expect(result.errors).toEqual([]);
+    expect(result.perSigner).toHaveLength(2);
+    expect(result.perSigner.every((p) => p.valid)).toBe(true);
+  });
+
+  it('rejects a duplicate pair (same signer twice)', async () => {
+    const base = baseInput();
+    const sig = await signAttestation(base, VERIFIER_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig, sig] },
+      2,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.signers).toEqual([VERIFIER]);
+    expect(result.perSigner[1]?.valid).toBe(false);
+    expect(result.errors.some((e) => e.includes('Duplicate signer'))).toBe(true);
+  });
+
+  it('rejects a pair with one malformed signature', async () => {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1, '0x1234'] },
+      2,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.signers).toEqual([VERIFIER]);
+    expect(result.perSigner[1]?.valid).toBe(false);
+    expect(result.perSigner[1]?.signer).toBeNull();
+    expect(result.errors.some((e) => e.includes('65-byte'))).toBe(true);
+  });
+
+  it('rejects fewer signatures than the threshold', async () => {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1] },
+      2,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain('Only 1 distinct valid signer — this quest requires 2');
+  });
+
+  it('rejects more than MAX_ATTESTATION_SIGNATURES signatures', async () => {
+    const base = baseInput();
+    const sig = await signAttestation(base, VERIFIER_KEY);
+    const signatures = Array(MAX_ATTESTATION_SIGNATURES + 1).fill(sig);
+    const result = await checkAttestations(
+      { ...base, signatures },
+      1,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain(
+      `At most ${MAX_ATTESTATION_SIGNATURES} signatures are allowed (got ${MAX_ATTESTATION_SIGNATURES + 1})`,
+    );
+  });
+
+  it('accepts threshold 3 with three distinct signers', async () => {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const sig2 = await signAttestation(base, VERIFIER2_KEY);
+    const sig3 = await signAttestation(base, VERIFIER3_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1, sig2, sig3] },
+      3,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(true);
+    expect(result.signers).toEqual([VERIFIER, VERIFIER2, VERIFIER3]);
+    expect(result.errors).toEqual([]);
+  });
+
+  it('accepts extra signatures beyond the threshold (all must still be valid)', async () => {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const sig2 = await signAttestation(base, VERIFIER2_KEY);
+    const sig3 = await signAttestation(base, VERIFIER3_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1, sig2, sig3] },
+      2,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(true);
+    expect(result.signers).toHaveLength(3);
+  });
+
+  it('rejects an out-of-range threshold without checking signatures', async () => {
+    const base = baseInput();
+    const sig1 = await signAttestation(base, VERIFIER_KEY);
+    const result = await checkAttestations(
+      { ...base, signatures: [sig1] },
+      0,
+      CHAIN_ID,
+      QUEST_MANAGER,
+      NOW,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain('Attestation threshold must be between 1 and 3');
   });
 });
 

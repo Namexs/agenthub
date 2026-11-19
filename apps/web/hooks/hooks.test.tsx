@@ -195,6 +195,7 @@ function rawQuest(id: number, overrides: Record<string, unknown> = {}) {
     maxCompletions: 0n,
     completions: 0n,
     active: true,
+    attestationThreshold: 1,
     ...overrides,
   };
 }
@@ -438,19 +439,34 @@ describe('useCompleteQuest', () => {
     deployAll();
     const sig = `0x${'ab'.repeat(65)}` as `0x${string}`;
     const { result } = renderHook(() => useCompleteQuest());
-    act(() => result.current.completeWithAttestation(3, 1_700_003_600, sig));
+    // PHASE 6 (R-010): signatures are a bytes[] array now.
+    act(() => result.current.completeWithAttestation(3, 1_700_003_600, [sig]));
     expect(mocks.write.writeContract).toHaveBeenCalledWith({
       address: QM,
       abi: [],
       functionName: 'completeQuestWithAttestation',
-      args: [3n, 1_700_003_600n, sig],
+      args: [3n, 1_700_003_600n, [sig]],
+    });
+  });
+
+  it('completeWithAttestation() writes a multi-signature array (Phase 6)', () => {
+    deployAll();
+    const sig1 = `0x${'ab'.repeat(65)}` as `0x${string}`;
+    const sig2 = `0x${'cd'.repeat(65)}` as `0x${string}`;
+    const { result } = renderHook(() => useCompleteQuest());
+    act(() => result.current.completeWithAttestation(3, 1_700_003_600, [sig1, sig2]));
+    expect(mocks.write.writeContract).toHaveBeenCalledWith({
+      address: QM,
+      abi: [],
+      functionName: 'completeQuestWithAttestation',
+      args: [3n, 1_700_003_600n, [sig1, sig2]],
     });
   });
 
   it('is a no-op when the QuestManager is not deployed', () => {
     const { result } = renderHook(() => useCompleteQuest());
     act(() => result.current.complete(3));
-    act(() => result.current.completeWithAttestation(3, 1, `0x${'00'.repeat(65)}`));
+    act(() => result.current.completeWithAttestation(3, 1, [`0x${'00'.repeat(65)}`]));
     expect(mocks.write.writeContract).not.toHaveBeenCalled();
   });
 
@@ -715,13 +731,20 @@ describe('useLeaderboard', () => {
 describe('useAttestation', () => {
   beforeEach(resetMocks);
 
+  // PHASE 6 (R-010): second verifier key (anvil account #2, bob) for
+  // threshold-2 pairs. Both are public anvil test keys.
+  const VERIFIER2_KEY =
+    '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a' as const;
+  const BOB = '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC' as Address;
+
   async function signFor(
     account: Address,
     questId: number,
     nonce: number,
     deadline: number,
+    key: `0x${string}` = VERIFIER_KEY,
   ): Promise<`0x${string}`> {
-    return privateKeyToAccount(VERIFIER_KEY).signTypedData({
+    return privateKeyToAccount(key).signTypedData({
       domain: {
         name: ATTESTATION_DOMAIN_NAME,
         version: ATTESTATION_DOMAIN_VERSION,
@@ -739,10 +762,14 @@ describe('useAttestation', () => {
     });
   }
 
-  function setupRole(roleResult: boolean) {
+  // PHASE 6 (R-010): the hook reads hasRole per signer via
+  // useReadContracts (one result per distinct signer, in order).
+  function setupRole(...roleResults: boolean[]) {
     mocks.reads['nonces'] = { data: 1n };
     mocks.reads['VERIFIER_ROLE'] = { data: VERIFIER_ROLE };
-    mocks.reads['hasRole'] = { data: roleResult };
+    mocks.multiReads['hasRole'] = {
+      data: roleResults.map((result) => ({ result, status: 'success' as const })),
+    };
   }
 
   it('exposes the on-chain nonce for the connected account', () => {
@@ -760,7 +787,7 @@ describe('useAttestation', () => {
     const { result } = renderHook(() => useAttestation(3));
     let checkResult: unknown;
     await act(async () => {
-      checkResult = await result.current.check(`0x${'00'.repeat(65)}`, 1_700_003_600);
+      checkResult = await result.current.check([`0x${'00'.repeat(65)}`], 1_700_003_600, 1);
     });
     expect(checkResult).toMatchObject({
       valid: false,
@@ -776,7 +803,7 @@ describe('useAttestation', () => {
     const deadline = Math.floor(Date.now() / 1000) + 3600;
     const sig = await signFor(ALICE, 3, 1, deadline);
     await act(async () => {
-      await result.current.check(sig, deadline);
+      await result.current.check([sig], deadline, 1);
     });
     await waitFor(() => expect(result.current.verification.valid).toBe(true));
     expect(result.current.verification.signer).toBe(ALICE); // ALICE is the verifier key holder here
@@ -792,7 +819,7 @@ describe('useAttestation', () => {
     const deadline = Math.floor(Date.now() / 1000) + 3600;
     const sig = await signFor(ALICE, 3, 1, deadline);
     await act(async () => {
-      await result.current.check(sig, deadline);
+      await result.current.check([sig], deadline, 1);
     });
     expect(result.current.verification.valid).toBe(false);
     expect(result.current.verification.isVerifier).toBe(false);
@@ -809,7 +836,7 @@ describe('useAttestation', () => {
     const deadline = Math.floor(Date.now() / 1000) - 10;
     const sig = await signFor(ALICE, 3, 1, deadline);
     await act(async () => {
-      await result.current.check(sig, deadline);
+      await result.current.check([sig], deadline, 1);
     });
     expect(result.current.verification.valid).toBe(false);
     expect(result.current.verification.errors).toContain('Attestation has expired');
@@ -823,12 +850,84 @@ describe('useAttestation', () => {
     const deadline = Math.floor(Date.now() / 1000) + 3600;
     const sig = await signFor(ALICE, 3, 1, deadline);
     await act(async () => {
-      await result.current.check(sig, deadline);
+      await result.current.check([sig], deadline, 1);
     });
     expect(result.current.verification.valid).toBe(true);
     act(() => result.current.reset());
     expect(result.current.verification.valid).toBe(false);
     expect(result.current.verification.signer).toBeNull();
+  });
+
+  // --- Multi-signature (threshold) flows (Phase 6 / R-010) ---
+
+  it('accepts a valid 2-signature pair for a threshold-2 quest', async () => {
+    deployAll();
+    connect();
+    setupRole(true, true);
+    const { result } = renderHook(() => useAttestation(3));
+    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const sig1 = await signFor(ALICE, 3, 1, deadline, VERIFIER_KEY);
+    const sig2 = await signFor(ALICE, 3, 1, deadline, VERIFIER2_KEY);
+    await act(async () => {
+      await result.current.check([sig1, sig2], deadline, 2);
+    });
+    await waitFor(() => expect(result.current.verification.valid).toBe(true));
+    expect(result.current.verification.signers).toEqual([ALICE, BOB]);
+    expect(result.current.verification.isVerifier).toBe(true);
+    expect(result.current.verification.threshold).toBe(2);
+    expect(result.current.verification.perSigner).toHaveLength(2);
+    expect(result.current.verification.perSigner.map((p) => p.isVerifier)).toEqual([true, true]);
+    expect(result.current.verification.errors).toEqual([]);
+  });
+
+  it('rejects a pair when the second signer does NOT hold VERIFIER_ROLE', async () => {
+    deployAll();
+    connect();
+    setupRole(true, false);
+    const { result } = renderHook(() => useAttestation(3));
+    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const sig1 = await signFor(ALICE, 3, 1, deadline, VERIFIER_KEY);
+    const sig2 = await signFor(ALICE, 3, 1, deadline, VERIFIER2_KEY);
+    await act(async () => {
+      await result.current.check([sig1, sig2], deadline, 2);
+    });
+    expect(result.current.verification.valid).toBe(false);
+    expect(result.current.verification.isVerifier).toBe(false);
+    expect(result.current.verification.perSigner.map((p) => p.isVerifier)).toEqual([true, false]);
+    expect(result.current.verification.errors).toContain(
+      'Recovered signer does not hold VERIFIER_ROLE',
+    );
+  });
+
+  it('rejects a duplicate pair (same signer twice) for threshold 2', async () => {
+    deployAll();
+    connect();
+    setupRole(true);
+    const { result } = renderHook(() => useAttestation(3));
+    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const sig = await signFor(ALICE, 3, 1, deadline, VERIFIER_KEY);
+    await act(async () => {
+      await result.current.check([sig, sig], deadline, 2);
+    });
+    expect(result.current.verification.valid).toBe(false);
+    expect(result.current.verification.signers).toEqual([ALICE]);
+    expect(result.current.verification.errors.some((e) => e.includes('Duplicate signer'))).toBe(
+      true,
+    );
+  });
+
+  it('rejects one signature for a threshold-2 quest', async () => {
+    deployAll();
+    connect();
+    setupRole(true);
+    const { result } = renderHook(() => useAttestation(3));
+    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const sig = await signFor(ALICE, 3, 1, deadline, VERIFIER_KEY);
+    await act(async () => {
+      await result.current.check([sig], deadline, 2);
+    });
+    expect(result.current.verification.valid).toBe(false);
+    expect(result.current.verification.errors.some((e) => e.includes('requires 2'))).toBe(true);
   });
 });
 

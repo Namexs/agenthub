@@ -39,6 +39,7 @@ function rawQuest(overrides: Partial<RawQuest> = {}): RawQuest {
     maxCompletions: 0n,
     completions: 0n,
     active: true,
+    attestationThreshold: 1,
     ...overrides,
   };
 }
@@ -59,6 +60,7 @@ function quest(overrides: Partial<Quest> = {}): Quest {
     maxCompletions: 0,
     completions: 0,
     active: true,
+    attestationThreshold: 1,
     ...overrides,
   };
 }
@@ -97,7 +99,13 @@ describe('mapQuest', () => {
       maxCompletions: 10,
       completions: 3,
       active: true,
+      attestationThreshold: 1,
     });
+  });
+
+  it('maps the attestationThreshold of a threshold quest (Phase 6)', () => {
+    expect(mapQuest(rawQuest({ attestationThreshold: 2 })).attestationThreshold).toBe(2);
+    expect(mapQuest(rawQuest({ attestationThreshold: 3 })).attestationThreshold).toBe(3);
   });
 
   it('maps all quest-type and validation-kind enum numbers', () => {

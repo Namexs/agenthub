@@ -12,12 +12,19 @@ import { defineConfig } from 'vitest/config';
 // test file sets it with a `// @vitest-environment jsdom` docblock
 // (Vitest 4 removed the `environmentMatchGlobs` config option).
 export default defineConfig({
+  // Match the Next.js JSX runtime: components use JSX without importing
+  // React, so the classic transform ("React is not defined") breaks
+  // component tests. Automatic runtime is what the build uses.
+  esbuild: { jsx: 'automatic' },
   resolve: {
     // Mirror tsconfig paths (@/* -> ./*); vitest does not read them.
     alias: { '@': path.resolve(__dirname) },
   },
   test: {
-    include: ['lib/**/*.test.ts', 'hooks/**/*.test.tsx'],
+    // PHASE 6 (R-010): component tests live under components/ (the
+    // multi-signature AttestationForm); same jsdom-docblock rule as
+    // the hook tests.
+    include: ['lib/**/*.test.ts', 'hooks/**/*.test.tsx', 'components/**/*.test.tsx'],
     environment: 'node',
   },
 });
