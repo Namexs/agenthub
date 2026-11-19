@@ -57,15 +57,46 @@ contract AccessControlTest is Test {
         bytes32 role = qm.QUEST_CREATOR_ROLE();
         vm.prank(stranger);
         _expectUnauthorized(stranger, role);
-        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
         // Admin WITHOUT the creator role also fails.
         vm.prank(admin);
         _expectUnauthorized(admin, role);
-        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
         // Creator succeeds.
         vm.prank(creator);
         uint256 id = qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
         assertEq(qm.getQuest(id).creator, creator);
     }
@@ -73,7 +104,16 @@ contract AccessControlTest is Test {
     function test_DeactivateQuestRoleMatrix() public {
         vm.prank(creator);
         uint256 id = qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
         vm.prank(stranger);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.NotQuestCreatorOrAdmin.selector, stranger, id));
@@ -197,6 +237,52 @@ contract AccessControlTest is Test {
         assertFalse(qm.hasRole(creatorRole, stranger));
     }
 
+    // --- TEMUAN 1: VERIFIER_ROLE ---
+
+    function test_VerifierRoleMatrix() public {
+        bytes32 adminRole = qm.DEFAULT_ADMIN_ROLE();
+        bytes32 verifierRole = qm.VERIFIER_ROLE();
+        address verifier = makeAddr("verifier");
+        // Stranger cannot grant the verifier role.
+        vm.prank(stranger);
+        _expectUnauthorized(stranger, adminRole);
+        qm.grantRole(verifierRole, verifier);
+        // A creator cannot grant it either (only admin).
+        vm.prank(creator);
+        _expectUnauthorized(creator, adminRole);
+        qm.grantRole(verifierRole, verifier);
+        assertFalse(qm.hasRole(verifierRole, verifier));
+        // Admin grants and revokes.
+        qm.grantRole(verifierRole, verifier);
+        assertTrue(qm.hasRole(verifierRole, verifier));
+        // A verifier holds NO other powers: cannot create quests...
+        // (Hoist the role lookups: an external call after prank would
+        // consume the prank before the target call.)
+        bytes32 creatorRole = qm.QUEST_CREATOR_ROLE();
+        bytes32 pauserRole = qm.PAUSER_ROLE();
+        vm.prank(verifier);
+        _expectUnauthorized(verifier, creatorRole);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
+        // ...and cannot pause.
+        vm.prank(verifier);
+        _expectUnauthorized(verifier, pauserRole);
+        qm.pause();
+        // Admin revokes (rotation).
+        qm.revokeRole(verifierRole, verifier);
+        assertFalse(qm.hasRole(verifierRole, verifier));
+    }
+
     function test_RenounceRoleIsIrreversibleForCaller() public {
         bytes32 creatorRole = qm.QUEST_CREATOR_ROLE();
         vm.prank(creator);
@@ -204,6 +290,17 @@ contract AccessControlTest is Test {
         assertFalse(qm.hasRole(creatorRole, creator));
         vm.prank(creator);
         _expectUnauthorized(creator, creatorRole);
-        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 10, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            10,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
     }
 }

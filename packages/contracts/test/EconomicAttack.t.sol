@@ -48,7 +48,16 @@ contract EconomicAttackTest is Test {
     {
         vm.prank(creator);
         return qm.createQuest(
-            "Q", "economic target", questType, reward, 0, block.timestamp, block.timestamp + window, maxCompletions
+            "Q",
+            "economic target",
+            questType,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            reward,
+            0,
+            block.timestamp,
+            block.timestamp + window,
+            maxCompletions
         );
     }
 
@@ -138,6 +147,8 @@ contract EconomicAttackTest is Test {
             "Inflation",
             "too big",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             tooMuch,
             0,
             block.timestamp,

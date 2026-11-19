@@ -7,8 +7,10 @@ import {AgentGate} from "../src/AgentGate.sol";
 import {QuestManager} from "../src/QuestManager.sol";
 import {Reputation} from "../src/Reputation.sol";
 import {Achievement} from "../src/Achievement.sol";
+import {TokenBalanceValidator} from "../src/validators/TokenBalanceValidator.sol";
 import {IQuestManager} from "../src/interfaces/IQuestManager.sol";
 import {MockAgentId} from "../src/mocks/MockAgentId.sol";
+import {MockERC20} from "./mocks/MockERC20.sol";
 
 /// @notice Stateful handler: random actors complete random quests and warp
 /// time. Ghost state tracks the expected outcome of every successful call so
@@ -77,6 +79,8 @@ contract InvariantTest is StdInvariant, Test {
     Reputation internal reputation;
     Achievement internal achievement;
     InvariantHandler internal handler;
+    MockERC20 internal token;
+    TokenBalanceValidator internal validator;
 
     address internal admin = address(this);
     address internal creator = makeAddr("creator");
@@ -108,15 +112,25 @@ contract InvariantTest is StdInvariant, Test {
         mockId.mint(bob);
         mockId.mint(carol);
         // dave deliberately gets NO Agent ID.
+        // TEMUAN 1: the on-chain quest needs a token + validator. Holders
+        // (alice/bob/carol) hold 100 tokens; dave holds 0.
+        token = new MockERC20();
+        token.mint(alice, 100);
+        token.mint(bob, 100);
+        token.mint(carol, 100);
+        validator = new TokenBalanceValidator(address(token), 1);
         vm.warp(1_000_000);
 
-        // Four quests: one-time+badge, daily, weekly, capped one-time.
+        // Five quests: one-time+badge, daily, weekly, capped one-time,
+        // and an OnChain daily quest (validator path in the invariant loop).
         vm.startPrank(creator);
         questIds.push(
             qm.createQuest(
                 "OneTime",
                 "one-time + badge",
                 IQuestManager.QuestType.OneTime,
+                IQuestManager.ValidationKind.CheckIn,
+                address(0),
                 100,
                 BADGE_ID,
                 block.timestamp,
@@ -129,6 +143,8 @@ contract InvariantTest is StdInvariant, Test {
                 "Daily",
                 "daily",
                 IQuestManager.QuestType.DailyCheckIn,
+                IQuestManager.ValidationKind.CheckIn,
+                address(0),
                 10,
                 0,
                 block.timestamp,
@@ -138,7 +154,16 @@ contract InvariantTest is StdInvariant, Test {
         );
         questIds.push(
             qm.createQuest(
-                "Weekly", "weekly", IQuestManager.QuestType.Weekly, 70, 0, block.timestamp, block.timestamp + 90 days, 0
+                "Weekly",
+                "weekly",
+                IQuestManager.QuestType.Weekly,
+                IQuestManager.ValidationKind.CheckIn,
+                address(0),
+                70,
+                0,
+                block.timestamp,
+                block.timestamp + 90 days,
+                0
             )
         );
         questIds.push(
@@ -146,6 +171,8 @@ contract InvariantTest is StdInvariant, Test {
                 "Capped",
                 "capped at 2",
                 IQuestManager.QuestType.OneTime,
+                IQuestManager.ValidationKind.CheckIn,
+                address(0),
                 50,
                 0,
                 block.timestamp,
@@ -153,17 +180,32 @@ contract InvariantTest is StdInvariant, Test {
                 2
             )
         );
+        questIds.push(
+            qm.createQuest(
+                "OnChainDaily",
+                "daily, token-gated",
+                IQuestManager.QuestType.DailyCheckIn,
+                IQuestManager.ValidationKind.OnChain,
+                address(validator),
+                5,
+                0,
+                block.timestamp,
+                block.timestamp + 90 days,
+                0
+            )
+        );
         vm.stopPrank();
 
         actors = [alice, bob, carol, dave];
-        uint256[] memory rewards = new uint256[](4);
+        uint256[] memory rewards = new uint256[](5);
         rewards[0] = 100;
         rewards[1] = 10;
         rewards[2] = 70;
         rewards[3] = 50;
-        uint256[] memory badges = new uint256[](4);
+        rewards[4] = 5;
+        uint256[] memory badges = new uint256[](5);
         badges[0] = BADGE_ID;
-        uint256[] memory caps = new uint256[](4);
+        uint256[] memory caps = new uint256[](5);
         caps[3] = 2;
 
         handler = new InvariantHandler(qm, actors, questIds, rewards, badges, caps);
@@ -179,12 +221,17 @@ contract InvariantTest is StdInvariant, Test {
         assertEq(handler.expectedBadgeCount(alice), 1);
         handler.completeQuest(0, 1); // alice, daily
         assertEq(handler.expectedPoints(alice), 110);
+        handler.completeQuest(0, 4); // alice, on-chain daily (holds tokens)
+        assertEq(handler.expectedPoints(alice), 115);
+        assertEq(reputation.points(alice), 115);
+        handler.completeQuest(3, 4); // dave, on-chain daily (no ID, no tokens)
+        assertEq(handler.expectedPoints(dave), 0);
         handler.completeQuest(3, 0); // dave (no Agent ID) -> fails internally
         assertEq(handler.expectedPoints(dave), 0);
         assertEq(reputation.points(dave), 0);
         handler.warpTime(2 days);
         handler.completeQuest(0, 1); // alice, daily again after warp
-        assertEq(handler.expectedPoints(alice), 120);
+        assertEq(handler.expectedPoints(alice), 125);
     }
 
     /// @notice Points in Reputation always equal the sum of rewards of

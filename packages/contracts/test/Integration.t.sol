@@ -81,6 +81,8 @@ contract IntegrationTest is Test {
             "First Quest",
             "Complete your first quest",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             100,
             BADGE_ID,
             block.timestamp,
@@ -112,6 +114,7 @@ contract IntegrationTest is Test {
         // SEC-002 regression: the deployer must hold NO operational role
         // after renouncing admin — constructors grant admin only.
         assertFalse(qm.hasRole(qm.PAUSER_ROLE(), deployer));
+        assertFalse(qm.hasRole(qm.VERIFIER_ROLE(), deployer));
         assertFalse(achievement.hasRole(achievement.BADGE_MANAGER_ROLE(), deployer));
         assertFalse(reputation.hasRole(reputation.SCORE_SOURCE_ROLE(), deployer));
         assertFalse(achievement.hasRole(achievement.ISSUER_ROLE(), deployer));
@@ -144,6 +147,8 @@ contract IntegrationTest is Test {
             "Bob Quest",
             "created via timelock-granted role",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             10,
             0,
             block.timestamp,
@@ -151,6 +156,22 @@ contract IntegrationTest is Test {
             0
         );
         assertEq(qm.getQuest(id).creator, bob);
+    }
+
+    /// @notice TEMUAN 1: in production the verifier role is granted through
+    /// the timelock (2-day delay), like every other admin action — a
+    /// compromised deployer key cannot mint itself a verifier role.
+    function test_TimelockCanGrantVerifierRoleAfterDelay() public {
+        address verifier = makeAddr("verifier");
+        bytes memory payload = abi.encodeWithSelector(IAccessControl.grantRole.selector, qm.VERIFIER_ROLE(), verifier);
+        bytes32 salt = bytes32(uint256(5));
+        vm.prank(multisig);
+        timelock.schedule(address(qm), 0, payload, bytes32(0), salt, TIMELOCK_DELAY);
+        assertFalse(qm.hasRole(qm.VERIFIER_ROLE(), verifier));
+        vm.warp(block.timestamp + TIMELOCK_DELAY);
+        vm.prank(multisig);
+        timelock.execute(address(qm), 0, payload, bytes32(0), salt);
+        assertTrue(qm.hasRole(qm.VERIFIER_ROLE(), verifier));
     }
 
     function test_TimelockRejectsShortDelay() public {

@@ -106,6 +106,8 @@ contract QuestManagerTest is Test {
             "First Quest",
             "Complete your first quest",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             reward,
             badgeId,
             block.timestamp,
@@ -120,6 +122,8 @@ contract QuestManagerTest is Test {
             "Daily Check-in",
             "Check in every day",
             IQuestManager.QuestType.DailyCheckIn,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             reward,
             0,
             block.timestamp,
@@ -134,6 +138,8 @@ contract QuestManagerTest is Test {
             "Weekly Quest",
             "Check in every week",
             IQuestManager.QuestType.Weekly,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             reward,
             0,
             block.timestamp,
@@ -146,7 +152,18 @@ contract QuestManagerTest is Test {
 
     function test_CreateQuestStoresAllFields() public {
         vm.prank(creator);
-        uint256 id = qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 100, BADGE_ID, 1_000_000, 2_000_000, 10);
+        uint256 id = qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            BADGE_ID,
+            1_000_000,
+            2_000_000,
+            10
+        );
         assertEq(id, 1);
         IQuestManager.Quest memory q = qm.getQuest(id);
         assertEq(q.id, 1);
@@ -157,6 +174,9 @@ contract QuestManagerTest is Test {
         assertEq(q.maxCompletions, 10);
         assertEq(q.completions, 0);
         assertTrue(q.active);
+        // TEMUAN 1: the validation kind is stored and readable on-chain.
+        assertTrue(q.validationKind == IQuestManager.ValidationKind.CheckIn);
+        assertEq(q.validator, address(0));
         assertEq(qm.questCount(), 1);
     }
 
@@ -166,13 +186,35 @@ contract QuestManagerTest is Test {
         bytes32 role = qm.QUEST_CREATOR_ROLE();
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, role));
-        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
     }
 
     function test_CreateQuestRejectsEmptyTitle() public {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
-        qm.createQuest("", "D", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
     }
 
     function test_CreateQuestRejectsOversizedTitle() public {
@@ -180,7 +222,16 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            longTitle, "D", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 1 days, 0
+            longTitle,
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
     }
 
@@ -189,14 +240,34 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            "T", longDesc, IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 1 days, 0
+            "T",
+            longDesc,
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
     }
 
     function test_CreateQuestRejectsZeroReward() public {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
-        qm.createQuest("T", "D", IQuestManager.QuestType.OneTime, 0, 0, block.timestamp, block.timestamp + 1 days, 0);
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            0,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
     }
 
     function test_CreateQuestRejectsRewardAboveCap() public {
@@ -204,7 +275,16 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, tooMuch, 0, block.timestamp, block.timestamp + 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            tooMuch,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
     }
 
@@ -212,7 +292,16 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp + 2 days, block.timestamp + 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp + 2 days,
+            block.timestamp + 1 days,
+            0
         );
     }
 
@@ -220,7 +309,16 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(IQuestManager.InvalidQuestParams.selector);
         qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp - 2 days, block.timestamp - 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp - 2 days,
+            block.timestamp - 1 days,
+            0
         );
     }
 
@@ -228,7 +326,16 @@ contract QuestManagerTest is Test {
         vm.prank(creator);
         vm.expectRevert(abi.encodeWithSelector(IAchievement.BadgeNotDefined.selector, 999));
         qm.createQuest(
-            "T", "D", IQuestManager.QuestType.OneTime, 100, 999, block.timestamp, block.timestamp + 1 days, 0
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            999,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
         );
     }
 
@@ -276,6 +383,8 @@ contract QuestManagerTest is Test {
             "Community",
             "Join the community",
             IQuestManager.QuestType.Community,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             50,
             0,
             block.timestamp,
@@ -357,6 +466,8 @@ contract QuestManagerTest is Test {
             "Future",
             "Starts later",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             100,
             0,
             block.timestamp + 1 days,
@@ -467,6 +578,137 @@ contract QuestManagerTest is Test {
         new QuestManager(address(0), address(reputation), address(achievement), admin);
     }
 
+    // --- TEMUAN 3: dependency validation ---
+
+    function test_ConstructorRejectsEoaDependencies() public {
+        address eoa = makeAddr("eoa");
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.NoCodeAtDependency.selector, eoa));
+        new QuestManager(eoa, address(reputation), address(achievement), admin);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.NoCodeAtDependency.selector, eoa));
+        new QuestManager(address(gate), eoa, address(achievement), admin);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.NoCodeAtDependency.selector, eoa));
+        new QuestManager(address(gate), address(reputation), eoa, admin);
+    }
+
+    // --- TEMUAN 1: validation-kind rules at creation ---
+
+    function test_CreateQuestRejectsOnChainWithoutValidator() public {
+        vm.prank(creator);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, address(0)));
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.OnChain,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
+    }
+
+    function test_CreateQuestRejectsOnChainWithEoaValidator() public {
+        address eoa = makeAddr("eoa-validator");
+        vm.prank(creator);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, eoa));
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.OnChain,
+            eoa,
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
+    }
+
+    function test_CreateQuestRejectsValidatorForCheckIn() public {
+        vm.prank(creator);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, address(mockId)));
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(mockId),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
+    }
+
+    function test_CreateQuestRejectsValidatorForAttested() public {
+        vm.prank(creator);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, address(mockId)));
+        qm.createQuest(
+            "T",
+            "D",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.Attested,
+            address(mockId),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 1 days,
+            0
+        );
+    }
+
+    function test_CreateAttestedQuestStoresKind() public {
+        vm.prank(creator);
+        uint256 id = qm.createQuest(
+            "Post on X",
+            "Share AGENTHUB on X",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.Attested,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
+        );
+        IQuestManager.Quest memory q = qm.getQuest(id);
+        assertTrue(q.validationKind == IQuestManager.ValidationKind.Attested);
+        assertEq(q.validator, address(0));
+    }
+
+    // --- TEMUAN 1: completion-path gating ---
+
+    function test_CompleteQuestRevertsForAttestedQuest() public {
+        vm.prank(creator);
+        uint256 id = qm.createQuest(
+            "Post on X",
+            "Share AGENTHUB on X",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.Attested,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
+        );
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.AttestationRequired.selector, id));
+        qm.completeQuest(id);
+        assertEq(reputation.points(alice), 0);
+    }
+
+    function test_CompleteWithAttestationRevertsForCheckInQuest() public {
+        uint256 id = _createOneTime(100, 0, 0);
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestNotAttested.selector, id));
+        qm.completeQuestWithAttestation(id, block.timestamp + 1 days, "");
+    }
+
     // --- Fuzz: valid quests are always stored correctly ---
 
     function testFuzz_CreateQuestStoresParams(uint256 reward, uint256 maxCompletions, uint256 duration) public {
@@ -477,6 +719,8 @@ contract QuestManagerTest is Test {
             "Fuzz Quest",
             "fuzz",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             reward,
             0,
             block.timestamp,

@@ -51,11 +51,11 @@ contract AgentGateMainnetTest is Test {
         vm.prank(address(0));
         MockAgentId(OFFICIAL).mint(alice);
 
-        AgentGate gate = new AgentGate(OFFICIAL, 56);
-        assertEq(gate.agentIdContract(), OFFICIAL);
-        assertEq(gate.expectedChainId(), 56);
-        assertTrue(gate.isAgentHolder(alice));
-        assertFalse(gate.isAgentHolder(bob));
+        AgentGate mainnetGate = new AgentGate(OFFICIAL, 56);
+        assertEq(mainnetGate.agentIdContract(), OFFICIAL);
+        assertEq(mainnetGate.expectedChainId(), 56);
+        assertTrue(mainnetGate.isAgentHolder(alice));
+        assertFalse(mainnetGate.isAgentHolder(bob));
     }
 
     function test_MainnetRejectsMockAddress() public {
@@ -80,18 +80,18 @@ contract AgentGateMainnetTest is Test {
 
     function test_TestnetAcceptsMock() public {
         vm.chainId(97);
-        AgentGate gate = new AgentGate(address(mock), 97);
-        assertEq(gate.agentIdContract(), address(mock));
-        assertTrue(gate.isAgentHolder(alice));
-        assertFalse(gate.isAgentHolder(bob));
+        AgentGate testnetGate = new AgentGate(address(mock), 97);
+        assertEq(testnetGate.agentIdContract(), address(mock));
+        assertTrue(testnetGate.isAgentHolder(alice));
+        assertFalse(testnetGate.isAgentHolder(bob));
     }
 
     function test_LocalAcceptsMock() public {
         // Default Foundry chainId is 31337 — covered by setUp in the other
         // suites, but asserted explicitly here for the allowlist.
-        AgentGate gate = new AgentGate(address(mock), 31337);
-        assertEq(gate.agentIdContract(), address(mock));
-        assertTrue(gate.isAgentHolder(alice));
+        AgentGate localGate = new AgentGate(address(mock), 31337);
+        assertEq(localGate.agentIdContract(), address(mock));
+        assertTrue(localGate.isAgentHolder(alice));
     }
 
     function test_UnsupportedChainReverts() public {

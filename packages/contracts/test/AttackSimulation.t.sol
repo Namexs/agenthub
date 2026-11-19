@@ -60,6 +60,8 @@ contract AttackSimulationTest is Test {
             "Quest",
             "attack target",
             IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
             reward,
             badgeId,
             block.timestamp,
@@ -112,7 +114,16 @@ contract AttackSimulationTest is Test {
         garbageQm.grantRole(garbageQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 gid = garbageQm.createQuest(
-            "G", "g", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 30 days, 0
+            "G",
+            "g",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -128,7 +139,16 @@ contract AttackSimulationTest is Test {
         revertingQm.grantRole(revertingQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 rid = revertingQm.createQuest(
-            "R", "r", IQuestManager.QuestType.OneTime, 100, 0, block.timestamp, block.timestamp + 30 days, 0
+            "R",
+            "r",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            0,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -146,7 +166,16 @@ contract AttackSimulationTest is Test {
         atomicQm.grantRole(atomicQm.QUEST_CREATOR_ROLE(), creator);
         vm.prank(creator);
         uint256 id = atomicQm.createQuest(
-            "A", "a", IQuestManager.QuestType.OneTime, 100, BADGE_ID, block.timestamp, block.timestamp + 30 days, 0
+            "A",
+            "a",
+            IQuestManager.QuestType.OneTime,
+            IQuestManager.ValidationKind.CheckIn,
+            address(0),
+            100,
+            BADGE_ID,
+            block.timestamp,
+            block.timestamp + 30 days,
+            0
         );
         vm.prank(alice);
         vm.expectRevert(RevertingReputation.DownstreamBoom.selector);
