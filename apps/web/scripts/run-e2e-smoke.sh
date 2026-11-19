@@ -13,14 +13,28 @@ PORT=3100
 LOG="$ROOT/agenthub-final-pretestnet/logs/phase8-e2e-smoke.log"
 mkdir -p "$(dirname "$LOG")"
 
+# Cleanup must kill the whole server process tree: `npx next start`
+# spawns sh -> next-server, and killing only the npx PID orphans
+# next-server on the port (this leaked a server on :3100 in Phase F).
+# setsid gives the server its own process group; the PID is shared via
+# a pidfile because the server starts inside the piped block (subshell).
+SERVER_PIDFILE="$ROOT/.e2e-server.pid"
+rm -f "$SERVER_PIDFILE"
+cleanup() {
+  if [ -f "$SERVER_PIDFILE" ]; then
+    kill -- "-$(cat "$SERVER_PIDFILE")" 2>/dev/null || true
+    rm -f "$SERVER_PIDFILE"
+  fi
+}
+trap cleanup EXIT
+
 {
   echo "=== E2E smoke run: $(date -u +%FT%TZ) ==="
   echo "--- next build ---"
   cd "$WEB" && NODE_OPTIONS=--max-old-space-size=1024 npx next build
   echo "--- starting next start on :$PORT ---"
-  npx next start -p "$PORT" > "$ROOT/.e2e-server.log" 2>&1 &
-  SERVER_PID=$!
-  trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+  setsid npx next start -p "$PORT" > "$ROOT/.e2e-server.log" 2>&1 &
+  echo $! > "$ROOT/.e2e-server.pid"
   for i in $(seq 1 60); do
     if curl -sf -o /dev/null "http://127.0.0.1:$PORT/"; then
       echo "server ready after ${i}s"

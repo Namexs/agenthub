@@ -1,9 +1,7 @@
 // E2E smoke test (Phase 8) — plain node script, Playwright via the
-// `playwright` package (NOT in package.json: pnpm cannot install on the
-// dev VM — chown is blocked on the VM filesystem. On a normal machine:
-//   pnpm add -D playwright && npx playwright install chromium
-// On this VM the package lives in ~/workspace/.tmp/test-deps and is
-// symlinked into node_modules; see FRONTEND_INTEGRATION_REPORT.md §Phase 8).
+// `playwright` package (declared devDependency since Phase C — no
+// manual symlinks; browsers installed via `npx playwright install
+// chromium`).
 //
 // SCOPE (honest): unconnected-state render smoke only. There is no wallet
 // in headless Chromium, so wallet connection, quest completion, and the

@@ -37,3 +37,7 @@ packages/contracts/.anvil-deployment.json
 
 # Local E2E smoke server log (Phase 8)
 .e2e-server.log
+
+# Local wallet E2E runner logs (Phase F)
+.anvil-wallet-e2e.log
+.wallet-e2e-server.log
