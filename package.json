@@ -30,8 +30,10 @@
   "pnpm": {
     "overrides": {
       "@coinbase/wallet-sdk": "4.4.0",
+      "abitype@1.0.6": "1.2.3",
       "postcss@8.4.31": "8.5.33",
-      "ws@8.18.0": "8.23.0",
+      "vite": "6.4.6",
+      "ws@8": "8.23.0",
       "glob@10.3.10": "10.5.0",
       "decode-uri-component@0.2.2": "0.5.1"
     }
