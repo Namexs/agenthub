@@ -169,7 +169,7 @@ jobs:
         working-directory: packages/contracts
       # crytic-compile detects the Foundry project and reuses the forge
       # build, so no standalone solc is needed. --fail-medium matches
-      # the project's bar (0 High/Medium); the 4 Low + 6 Info findings
+      # the project's bar (0 High/Medium); the 4 Low + 8 Info findings
       # are documented accepted risks — see FINAL_SECURITY_FINDINGS.md.
       - run: slither . --exclude-dependencies --fail-medium
         working-directory: packages/contracts
@@ -184,3 +184,20 @@ jobs:
           # Gitleaks scans the full history, not just the tip.
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+
+  manifest:
+    name: Package manifest check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # verify-manifest.sh reads the recorded commit's tree from
+          # git history, so a shallow checkout cannot verify it.
+          fetch-depth: 0
+      # The manifest (PACKAGE_MANIFEST.md) describes a specific commit
+      # and is committed separately from it, so HEAD is normally a
+      # descendant of the recorded commit — the script handles that.
+      # Regenerate after any content change:
+      #   ./scripts/generate-manifest.sh <commit>
+      - run: ./scripts/verify-manifest.sh
