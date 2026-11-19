@@ -50,8 +50,12 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         gate = IAgentGate(gate_);
         reputation = IReputation(reputation_);
         achievement = IAchievement(achievement_);
+        // Least privilege: the constructor grants ONLY DEFAULT_ADMIN_ROLE.
+        // Operational roles (QUEST_CREATOR_ROLE, PAUSER_ROLE) MUST be
+        // granted explicitly during setup. Granting them here would let
+        // the deployer keep pausing/creating quests after renouncing admin
+        // (SEC-002) — a retained-privilege footgun.
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, admin_);
     }
 
     /// @inheritdoc IQuestManager

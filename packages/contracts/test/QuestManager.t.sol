@@ -90,6 +90,9 @@ contract QuestManagerTest is Test {
 
         vm.startPrank(admin);
         qm.grantRole(qm.QUEST_CREATOR_ROLE(), creator);
+        // Explicit setup grant (SEC-002): the constructor no longer grants
+        // PAUSER_ROLE — the admin holds it here only for the pause tests.
+        qm.grantRole(qm.PAUSER_ROLE(), admin);
         vm.stopPrank();
 
         mockId.mint(alice);

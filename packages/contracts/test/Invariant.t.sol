@@ -99,6 +99,8 @@ contract InvariantTest is StdInvariant, Test {
 
         reputation.grantRole(reputation.SCORE_SOURCE_ROLE(), address(qm));
         achievement.grantRole(achievement.ISSUER_ROLE(), address(qm));
+        // Explicit setup grant (SEC-002): constructors grant admin only.
+        achievement.grantRole(achievement.BADGE_MANAGER_ROLE(), admin);
         achievement.defineBadge(BADGE_ID, "First Quest", "ipfs://badge1");
         qm.grantRole(qm.QUEST_CREATOR_ROLE(), creator);
 

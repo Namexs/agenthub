@@ -20,8 +20,13 @@ contract AchievementTest is Test {
     function setUp() public {
         achievement = new Achievement(admin);
         bytes32 issuerRole = achievement.ISSUER_ROLE(); // hoist before prank
+        bytes32 managerRole = achievement.BADGE_MANAGER_ROLE(); // hoist before prank
         vm.prank(admin);
         achievement.grantRole(issuerRole, issuer);
+        // Explicit setup grant (SEC-002): the constructor no longer grants
+        // BADGE_MANAGER_ROLE.
+        vm.prank(admin);
+        achievement.grantRole(managerRole, admin);
         vm.prank(admin);
         achievement.defineBadge(BADGE_ID, "First Quest", "ipfs://badge1");
     }

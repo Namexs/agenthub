@@ -43,6 +43,8 @@ contract IntegrationTest is Test {
         // --- Wire roles: QuestManager is the ONLY score source / issuer. ---
         reputation.grantRole(reputation.SCORE_SOURCE_ROLE(), address(qm));
         achievement.grantRole(achievement.ISSUER_ROLE(), address(qm));
+        // Explicit setup grants (SEC-002): constructors grant admin only.
+        achievement.grantRole(achievement.BADGE_MANAGER_ROLE(), deployer);
         achievement.defineBadge(BADGE_ID, "First Quest", "ipfs://badge1");
         qm.grantRole(qm.QUEST_CREATOR_ROLE(), creator);
         // PAUSER_ROLE goes to the multisig directly: pause must be FAST
@@ -64,6 +66,9 @@ contract IntegrationTest is Test {
         qm.renounceRole(qm.DEFAULT_ADMIN_ROLE(), deployer);
         reputation.renounceRole(reputation.DEFAULT_ADMIN_ROLE(), deployer);
         achievement.renounceRole(achievement.DEFAULT_ADMIN_ROLE(), deployer);
+        // SEC-002: also renounce the setup-only operational role — the
+        // deployer needed BADGE_MANAGER_ROLE only to define the first badge.
+        achievement.renounceRole(achievement.BADGE_MANAGER_ROLE(), deployer);
 
         mockId.mint(alice);
         mockId.mint(bob);
@@ -104,6 +109,12 @@ contract IntegrationTest is Test {
         bytes32 creatorRole = qm.QUEST_CREATOR_ROLE(); // hoist before expectRevert
         assertFalse(qm.hasRole(adminRole, deployer));
         assertTrue(qm.hasRole(adminRole, address(timelock)));
+        // SEC-002 regression: the deployer must hold NO operational role
+        // after renouncing admin — constructors grant admin only.
+        assertFalse(qm.hasRole(qm.PAUSER_ROLE(), deployer));
+        assertFalse(achievement.hasRole(achievement.BADGE_MANAGER_ROLE(), deployer));
+        assertFalse(reputation.hasRole(reputation.SCORE_SOURCE_ROLE(), deployer));
+        assertFalse(achievement.hasRole(achievement.ISSUER_ROLE(), deployer));
         vm.expectRevert(
             abi.encodeWithSelector(
                 IAccessControl.AccessControlUnauthorizedAccount.selector, deployer, adminRole

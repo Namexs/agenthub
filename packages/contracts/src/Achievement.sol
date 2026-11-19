@@ -35,8 +35,10 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
 
     constructor(address admin_) ERC721("AGENTHUB Achievement", "AGH-ACH") {
         if (admin_ == address(0)) revert ZeroAddress();
+        // Least privilege: the constructor grants ONLY DEFAULT_ADMIN_ROLE.
+        // BADGE_MANAGER_ROLE MUST be granted explicitly during setup —
+        // see QuestManager for the retained-privilege rationale (SEC-002).
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
-        _grantRole(BADGE_MANAGER_ROLE, admin_);
     }
 
     /// @inheritdoc IAchievement
