@@ -1,0 +1,56 @@
+=== ci.yml e2e job ===
+  e2e:
+    name: E2E (smoke + wallet, real build + anvil)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FOUNDRY_VERSION }}
+      - run: pnpm install --frozen-lockfile
+      # Playwright browsers are NOT in the repo or the pnpm store —
+      # install Chromium + its OS dependencies (`--with-deps` runs
+      # apt-get; sudo is available on ubuntu-latest runners). Run via
+      # the web workspace so the PINNED playwright (1.65.1) is used —
+      # a bare `npx playwright` from the repo root would download the
+      # latest version instead.
+      - run: pnpm --filter @agenthub/web exec playwright install --with-deps chromium
+      # The runners build the production app, start it, and drive it
+      # with Playwright: smoke (23 checks, unconnected render) and
+      # wallet (25 checks, the real wagmi injected() path against a
+      # local anvil deployment — throwaway anvil test keys only, no
+      # production wallet or key). Both runners exit non-zero on any
+      # failure (their exit-code propagation was fixed in the
+      # Next.js 15 upgrade — the old trailing `echo "log saved"`
+      # masked failures as exit 0).
+      - run: bash apps/web/scripts/run-e2e-smoke.sh
+      - run: bash apps/web/scripts/run-wallet-e2e.sh
+      - name: Upload E2E logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-logs
+          path: |
+            agenthub-final-pretestnet/logs/phase8-e2e-smoke.log
+            agenthub-final-release/logs/phase-f-wallet-e2e.log
+          if-no-files-found: warn
+
+  manifest:
+=== package.json playwright ===
+35:    "playwright": "1.65.1",
+=== lockfile playwright ===
+3251:  playwright@1.65.1:
+8075:  playwright@1.65.1:
+      playwright:
+        specifier: 1.65.1
+        version: 1.65.1

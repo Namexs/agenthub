@@ -1,0 +1,33 @@
+=== all chromium- revision mentions ===
+      1 chromium-1255
+=== ms-playwright paths ===
+      1 ms-playwright/chromium-1255
+      1 ms-playwright/chromium_headless_shell-1255
+      1 ms-playwright/ffmpeg-1013
+=== download/Download lines ===
+30:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2651166Z Getting action download info
+31:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.5403269Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+32:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.7699057Z Download action repository 'pnpm/action-setup@v3' (SHA:a3252b78c470c02df07e9d59298aecedc3ccdd6d)
+33:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.2043206Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+34:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.2718049Z Download action repository 'foundry-rs/foundry-toolchain@v1' (SHA:dba66c27052e63476d886f22216e119ba7e615bf)
+35:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.6808566Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+205:E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.1624272Z Progress: resolved 1, reused 0, downloaded 0, added 0
+208:E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5417058Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+=== summary lines (passed/failed) ===
+19:E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2194823Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+608:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:46.8866547Z Retrying 1/3...
+612:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:07.8354716Z    Generating static pages (0/11) ...
+613:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7987624Z    Generating static pages (2/11) 
+614:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7988301Z    Generating static pages (5/11) 
+615:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7988811Z    Generating static pages (8/11) 
+616:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7989580Z  ✓ Generating static pages (11/11)
+665:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4354253Z E2E smoke: 23 passed, 0 failed
+666:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4354625Z ALL E2E SMOKE CHECKS PASSED
+760:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:30.4464323Z    Generating static pages (0/11) ...
+761:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5815796Z    Generating static pages (2/11) 
+762:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5826207Z    Generating static pages (5/11) 
+763:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5826976Z    Generating static pages (8/11) 
+764:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5828379Z  ✓ Generating static pages (11/11)
+815:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3384713Z Wallet E2E: 25 passed, 0 failed
+=== local expected chromium revision for playwright 1.65.1 ===
+chromium 1255

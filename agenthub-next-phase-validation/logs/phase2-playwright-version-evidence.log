@@ -1,0 +1,29 @@
+=== '1.65' occurrences ===
+=== Chromium download lines ===
+333:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	﻿2026-11-19T13:40:11.6012079Z ##[group]Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium
+334:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6013141Z ^[[36;1mpnpm --filter @agenthub/web exec playwright install --with-deps chromium^[[0m
+335:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6079712Z shell: /usr/bin/bash -e {0}
+336:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080114Z env:
+337:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080417Z   NODE_VERSION: 20.20.2
+338:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080780Z   PNPM_VERSION: 9.15.4
+339:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081136Z   FOUNDRY_VERSION: 1.9.0
+340:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081516Z   SLITHER_VERSION: 0.11.6
+341:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081882Z   PYTHON_VERSION: 3.12
+342:E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6082309Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+=== smoke runner result ===
+641:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1534435Z   PASS GET / -> 200
+642:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1800532Z   PASS home shows the AGENTHUB intro
+643:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1844776Z   PASS home shows the Connect button
+644:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8051542Z   PASS GET /quests -> 200
+645:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8234347Z   PASS quests heading
+=== wallet runner result ===
+641:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1534435Z   PASS GET / -> 200
+642:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1800532Z   PASS home shows the AGENTHUB intro
+643:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1844776Z   PASS home shows the Connect button
+644:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8051542Z   PASS GET /quests -> 200
+645:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8234347Z   PASS quests heading
+=== step conclusions ===
+556:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	﻿2026-11-19T13:40:30.1004613Z ##[group]Run bash apps/web/scripts/run-e2e-smoke.sh
+557:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1005045Z ^[[36;1mbash apps/web/scripts/run-e2e-smoke.sh^[[0m
+558:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1056351Z shell: /usr/bin/bash -e {0}
+559:E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1056623Z env:

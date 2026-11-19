@@ -1,0 +1,18 @@
+=== latest runs on main ===
+completed	success	chore(phase-3): regenerate PACKAGE_MANIFEST.md for final commit ad9f0…	CI	main	push	44535662688	3m43s	2026-11-19T13:39:39Z
+completed	success	chore(phase-i): regenerate PACKAGE_MANIFEST.md for final commit b64eb…	CI	main	push	44531037033	1m31s	2026-11-19T13:11:43Z
+=== run 44535662688 summary ===
+{"conclusion":"success","createdAt":"2026-11-19T13:39:39Z","databaseId":44535662688,"displayTitle":"chore(phase-3): regenerate PACKAGE_MANIFEST.md for final commit ad9f0…","event":"push","headBranch":"main","headSha":"39fcb94becf5e5dd18d7f4561868139fd30dce27","status":"completed","updatedAt":"2026-11-19T13:43:22Z"}
+=== jobs ===
+Format check (prettier + forge fmt) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+Dependency audit | status=completed conclusion=success started=2026-11-19T13:39:41Z
+Shared (lint, typecheck, vitest) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+Contracts fuzz + invariant (10k runs, pinned seed) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+E2E (smoke + wallet, real build + anvil) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+Secret scanning (gitleaks) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+Package manifest check | status=completed conclusion=success started=2026-11-19T13:39:45Z
+Web (lint, typecheck, vitest, build) | status=completed conclusion=success started=2026-11-19T13:39:41Z
+Contracts (forge build + test) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+Slither static analysis (fail on Medium+) | status=completed conclusion=success started=2026-11-19T13:39:42Z
+=== e2e job id ===
+{"conclusion":"success","id":135600267768,"name":"E2E (smoke + wallet, real build + anvil)"}

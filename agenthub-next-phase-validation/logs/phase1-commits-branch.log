@@ -1,0 +1,38 @@
+=== branch ===
+main
+=== HEAD ===
+39fcb94becf5e5dd18d7f4561868139fd30dce27
+39fcb94 chore(phase-3): regenerate PACKAGE_MANIFEST.md for final commit ad9f025 (verified)
+ad9f025 docs(phase-3): Next.js 15 upgrade + E2E CI report with evidence logs
+d9c5d26 feat(phase-2): add E2E job to CI + fix runner exit-code masking
+09dd3f4 feat(phase-1): upgrade Next.js 14.2.35 -> 15.5.29 + React 18.3.1 -> 19.3.1
+7374af7 chore(phase-i): regenerate PACKAGE_MANIFEST.md for final commit b64ebec (verified)
+b64ebec docs(phase-i): final acceptance report — full suite green, CONDITIONAL GO testnet / NO-GO mainnet
+=== status ===
+?? agenthub-next-phase-validation/
+(status exit: 0)
+=== remote ===
+origin	https://github.com/Namexs/agenthub.git (fetch)
+origin	https://github.com/Namexs/agenthub.git (push)
+=== origin/main ===
+39fcb94becf5e5dd18d7f4561868139fd30dce27	refs/heads/main
+=== 09dd3f4 in origin/main? ===
+YES
+=== d9c5d26 in origin/main? ===
+YES
+=== commits on origin/main ===
+39fcb94 chore(phase-3): regenerate PACKAGE_MANIFEST.md for final commit ad9f025 (verified)
+ad9f025 docs(phase-3): Next.js 15 upgrade + E2E CI report with evidence logs
+d9c5d26 feat(phase-2): add E2E job to CI + fix runner exit-code masking
+09dd3f4 feat(phase-1): upgrade Next.js 14.2.35 -> 15.5.29 + React 18.3.1 -> 19.3.1
+7374af7 chore(phase-i): regenerate PACKAGE_MANIFEST.md for final commit b64ebec (verified)
+b64ebec docs(phase-i): final acceptance report — full suite green, CONDITIONAL GO testnet / NO-GO mainnet
+=== gh api branch main ===
+{"name":"main","sha":"39fcb94becf5e5dd18d7f4561868139fd30dce27"}
+=== manifest ===
+Verifying commit ad9f02561c17bb4cf9140d9d11fe196297e9f460 against PACKAGE_MANIFEST.md ...
+Checked 403 files from the manifest.
+OK: submodule packages/contracts/lib/forge-std (8948d45d3d9022c508b83eb5d26fd3a7a93f2f32)
+OK: submodule packages/contracts/lib/openzeppelin-contracts (dbb6104ce834628e473d2173bbc9d47f81a9eec3)
+NOTE: HEAD (39fcb94becf5e5dd18d7f4561868139fd30dce27) differs from the recorded commit (ad9f02561c17bb4cf9140d9d11fe196297e9f460) — expected when the manifest was committed separately.
+MANIFEST VERIFIED: commit ad9f02561c17bb4cf9140d9d11fe196297e9f460 matches PACKAGE_MANIFEST.md

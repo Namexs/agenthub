@@ -1,0 +1,874 @@
+E2E (smoke + wallet, real build + anvil)	Set up job	﻿2026-11-19T13:39:43.2154380Z Current runner version: '2.338.2'
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2181337Z ##[group]Runner Image Provisioner
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2182543Z Hosted Compute Agent
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2183279Z Version: 20261103.629
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2183909Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2184675Z Build Date: 2026-11-03T17:26:59Z
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2185687Z Worker ID: {cc14a828-7ca6-48f3-9bf8-e6e2499acb84}
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2186525Z Region: centralus
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2187140Z Cloud: Azure
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2187679Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2189618Z ##[group]Operating System
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2190282Z Ubuntu
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2190828Z 26.04.1
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2191373Z LTS
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2191870Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2192387Z ##[group]Runner Image
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2193110Z Image: ubuntu-26.04
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2193703Z Version: 20261111.196.1
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2194823Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2196925Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261111.196
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2198042Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2199120Z ##[group]GITHUB_TOKEN Permissions
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2201391Z Contents: read
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2202039Z Metadata: read
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2202665Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2204733Z Secret source: Actions
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2206163Z Cache mode: write
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2207238Z Prepare workflow directory
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2602312Z Prepare all required actions
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.2651166Z Getting action download info
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.5403269Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:43.7699057Z Download action repository 'pnpm/action-setup@v3' (SHA:a3252b78c470c02df07e9d59298aecedc3ccdd6d)
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.2043206Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.2718049Z Download action repository 'foundry-rs/foundry-toolchain@v1' (SHA:dba66c27052e63476d886f22216e119ba7e615bf)
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.6808566Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+E2E (smoke + wallet, real build + anvil)	Set up job	2026-11-19T13:39:44.8634234Z Complete job name: E2E (smoke + wallet, real build + anvil)
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	﻿2026-11-19T13:39:44.9574957Z ##[group]Run actions/checkout@v4
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9576081Z with:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9576537Z   submodules: recursive
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9577036Z   repository: Namexs/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9580685Z   token: ***
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9581121Z   ssh-strict: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9581551Z   ssh-user: git
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9581997Z   persist-credentials: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9582486Z   clean: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9582937Z   sparse-checkout-cone-mode: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9583450Z   fetch-depth: 1
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9583887Z   fetch-tags: false
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9584332Z   show-progress: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9584796Z   lfs: false
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9585213Z   set-safe-directory: true
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9585858Z   allow-unsafe-pr-checkout: false
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9586619Z env:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9587038Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9587503Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9587965Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9588437Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9588958Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:44.9589403Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2356576Z Syncing repository: Namexs/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2359423Z ##[group]Getting Git version info
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2360651Z Working directory is '/home/runner/work/agenthub/agenthub'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2362546Z [command]/usr/bin/git version
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2368977Z git version 2.56.1
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2390730Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2405828Z Temporarily overriding HOME='/home/runner/work/_temp/a0e814fc-4914-46a8-a48c-c0e31efb8f8b' before making global git config changes
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2408715Z Adding repository directory to the temporary git global config as a safe directory
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2410959Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agenthub/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2487642Z Deleting the contents of '/home/runner/work/agenthub/agenthub'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2499856Z ##[group]Initializing the repository
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2504334Z [command]/usr/bin/git init /home/runner/work/agenthub/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2652836Z hint: Using 'master' as the name for the initial branch. This default branch name
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2655729Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2657091Z hint: to use in all of your new repositories, which will suppress this warning,
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2657851Z hint: call:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2658257Z hint:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2658786Z hint: 	git config --global init.defaultBranch <name>
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2659672Z hint:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2660330Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2661563Z hint: 'development'. The just-created branch can be renamed via this command:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2662575Z hint:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2663006Z hint: 	git branch -m <name>
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2663491Z hint:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2664763Z hint: Disable this message with "git config set advice.defaultBranchName false"
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2667764Z Initialized empty Git repository in /home/runner/work/agenthub/agenthub/.git/
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2685517Z [command]/usr/bin/git remote add origin https://github.com/Namexs/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2748522Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2854568Z ##[group]Disabling automatic garbage collection
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2861344Z [command]/usr/bin/git config --local gc.auto 0
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2863858Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2864887Z ##[group]Setting up auth
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2866234Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.2870000Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.3415000Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.3444940Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.3741257Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.3778225Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.4052783Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.4092883Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.4093715Z ##[group]Fetching the repository
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.4103242Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +39fcb94becf5e5dd18d7f4561868139fd30dce27:refs/remotes/origin/main
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8188703Z From https://github.com/Namexs/agenthub
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8191195Z  * [new ref]         39fcb94becf5e5dd18d7f4561868139fd30dce27 -> origin/main
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8195548Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8197298Z ##[group]Determining the checkout info
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8199387Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8200673Z [command]/usr/bin/git sparse-checkout disable
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8246503Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8280354Z ##[group]Checking out the ref
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8284445Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8623876Z Switched to a new branch 'main'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8629583Z branch 'main' set up to track 'origin/main'.
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8639459Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8641623Z ##[group]Setting up auth for fetching submodules
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8644371Z [command]/usr/bin/git config --global http.https://github.com/.extraheader AUTHORIZATION: basic ***
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8686636Z [command]/usr/bin/git config --global --unset-all url.https://github.com/.insteadOf
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8719394Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf git@github.com:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8752068Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf org-139180936@github.com:
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8784349Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8786741Z ##[group]Fetching submodules
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.8788294Z [command]/usr/bin/git submodule sync --recursive
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.9069327Z [command]/usr/bin/git -c protocol.version=2 submodule update --init --force --depth=1 --recursive
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.9344294Z Submodule 'packages/contracts/lib/forge-std' (https://github.com/foundry-rs/forge-std) registered for path 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.9352411Z Submodule 'packages/contracts/lib/openzeppelin-contracts' (https://github.com/OpenZeppelin/openzeppelin-contracts) registered for path 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:45.9380573Z Cloning into '/home/runner/work/agenthub/agenthub/packages/contracts/lib/forge-std'...
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:46.3073334Z Cloning into '/home/runner/work/agenthub/agenthub/packages/contracts/lib/openzeppelin-contracts'...
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:47.6953053Z From https://github.com/foundry-rs/forge-std
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:47.6953790Z  * branch            8948d45d3d9022c508b83eb5d26fd3a7a93f2f32 -> FETCH_HEAD
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:47.7070695Z Submodule path 'packages/contracts/lib/forge-std': checked out '8948d45d3d9022c508b83eb5d26fd3a7a93f2f32'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.7412551Z From https://github.com/OpenZeppelin/openzeppelin-contracts
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.7413896Z  * branch            dbb6104ce834628e473d2173bbc9d47f81a9eec3 -> FETCH_HEAD
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.8056243Z Submodule path 'packages/contracts/lib/openzeppelin-contracts': checked out 'dbb6104ce834628e473d2173bbc9d47f81a9eec3'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.8074629Z Submodule 'lib/erc4626-tests' (https://github.com/a16z/erc4626-tests.git) registered for path 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.8081943Z Submodule 'lib/forge-std' (https://github.com/foundry-rs/forge-std) registered for path 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:48.8113267Z Cloning into '/home/runner/work/agenthub/agenthub/packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'...
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:49.2074956Z Cloning into '/home/runner/work/agenthub/agenthub/packages/contracts/lib/openzeppelin-contracts/lib/forge-std'...
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:50.3327341Z From https://github.com/a16z/erc4626-tests
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:50.3328402Z  * branch            8b1d7c2ac248c33c3506b1bff8321758943c5e11 -> FETCH_HEAD
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:50.3388656Z Submodule path 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests': checked out '8b1d7c2ac248c33c3506b1bff8321758943c5e11'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:51.0930966Z From https://github.com/foundry-rs/forge-std
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:51.0931630Z  * branch            eb980e1d4f0e8173ec27da77297ae411840c8ccb -> FETCH_HEAD
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:51.1021710Z Submodule path 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std': checked out 'eb980e1d4f0e8173ec27da77297ae411840c8ccb'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:51.1042298Z Submodule 'lib/ds-test' (https://github.com/dapphub/ds-test) registered for path 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:51.1072104Z Cloning into '/home/runner/work/agenthub/agenthub/packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'...
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1536952Z From https://github.com/dapphub/ds-test
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1537621Z  * branch            cd98eff28324bfac652e63a239a60632a761790b -> FETCH_HEAD
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1598906Z Submodule path 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test': checked out 'cd98eff28324bfac652e63a239a60632a761790b'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1638999Z [command]/usr/bin/git submodule foreach --recursive git config --local gc.auto 0
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1903558Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1944546Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.1984918Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2025871Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2064368Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2122714Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2123822Z ##[group]Persisting credentials for submodules
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2130174Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :"
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2407096Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2456864Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2501587Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2548883Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2594195Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2661064Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local 'http.https://github.com/.extraheader' 'AUTHORIZATION: basic ***' && git config --local --show-origin --name-only --get-regexp remote.origin.url"
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2921726Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2963183Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/forge-std/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.2984226Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3025713Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3045570Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3086807Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/erc4626-tests/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3108642Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3150308Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3170178Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3211488Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/modules/lib/ds-test/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3280470Z [command]/usr/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3545239Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3586324Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3625568Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3667477Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3709934Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.3773007Z [command]/usr/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'org-139180936@github.com:'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4031392Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4072015Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4112151Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4152824Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4191606Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4246439Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4294662Z [command]/usr/bin/git log -1 --format=%H
+E2E (smoke + wallet, real build + anvil)	Run actions/checkout@v4	2026-11-19T13:39:52.4320627Z 39fcb94becf5e5dd18d7f4561868139fd30dce27
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	﻿2026-11-19T13:39:52.4562149Z ##[group]Run pnpm/action-setup@v3
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4562447Z with:
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4562640Z   version: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4562847Z   dest: ~/setup-pnpm
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4563060Z   run_install: null
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4563285Z   package_json_file: package.json
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4563539Z   standalone: false
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4563731Z env:
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4563913Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4564145Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4564370Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4564589Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4564807Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.4565013Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.5482427Z ##[group]Running self-installer...
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.9778056Z (node:2882) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:52.9779115Z (Use `node --trace-deprecation ...` to show where the warning was created)
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.1624272Z Progress: resolved 1, reused 0, downloaded 0, added 0
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.1740970Z Packages: +1
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.1741623Z +
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5417058Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5830907Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5831416Z dependencies:
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5831860Z + pnpm 9.15.4 (12.21.0 is available)
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5832163Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.5858966Z Done in 855ms
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.6076768Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run pnpm/action-setup@v3	2026-11-19T13:39:53.6077314Z Installation Completed!
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	﻿2026-11-19T13:39:53.6254258Z ##[group]Run actions/setup-node@v4
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6254558Z with:
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6254761Z   node-version: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6254980Z   cache: pnpm
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6255175Z   always-auth: false
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6255624Z   check-latest: false
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6257951Z   token: ***
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6258151Z env:
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6258342Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6258566Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6258784Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6259011Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6259229Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6259493Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.6259801Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.7689811Z Attempting to download 20.20.2...
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.7795685Z (node:2898) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:53.7797004Z (Use `node --trace-deprecation ...` to show where the warning was created)
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:54.5666393Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:55.0083882Z Extracting ...
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:55.0221761Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/27eb450a-c8ef-407a-8d5e-e519c31b0882 -f /home/runner/work/_temp/54674f97-e732-4c32-9593-817a206239fe
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:55.6832461Z Adding to the cache ...
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.2013428Z ##[group]Environment details
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.4343470Z node: v20.20.2
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.4343859Z npm: 10.8.2
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.4344054Z yarn: 1.22.22
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.4344533Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.4364522Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.8306356Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+E2E (smoke + wallet, real build + anvil)	Run actions/setup-node@v4	2026-11-19T13:39:57.9896535Z pnpm cache is not found
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	﻿2026-11-19T13:39:58.0120867Z ##[group]Run foundry-rs/foundry-toolchain@v1
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0121209Z with:
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0121403Z   version: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0121605Z   network: ethereum
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0121805Z   cache: true
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0122061Z   cache-key: e2e-39fcb94becf5e5dd18d7f4561868139fd30dce27
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0122407Z   cache-restore-keys: e2e-
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0122627Z env:
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0122806Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0123021Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0123244Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0123467Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0123683Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0123944Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.0124261Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.1450178Z Installing Foundry (version: 1.9.0)
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.1456890Z Downloading foundryup installer from foundry-rs/foundryup@a27902ef04dcb43061fabf343365cb5afc95fc48...
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.2106454Z Running foundryup installer...
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:39:58.8530982Z Running: foundryup --install 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.3499634Z Added /home/runner/.foundry/bin to PATH
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.3501048Z Primary key: linux-foundry-chain-fork-e2e-39fcb94becf5e5dd18d7f4561868139fd30dce27
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.3507839Z Restore keys: linux-foundry-chain-fork-e2e-
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4737608Z Cache not found
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4738153Z Running: forge --version
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4809728Z forge Version: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4810369Z Commit SHA: 6056c5845d34205a83cf7108042adb137325c9df
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4811146Z Build Timestamp: 2026-11-02T20:28:32.434285913Z (1793651312)
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4811725Z Build Profile: dist
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4816860Z Running: cast --version
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4915888Z cast Version: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4916459Z Commit SHA: 6056c5845d34205a83cf7108042adb137325c9df
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4916988Z Build Timestamp: 2026-11-02T20:28:32.434285913Z (1793651312)
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4917437Z Build Profile: dist
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4927914Z Running: anvil --version
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4971261Z anvil Version: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4971847Z Commit SHA: 6056c5845d34205a83cf7108042adb137325c9df
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4972593Z Build Timestamp: 2026-11-02T20:28:32.434285913Z (1793651312)
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4975586Z Build Profile: dist
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.4976060Z Running: chisel --version
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.5016108Z chisel Version: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.5016717Z Commit SHA: 6056c5845d34205a83cf7108042adb137325c9df
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.5017487Z Build Timestamp: 2026-11-02T20:28:32.434285913Z (1793651312)
+E2E (smoke + wallet, real build + anvil)	Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:40:01.5018075Z Build Profile: dist
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	﻿2026-11-19T13:40:01.5160459Z ##[group]Run pnpm install --frozen-lockfile
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5160888Z ^[[36;1mpnpm install --frozen-lockfile^[[0m
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5217206Z shell: /usr/bin/bash -e {0}
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5217469Z env:
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5217664Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5217889Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5218104Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5218338Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5218558Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5218844Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.5219164Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:01.9573426Z Scope: all 5 workspace projects
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:02.0248305Z Lockfile is up to date, resolution step is skipped
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:02.1065568Z Progress: resolved 1, reused 0, downloaded 0, added 0
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:02.2362710Z Packages: +862
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:02.2363625Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:03.1086814Z Progress: resolved 862, reused 0, downloaded 141, added 137
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:04.1127557Z Progress: resolved 862, reused 0, downloaded 319, added 313
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:05.1127405Z Progress: resolved 862, reused 0, downloaded 334, added 322
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:06.1125881Z Progress: resolved 862, reused 0, downloaded 350, added 334
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:07.1137217Z Progress: resolved 862, reused 0, downloaded 426, added 417
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:08.1146673Z Progress: resolved 862, reused 0, downloaded 555, added 545
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:09.1130280Z Progress: resolved 862, reused 0, downloaded 762, added 756
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:10.1139602Z Progress: resolved 862, reused 0, downloaded 861, added 861
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:10.7057817Z Progress: resolved 862, reused 0, downloaded 862, added 862, done
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.0067431Z .../node_modules/bufferutil install$ node-gyp-build
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.0086275Z .../node_modules/utf-8-validate install$ node-gyp-build
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.0087218Z .../keccak@3.0.4/node_modules/keccak install$ node-gyp-build || exit 0
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.0495110Z .../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.1906017Z .../node_modules/bufferutil install: Done
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.1975883Z .../node_modules/utf-8-validate install: Done
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.2418954Z .../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.2442818Z .../keccak@3.0.4/node_modules/keccak install: Done
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4572772Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4573557Z devDependencies:
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4574405Z + @typescript-eslint/eslint-plugin 8.12.2
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4575105Z + @typescript-eslint/parser 8.12.2
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4575820Z + eslint 8.57.1
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4576252Z + eslint-config-next 15.5.29
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4576792Z + eslint-config-prettier 9.1.0
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4577268Z + prettier 3.3.3
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4577679Z + typescript 5.6.3
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4577920Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm install --frozen-lockfile	2026-11-19T13:40:11.4804297Z Done in 9.9s
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	﻿2026-11-19T13:40:11.6012079Z ##[group]Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6013141Z ^[[36;1mpnpm --filter @agenthub/web exec playwright install --with-deps chromium^[[0m
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6079712Z shell: /usr/bin/bash -e {0}
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080114Z env:
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080417Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6080780Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081136Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081516Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6081882Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6082309Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:11.6082824Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.5943965Z Installing dependencies...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.6098017Z Switching to root user to install dependencies...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7326854Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7697176Z Hit:2 http://azure.archive.ubuntu.com/ubuntu resolute InRelease
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7726558Z Get:3 http://azure.archive.ubuntu.com/ubuntu resolute-updates InRelease [137 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7752724Z Get:6 https://packages.microsoft.com/ubuntu/26.04/prod resolute InRelease [3964 B]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7848845Z Get:4 http://azure.archive.ubuntu.com/ubuntu resolute-backports InRelease [137 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.7866743Z Get:5 http://azure.archive.ubuntu.com/ubuntu resolute-security InRelease [137 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8318750Z Get:7 https://packages.microsoft.com/ubuntu/26.04/prod resolute/main arm64 Packages [151 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8582870Z Get:8 http://azure.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 Packages [876 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8626532Z Get:12 https://packages.microsoft.com/ubuntu/26.04/prod resolute/main amd64 Packages [165 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8627995Z Get:9 http://azure.archive.ubuntu.com/ubuntu resolute-updates/main Translation-en [196 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8630726Z Get:10 http://azure.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 Packages [394 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8678151Z Get:11 http://azure.archive.ubuntu.com/ubuntu resolute-updates/universe Translation-en [124 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8940504Z Get:13 http://azure.archive.ubuntu.com/ubuntu resolute-security/main amd64v3 Packages [721 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.8997320Z Get:14 http://azure.archive.ubuntu.com/ubuntu resolute-security/main Translation-en [158 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.9021842Z Get:15 http://azure.archive.ubuntu.com/ubuntu resolute-security/universe amd64v3 Packages [222 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.9027688Z Get:16 http://azure.archive.ubuntu.com/ubuntu resolute-security/universe Translation-en [72.7 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.9040629Z Get:17 http://azure.archive.ubuntu.com/ubuntu resolute-security/restricted amd64v3 Packages [590 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:12.9079917Z Get:18 http://azure.archive.ubuntu.com/ubuntu resolute-security/restricted Translation-en [122 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.0140711Z Fetched 4207 kB in 0s (10.3 MB/s)
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.6968333Z Reading package lists...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.7231360Z Reading package lists...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.8932061Z Building dependency tree...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.8940719Z Reading state information...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9334153Z libasound2t64 is already the newest version (1.2.15.3-1ubuntu1.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9334695Z libasound2t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9335182Z libatk-bridge2.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9335944Z libatk-bridge2.0-0t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9336429Z libatk1.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9336851Z libatk1.0-0t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9337479Z libatspi2.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9338234Z libatspi2.0-0t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9338893Z libcairo2 is already the newest version (1.18.4-3).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9339521Z libcairo2 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9340145Z libcups2t64 is already the newest version (2.4.16-1ubuntu1.3).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9340948Z libcups2t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9341364Z libdbus-1-3 is already the newest version (1.16.2-2ubuntu4).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9341753Z libdbus-1-3 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9342104Z libdrm2 is already the newest version (2.4.131-1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9342455Z libdrm2 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9342832Z libgbm1 is already the newest version (26.0.8-1ubuntu0.3).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9343205Z libgbm1 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9343612Z libglib2.0-0t64 is already the newest version (2.88.0-1ubuntu0.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9344028Z libglib2.0-0t64 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9344448Z libnspr4 is already the newest version (2:4.38.2-1ubuntu1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9344829Z libnspr4 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9345215Z libnss3 is already the newest version (2:3.120-1ubuntu2.2).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9345821Z libnss3 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9346286Z libpango-1.0-0 is already the newest version (1.57.0-1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9347324Z libpango-1.0-0 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9348422Z libx11-6 is already the newest version (2:1.8.13-1ubuntu0.1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9349326Z libx11-6 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9350101Z libxcb1 is already the newest version (1.17.0-2ubuntu1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9350891Z libxcb1 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9351611Z libxcomposite1 is already the newest version (1:0.4.6-1build1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9352345Z libxcomposite1 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9353014Z libxdamage1 is already the newest version (1:1.1.7-1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9353645Z libxdamage1 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9354309Z libxext6 is already the newest version (2:1.3.4-1build3).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9355154Z libxext6 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9355998Z libxfixes3 is already the newest version (1:6.0.0-2build2).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9356700Z libxfixes3 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9357364Z libxkbcommon0 is already the newest version (1.13.1-1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9358020Z libxkbcommon0 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9358422Z libxrandr2 is already the newest version (2:1.5.4-1build1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9358812Z libxrandr2 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9359209Z xvfb is already the newest version (2:21.1.22-1ubuntu1.3).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9359714Z fonts-noto-color-emoji is already the newest version (2.051-1build1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9360236Z libfontconfig1 is already the newest version (2.17.1-3ubuntu1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9360647Z libfontconfig1 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9361083Z libfreetype6 is already the newest version (2.14.2+dfsg-1ubuntu0.2).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9361498Z libfreetype6 set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9361931Z fonts-liberation is already the newest version (1:2.1.5-3build1).
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9362354Z fonts-liberation set to manually installed.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:15.9959929Z Solving dependencies...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.0868988Z The following additional packages will be installed:
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.0869484Z   xfonts-encodings xfonts-utils
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.0875541Z Recommended packages:
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.0875866Z   fonts-ipafont-mincho fonts-tlwg-loma
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1314340Z The following NEW packages will be installed:
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1315622Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1321539Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1322293Z   xfonts-utils
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1586587Z 0 upgraded, 9 newly installed, 0 to remove and 34 not upgraded.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1587353Z Need to get 21.9 MB of archives.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1588091Z After this operation, 80.2 MB of additional disk space will be used.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.1588921Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.2116126Z Get:2 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-ipafont-gothic all 00303-23ubuntu1 [3703 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.3036080Z Get:3 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 fonts-freefont-ttf all 20211204+svn4273-4build1 [5656 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.4181699Z Get:4 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-tlwg-loma-otf all 1:0.7.3-1build1 [106 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.4567505Z Get:5 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-unifont all 1:16.0.04-1build1 [3169 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.5246792Z Get:6 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-wqy-zenhei all 0.9.45-8build1 [7863 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.6433166Z Get:7 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 xfonts-encodings all 1:1.0.5-0ubuntu3 [576 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.6823323Z Get:8 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 xfonts-utils amd64 1:7.7+7build1 [97.3 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.7216238Z Get:9 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 xfonts-cyrillic all 1:1.0.5+nmu1build1 [384 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:16.7627202Z Get:10 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 xfonts-scalable all 1:1.0.3-1.3build1 [304 kB]
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.0808365Z Fetched 21.9 MB in 1s (35.3 MB/s)
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1252957Z Selecting previously unselected package fonts-ipafont-gothic.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1575252Z (Reading database ... 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1576266Z (Reading database ... 5%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1576557Z (Reading database ... 10%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1576825Z (Reading database ... 15%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1577106Z (Reading database ... 20%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1577666Z (Reading database ... 25%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1578331Z (Reading database ... 30%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1578738Z (Reading database ... 35%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1578981Z (Reading database ... 40%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1579222Z (Reading database ... 45%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.1579501Z (Reading database ... 50%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.2256113Z (Reading database ... 55%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.4241646Z (Reading database ... 60%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.5662654Z (Reading database ... 65%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.7138303Z (Reading database ... 70%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:17.9157908Z (Reading database ... 75%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.1167618Z (Reading database ... 80%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.3098982Z (Reading database ... 85%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.5185640Z (Reading database ... 90%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.7186643Z (Reading database ... 95%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.7187159Z (Reading database ... 100%
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.7187859Z (Reading database ... 213946 files and directories currently installed.)
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.7227971Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-23ubuntu1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.7330632Z Unpacking fonts-ipafont-gothic (00303-23ubuntu1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.8062563Z Selecting previously unselected package fonts-freefont-ttf.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.8199849Z Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-4build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.8207132Z Unpacking fonts-freefont-ttf (20211204+svn4273-4build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9056380Z Selecting previously unselected package fonts-tlwg-loma-otf.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9194487Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9201688Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9425147Z Selecting previously unselected package fonts-unifont.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9562383Z Preparing to unpack .../3-fonts-unifont_1%3a16.0.04-1build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:18.9569601Z Unpacking fonts-unifont (1:16.0.04-1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.0662496Z Selecting previously unselected package fonts-wqy-zenhei.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.0799458Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.0940389Z Unpacking fonts-wqy-zenhei (0.9.45-8build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.1777370Z Selecting previously unselected package xfonts-encodings.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.1916243Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu3_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.1922233Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu3) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2209015Z Selecting previously unselected package xfonts-utils.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2346496Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+7build1_amd64v3.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2352735Z Unpacking xfonts-utils (1:7.7+7build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2702990Z Selecting previously unselected package xfonts-cyrillic.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2840918Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.2848628Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3187014Z Selecting previously unselected package xfonts-scalable.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3323964Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3build1_all.deb ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3332743Z Unpacking xfonts-scalable (1:1.0.3-1.3build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3768826Z Setting up fonts-wqy-zenhei (0.9.45-8build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3912078Z Setting up fonts-freefont-ttf (20211204+svn4273-4build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3930991Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3947885Z Setting up xfonts-encodings (1:1.0.5-0ubuntu3) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.3968011Z Setting up fonts-ipafont-gothic (00303-23ubuntu1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.4028768Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.4042505Z Setting up fonts-unifont (1:16.0.04-1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.4059505Z Setting up xfonts-utils (1:7.7+7build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.4109215Z Setting up xfonts-cyrillic (1:1.0.5+nmu1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.4864701Z Setting up xfonts-scalable (1:1.0.3-1.3build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.5262215Z Processing triggers for man-db (2.13.1-1build1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.5282774Z Not building database; man-db/auto-update is not 'true'.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:19.5294380Z Processing triggers for fontconfig (2.17.1-3ubuntu1) ...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3708374Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3709054Z Running kernel seems to be up-to-date.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3709464Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3709652Z Restarting services...
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3800362Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3800768Z Service restarts being deferred:
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3803939Z  systemctl restart hosted-compute-agent.service
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3804369Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3804704Z No containers need to be restarted.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3805022Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3805550Z No user sessions are running outdated binaries.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3805930Z 
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:20.3806410Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:21.1946194Z Downloading Chrome for Testing 159.0.8154.6 (playwright chromium v1255) from https://cdn.playwright.dev/builds/cft/159.0.8154.6/linux64/chrome-linux64.zip
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:21.6760788Z |                                                                                |   0% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.0474067Z |■■■■■■■■                                                                        |  10% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.1550563Z |■■■■■■■■■■■■■■■■                                                                |  20% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.2420635Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.3363458Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.4357394Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.5340793Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.6252152Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.7040234Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.7843678Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:22.8630985Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 199.3 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:25.9315013Z Chrome for Testing 159.0.8154.6 (playwright chromium v1255) downloaded to /home/runner/.cache/ms-playwright/chromium-1255
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:25.9318808Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.3689669Z |                                                                                |   0% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4233362Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4482224Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4636530Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4729748Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4812195Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.4904776Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.5139200Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.5240280Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.5271250Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.5300125Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.6135179Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:26.6138065Z Downloading Chrome Headless Shell 159.0.8154.6 (playwright chromium-headless-shell v1255) from https://cdn.playwright.dev/builds/cft/159.0.8154.6/linux64/chrome-headless-shell-linux64.zip
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.0611128Z |                                                                                |   0% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.2579599Z |■■■■■■■■                                                                        |  10% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.3363290Z |■■■■■■■■■■■■■■■■                                                                |  20% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.4002864Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.4627858Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.5266047Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.5908610Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.6560785Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.7209795Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.7861319Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:27.8485186Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 125.7 MiB
+E2E (smoke + wallet, real build + anvil)	Run pnpm --filter @agenthub/web exec playwright install --with-deps chromium	2026-11-19T13:40:30.0733747Z Chrome Headless Shell 159.0.8154.6 (playwright chromium-headless-shell v1255) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1255
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	﻿2026-11-19T13:40:30.1004613Z ##[group]Run bash apps/web/scripts/run-e2e-smoke.sh
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1005045Z ^[[36;1mbash apps/web/scripts/run-e2e-smoke.sh^[[0m
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1056351Z shell: /usr/bin/bash -e {0}
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1056623Z env:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1056817Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1057047Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1057267Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1057498Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1057721Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1057989Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1058299Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1281795Z === E2E smoke run: 2026-11-19T13:40:30Z ===
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:30.1282347Z --- next build ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.0983741Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.1117318Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.1118951Z This information is used to shape Next.js' roadmap and prioritize features.
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.1120808Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.1122166Z https://nextjs.org/telemetry
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.1122630Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.2252037Z    ▲ Next.js 15.5.29
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.2252814Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:31.3095932Z    Creating an optimized production build ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6586999Z  ⚠ Compiled with warnings in 11.5s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6587606Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6591086Z ../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6594142Z Module not found: Can't resolve 'encoding' in '/home/runner/work/agenthub/agenthub/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es'
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6595252Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6595732Z Import trace for requested module:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6596900Z ../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6598704Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6600351Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6602031Z ../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6602972Z ./lib/wagmi.ts
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6603260Z ./lib/providers.tsx
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6603475Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6603836Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6604767Z Module not found: Can't resolve 'pino-pretty' in '/home/runner/work/agenthub/agenthub/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6605555Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6605798Z Import trace for requested module:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6616570Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6617197Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6617903Z ../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6619011Z ../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6620810Z ../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@19.3.0_bufferutil@4.2.0_react@19.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6622532Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6624020Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6625724Z ../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6626542Z ./lib/wagmi.ts
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6626774Z ./lib/providers.tsx
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:43.6626903Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:46.8815894Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:46.8856190Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:46.8866547Z Retrying 1/3...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:56.1420728Z  ✓ Compiled successfully in 22.2s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:40:56.1471514Z    Linting and checking validity of types ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:05.9961473Z    Collecting page data ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:07.8354716Z    Generating static pages (0/11) ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7987624Z    Generating static pages (2/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7988301Z    Generating static pages (5/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7988811Z    Generating static pages (8/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:08.7989580Z  ✓ Generating static pages (11/11)
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:09.2408308Z    Finalizing page optimization ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:09.2446011Z    Collecting build traces ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5293722Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5321165Z Route (app)                                 Size  First Load JS
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5322446Z ┌ ○ /                                      915 B         181 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5323479Z ├ ○ /_not-found                            993 B         103 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5324503Z ├ ○ /campaigns                           1.02 kB         204 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5325756Z ├ ○ /dashboard                           1.92 kB         213 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5326684Z ├ ○ /history                             3.96 kB         203 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5327301Z ├ ○ /leaderboard                         3.25 kB         202 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5328067Z ├ ○ /profile                             1.32 kB         213 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5328651Z ├ ○ /quests                              1.11 kB         204 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5329224Z └ ○ /security                              121 B         103 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5329706Z + First Load JS shared by all             102 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5330528Z   ├ chunks/564e42df-2247f253e50666f7.js  54.2 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5331381Z   ├ chunks/7-8b623af2d9538d79.js         46.2 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5332119Z   └ other shared chunks (total)          1.96 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5332501Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5332532Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5332905Z ○  (Static)  prerendered as static content
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5333273Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:16.5565496Z --- starting next start on :3100 ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:17.6079533Z server ready after 2s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:17.6079886Z --- playwright smoke ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1534435Z   PASS GET / -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1800532Z   PASS home shows the AGENTHUB intro
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.1844776Z   PASS home shows the Connect button
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8051542Z   PASS GET /quests -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8234347Z   PASS quests heading
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8420979Z   PASS quests shows the undeployed preview label
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8425923Z   PASS quests shows the First Agent card
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8426516Z   PASS quests shows the Daily Check-in card
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:20.8427146Z   PASS quests does NOT claim live data while undeployed
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:21.4241337Z   PASS GET /dashboard -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:21.4422110Z   PASS /dashboard heading is "Dashboard"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:22.0233019Z   PASS GET /profile -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:22.0424359Z   PASS /profile heading is "Profile"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:22.6034126Z   PASS GET /leaderboard -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:22.6209027Z   PASS /leaderboard heading is "Leaderboard"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:23.1968085Z   PASS GET /history -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:23.2143593Z   PASS /history heading is "Activity History"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:23.7781132Z   PASS GET /campaigns -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:23.7990347Z   PASS /campaigns heading is "Community Campaigns"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.3720611Z   PASS GET /security -> 200
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4073046Z   PASS /security heading is "Security"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4074088Z   PASS no page errors
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4074730Z   PASS no console errors
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4353692Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4354253Z E2E smoke: 23 passed, 0 failed
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4354625Z ALL E2E SMOKE CHECKS PASSED
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-e2e-smoke.sh	2026-11-19T13:41:24.4507467Z log saved: /home/runner/work/agenthub/agenthub/agenthub-final-pretestnet/logs/phase8-e2e-smoke.log
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	﻿2026-11-19T13:41:24.4598216Z ##[group]Run bash apps/web/scripts/run-wallet-e2e.sh
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4598648Z ^[[36;1mbash apps/web/scripts/run-wallet-e2e.sh^[[0m
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4649105Z shell: /usr/bin/bash -e {0}
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4649362Z env:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4649549Z   NODE_VERSION: 20.20.2
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4649770Z   PNPM_VERSION: 9.15.4
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4649984Z   FOUNDRY_VERSION: 1.9.0
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4650203Z   SLITHER_VERSION: 0.11.6
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4650417Z   PYTHON_VERSION: 3.12
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4650668Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:24.4651001Z ##[endgroup]
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:54.8338442Z === anvil up (pid 3889) ===
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:55.3795116Z Compiling 54 files with Solc 0.8.24
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.3781570Z Solc 0.8.24 finished in 2.00s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.3895035Z Compiler run successful!
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4159842Z Script ran successfully.
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4160245Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4162314Z ## Setting up 1 EVM.
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4379770Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4380124Z ==========================
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4380420Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4380563Z Chain 31337
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4380744Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4381015Z Estimated max fee per gas: 2.000000001 gwei
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4381387Z Estimated base fee per gas: 1 gwei
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4381766Z Estimated max priority fee per gas: 0.000000001 gwei
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382008Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382179Z Estimated total gas used for script: 11990596
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382387Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382572Z Estimated amount required: 0.023981192011990596 ETH
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382789Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.4382891Z ==========================
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6794593Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6794906Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6795757Z ==========================
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6796059Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6796351Z ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6849624Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6850907Z Transactions saved to: /home/runner/work/agenthub/agenthub/packages/contracts/broadcast/DeployLocalTestStack.s.sol/31337/run-latest.json
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6852063Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6853249Z Sensitive values saved to: /home/runner/work/agenthub/agenthub/packages/contracts/cache/DeployLocalTestStack.s.sol/31337/run-latest.json
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6854360Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6935219Z === deployment ===
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6958836Z {
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6959406Z   "achievement": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6960034Z   "agentGate": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6960486Z   "agentId": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6960889Z   "alice": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6961279Z   "bob": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6961582Z   "chainId": 31337,
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6961791Z   "deployBlock": 0,
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6962292Z   "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6962743Z   "questManager": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6963486Z   "reputation": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6963907Z   "token": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6964307Z   "validator": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6964705Z   "verifier": "0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3"
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:57.6965134Z }--- next build (against anvil deployment) ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:58.8114305Z    ▲ Next.js 15.5.29
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:58.8126604Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:41:58.8883765Z    Creating an optimized production build ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8441069Z  ⚠ Compiled with warnings in 9.1s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8441473Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8446179Z ../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8449428Z Module not found: Can't resolve 'encoding' in '/home/runner/work/agenthub/agenthub/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es'
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8451480Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8451735Z Import trace for requested module:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8453497Z ../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8456519Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8459190Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8461836Z ../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8463366Z ./lib/wagmi.ts
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8463820Z ./lib/providers.tsx
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8464112Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8464697Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8467739Z Module not found: Can't resolve 'pino-pretty' in '/home/runner/work/agenthub/agenthub/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8468526Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8468794Z Import trace for requested module:
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8469513Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8470350Z ../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8471483Z ../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8473418Z ../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8476117Z ../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@19.3.0_bufferutil@4.2.0_react@19.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8478876Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8481613Z ../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8484269Z ../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8486100Z ./lib/wagmi.ts
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8486456Z ./lib/providers.tsx
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:08.8486676Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:19.1350203Z  ✓ Compiled successfully in 17.6s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:19.1393231Z    Linting and checking validity of types ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:28.5876561Z    Collecting page data ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:30.4464323Z    Generating static pages (0/11) ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5815796Z    Generating static pages (2/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5826207Z    Generating static pages (5/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5826976Z    Generating static pages (8/11) 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:31.5828379Z  ✓ Generating static pages (11/11)
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:32.0523213Z    Finalizing page optimization ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:32.0525104Z    Collecting build traces ...
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4183510Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4212347Z Route (app)                                 Size  First Load JS
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4213627Z ┌ ○ /                                      915 B         181 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4215095Z ├ ○ /_not-found                            993 B         103 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4216301Z ├ ○ /campaigns                           1.02 kB         204 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4217238Z ├ ○ /dashboard                           1.92 kB         213 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4218169Z ├ ○ /history                             3.96 kB         203 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4219112Z ├ ○ /leaderboard                         3.25 kB         202 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4220125Z ├ ○ /profile                             1.32 kB         213 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4221077Z ├ ○ /quests                              1.11 kB         204 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4222006Z └ ○ /security                              121 B         103 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4222763Z + First Load JS shared by all             102 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4223532Z   ├ chunks/564e42df-2247f253e50666f7.js  54.2 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4224287Z   ├ chunks/7-8b623af2d9538d79.js         46.2 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4224977Z   └ other shared chunks (total)          1.96 kB
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4225528Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4225545Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4225952Z ○  (Static)  prerendered as static content
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4226302Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:39.4460356Z --- starting next start on :3101 ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:40.4984002Z server ready after 2s
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:40.4984657Z --- playwright wallet E2E ---
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:42.3117907Z   PASS home loads
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:43.8622035Z   PASS wallet connected — truncated bob address shown
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:46.5404165Z   PASS Agent ID verified for bob (mock ID in test stack)
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1626993Z   PASS quests page shows the live label
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1627784Z   PASS quests page does NOT show the undeployed preview label
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1628465Z   PASS on-chain quest listed: First Steps
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1629030Z   PASS on-chain quest listed: Hold 100 Tokens
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1629587Z   PASS on-chain quest listed: Post on X
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:49.1679610Z   PASS q1 Complete button is enabled for bob
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:55.1993577Z   PASS q1 shows Completed after tx confirms
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:55.2069229Z   PASS on-chain: hasCompleted(bob, q1) is true
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:55.2069844Z   PASS on-chain: points(bob) is 50 after q1
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:57.8313247Z   PASS dashboard shows 50 pts for bob
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:42:57.8391911Z   PASS attestation signed for bob/q3 in Node
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:00.9867746Z   PASS attestation form appears after toggling
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:01.0838583Z   PASS form verifies the attestation (signer holds VERIFIER_ROLE)
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:07.1375953Z   PASS q3 shows Completed after attested tx confirms
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:07.1420309Z   PASS on-chain: hasCompleted(bob, q3) is true
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:07.1420778Z   PASS on-chain: points(bob) is 150 after q3
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:12.1816167Z   PASS q2 button still reads 'Complete (on-chain check)'
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:12.1839838Z   PASS on-chain: hasCompleted(bob, q2) stays false
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.2860296Z   PASS mobile (375px): no horizontal overflow on /quests
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3071450Z   PASS mobile: wallet button visible
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3072080Z   PASS no page errors
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3072492Z   PASS no console errors
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3384062Z 
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3384713Z Wallet E2E: 25 passed, 0 failed
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3385989Z ALL WALLET E2E CHECKS PASSED
+E2E (smoke + wallet, real build + anvil)	Run bash apps/web/scripts/run-wallet-e2e.sh	2026-11-19T13:43:14.3526892Z log saved: /home/runner/work/agenthub/agenthub/agenthub-final-release/logs/phase-f-wallet-e2e.log
+E2E (smoke + wallet, real build + anvil)	Post Run foundry-rs/foundry-toolchain@v1	﻿2026-11-19T13:43:14.3703322Z Post job cleanup.
+E2E (smoke + wallet, real build + anvil)	Post Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:43:14.5280430Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/agenthub/agenthub --files-from manifest.txt --use-compress-program zstdmt
+E2E (smoke + wallet, real build + anvil)	Post Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:43:14.8958181Z Sent 285 of 285 (100.0%), 0.0 MBs/sec
+E2E (smoke + wallet, real build + anvil)	Post Run foundry-rs/foundry-toolchain@v1	2026-11-19T13:43:15.0401248Z Cache saved with the key: linux-foundry-chain-fork-e2e-39fcb94becf5e5dd18d7f4561868139fd30dce27
+E2E (smoke + wallet, real build + anvil)	Post Run actions/setup-node@v4	﻿2026-11-19T13:43:15.0529201Z Post job cleanup.
+E2E (smoke + wallet, real build + anvil)	Post Run actions/setup-node@v4	2026-11-19T13:43:15.1862345Z (node:4346) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+E2E (smoke + wallet, real build + anvil)	Post Run actions/setup-node@v4	2026-11-19T13:43:15.1863754Z (Use `node --trace-deprecation ...` to show where the warning was created)
+E2E (smoke + wallet, real build + anvil)	Post Run actions/setup-node@v4	2026-11-19T13:43:15.2111528Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/agenthub/agenthub --files-from manifest.txt --use-compress-program zstdmt
+E2E (smoke + wallet, real build + anvil)	Post Run actions/setup-node@v4	2026-11-19T13:43:18.8010205Z Failed to save: Unable to reserve cache with key node-cache-Linux-x64-pnpm-b473a402a441cd2564c7618a8546cd2fe25dc18089de0c75b6219fce5db527d4, another job may be creating this cache.
+E2E (smoke + wallet, real build + anvil)	Post Run pnpm/action-setup@v3	﻿2026-11-19T13:43:18.8381672Z Post job cleanup.
+E2E (smoke + wallet, real build + anvil)	Post Run pnpm/action-setup@v3	2026-11-19T13:43:18.9320701Z Pruning is unnecessary.
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	﻿2026-11-19T13:43:18.9517577Z Post job cleanup.
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0417317Z [command]/usr/bin/git version
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0464827Z git version 2.56.1
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0507444Z Temporarily overriding HOME='/home/runner/work/_temp/354ee4fe-26d9-4841-ae22-0067b40d343b' before making global git config changes
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0509148Z Adding repository directory to the temporary git global config as a safe directory
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0514829Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agenthub/agenthub
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0562934Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0601442Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0901417Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0951612Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.0999206Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1054974Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1105901Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1188211Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1249712Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1257411Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1297839Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1589912Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1616386Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1653098Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1683259Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1721092Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1749507Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1790411Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1817213Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1852878Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1879688Z http.https://github.com/.extraheader
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1938505Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.1977270Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2245903Z Entering 'packages/contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2265752Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/forge-std/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2285209Z Entering 'packages/contracts/lib/openzeppelin-contracts'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2305235Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2324377Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/erc4626-tests'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2344932Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/erc4626-tests/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2376850Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2387690Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2405908Z Entering 'packages/contracts/lib/openzeppelin-contracts/lib/forge-std/lib/ds-test'
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2426868Z file:/home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/modules/lib/ds-test/config	remote.origin.url
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2469488Z [command]/usr/bin/git config --file /home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/forge-std/config --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2507763Z [command]/usr/bin/git config --file /home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/config --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2538796Z [command]/usr/bin/git config --file /home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/erc4626-tests/config --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2569200Z [command]/usr/bin/git config --file /home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/config --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Post Run actions/checkout@v4	2026-11-19T13:43:19.2601899Z [command]/usr/bin/git config --file /home/runner/work/agenthub/agenthub/.git/modules/packages/contracts/lib/openzeppelin-contracts/modules/lib/forge-std/modules/lib/ds-test/config --name-only --get-regexp ^includeIf\.gitdir:
+E2E (smoke + wallet, real build + anvil)	Complete job	﻿2026-11-19T13:43:19.2773169Z Cleaning up orphan processes
+E2E (smoke + wallet, real build + anvil)	Complete job	2026-11-19T13:43:19.3169124Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, pnpm/action-setup@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
