@@ -73,7 +73,8 @@ contract ValidatorAllowlistTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -89,7 +90,8 @@ contract ValidatorAllowlistTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -178,7 +180,8 @@ contract ValidatorAllowlistTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -207,7 +210,8 @@ contract ValidatorAllowlistTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         assertEq(qm.questCount(), 0, "smuggled quest was created");
     }

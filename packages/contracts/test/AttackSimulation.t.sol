@@ -66,7 +66,8 @@ contract AttackSimulationTest is Test {
             badgeId,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -123,7 +124,8 @@ contract AttackSimulationTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -148,7 +150,8 @@ contract AttackSimulationTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         vm.expectRevert();
@@ -175,7 +178,8 @@ contract AttackSimulationTest is Test {
             BADGE_ID,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         vm.expectRevert(RevertingReputation.DownstreamBoom.selector);

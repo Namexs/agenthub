@@ -87,7 +87,8 @@ contract IntegrationTest is Test {
             BADGE_ID,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -153,7 +154,8 @@ contract IntegrationTest is Test {
             0,
             block.timestamp,
             block.timestamp + 7 days,
-            0
+            0,
+            1
         );
         assertEq(qm.getQuest(id).creator, bob);
     }

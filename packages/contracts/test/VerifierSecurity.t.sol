@@ -74,7 +74,8 @@ contract VerifierSecurityTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -108,6 +109,14 @@ contract VerifierSecurityTest is Test {
         return abi.encodePacked(r, s, v);
     }
 
+    /// @dev PHASE 6 (R-010): completeQuestWithAttestation takes a bytes[]
+    /// array now; this wraps a single signature for the single-verifier
+    /// tests in this file (mechanical adapter, no behavior change).
+    function _sigs(bytes memory sig) internal pure returns (bytes[] memory sigs) {
+        sigs = new bytes[](1);
+        sigs[0] = sig;
+    }
+
     function test_FrontRunnerCannotSubmitOthersAttestation() public {
         // The verifier attests Alice's completion; Bob sees the
         // attestation (e.g. in the mempool) and tries to submit it
@@ -119,14 +128,14 @@ contract VerifierSecurityTest is Test {
         assertTrue(garbage != verifier, "test setup: garbage signer collided with verifier");
         vm.prank(bob);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, garbage));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(bob), 0, "front-runner got the points");
         assertEq(reputation.points(alice), 0, "victim got points from a stolen submission");
         assertEq(qm.nonces(alice), 0, "victim nonce consumed by the attack");
         assertEq(qm.nonces(bob), 0, "attacker nonce consumed");
         // Alice can still use her attestation afterwards.
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100);
     }
 
@@ -138,7 +147,7 @@ contract VerifierSecurityTest is Test {
         address garbage = ECDSA.recover(_digest(verifier, attestedQuest, 0, deadline), sig);
         vm.prank(verifier);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, garbage));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
         assertEq(qm.nonces(alice), 0);
     }
@@ -148,7 +157,7 @@ contract VerifierSecurityTest is Test {
         // deadline < block.timestamp). Boundary pinned deliberately.
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, 0, block.timestamp);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, block.timestamp, sig);
+        qm.completeQuestWithAttestation(attestedQuest, block.timestamp, _sigs(sig));
         assertEq(reputation.points(alice), 100);
     }
 
@@ -161,20 +170,20 @@ contract VerifierSecurityTest is Test {
         vm.expectEmit(true, true, true, true, address(qm));
         emit IQuestManager.AttestationUsed(alice, attestedQuest, 0, verifier2);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
     }
 
     function test_NoncesAreIsolatedPerAccount() public {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory aliceSig = _sign(VERIFIER_KEY, alice, attestedQuest, 0, deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, aliceSig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(aliceSig));
         assertEq(qm.nonces(alice), 1);
         assertEq(qm.nonces(bob), 0, "alice completion touched bob nonce");
         // Bob completes the same quest with HIS nonce 0.
         bytes memory bobSig = _sign(VERIFIER_KEY, bob, attestedQuest, 0, deadline);
         vm.prank(bob);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, bobSig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(bobSig));
         assertEq(reputation.points(bob), 100);
         assertEq(qm.nonces(bob), 1);
     }

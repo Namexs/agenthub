@@ -208,7 +208,8 @@ contract PauserRoleTest is CanonicalSafeHelper {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(multisig);
         qm.pause();

@@ -170,7 +170,8 @@ contract DeployScriptTest is CanonicalSafeHelper {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         qm.completeQuest(id);

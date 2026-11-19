@@ -14,10 +14,12 @@ pragma solidity ^0.8.24;
 ///   Honest label for streaks/attendance — NEVER proof of external activity.
 /// - OnChain: completion calls the quest's validator contract, which checks
 ///   an on-chain condition (e.g. a token balance) for the completer.
-/// - Attested: completion requires an EIP-712 attestation signed by an
-///   authorized verifier (VERIFIER_ROLE), bound to account + questId +
-///   nonce + deadline. This is the ONLY kind that may represent off-chain
-///   activity (e.g. "post on X").
+/// - Attested: completion requires EIP-712 attestations signed by
+///   authorized verifiers (VERIFIER_ROLE), bound to account + questId +
+///   nonce + deadline. PHASE 6 (R-010): each quest declares an
+///   attestationThreshold (1–3) — the minimum number of DISTINCT
+///   verifier signatures required. This is the ONLY kind that may
+///   represent off-chain activity (e.g. "post on X").
 interface IQuestManager {
     enum QuestType {
         DailyCheckIn,
@@ -50,6 +52,11 @@ interface IQuestManager {
         uint256 maxCompletions;
         uint256 completions;
         bool active;
+        /// @dev PHASE 6 (R-010): minimum number of DISTINCT VERIFIER_ROLE
+        /// signatures an attestation must carry for this quest (1–3).
+        /// Set at creation, immutable afterwards. Only Attested quests
+        /// use it; other kinds store it but never enforce it.
+        uint8 attestationThreshold;
     }
 
     /// @notice A validator registry entry. Approval is per INSTANCE, not
@@ -97,6 +104,16 @@ interface IQuestManager {
     error InvalidAttestationSignature(bytes32 errorArg);
     /// @dev The attestation was not signed by a VERIFIER_ROLE holder.
     error UnauthorizedVerifier(address signer);
+    /// @dev PHASE 6 (R-010): the same verifier signed twice in one
+    /// attestation array — duplicates are rejected, never counted once.
+    error DuplicateAttestationSigner(address signer);
+    /// @dev PHASE 6 (R-010): fewer distinct valid verifier signatures
+    /// than the quest's attestation threshold.
+    error InsufficientAttestations(uint256 provided, uint256 required);
+    /// @dev PHASE 6 (R-010): more signatures than MAX_ATTESTATION_SIGNATURES.
+    error TooManyAttestationSignatures(uint256 provided);
+    /// @dev PHASE 6 (R-010): attestationThreshold outside 1–3 at creation.
+    error AttestationThresholdOutOfRange(uint256 threshold);
     /// @dev The on-chain validator rejected the completion.
     error OnChainValidationFailed(uint256 questId, address account);
     /// @dev Validator address mismatches the quest's validation kind:
@@ -150,6 +167,9 @@ interface IQuestManager {
     /// @dev Validation rules (TEMUAN 1): OnChain quests REQUIRE a validator
     /// contract (code must exist); CheckIn and Attested quests REQUIRE
     /// validator == address(0).
+    /// @dev PHASE 6 (R-010): attestationThreshold (1–3, uniform for all quest
+    /// kinds) is the minimum number of DISTINCT VERIFIER_ROLE signatures an
+    /// attestation must carry. Immutable after creation — there is no setter.
     function createQuest(
         string calldata title,
         string calldata description,
@@ -160,7 +180,8 @@ interface IQuestManager {
         uint256 badgeId,
         uint256 startTime,
         uint256 endTime,
-        uint256 maxCompletions
+        uint256 maxCompletions,
+        uint8 attestationThreshold
     ) external returns (uint256 questId);
 
     /// @notice Complete a CheckIn or OnChain quest. Caller must hold an Agent ID.
@@ -169,13 +190,20 @@ interface IQuestManager {
     /// @dev Reverts with AttestationRequired on Attested quests.
     function completeQuest(uint256 questId) external;
 
-    /// @notice Complete an Attested quest with an EIP-712 attestation from an
-    /// authorized verifier. The attestation binds account + questId + the
-    /// caller's current nonce + deadline; the nonce is consumed on success.
+    /// @notice Complete an Attested quest with EIP-712 attestations from
+    /// authorized verifiers. Every attestation binds account + questId +
+    /// the caller's current nonce + deadline; the nonce is consumed once
+    /// on success, regardless of how many signatures are provided.
+    /// @dev PHASE 6 (R-010): threshold attestation (M-of-N). All signers
+    /// sign the SAME digest. The array must carry at least the quest's
+    /// attestationThreshold DISTINCT VERIFIER_ROLE signers; every
+    /// signature in the array must recover to a distinct VERIFIER_ROLE
+    /// holder (a junk signature anywhere reverts the call), and the
+    /// array is capped at MAX_ATTESTATION_SIGNATURES.
     /// @dev The signature is over the EIP-712 typed data
     /// Attestation(address account, uint256 questId, uint256 nonce, uint256 deadline)
     /// in the domain ("AGENTHUB QuestManager", "1", chainId, this contract).
-    function completeQuestWithAttestation(uint256 questId, uint256 deadline, bytes calldata signature) external;
+    function completeQuestWithAttestation(uint256 questId, uint256 deadline, bytes[] calldata signatures) external;
 
     /// @notice The next attestation nonce for `account`. Verifiers sign the
     /// current nonce; it increments on every attested completion.

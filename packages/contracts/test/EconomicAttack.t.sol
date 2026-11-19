@@ -57,8 +57,23 @@ contract EconomicAttackTest is Test {
             0,
             block.timestamp,
             block.timestamp + window,
-            maxCompletions
+            maxCompletions,
+            1
         );
+    }
+
+    /// @dev PHASE 6 (R-010): the try/catch attempt lives in its own
+    /// function so the farming loops below stay shallow enough for the
+    /// via-IR code generator (an inlined try/catch inside the loop hit
+    /// "stack too deep" under via-IR; see foundry.toml). Behavior is
+    /// identical: one pranked completion attempt, true on success.
+    function _tryComplete(address who, uint256 id) internal returns (bool) {
+        vm.prank(who);
+        try qm.completeQuest(id) {
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     /// @notice ATTACK: hammer a daily quest every hour for 30 days.
@@ -68,11 +83,15 @@ contract EconomicAttackTest is Test {
         uint256 id = _createQuest(IQuestManager.QuestType.DailyCheckIn, 10, 0, 40 days);
         uint256 successes = 0;
         for (uint256 i = 0; i < 24 * 30; i++) {
-            vm.prank(alice);
-            try qm.completeQuest(id) {
+            if (_tryComplete(alice, id)) {
                 successes++;
-            } catch {}
-            vm.warp(block.timestamp + 1 hours);
+            }
+            // vm.getBlockTimestamp(), NOT block.timestamp: under via-IR
+            // the Yul optimizer hoists block.timestamp out of the loop
+            // (it cannot see that vm.warp mutates it), so every
+            // iteration would warp to the same time and the cooldown
+            // would never lapse. The cheatcode call is not hoisted.
+            vm.warp(vm.getBlockTimestamp() + 1 hours);
         }
         assertEq(successes, 30, "daily quest awarded more than once per day");
         assertEq(reputation.points(alice), 300, "points exceed cooldown bound");
@@ -84,11 +103,15 @@ contract EconomicAttackTest is Test {
         uint256 id = _createQuest(IQuestManager.QuestType.Weekly, 70, 0, 40 days);
         uint256 successes = 0;
         for (uint256 i = 0; i < 24 * 28; i++) {
-            vm.prank(alice);
-            try qm.completeQuest(id) {
+            if (_tryComplete(alice, id)) {
                 successes++;
-            } catch {}
-            vm.warp(block.timestamp + 1 hours);
+            }
+            // vm.getBlockTimestamp(), NOT block.timestamp: under via-IR
+            // the Yul optimizer hoists block.timestamp out of the loop
+            // (it cannot see that vm.warp mutates it), so every
+            // iteration would warp to the same time and the cooldown
+            // would never lapse. The cheatcode call is not hoisted.
+            vm.warp(vm.getBlockTimestamp() + 1 hours);
         }
         assertEq(successes, 4, "weekly quest awarded more than once per week");
         assertEq(reputation.points(alice), 280);
@@ -125,6 +148,12 @@ contract EconomicAttackTest is Test {
 
     /// @notice ATTACK: 10 Sybil addresses with NO Agent ID try to farm.
     /// EXPECTED: zero points across all of them.
+    /// @dev PHASE 6 (R-010): the attempts and the points assertions run
+    /// in TWO loops on purpose — one loop holding prank + expectRevert
+    /// + call + assertEq together hit "stack too deep" under the
+    /// via-IR code generator (see foundry.toml). The same 10 attempts
+    /// and the same 10 zero-points assertions run; only the order
+    /// changed (assertions after the attempts, per address).
     function test_SybilWithoutAgentIdsEarnsNothing() public {
         uint256 id = _createQuest(IQuestManager.QuestType.OneTime, 100, 0, 30 days);
         for (uint256 i = 0; i < 10; i++) {
@@ -132,6 +161,9 @@ contract EconomicAttackTest is Test {
             vm.prank(sybil);
             vm.expectRevert();
             qm.completeQuest(id);
+        }
+        for (uint256 i = 0; i < 10; i++) {
+            address sybil = address(uint160(0x5000 + i));
             assertEq(reputation.points(sybil), 0);
         }
         assertEq(qm.getQuest(id).completions, 0);
@@ -153,7 +185,8 @@ contract EconomicAttackTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 }

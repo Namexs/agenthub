@@ -67,7 +67,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
         // Admin WITHOUT the creator role also fails.
         vm.prank(admin);
@@ -82,7 +83,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
         // Creator succeeds.
         vm.prank(creator);
@@ -96,7 +98,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
         assertEq(qm.getQuest(id).creator, creator);
     }
@@ -113,7 +116,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
         vm.prank(stranger);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.NotQuestCreatorOrAdmin.selector, stranger, id));
@@ -272,7 +276,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
         // ...and cannot pause.
         vm.prank(verifier);
@@ -300,7 +305,8 @@ contract AccessControlTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 }

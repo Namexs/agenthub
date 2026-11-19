@@ -71,7 +71,8 @@ contract ValidatorRegistryTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -158,7 +159,8 @@ contract ValidatorRegistryTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 

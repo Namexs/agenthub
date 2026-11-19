@@ -112,7 +112,8 @@ contract QuestManagerTest is Test {
             badgeId,
             block.timestamp,
             block.timestamp + 30 days,
-            maxCompletions
+            maxCompletions,
+            1
         );
     }
 
@@ -128,7 +129,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
     }
 
@@ -144,8 +146,17 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 90 days,
-            0
+            0,
+            1
         );
+    }
+
+    /// @dev PHASE 6 (R-010): completeQuestWithAttestation takes a bytes[]
+    /// array now; this wraps a single signature (mechanical adapter, no
+    /// behavior change).
+    function _sigs(bytes memory sig) internal pure returns (bytes[] memory sigs) {
+        sigs = new bytes[](1);
+        sigs[0] = sig;
     }
 
     // --- createQuest ---
@@ -162,7 +173,8 @@ contract QuestManagerTest is Test {
             BADGE_ID,
             1_000_000,
             2_000_000,
-            10
+            10,
+            1
         );
         assertEq(id, 1);
         IQuestManager.Quest memory q = qm.getQuest(id);
@@ -196,7 +208,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -213,7 +226,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -231,7 +245,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -249,7 +264,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -266,7 +282,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -284,7 +301,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -301,7 +319,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp + 2 days,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -318,7 +337,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp - 2 days,
             block.timestamp - 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -335,7 +355,8 @@ contract QuestManagerTest is Test {
             999,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -389,7 +410,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         qm.completeQuest(id);
@@ -472,7 +494,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp + 1 days,
             block.timestamp + 2 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestNotStarted.selector, id));
@@ -605,7 +628,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -623,7 +647,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -640,7 +665,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -657,7 +683,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 1 days,
-            0
+            0,
+            1
         );
     }
 
@@ -673,7 +700,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         IQuestManager.Quest memory q = qm.getQuest(id);
         assertTrue(q.validationKind == IQuestManager.ValidationKind.Attested);
@@ -694,7 +722,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.AttestationRequired.selector, id));
@@ -706,7 +735,7 @@ contract QuestManagerTest is Test {
         uint256 id = _createOneTime(100, 0, 0);
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestNotAttested.selector, id));
-        qm.completeQuestWithAttestation(id, block.timestamp + 1 days, "");
+        qm.completeQuestWithAttestation(id, block.timestamp + 1 days, _sigs(""));
     }
 
     // --- Fuzz: valid quests are always stored correctly ---
@@ -725,7 +754,8 @@ contract QuestManagerTest is Test {
             0,
             block.timestamp,
             block.timestamp + duration,
-            maxCompletions
+            maxCompletions,
+            1
         );
         IQuestManager.Quest memory q = qm.getQuest(id);
         assertEq(q.rewardPoints, reward);

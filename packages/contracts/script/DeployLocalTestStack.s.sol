@@ -119,7 +119,8 @@ contract DeployLocalTestStack is Script {
                 1,
                 block.timestamp,
                 block.timestamp + 30 days,
-                0
+                0,
+                1
             );
         s.q2 = s.qm
             .createQuest(
@@ -132,7 +133,8 @@ contract DeployLocalTestStack is Script {
                 2,
                 block.timestamp,
                 block.timestamp + 30 days,
-                0
+                0,
+                1
             );
         s.q3 = s.qm
             .createQuest(
@@ -145,7 +147,8 @@ contract DeployLocalTestStack is Script {
                 0,
                 block.timestamp,
                 block.timestamp + 30 days,
-                0
+                0,
+                1
             );
     }
 
@@ -154,7 +157,7 @@ contract DeployLocalTestStack is Script {
         s.qm.completeQuest(s.q2);
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig = _signAttestation(VERIFIER_KEY, address(s.qm), ALICE, s.q3, 0, deadline);
-        s.qm.completeQuestWithAttestation(s.q3, deadline, sig);
+        s.qm.completeQuestWithAttestation(s.q3, deadline, _sigs(sig));
     }
 
     function _writeJson(Stack memory s) internal {
@@ -202,5 +205,13 @@ contract DeployLocalTestStack is Script {
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, digest);
         return abi.encodePacked(r, s, v);
+    }
+
+    /// @dev PHASE 6 (R-010): completeQuestWithAttestation takes a bytes[]
+    /// array now; this wraps a single signature (mechanical adapter, no
+    /// behavior change).
+    function _sigs(bytes memory sig) internal pure returns (bytes[] memory sigs) {
+        sigs = new bytes[](1);
+        sigs[0] = sig;
     }
 }

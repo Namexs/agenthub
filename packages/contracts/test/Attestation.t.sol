@@ -80,7 +80,8 @@ contract AttestationTest is Test {
             BADGE_ID,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         dailyAttestedQuest = qm.createQuest(
             "Daily Post",
@@ -92,7 +93,8 @@ contract AttestationTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
-            0
+            0,
+            1
         );
         vm.stopPrank();
     }
@@ -142,6 +144,14 @@ contract AttestationTest is Test {
         return abi.encodePacked(r, s, v);
     }
 
+    /// @dev PHASE 6 (R-010): completeQuestWithAttestation takes a bytes[]
+    /// array now; this wraps a single signature for the single-verifier
+    /// tests in this file (mechanical adapter, no behavior change).
+    function _sigs(bytes memory sig) internal pure returns (bytes[] memory sigs) {
+        sigs = new bytes[](1);
+        sigs[0] = sig;
+    }
+
     // --- Happy path ---
 
     function test_AttestedCompletionWithValidSignature() public {
@@ -150,7 +160,7 @@ contract AttestationTest is Test {
         vm.expectEmit(true, true, true, true, address(qm));
         emit IQuestManager.AttestationUsed(alice, attestedQuest, 0, verifier);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100);
         assertTrue(achievement.hasBadge(alice, BADGE_ID));
         assertTrue(qm.hasCompleted(alice, attestedQuest));
@@ -163,7 +173,7 @@ contract AttestationTest is Test {
         vm.expectEmit(true, true, false, true, address(qm));
         emit IQuestManager.QuestCompleted(attestedQuest, alice, 100, 1);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
     }
 
     // --- Replay protection ---
@@ -172,13 +182,13 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100);
         // Same signature, same deadline: the nonce moved, so the digest
         // changes and the recovered signer is no longer the verifier.
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100, "replay awarded points twice");
         assertEq(qm.nonces(alice), 1, "replay consumed a nonce");
     }
@@ -193,7 +203,7 @@ contract AttestationTest is Test {
         assertTrue(recovered != verifier, "test setup: wrong-nonce sig recovered the verifier");
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, recovered));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
         assertEq(qm.nonces(alice), 0);
     }
@@ -206,7 +216,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, bob, attestedQuest, qm.nonces(bob), deadline);
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
         assertEq(reputation.points(bob), 0);
     }
@@ -217,7 +227,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, alice, dailyAttestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
     }
 
@@ -227,7 +237,7 @@ contract AttestationTest is Test {
         bytes memory sig = _signFor(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline, 56, address(qm));
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
     }
 
@@ -239,7 +249,7 @@ contract AttestationTest is Test {
             _signFor(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline, block.chainid, address(qm2));
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
     }
 
@@ -250,7 +260,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(ATTACKER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, attacker));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
         assertEq(qm.nonces(alice), 0);
     }
@@ -265,11 +275,11 @@ contract AttestationTest is Test {
         // The old attestation is dead the moment the role is revoked.
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, verifier));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, oldSig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(oldSig));
         // A fresh attestation from the new verifier works.
         bytes memory newSig = _sign(NEW_VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, newSig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(newSig));
         assertEq(reputation.points(alice), 100);
     }
 
@@ -292,7 +302,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.AttestationExpired.selector, deadline, block.timestamp));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(qm.nonces(alice), 0);
     }
 
@@ -307,7 +317,7 @@ contract AttestationTest is Test {
                 block.timestamp + qm.MAX_ATTESTATION_LIFETIME()
             )
         );
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(qm.nonces(alice), 0);
     }
 
@@ -315,7 +325,7 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + qm.MAX_ATTESTATION_LIFETIME();
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100);
     }
 
@@ -335,7 +345,7 @@ contract AttestationTest is Test {
                 IQuestManager.InvalidAttestationSignature.selector, bytes32(SECP256K1_N - uint256(s))
             )
         );
-        qm.completeQuestWithAttestation(attestedQuest, deadline, malleable);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(malleable));
         assertEq(reputation.points(alice), 0);
     }
 
@@ -344,7 +354,7 @@ contract AttestationTest is Test {
         vm.prank(alice);
         // InvalidSignatureLength with the length (0) as the error argument.
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(0))));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, "");
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(""));
     }
 
     function test_ZeroSignatureRejected() public {
@@ -353,7 +363,7 @@ contract AttestationTest is Test {
         vm.prank(alice);
         // InvalidSignature: error argument is bytes32(0).
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(0))));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
     }
 
     function test_ShortSignatureRejected() public {
@@ -364,7 +374,7 @@ contract AttestationTest is Test {
         vm.expectRevert(
             abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(10)))
         );
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
     }
 
     // --- Interaction with the rest of the completion rules ---
@@ -374,7 +384,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, dave, attestedQuest, qm.nonces(dave), deadline);
         vm.prank(dave);
         vm.expectRevert(abi.encodeWithSelector(IAgentGate.NotAgentHolder.selector, dave));
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(dave), 0);
         assertEq(qm.nonces(dave), 0, "failed completion consumed a nonce");
     }
@@ -394,18 +404,19 @@ contract AttestationTest is Test {
             0,
             block.timestamp,
             block.timestamp + 30 days,
+            1,
             1
         );
         uint256 deadline = block.timestamp + 1 days;
         bytes memory aliceSig = _sign(VERIFIER_KEY, alice, capped, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(capped, deadline, aliceSig);
+        qm.completeQuestWithAttestation(capped, deadline, _sigs(aliceSig));
         assertEq(qm.nonces(alice), 1);
 
         bytes memory bobSig = _sign(VERIFIER_KEY, bob, capped, qm.nonces(bob), deadline);
         vm.prank(bob);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestFull.selector, capped));
-        qm.completeQuestWithAttestation(capped, deadline, bobSig);
+        qm.completeQuestWithAttestation(capped, deadline, _sigs(bobSig));
         assertEq(qm.nonces(bob), 0, "failed completion consumed a nonce");
     }
 
@@ -415,7 +426,7 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig1 = _sign(VERIFIER_KEY, alice, dailyAttestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline, sig1);
+        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline, _sigs(sig1));
         assertEq(reputation.points(alice), 10);
 
         // Fresh attestation, same day: cooldown still blocks it.
@@ -426,7 +437,7 @@ contract AttestationTest is Test {
                 IQuestManager.CooldownActive.selector, alice, dailyAttestedQuest, block.timestamp + 1 days
             )
         );
-        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline, sig2);
+        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline, _sigs(sig2));
         assertEq(reputation.points(alice), 10);
 
         // Next day, a fresh attestation works.
@@ -434,7 +445,7 @@ contract AttestationTest is Test {
         uint256 deadline2 = block.timestamp + 1 days;
         bytes memory sig3 = _sign(VERIFIER_KEY, alice, dailyAttestedQuest, qm.nonces(alice), deadline2);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline2, sig3);
+        qm.completeQuestWithAttestation(dailyAttestedQuest, deadline2, _sigs(sig3));
         assertEq(reputation.points(alice), 20);
     }
 
@@ -445,7 +456,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(qm.nonces(alice), 0);
     }
 
@@ -456,7 +467,7 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + deadlineOffset;
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
         vm.prank(alice);
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 100);
         assertEq(qm.nonces(alice), 1);
     }
@@ -467,7 +478,7 @@ contract AttestationTest is Test {
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, wrongNonce, deadline);
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
+        qm.completeQuestWithAttestation(attestedQuest, deadline, _sigs(sig));
         assertEq(reputation.points(alice), 0);
         assertEq(qm.nonces(alice), 0);
     }

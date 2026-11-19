@@ -138,7 +138,8 @@ contract InvariantTest is StdInvariant, Test {
                 BADGE_ID,
                 block.timestamp,
                 block.timestamp + 90 days,
-                0
+                0,
+                1
             )
         );
         questIds.push(
@@ -152,7 +153,8 @@ contract InvariantTest is StdInvariant, Test {
                 0,
                 block.timestamp,
                 block.timestamp + 90 days,
-                0
+                0,
+                1
             )
         );
         questIds.push(
@@ -166,7 +168,8 @@ contract InvariantTest is StdInvariant, Test {
                 0,
                 block.timestamp,
                 block.timestamp + 90 days,
-                0
+                0,
+                1
             )
         );
         questIds.push(
@@ -180,7 +183,8 @@ contract InvariantTest is StdInvariant, Test {
                 0,
                 block.timestamp,
                 block.timestamp + 90 days,
-                2
+                2,
+                1
             )
         );
         questIds.push(
@@ -194,7 +198,8 @@ contract InvariantTest is StdInvariant, Test {
                 0,
                 block.timestamp,
                 block.timestamp + 90 days,
-                0
+                0,
+                1
             )
         );
         vm.stopPrank();

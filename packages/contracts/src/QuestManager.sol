@@ -24,8 +24,10 @@ import {IAchievement} from "./interfaces/IAchievement.sol";
 ///   Honest label for streaks/attendance — never proof of external activity.
 /// - OnChain: completion calls the quest's validator contract, which checks
 ///   an on-chain condition for the completer.
-/// - Attested: completion requires an EIP-712 attestation from a VERIFIER_ROLE
-///   signer, bound to account + questId + nonce + deadline. The ONLY kind
+/// - Attested: completion requires EIP-712 attestations from VERIFIER_ROLE
+///   signers, bound to account + questId + nonce + deadline. PHASE 6
+///   (R-010): each quest declares an attestationThreshold (1–3) — the
+///   minimum number of DISTINCT verifier signatures required. The ONLY kind
 ///   that may represent off-chain activity.
 /// @dev Security properties: role-gated creation, checks-effects-interactions,
 /// nonReentrant completions, per-account cooldowns, duplicate prevention,
@@ -55,6 +57,14 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// submission. Bounds the damage window of a compromised verifier key;
     /// revoking VERIFIER_ROLE invalidates outstanding attestations at once.
     uint256 public constant MAX_ATTESTATION_LIFETIME = 7 days;
+    /// @notice PHASE 6 (R-010): maximum signatures in one attestation
+    /// array. Bounds gas + calldata of a threshold completion.
+    uint256 public constant MAX_ATTESTATION_SIGNATURES = 5;
+    /// @notice PHASE 6 (R-010): attestationThreshold bounds (uniform for
+    /// all quest kinds). 1 preserves single-verifier behavior; 3 is the
+    /// highest threshold the SOP's verifier set is sized for.
+    uint8 public constant MIN_ATTESTATION_THRESHOLD = 1;
+    uint8 public constant MAX_ATTESTATION_THRESHOLD = 3;
 
     IAgentGate public immutable gate;
     IReputation public immutable reputation;
@@ -130,7 +140,8 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         uint256 badgeId,
         uint256 startTime,
         uint256 endTime,
-        uint256 maxCompletions
+        uint256 maxCompletions,
+        uint8 attestationThreshold
     ) external onlyRole(QUEST_CREATOR_ROLE) returns (uint256 questId) {
         if (bytes(title).length == 0 || bytes(title).length > MAX_TITLE_BYTES) {
             revert InvalidQuestParams();
@@ -138,6 +149,13 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (bytes(description).length > MAX_DESCRIPTION_BYTES) revert InvalidQuestParams();
         if (rewardPoints == 0 || rewardPoints > MAX_REWARD_POINTS) revert InvalidQuestParams();
         if (startTime >= endTime || endTime <= block.timestamp) revert InvalidQuestParams();
+        // PHASE 6 (R-010): threshold is uniform for ALL quest kinds (1–3)
+        // and IMMUTABLE after creation — there is deliberately no setter,
+        // so a live quest's bar can never be lowered (or raised to brick
+        // in-flight completions) mid-flight.
+        if (attestationThreshold < MIN_ATTESTATION_THRESHOLD || attestationThreshold > MAX_ATTESTATION_THRESHOLD) {
+            revert AttestationThresholdOutOfRange(attestationThreshold);
+        }
         if (badgeId != 0 && !achievement.isBadgeDefined(badgeId)) {
             revert IAchievement.BadgeNotDefined(badgeId);
         }
@@ -154,22 +172,26 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
             revert InvalidValidator(validator);
         }
         questId = ++_questCount;
-        _quests[questId] = Quest({
-            id: questId,
-            creator: msg.sender,
-            title: title,
-            description: description,
-            questType: questType,
-            validationKind: validationKind,
-            validator: validator,
-            rewardPoints: rewardPoints,
-            badgeId: badgeId,
-            startTime: startTime,
-            endTime: endTime,
-            maxCompletions: maxCompletions, // 0 = unlimited
-            completions: 0,
-            active: true
-        });
+        // Field-by-field storage assignment (not a struct literal): the
+        // 11-parameter signature + struct literal exceeds the EVM stack
+        // ("stack too deep") — this form keeps every value in storage
+        // without holding them all on the stack at once.
+        Quest storage quest = _quests[questId];
+        quest.id = questId;
+        quest.creator = msg.sender;
+        quest.title = title;
+        quest.description = description;
+        quest.questType = questType;
+        quest.validationKind = validationKind;
+        quest.validator = validator;
+        quest.rewardPoints = rewardPoints;
+        quest.badgeId = badgeId;
+        quest.startTime = startTime;
+        quest.endTime = endTime;
+        quest.maxCompletions = maxCompletions; // 0 = unlimited
+        quest.completions = 0;
+        quest.active = true;
+        quest.attestationThreshold = attestationThreshold;
         emit QuestCreated(questId, msg.sender, questType, validationKind, rewardPoints);
     }
 
@@ -187,12 +209,13 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     }
 
     /// @inheritdoc IQuestManager
-    /// @dev Order: kind gate → attestation verification (deadline, EIP-712
-    /// signature, verifier role, nonce consumption) → shared completion.
-    /// The nonce is consumed inside _verifyAttestation; if the completion
-    /// then reverts, the whole transaction reverts and the nonce is NOT
-    /// consumed, so the same attestation can be retried.
-    function completeQuestWithAttestation(uint256 questId, uint256 deadline, bytes calldata signature)
+    /// @dev Order: kind gate → attestation verification (array bounds,
+    /// deadline, EIP-712 signatures, verifier roles, distinctness,
+    /// threshold, nonce consumption) → shared completion.
+    /// The nonce is consumed inside _verifyAttestations; if the
+    /// completion then reverts, the whole transaction reverts and the
+    /// nonce is NOT consumed, so the same attestation can be retried.
+    function completeQuestWithAttestation(uint256 questId, uint256 deadline, bytes[] calldata signatures)
         external
         nonReentrant
         whenNotPaused
@@ -200,38 +223,96 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         Quest storage quest = _quests[questId];
         if (quest.id == 0) revert QuestNotFound(questId);
         if (quest.validationKind != ValidationKind.Attested) revert QuestNotAttested(questId);
-        _verifyAttestation(msg.sender, questId, deadline, signature);
+        _verifyAttestations(msg.sender, questId, deadline, signatures, quest.attestationThreshold);
         _completeQuest(quest, questId);
     }
 
-    /// @notice Verify an EIP-712 attestation and consume the signer's nonce.
-    /// @dev The domain separator binds chainId + this contract (cross-chain
-    /// and cross-contract replay are impossible); the struct binds account +
-    /// questId + nonce + deadline. ECDSA.tryRecover rejects malleable
-    /// signatures (s > n/2) — see OpenZeppelin ECDSA.
-    function _verifyAttestation(address account, uint256 questId, uint256 deadline, bytes calldata signature) internal {
+    /// @notice Verify an array of EIP-712 attestations and consume the
+    /// account nonce exactly once.
+    /// @dev PHASE 6 (R-010): threshold attestation (M-of-N). All signers
+    /// sign the SAME digest (account + questId + nonce + deadline); the
+    /// EIP-712 struct and domain are unchanged from the single-verifier
+    /// scheme. Every signature in the array must recover (ECDSA.tryRecover
+    /// rejects malleable/malformed signatures — see OpenZeppelin ECDSA)
+    /// to a DISTINCT VERIFIER_ROLE holder; a duplicate reverts, a junk
+    /// signature anywhere reverts, and fewer than `threshold` distinct
+    /// valid signers revert. Extra signatures beyond the threshold are
+    /// allowed but must still be valid. The domain separator binds
+    /// chainId + this contract (cross-chain and cross-contract replay
+    /// are impossible); the struct binds account + questId + nonce +
+    /// deadline. Distinctness is enforced pairwise (O(M²), fine for
+    /// M ≤ MAX_ATTESTATION_SIGNATURES = 5).
+    function _verifyAttestations(
+        address account,
+        uint256 questId,
+        uint256 deadline,
+        bytes[] calldata signatures,
+        uint8 threshold
+    ) internal {
+        uint256 provided = signatures.length;
+        if (provided == 0) revert InsufficientAttestations(0, threshold);
+        if (provided > MAX_ATTESTATION_SIGNATURES) revert TooManyAttestationSignatures(provided);
         if (deadline < block.timestamp) revert AttestationExpired(deadline, block.timestamp);
         if (deadline > block.timestamp + MAX_ATTESTATION_LIFETIME) {
             revert AttestationDeadlineTooFar(deadline, block.timestamp + MAX_ATTESTATION_LIFETIME);
         }
         uint256 nonce = nonces[account];
+        bytes32 digest = _attestationDigest(account, questId, nonce, deadline);
+        address[] memory signers = new address[](provided);
+        for (uint256 i = 0; i < provided; ++i) {
+            address signer = _recoverAttestationSigner(digest, signatures[i]);
+            for (uint256 j = 0; j < i; ++j) {
+                if (signers[j] == signer) revert DuplicateAttestationSigner(signer);
+            }
+            signers[i] = signer;
+        }
+        if (provided < threshold) revert InsufficientAttestations(provided, threshold);
+        // Consume the nonce EXACTLY ONCE per completion, regardless of
+        // how many signatures were provided: a replayed attestation
+        // signs a stale nonce and recovers a different signer.
+        unchecked {
+            nonces[account] = nonce + 1;
+        }
+        // One AttestationUsed event per distinct signer (keeps the
+        // per-signer accounting and SOP weekly review working unchanged).
+        for (uint256 i = 0; i < provided; ++i) {
+            emit AttestationUsed(account, questId, nonce, signers[i]);
+        }
+    }
+
+    /// @notice EIP-712 digest for one attestation (struct hash + domain).
+    /// @dev Split out of _verifyAttestations to keep the verifier loop's
+    /// stack shallow (the 5-parameter function + loop + recovery would
+    /// otherwise hit "stack too deep" in the legacy code generator).
+    function _attestationDigest(address account, uint256 questId, uint256 nonce, uint256 deadline)
+        internal
+        view
+        returns (bytes32)
+    {
         bytes32 structHash = keccak256(abi.encode(ATTESTATION_TYPEHASH, account, questId, nonce, deadline));
-        bytes32 digest = _hashTypedDataV4(structHash);
-        // tryRecover's third return is the error argument (the offending `s`
-        // for InvalidSignatureS, the length for InvalidSignatureLength); it
-        // is bytes32(0) on success. It is carried into the revert so a bad
-        // attestation is diagnosable off-chain.
-        (address signer, ECDSA.RecoverError err, bytes32 errorArg) = ECDSA.tryRecover(digest, signature);
+        return _hashTypedDataV4(structHash);
+    }
+
+    /// @notice Recover one attestation signer and check VERIFIER_ROLE.
+    /// @dev Split out of _verifyAttestations for the same stack-depth
+    /// reason: ECDSA.tryRecover takes `bytes memory`, so the calldata
+    /// element is copied to memory inside this small frame.
+    /// tryRecover's third return is the error argument (the offending `s`
+    /// for InvalidSignatureS, the length for InvalidSignatureLength); it
+    /// is bytes32(0) on success. It is carried into the revert so a bad
+    /// attestation is diagnosable off-chain.
+    function _recoverAttestationSigner(bytes32 digest, bytes calldata signature)
+        internal
+        view
+        returns (address signer)
+    {
+        ECDSA.RecoverError err;
+        bytes32 errorArg;
+        (signer, err, errorArg) = ECDSA.tryRecover(digest, signature);
         if (err != ECDSA.RecoverError.NoError || signer == address(0)) {
             revert InvalidAttestationSignature(errorArg);
         }
         if (!hasRole(VERIFIER_ROLE, signer)) revert UnauthorizedVerifier(signer);
-        // Consume the nonce BEFORE the completion effects: a replayed
-        // attestation signs a stale nonce and recovers a different signer.
-        unchecked {
-            nonces[account] = nonce + 1;
-        }
-        emit AttestationUsed(account, questId, nonce, signer);
     }
 
     /// @notice Shared completion path for both entry points.
