@@ -36,6 +36,12 @@ export interface Quest {
   maxCompletions: number;
   completions: number;
   active: boolean;
+  /**
+   * PHASE 6 (R-010): minimum number of DISTINCT VERIFIER_ROLE signatures
+   * an attestation must carry for this quest (1–3, set at creation,
+   * immutable). Only Attested quests enforce it.
+   */
+  attestationThreshold: number;
 }
 
 export interface Badge {

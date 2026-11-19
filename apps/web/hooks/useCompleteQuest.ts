@@ -29,13 +29,20 @@ export function useCompleteQuest() {
     });
   };
 
-  const completeWithAttestation = (questId: number, deadline: number, signature: `0x${string}`) => {
+  // PHASE 6 (R-010): threshold attestation — the contract takes a bytes[]
+  // array (at least the quest's attestationThreshold distinct verifier
+  // signatures over the same digest).
+  const completeWithAttestation = (
+    questId: number,
+    deadline: number,
+    signatures: `0x${string}`[],
+  ) => {
     if (!questManager) return;
     writeContract({
       address: questManager,
       abi: QUEST_MANAGER_ABI,
       functionName: 'completeQuestWithAttestation',
-      args: [BigInt(questId), BigInt(deadline), signature],
+      args: [BigInt(questId), BigInt(deadline), signatures],
     });
   };
 

@@ -17,6 +17,7 @@ export const LAUNCH_QUESTS: Omit<Quest, 'id' | 'creator' | 'completions' | 'acti
     startTime: 0,
     endTime: 0,
     maxCompletions: 0,
+    attestationThreshold: 1,
   },
   {
     title: 'Daily Check-in',
@@ -29,6 +30,7 @@ export const LAUNCH_QUESTS: Omit<Quest, 'id' | 'creator' | 'completions' | 'acti
     startTime: 0,
     endTime: 0,
     maxCompletions: 0,
+    attestationThreshold: 1,
   },
   {
     title: 'Quest Explorer',
@@ -41,6 +43,7 @@ export const LAUNCH_QUESTS: Omit<Quest, 'id' | 'creator' | 'completions' | 'acti
     startTime: 0,
     endTime: 0,
     maxCompletions: 0,
+    attestationThreshold: 1,
   },
   {
     title: 'Community Builder',
@@ -53,6 +56,7 @@ export const LAUNCH_QUESTS: Omit<Quest, 'id' | 'creator' | 'completions' | 'acti
     startTime: 0,
     endTime: 0,
     maxCompletions: 0,
+    attestationThreshold: 1,
   },
   {
     title: 'Reputation Builder',
@@ -65,6 +69,7 @@ export const LAUNCH_QUESTS: Omit<Quest, 'id' | 'creator' | 'completions' | 'acti
     startTime: 0,
     endTime: 0,
     maxCompletions: 0,
+    attestationThreshold: 1,
   },
 ];
 
@@ -86,6 +91,8 @@ export interface RawQuest {
   maxCompletions: bigint;
   completions: bigint;
   active: boolean;
+  /** PHASE 6 (R-010): uint8 on-chain, returned as a number by viem. */
+  attestationThreshold: number;
 }
 
 const QUEST_TYPES = [
@@ -123,6 +130,7 @@ export function mapQuest(raw: RawQuest): Quest {
     maxCompletions: Number(raw.maxCompletions),
     completions: Number(raw.completions),
     active: raw.active,
+    attestationThreshold: raw.attestationThreshold,
   };
 }
 

@@ -54,6 +54,12 @@ export function QuestCardLive({ quest }: { quest: QuestWithState }) {
       <h3 className="text-lg font-semibold text-ink-100">{quest.title}</h3>
       <p className="flex-1 text-sm leading-relaxed text-ink-400">{quest.description}</p>
       <p className="text-xs text-ink-500">{validationKindLabel(quest.validationKind)}</p>
+      {quest.validationKind === ValidationKind.Attested && (
+        <p className="text-xs text-ink-500">
+          Requires {quest.attestationThreshold} verifier signature
+          {quest.attestationThreshold === 1 ? '' : 's'}
+        </p>
+      )}
       <div className="flex items-center justify-between text-xs text-ink-500">
         <span>{quest.badgeId > 0 ? `Badge #${quest.badgeId} on completion` : 'No badge'}</span>
         <span>
@@ -75,7 +81,13 @@ export function QuestCardLive({ quest }: { quest: QuestWithState }) {
           >
             {showAttestation ? 'Hide attestation form' : 'Submit attestation'}
           </button>
-          {showAttestation && <AttestationForm questId={quest.id} questTitle={quest.title} />}
+          {showAttestation && (
+            <AttestationForm
+              questId={quest.id}
+              questTitle={quest.title}
+              threshold={quest.attestationThreshold}
+            />
+          )}
         </>
       ) : (
         <>
