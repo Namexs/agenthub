@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `ad9f02561c17bb4cf9140d9d11fe196297e9f460`
-- Date: 2026-11-19T13:37:31+00:00
-- Subject: docs(phase-3): Next.js 15 upgrade + E2E CI report with evidence logs
+- Commit: `cd69fe2e44a2ead4ab33a33223b818ee55b37fef`
+- Date: 2026-11-19T14:19:30+00:00
+- Subject: docs(phase-8): next phase validation report — CONDITIONAL GO testnet, NO-GO mainnet
 
 ## 2. Submodules
 
@@ -64,7 +64,7 @@ generated from the described commit and committed separately.
 71b0c24e741a6869d28e708d2ebc99dd13d70e358044bc6f9d067fe29de48121  .env.example
 861f5fe44ddb7bee0936c437a127af849c25622a6d4892a725994a7665d34265  .github/workflows/ci.yml
 0ef8594dc352d75c9a6f255244ad1bcb34ef204139b8abb64e210610013849e4  .gitignore
-451129679ece8e4b45f8202fd01d248895a288dc897fd86e4eb76958516515b5  .gitleaks.toml
+31a7552e2d6ddd5d10e26ebad87b6895a060ab20935b7e5b164a2954def7834a  .gitleaks.toml
 3b3ed7a285cb067ae6a88d62c70a32114054406a2cc1a77822d713ebf073abd5  .gitmodules
 5378796307535df3ec8d8b15a2e2dc5641419c3d3060cfe32238c0fa973f7aa3  .nvmrc
 484eca1335f98e39bff21031968d0409173dfc1074e2735134a2b8696bf7b9d0  .prettierignore
@@ -207,6 +207,44 @@ b984cac94864269ae9154f0c1321c6b8d43f481fe166e65249b6db6245991f37  agenthub-final
 07ad8261c1b637bd333e2398fdf8a258245e69caea0c9aeab7cd17773513a876  agenthub-final-release/logs/phase-i-wallet-e2e-detail.log
 bebf5345d9ea8fc3f06f34d844bda9ed591ab0a3f3f3b9465c1ba7fe63d4d027  agenthub-final-release/logs/phase-i-wallet-e2e.log
 ed34177c0411e2ebba3b943b26af323e6aa9366f2fdcea89f23e00496b6503b0  agenthub-final-release/logs/phase-i-web.log
+a89aa4be2c020ddae8ef6e92414c7351cc870a25cc5cc1a939bed2d5214e7431  agenthub-next-phase-validation/NEXT_PHASE_VALIDATION.md
+b9fbff43bad0773054d716c612731b64f93c62934dba288053f22ea184b826e2  agenthub-next-phase-validation/THRESHOLD_ATTESTATION_REMEDIATION_PLAN.md
+4e5da5fddf9775df6a2df545133ddab27f994026cb934a290dbe7bd71cfa96ed  agenthub-next-phase-validation/logs/phase1-commits-branch.log
+fa276422efacec1760afabd7d175929ea0584b41e7ab34841ea01f0502b82acf  agenthub-next-phase-validation/logs/phase2-ci-run-summary.log
+e683efe031306f842ec423fd0688ce17e6b48cb170e0634a49f32c8974294619  agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt
+75a50d99593be327a1610faf09f6dedc5099dc7a1b05cc2fa4c7901d110a15a7  agenthub-next-phase-validation/logs/phase2-playwright-pinned.log
+0c830459e7d38f82af4bbb70a052527d2d2968df4af871e425593b5645a8aedb  agenthub-next-phase-validation/logs/phase2-playwright-revision.log
+939b4473f29561543b64f6524e93ac97e11454037effde706632c8c0560c6262  agenthub-next-phase-validation/logs/phase2-playwright-version-evidence.log
+df17fb0cd32409addbd791c093c127013f4c082e994deeaeadfe957a127763ca  agenthub-next-phase-validation/logs/phase3-allowlist-tests.log
+c1dab62a75e8c1ccfdfb04dba65d15c1d1b5938b90704565a9553f471634fc70  agenthub-next-phase-validation/logs/phase3-github-audit-job-log.txt
+86a7d88d693ffe519582ae759ffe995fdb2747b4c0ea24a672924e5e9a6566c0  agenthub-next-phase-validation/logs/phase3-osv.log
+c6a4458b855182fe5f0aeff1e2d7254fa6ad21e10f8bf9dde5311ff20e29e669  agenthub-next-phase-validation/logs/phase4-bscscan-probe.log
+97894f3ce51c46b60697782406e29937724529367fdb1f0f18265e5be834e950  agenthub-next-phase-validation/logs/phase4-fork-deploy.log
+78f1976aed529756b519b79eea4a3c0fd4606414a34923bffc8a55560c879fe4  agenthub-next-phase-validation/logs/phase4-fork-postdeploy-verify.log
+6d6ed474693854b889be37235393422a65a10203abd31c08a01dc5a5370a65ed  agenthub-next-phase-validation/logs/phase4-fork-run.log
+7fce420a0b87d1c4e3ef73102d52eb7fa46c529f561a199f1cfb6d35866ce883  agenthub-next-phase-validation/logs/phase4-gas-math.log
+92be26408e2ed5640f1f0a30aa804b18d25f666218607d260fc51627ded71b07  agenthub-next-phase-validation/logs/phase4-inputs-env-check.log
+d0ebcd54d3287803d3da6e015637cf8dae3adf8e94c9e40d5f518c57da3028f9  agenthub-next-phase-validation/logs/phase4-live-testnet-reads.log
+dc95b914c16e6c0e09b3d9c299e9eb71b4446a028da31e0b4591d6e206656562  agenthub-next-phase-validation/logs/phase5-threshold-check.log
+411d35a2b861bad3b050a3bee47fe7313ba27be00a6e4ae3f5c892ae4fb2cb7b  agenthub-next-phase-validation/logs/phase6-cancun-rpc.log
+fe8a093785b707b8d1d60646807c4a03bb14a015885342cc4b17fe29d0196785  agenthub-next-phase-validation/logs/phase6-opcode-scan.log
+1d8a355613a591fd2bac59c81f619eaecd8b65ebf2e8be2e2016feb19b664516  agenthub-next-phase-validation/logs/phase6-wallet-compat.log
+f014103666b8c61131ddbc1c3727a8d3283783ccc53a57b7570fdba40e1a2078  agenthub-next-phase-validation/logs/phase7-anvil.log
+13ee610dead77ff9bb9f38419fac59ea8bd56ae202987333b438d33bf2a2536a  agenthub-next-phase-validation/logs/phase7-build-format.log
+fb155b42295feaede9b5d97ed64373e867f5107a5208b86be26126f9f56946e9  agenthub-next-phase-validation/logs/phase7-contracts.log
+8651f6ac72b5d0573f6f3baffd611373849b2e5e04022d1f5905ff61af1c8dd4  agenthub-next-phase-validation/logs/phase7-e2e-smoke.log
+cf90889106fd29b984aa5d1bbe0595655a97e1b0127dc004e5eb3150be53bff5  agenthub-next-phase-validation/logs/phase7-fuzz.log
+4094ec7977fcb507cc225c5ff6d50dcfced728d9a96b085629cef7f829bf264a  agenthub-next-phase-validation/logs/phase7-gitleaks-control.log
+9a65cda34417e442288f69f5e08b34384ce274cd7e750b9d99f1fbd813f00893  agenthub-next-phase-validation/logs/phase7-gitleaks-finding.json
+adbdcc13dd2f40c9c0f990d7d61736016bd5b5d6b58d1a6cd3a3a3230cc2e384  agenthub-next-phase-validation/logs/phase7-gitleaks.log
+595db597a1013dfdc0a884603d3062b3dc49a153c5f1d8df5d8b8a8ecf6afa2c  agenthub-next-phase-validation/logs/phase7-install.log
+b03138895c7a9aa8c431d9b2877676b34269e8fb7fbf4373ef0c5afdd411dcb0  agenthub-next-phase-validation/logs/phase7-remediation-verify.log
+54656f0f2cfb64493ca7c7025aec4e673c5ca026a79f1c676f58cc8e59569bd7  agenthub-next-phase-validation/logs/phase7-remediation-verify2.log
+74df474487cb426ac31a476f8383a7baccb0827b6ec1730abc45b29efcff4f43  agenthub-next-phase-validation/logs/phase7-slither.log
+0d7fefc58fa8e438ab30749caa82f42fd863979c94ccbcbdd4dfb9fbdd0e248d  agenthub-next-phase-validation/logs/phase7-toolchain.log
+fa083d9bfd70aa3264e4d1673f07e8217892951da7c8cfd180a460a6f5f8fb8c  agenthub-next-phase-validation/logs/phase7-wallet-e2e.log
+3ac6e834528aaa7a85e37bf686e501c690c8f8077d57b7f272d2a368557580a9  agenthub-next-phase-validation/logs/phase7-web-shared.log
+4e9057cf4757a25bfa1d04c5c6690e234b5b54f8a69ef5095130dbad67ec0170  agenthub-next-phase-validation/test-results/osv-audit-nextphase.json
 5594301758b687295028137f6ae2ad3104b97f71591d9824db0809bac8820b97  agenthub-next15-upgrade/NEXT15_UPGRADE_REPORT.md
 3e21b0e4b8bb402d9186f4044a413c8b02f367a49d1bd86cb3686b509db27b27  agenthub-next15-upgrade/logs/phase1-anvil-run.log
 32391d9baa943678aca980391fd4879f04aa6b8b7269cd8b8aa55bcbf1a63e63  agenthub-next15-upgrade/logs/phase1-audit-allowlist-test.log
