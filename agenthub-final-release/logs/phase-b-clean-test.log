@@ -1,0 +1,463 @@
+Scope: 4 of 5 workspace projects
+packages/contracts test$ forge test
+packages/contracts test: [2m2026-11-19T11:28:27.249925Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/token/ERC721/ERC721.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260623Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/AccessControl.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260697Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/Pausable.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260732Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/ReentrancyGuard.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260764Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/cryptography/EIP712.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260796Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/cryptography/ECDSA.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260828Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/Ownable.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260860Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/IAccessControl.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260892Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/interfaces/draft-IERC6093.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.260936Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/governance/TimelockController.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.262443Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/governance/TimelockController.sol": No such file or directory (os error 2)
+packages/contracts test: Unable to resolve imports:
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/EconomicAttack.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/MockAgentId.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorAllowlist.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGateMainnet.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/VerifierSecurity.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Reputation.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AccessControl.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/token/ERC721/ERC721.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "forge-std/Vm.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGate.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AccessControl.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorAllowlist.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/mocks/CanonicalSafe.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "forge-std/StdInvariant.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Invariant.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AttackSimulation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Invariant.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Validator.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGate.t.sol"
+packages/contracts test:       "forge-std/Script.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/DeployAgentHub.s.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/DeployAgentHub.s.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/ReentrancyGuard.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "@openzeppelin/contracts/interfaces/draft-IERC6093.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/token/ERC721/ERC721.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/mocks/MockAgentId.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/EIP712.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/VerifierSecurity.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Reputation.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/Ownable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/mocks/MockAgentId.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/DeployScript.t.sol"
+packages/contracts test:       "forge-std/Script.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/ValidateSafe.s.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorRegistry.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/ReentrancyGuard.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test: with remappings:
+packages/contracts test:       @openzeppelin/=/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/
+packages/contracts test:       @agenthub/=/var/tmp/agenthub-clean/packages/contracts/src/
+packages/contracts test: [2m2026-11-19T11:28:27.372579Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/governance/TimelockController.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372655Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/token/ERC721/ERC721.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372690Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/AccessControl.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372722Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/Pausable.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372754Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/ReentrancyGuard.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372785Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/cryptography/EIP712.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372816Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/utils/cryptography/ECDSA.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372847Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/Ownable.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372879Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/access/IAccessControl.sol": No such file or directory (os error 2)
+packages/contracts test: [2m2026-11-19T11:28:27.372921Z[0m [31mERROR[0m [2mfoundry_compilers_artifacts_solc::sources[0m[2m:[0m [3merror[0m[2m=[0m"/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/interfaces/draft-IERC6093.sol": No such file or directory (os error 2)
+packages/contracts test: Unable to resolve imports:
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/ReentrancyGuard.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/EIP712.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/DeployAgentHub.s.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/MockAgentId.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AttackSimulation.t.sol"
+packages/contracts test:       "forge-std/Script.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/DeployAgentHub.s.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/token/ERC721/ERC721.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/mocks/MockAgentId.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/AccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Reputation.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/ReentrancyGuard.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorAllowlist.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGate.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorAllowlist.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/ValidatorRegistry.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Reputation.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AccessControl.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/EconomicAttack.t.sol"
+packages/contracts test:       "forge-std/Script.sol" in "/var/tmp/agenthub-clean/packages/contracts/script/ValidateSafe.s.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Invariant.t.sol"
+packages/contracts test:       "forge-std/StdInvariant.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Invariant.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/DeployScript.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/QuestManager.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/Ownable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/mocks/MockAgentId.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/Pausable.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGateMainnet.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/mocks/CanonicalSafe.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/VerifierSecurity.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/utils/cryptography/ECDSA.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/VerifierSecurity.t.sol"
+packages/contracts test:       "forge-std/Vm.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AgentGate.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/AccessControl.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Reputation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "forge-std/Test.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Validator.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/token/ERC721/ERC721.sol" in "/var/tmp/agenthub-clean/packages/contracts/src/Achievement.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Attestation.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/QuestManager.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/interfaces/draft-IERC6093.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Achievement.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/governance/TimelockController.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/Integration.t.sol"
+packages/contracts test:       "@openzeppelin/contracts/access/IAccessControl.sol" in "/var/tmp/agenthub-clean/packages/contracts/test/PauserRole.t.sol"
+packages/contracts test: with remappings:
+packages/contracts test:       @openzeppelin/=/var/tmp/agenthub-clean/packages/contracts/lib/openzeppelin-contracts/
+packages/contracts test:       @agenthub/=/var/tmp/agenthub-clean/packages/contracts/src/
+packages/contracts test: Compiling 39 files with Solc 0.8.24
+packages/contracts test: Solc 0.8.24 finished in 266.17ms
+packages/contracts test: Error: Compiler run failed:
+packages/contracts test: Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> script/DeployAgentHub.s.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Script, console} from "forge-std/Script.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> script/DeployAgentHub.s.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> script/ValidateSafe.s.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Script, console} from "forge-std/Script.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Achievement.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Achievement.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Achievement.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Achievement.sol:7:1:
+packages/contracts test:   |
+packages/contracts test: 7 | import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/QuestManager.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/QuestManager.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/QuestManager.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/cryptography/EIP712.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/cryptography/EIP712.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/QuestManager.sol:7:1:
+packages/contracts test:   |
+packages/contracts test: 7 | import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/QuestManager.sol:8:1:
+packages/contracts test:   |
+packages/contracts test: 8 | import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/AccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Reputation.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/Reputation.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/mocks/MockAgentId.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/Ownable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/Ownable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> src/mocks/MockAgentId.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AccessControl.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AccessControl.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Achievement.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Achievement.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Achievement.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Achievement.t.sol:7:1:
+packages/contracts test:   |
+packages/contracts test: 7 | import {IERC721Errors} from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AgentGate.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Vm.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Vm.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AgentGate.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {Vm} from "forge-std/Vm.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AgentGateMainnet.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/AttackSimulation.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Attestation.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Attestation.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Attestation.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/DeployScript.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/EconomicAttack.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Integration.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Integration.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Integration.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Invariant.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/StdInvariant.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/StdInvariant.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Invariant.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {StdInvariant} from "forge-std/StdInvariant.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/MockAgentId.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/PauserRole.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/PauserRole.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/PauserRole.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/QuestManager.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/QuestManager.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/QuestManager.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Reputation.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Reputation.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/Pausable.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Reputation.t.sol:6:1:
+packages/contracts test:   |
+packages/contracts test: 6 | import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/Validator.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/ValidatorAllowlist.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/ValidatorAllowlist.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/ValidatorRegistry.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/VerifierSecurity.t.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/VerifierSecurity.t.sol:5:1:
+packages/contracts test:   |
+packages/contracts test: 5 | import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test: ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/var/tmp/agenthub-clean/packages/contracts".
+packages/contracts test:  --> test/mocks/CanonicalSafe.sol:4:1:
+packages/contracts test:   |
+packages/contracts test: 4 | import {Test} from "forge-std/Test.sol";
+packages/contracts test:   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/contracts test: Failed
+/var/tmp/agenthub-clean/packages/contracts:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @agenthub/contracts@0.1.0 test: `forge test`
+Exit status 1
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?

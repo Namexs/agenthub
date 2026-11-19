@@ -32,8 +32,10 @@ export default defineConfig({
       ? ['lib/**/*.test.ts', 'hooks/**/*.test.tsx']
       : ['lib/**/*.test.ts'],
     environment: 'node',
-    // Hook tests render React components, so they need a DOM. This glob
-    // only ever matches when the deps above resolved (see include).
-    environmentMatchGlobs: [['hooks/**', 'jsdom']],
+    // Hook tests render React components, so they need a DOM. Each hook
+    // test file sets it with a `// @vitest-environment jsdom` docblock
+    // (Vitest 4 removed the `environmentMatchGlobs` config option, so
+    // the docblock is the mechanism now). The include gate above means
+    // these files are only collected when jsdom is installed.
   },
 });

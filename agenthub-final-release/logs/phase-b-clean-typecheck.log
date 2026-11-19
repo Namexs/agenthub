@@ -1,0 +1,7 @@
+Scope: 4 of 5 workspace projects
+packages/contracts typecheck$ forge build
+packages/contracts typecheck: sh: 1: forge: not found
+/var/tmp/agenthub-clean/packages/contracts:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @agenthub/contracts@0.1.0 typecheck: `forge build`
+spawn ENOENT
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?

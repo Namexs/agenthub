@@ -1,0 +1,10 @@
+
+> @agenthub/web@0.1.0 typecheck /var/tmp/agenthub-clean/apps/web
+> tsc --project tsconfig.json --noEmit
+
+hooks/hooks.test.tsx(3,42): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+hooks/hooks.test.tsx(855,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+hooks/useContractLogs.test.tsx(3,42): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+/var/tmp/agenthub-clean/apps/web:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @agenthub/web@0.1.0 typecheck: `tsc --project tsconfig.json --noEmit`
+Exit status 2

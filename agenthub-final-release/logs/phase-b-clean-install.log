@@ -1,0 +1,136 @@
+Scope: all 5 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +831
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 831, reused 0, downloaded 0, added 0
+Progress: resolved 831, reused 0, downloaded 1, added 0
+Progress: resolved 831, reused 0, downloaded 16, added 16
+Progress: resolved 831, reused 0, downloaded 19, added 19
+Progress: resolved 831, reused 0, downloaded 30, added 30
+Progress: resolved 831, reused 0, downloaded 32, added 32
+Progress: resolved 831, reused 0, downloaded 47, added 47
+Progress: resolved 831, reused 0, downloaded 48, added 48
+Progress: resolved 831, reused 0, downloaded 61, added 61
+Progress: resolved 831, reused 0, downloaded 64, added 64
+Progress: resolved 831, reused 0, downloaded 76, added 76
+Progress: resolved 831, reused 0, downloaded 82, added 82
+Progress: resolved 831, reused 0, downloaded 92, added 92
+Progress: resolved 831, reused 0, downloaded 101, added 101
+Progress: resolved 831, reused 0, downloaded 108, added 108
+Progress: resolved 831, reused 0, downloaded 117, added 117
+Progress: resolved 831, reused 0, downloaded 123, added 123
+Progress: resolved 831, reused 0, downloaded 129, added 129
+Progress: resolved 831, reused 0, downloaded 139, added 139
+Progress: resolved 831, reused 0, downloaded 149, added 149
+Progress: resolved 831, reused 0, downloaded 154, added 154
+Progress: resolved 831, reused 0, downloaded 162, added 162
+Progress: resolved 831, reused 0, downloaded 170, added 170
+Progress: resolved 831, reused 0, downloaded 176, added 176
+Progress: resolved 831, reused 0, downloaded 186, added 186
+Progress: resolved 831, reused 0, downloaded 194, added 194
+Progress: resolved 831, reused 0, downloaded 202, added 202
+Progress: resolved 831, reused 0, downloaded 211, added 211
+Progress: resolved 831, reused 0, downloaded 219, added 219
+Progress: resolved 831, reused 0, downloaded 226, added 226
+Progress: resolved 831, reused 0, downloaded 237, added 236
+Progress: resolved 831, reused 0, downloaded 241, added 241
+Progress: resolved 831, reused 0, downloaded 252, added 252
+Progress: resolved 831, reused 0, downloaded 259, added 259
+Progress: resolved 831, reused 0, downloaded 265, added 265
+Progress: resolved 831, reused 0, downloaded 278, added 278
+Progress: resolved 831, reused 0, downloaded 281, added 281
+Progress: resolved 831, reused 0, downloaded 290, added 290
+Progress: resolved 831, reused 0, downloaded 296, added 296
+Progress: resolved 831, reused 0, downloaded 305, added 305
+Progress: resolved 831, reused 0, downloaded 312, added 312
+Progress: resolved 831, reused 0, downloaded 323, added 323
+Progress: resolved 831, reused 0, downloaded 329, added 329
+Progress: resolved 831, reused 0, downloaded 336, added 335
+Progress: resolved 831, reused 0, downloaded 342, added 342
+Progress: resolved 831, reused 0, downloaded 350, added 350
+Progress: resolved 831, reused 0, downloaded 354, added 354
+Progress: resolved 831, reused 0, downloaded 360, added 360
+Progress: resolved 831, reused 0, downloaded 365, added 364
+Progress: resolved 831, reused 0, downloaded 371, added 371
+Progress: resolved 831, reused 0, downloaded 372, added 371
+Progress: resolved 831, reused 0, downloaded 386, added 382
+Progress: resolved 831, reused 0, downloaded 387, added 387
+Progress: resolved 831, reused 0, downloaded 397, added 397
+Progress: resolved 831, reused 0, downloaded 400, added 400
+Progress: resolved 831, reused 0, downloaded 411, added 411
+Progress: resolved 831, reused 0, downloaded 415, added 413
+Progress: resolved 831, reused 0, downloaded 415, added 415
+Progress: resolved 831, reused 0, downloaded 420, added 415
+Progress: resolved 831, reused 0, downloaded 429, added 416
+Progress: resolved 831, reused 0, downloaded 429, added 429
+Progress: resolved 831, reused 0, downloaded 430, added 429
+Progress: resolved 831, reused 0, downloaded 431, added 431
+Progress: resolved 831, reused 0, downloaded 439, added 439
+Progress: resolved 831, reused 0, downloaded 442, added 442
+Progress: resolved 831, reused 0, downloaded 448, added 448
+Progress: resolved 831, reused 0, downloaded 459, added 459
+Progress: resolved 831, reused 0, downloaded 462, added 462
+Progress: resolved 831, reused 0, downloaded 477, added 477
+Progress: resolved 831, reused 0, downloaded 481, added 481
+Progress: resolved 831, reused 0, downloaded 494, added 494
+Progress: resolved 831, reused 0, downloaded 495, added 495
+Progress: resolved 831, reused 0, downloaded 509, added 509
+Progress: resolved 831, reused 0, downloaded 512, added 512
+Progress: resolved 831, reused 0, downloaded 526, added 526
+Progress: resolved 831, reused 0, downloaded 530, added 530
+Progress: resolved 831, reused 0, downloaded 542, added 542
+Progress: resolved 831, reused 0, downloaded 544, added 544
+Progress: resolved 831, reused 0, downloaded 556, added 556
+Progress: resolved 831, reused 0, downloaded 562, added 562
+Progress: resolved 831, reused 0, downloaded 571, added 571
+Progress: resolved 831, reused 0, downloaded 579, added 579
+Progress: resolved 831, reused 0, downloaded 586, added 586
+Progress: resolved 831, reused 0, downloaded 595, added 595
+Progress: resolved 831, reused 0, downloaded 601, added 601
+Progress: resolved 831, reused 0, downloaded 615, added 615
+Progress: resolved 831, reused 0, downloaded 618, added 618
+Progress: resolved 831, reused 0, downloaded 632, added 632
+Progress: resolved 831, reused 0, downloaded 635, added 635
+Progress: resolved 831, reused 0, downloaded 650, added 650
+Progress: resolved 831, reused 0, downloaded 653, added 653
+Progress: resolved 831, reused 0, downloaded 663, added 663
+Progress: resolved 831, reused 0, downloaded 669, added 669
+Progress: resolved 831, reused 0, downloaded 682, added 682
+Progress: resolved 831, reused 0, downloaded 688, added 688
+Progress: resolved 831, reused 0, downloaded 699, added 699
+Progress: resolved 831, reused 0, downloaded 708, added 708
+Progress: resolved 831, reused 0, downloaded 715, added 715
+Progress: resolved 831, reused 0, downloaded 723, added 723
+Progress: resolved 831, reused 0, downloaded 731, added 731
+Progress: resolved 831, reused 0, downloaded 739, added 739
+Progress: resolved 831, reused 0, downloaded 746, added 746
+Progress: resolved 831, reused 0, downloaded 755, added 755
+Progress: resolved 831, reused 0, downloaded 762, added 762
+Progress: resolved 831, reused 0, downloaded 773, added 773
+Progress: resolved 831, reused 0, downloaded 780, added 780
+Progress: resolved 831, reused 0, downloaded 790, added 790
+Progress: resolved 831, reused 0, downloaded 796, added 796
+Progress: resolved 831, reused 0, downloaded 807, added 807
+Progress: resolved 831, reused 0, downloaded 813, added 813
+Progress: resolved 831, reused 0, downloaded 830, added 830
+Progress: resolved 831, reused 0, downloaded 831, added 831, done
+.../keccak@3.0.4/node_modules/keccak install$ node-gyp-build || exit 0
+.../node_modules/utf-8-validate install$ node-gyp-build
+.../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+.../node_modules/bufferutil install$ node-gyp-build
+.../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+.../keccak@3.0.4/node_modules/keccak install: Done
+.../node_modules/utf-8-validate install: Done
+.../node_modules/bufferutil install: Done
+
+devDependencies:
++ @typescript-eslint/eslint-plugin 8.12.2
++ @typescript-eslint/parser 8.12.2
++ eslint 8.57.1
++ eslint-config-next 14.2.35
++ eslint-config-prettier 9.1.0
++ prettier 3.3.3
++ typescript 5.6.3
+
+Done in 2m 4.4s
