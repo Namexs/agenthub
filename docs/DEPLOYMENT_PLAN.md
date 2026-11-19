@@ -68,7 +68,7 @@ Environment variables:
 | Variable | Required | Notes |
 |---|---|---|
 | `DEPLOYER_PRIVATE_KEY` | yes | Dedicated deployer key, funded only for this deployment. |
-| `ADMIN_MULTISIG` | yes | Multisig address (timelock proposer/executor + badge manager). |
+| `ADMIN_MULTISIG` | yes | Multisig address (timelock proposer/executor + badge manager). **Validated before any deployment:** the script statically calls `getThreshold()` and `getOwners()` and requires a real Safe with threshold ≥ 2 (see `script/SafeValidation.sol`, `MIN_SAFE_THRESHOLD = 2`); a non-Safe or 1-of-n address reverts the deploy. A standalone pre-check exists: `forge script script/ValidateSafe.s.sol --sig "run(address)" <addr>`. |
 | `QUEST_CREATOR` | yes | Address that creates quests. |
 | `PAUSER` | yes | Address that can pause QuestManager instantly. |
 | `VERIFIER` | no | First attestation verifier (VERIFIER_ROLE). |
@@ -91,11 +91,17 @@ fork (publicnode) `SIMULATION COMPLETE`, 10,294,857 gas (~0.00103 BNB),
    function signatures would pass. The real protection is deployment-time
    discipline: the script deploys all four contracts itself and asserts the
    wiring; dependencies are never supplied from an untrusted source.
-2. **Validators are creator-chosen.** An OnChain quest's validator is picked
-   by the quest creator. An always-true validator makes the quest equivalent
-   to a CheckIn. The project should maintain a curated list of reviewed
-   validators; creators are accountable for their choices. Never wire a
-   validator whose source you have not read.
+2. **Validators are allowlist-gated.** An OnChain quest's validator is
+   picked by the quest creator, but it must be on the QuestManager
+   allowlist (`approvedValidators`): `createQuest` and quest completion
+   both revert with `ValidatorNotApproved` for an unapproved validator,
+   and revoking a validator takes effect immediately at completion (see
+   `QUEST_VALIDATION_DESIGN.md` §2.4). The allowlist stops a creator
+   from wiring an arbitrary always-true validator — but an approved
+   validator is still trusted code: never approve a validator whose
+   source you have not read, and never approve a validator you do not
+   control (a third party could upgrade or replace its logic only if it
+   is a proxy — prefer non-proxy validators).
 3. **Verifiers are trusted.** See `QUEST_VALIDATION_DESIGN.md` §2.3 and
    `NEW_THREAT_MODEL.md` T-ATT-01. Attested quests are only as honest as
    their verifiers.
@@ -129,6 +135,11 @@ fork (publicnode) `SIMULATION COMPLETE`, 10,294,857 gas (~0.00103 BNB),
 
 ## 6. Post-deployment steps (not in the script)
 
+- Approve the initial validators through the timelock (2-day delay):
+  deploy the `TokenBalanceValidator` instance(s) for the launch quests
+  and `approveValidator` each one — see `QUEST_VALIDATION_DESIGN.md`
+  §2.4 for the list and the approval process. No OnChain quest can be
+  created until at least one validator is approved.
 - Define the first badges (`Achievement.defineBadge`, via the multisig as
   BADGE_MANAGER_ROLE).
 - Grant additional verifiers through the timelock (2-day delay).

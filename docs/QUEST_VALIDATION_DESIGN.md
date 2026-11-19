@@ -154,6 +154,39 @@ on-chain and attributable to a signer address), fast revocation via the
 PAUSER_ROLE + admin, and monitoring for anomalous completion spikes. This
 residual trust is recorded in `NEW_THREAT_MODEL.md` (T-ATT-01).
 
+### 2.4 OnChain — validator allowlist
+
+An OnChain quest's validator is creator-chosen, so an always-true validator
+would silently downgrade the quest to a CheckIn. The allowlist closes that
+gap (final pre-testnet cleanup, item 6):
+
+- **Registry:** `QuestManager.approvedValidators` (address → bool).
+  Approval and revocation are admin-only (`approveValidator` /
+  `revokeValidator`, `DEFAULT_ADMIN_ROLE` = the timelock after
+  deployment) and emit `ValidatorApproved` / `ValidatorRevoked`.
+- **Enforcement at two points:** `createQuest` reverts with
+  `ValidatorNotApproved` for an unapproved validator, and
+  `completeQuest` re-checks the allowlist at completion time — so
+  revoking a validator takes effect **immediately**, even for quests
+  created while it was approved.
+- **Initial list:** `TokenBalanceValidator` (the reference validator in
+  `contracts/validators/`, fail-closed staticcall, deployed once per
+  (token, threshold) pair). Each deployed instance is approved
+  individually — approving the implementation does not approve other
+  instances.
+- **Adding a new validator:** (1) review the validator source in full —
+  it is trusted code, called by QuestManager; (2) deploy the instance
+  (prefer non-proxy, immutable configuration); (3) timelock proposal
+  `approveValidator(instance)` (2-day delay); (4) verify on-chain
+  (`approvedValidators(instance)` true) and test one completion of a
+  quest using it on testnet before mainnet; (5) record the instance in
+  the deployment record with its condition in plain language.
+- **Removing a validator:** timelock proposal `revokeValidator(instance)`.
+  Takes effect immediately at completion; quests using it can no longer
+  be completed (they are not deleted — they become uncompletable until a
+  replacement validator is approved and the quest is re-created with it,
+  since a quest's validator is immutable).
+
 ## 3. What the frontend must show
 
 The kind is part of the quest's public data (`Quest.validationKind`). The UI
