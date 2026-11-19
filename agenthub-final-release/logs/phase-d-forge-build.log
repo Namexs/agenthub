@@ -1,0 +1,263 @@
+Compiling 93 files with Solc 0.8.24
+Solc 0.8.24 finished in 23.12s
+Compiler run successful with warnings:
+Warning (2018): Function state mutability can be restricted to view
+  --> script/ValidateSafe.s.sol:41:5:
+   |
+41 |     function runWith(address safe, address expectedSingleton, bytes32 expectedProxyCodehash)
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+   ╭▸ src/AgentGate.sol:93:9
+   │
+93 │         emit AgentHolderVerified(msg.sender);
+   │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   │
+   ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[unsafe-oz-erc721-mint]: `ERC721._mint` does not check that the recipient can receive the token; use `_safeMint`
+   ╭▸ src/Achievement.sol:76:9
+   │
+76 │         _mint(account, tokenId);
+   │         ━━━━━━━━━━━━━━━━━━━━━━━
+   │
+   ╰ help: https://getfoundry.sh/forge/linting/unsafe-oz-erc721-mint
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:140:37
+    │
+140 │         if (startTime >= endTime || endTime <= block.timestamp) revert InvalidQuestParams();
+    │                                     ━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+    ╭▸ src/QuestManager.sol:283:9
+    │
+283 │         reputation.addPoints(msg.sender, quest.rewardPoints, questId);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+
+warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+    ╭▸ src/QuestManager.sol:288:15
+    │
+288 │             ? achievement.issue(msg.sender, quest.badgeId)
+    │               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/QuestManager.sol:290:9
+    │
+290 │         emit QuestCompleted(questId, msg.sender, quest.rewardPoints, badgeTokenId);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:213:13
+    │
+213 │         if (deadline < block.timestamp) revert AttestationExpired(deadline, block.timestamp);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:214:13
+    │
+214 │         if (deadline > block.timestamp + MAX_ATTESTATION_LIFETIME) {
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/QuestManager.sol:234:9
+    │
+234 │         emit AttestationUsed(account, questId, nonce, signer);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:244:13
+    │
+244 │         if (block.timestamp < quest.startTime) revert QuestNotStarted(questId);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:245:13
+    │
+245 │         if (block.timestamp > quest.endTime) revert QuestEnded(questId);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:255:21
+    │
+255 │                 if (block.timestamp < readyAt) {
+    │                     ━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:399:16
+    │
+399 │         return block.timestamp >= ready ? 0 : ready;
+    │                ━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:415:28
+    │
+415 │         uint256 deadline = block.timestamp + 1 days;
+    │                            ━━━━━━━━━━━━━━━
+    ‡
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:426:83
+    │
+426 │                 IQuestManager.CooldownActive.selector, alice, dailyAttestedQuest, block.timestamp + 1 days
+    │                                                                                   ━━━━━━━━━━━━━━━
+    ‡
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:433:17
+    │
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:58:13
+   │
+58 │             block.timestamp,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:59:13
+   │
+59 │             block.timestamp + window,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:75:21
+   │
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:58:13
+   │
+58 │             block.timestamp,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:59:13
+   │
+59 │             block.timestamp + window,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:91:21
+   │
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Integration.t.sol:141:17
+    │
+141 │         vm.warp(block.timestamp + TIMELOCK_DELAY);
+    │         ────────━━━━━━━━━━━━━━━────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:145:13
+    │
+145 │             block.timestamp,
+    │             ━━━━━━━━━━━━━━━
+    ‡
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:146:13
+    │
+146 │             block.timestamp + 90 days,
+    │             ━━━━━━━━━━━━━━━
+    ‡
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:427:17
+    │
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/ValidatorRegistry.t.sol:127:17
+    │
+127 │         vm.warp(block.timestamp + 1 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
