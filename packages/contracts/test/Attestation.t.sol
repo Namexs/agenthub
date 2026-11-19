@@ -329,7 +329,12 @@ contract AttestationTest is Test {
         (uint8 v, bytes32 r, bytes32 s) = _split(sig);
         bytes memory malleable = abi.encodePacked(r, bytes32(SECP256K1_N - uint256(s)), v == 27 ? uint8(28) : uint8(27));
         vm.prank(alice);
-        vm.expectRevert(IQuestManager.InvalidAttestationSignature.selector);
+        // The error carries the offending (flipped) s value.
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IQuestManager.InvalidAttestationSignature.selector, bytes32(SECP256K1_N - uint256(s))
+            )
+        );
         qm.completeQuestWithAttestation(attestedQuest, deadline, malleable);
         assertEq(reputation.points(alice), 0);
     }
@@ -337,7 +342,8 @@ contract AttestationTest is Test {
     function test_EmptySignatureRejected() public {
         uint256 deadline = block.timestamp + 1 days;
         vm.prank(alice);
-        vm.expectRevert(IQuestManager.InvalidAttestationSignature.selector);
+        // InvalidSignatureLength with the length (0) as the error argument.
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(0))));
         qm.completeQuestWithAttestation(attestedQuest, deadline, "");
     }
 
@@ -345,7 +351,8 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig = new bytes(65); // r = s = 0, v = 0
         vm.prank(alice);
-        vm.expectRevert(IQuestManager.InvalidAttestationSignature.selector);
+        // InvalidSignature: error argument is bytes32(0).
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(0))));
         qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
     }
 
@@ -353,7 +360,10 @@ contract AttestationTest is Test {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig = new bytes(10);
         vm.prank(alice);
-        vm.expectRevert(IQuestManager.InvalidAttestationSignature.selector);
+        // InvalidSignatureLength with the length (10) as the error argument.
+        vm.expectRevert(
+            abi.encodeWithSelector(IQuestManager.InvalidAttestationSignature.selector, bytes32(uint256(10)))
+        );
         qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
     }
 

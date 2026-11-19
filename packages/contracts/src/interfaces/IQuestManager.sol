@@ -74,7 +74,11 @@ interface IQuestManager {
     /// @dev The attestation deadline exceeds MAX_ATTESTATION_LIFETIME.
     error AttestationDeadlineTooFar(uint256 deadline, uint256 maxDeadline);
     /// @dev The attestation signature is malformed or unrecoverable.
-    error InvalidAttestationSignature();
+    /// @notice Attestation signature is invalid (malleable, malformed, or
+    /// unrecoverable). `errorArg` is OZ's error argument: the offending `s`
+    /// for an invalid-S signature, the length for a bad-length signature,
+    /// bytes32(0) otherwise.
+    error InvalidAttestationSignature(bytes32 errorArg);
     /// @dev The attestation was not signed by a VERIFIER_ROLE holder.
     error UnauthorizedVerifier(address signer);
     /// @dev The on-chain validator rejected the completion.

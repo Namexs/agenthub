@@ -190,9 +190,13 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         uint256 nonce = nonces[account];
         bytes32 structHash = keccak256(abi.encode(ATTESTATION_TYPEHASH, account, questId, nonce, deadline));
         bytes32 digest = _hashTypedDataV4(structHash);
-        (address signer, ECDSA.RecoverError err,) = ECDSA.tryRecover(digest, signature);
+        // tryRecover's third return is the error argument (the offending `s`
+        // for InvalidSignatureS, the length for InvalidSignatureLength); it
+        // is bytes32(0) on success. It is carried into the revert so a bad
+        // attestation is diagnosable off-chain.
+        (address signer, ECDSA.RecoverError err, bytes32 errorArg) = ECDSA.tryRecover(digest, signature);
         if (err != ECDSA.RecoverError.NoError || signer == address(0)) {
-            revert InvalidAttestationSignature();
+            revert InvalidAttestationSignature(errorArg);
         }
         if (!hasRole(VERIFIER_ROLE, signer)) revert UnauthorizedVerifier(signer);
         // Consume the nonce BEFORE the completion effects: a replayed
