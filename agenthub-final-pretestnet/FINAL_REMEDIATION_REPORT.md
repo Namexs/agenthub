@@ -274,13 +274,13 @@ Phase 4 deliberately deferred until the manifest existed. The
 stale "4 Low + 6 Info" comment in the slither job was fixed to
 "4 Low + 8 Info". The manifest was then regenerated for the final
 content commit (see `PACKAGE_MANIFEST.md` §1 for the exact
-commit): **288 tracked files, SHA-256 100% match**, both
+commit): **291 tracked files, SHA-256 100% match**, both
 submodule gitlinks OK (forge-std `8948d45`, OZ `dbb6104`).
 Gitleaks full-history scan before packaging: **0 leaks**.
 The source ZIP was built with `git archive` from the final commit
 (same pattern as previous ZIPs — submodules excluded, documented
 in the manifest §3) and verified file-by-file against the
-manifest: **0 mismatches** across all 288 listed files.
+manifest: **0 mismatches** across all 291 listed files.
 Verification logs: `logs/phase3-manifest-verify.log`,
 `logs/phase3-secrets.log`.
 

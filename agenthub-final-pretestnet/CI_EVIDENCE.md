@@ -340,7 +340,7 @@ Phase 4 deliberately did NOT add a manifest-check job (the manifest
 is regenerated in Phase 3 LAST, so the check would have failed on
 every commit until then). Phase 3 added it: job `manifest` runs
 `./scripts/verify-manifest.sh` with a full-history checkout. Local
-evidence: `logs/phase3-manifest-verify.log` — 288 files checked,
+evidence: `logs/phase3-manifest-verify.log` — 291 files checked,
 100% match, both submodule gitlinks OK. The workflow now has
 **9 jobs**. The "8 jobs" wording in §2 and §8 above describes the
 workflow as Phase 4 left it; it is kept as the Phase 4 record.
