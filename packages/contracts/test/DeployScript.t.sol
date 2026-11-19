@@ -4,12 +4,14 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {DeployAgentHub} from "../script/DeployAgentHub.s.sol";
+import {SafeValidation} from "../script/SafeValidation.sol";
 import {AgentGate} from "../src/AgentGate.sol";
 import {QuestManager} from "../src/QuestManager.sol";
 import {Reputation} from "../src/Reputation.sol";
 import {Achievement} from "../src/Achievement.sol";
 import {IQuestManager} from "../src/interfaces/IQuestManager.sol";
 import {MockAgentId} from "../src/mocks/MockAgentId.sol";
+import {MockSafe} from "./mocks/MockSafe.sol";
 
 /// @notice TEMUAN 4 deployment-script tests: the full stack deploys in the
 /// right order with the right roles, the deployer keeps nothing, mainnet
@@ -23,7 +25,10 @@ contract DeployScriptTest is Test {
     // Direct deploy() calls originate from the script contract,
     // so the script IS the deployer in those tests.
     address internal deployer;
-    address internal multisig = makeAddr("multisig");
+    // PRE-TESTNET CLEANUP (item 5): the admin multisig is a MockSafe
+    // (2-of-3), not an EOA — deploy() now validates it as a Safe.
+    MockSafe internal safe;
+    address internal multisig;
     address internal creator = makeAddr("creator");
     address internal pauser = makeAddr("pauser");
     address internal verifier = makeAddr("verifier");
@@ -36,6 +41,12 @@ contract DeployScriptTest is Test {
     function setUp() public {
         script = new DeployAgentHub();
         deployer = address(script);
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("safe-owner-1");
+        owners[1] = makeAddr("safe-owner-2");
+        owners[2] = makeAddr("safe-owner-3");
+        safe = new MockSafe(owners, 2);
+        multisig = address(safe);
         vm.warp(1_000_000);
     }
 
@@ -177,6 +188,67 @@ contract DeployScriptTest is Test {
         vm.chainId(1);
         vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.UnsupportedChain.selector, 1));
         script.deploy(_params(), deployer);
+    }
+
+    // --- PRE-TESTNET CLEANUP (item 5): ADMIN_MULTISIG Safe validation ---
+
+    function test_DeployRejectsEoaMultisig() public {
+        address eoa = makeAddr("eoa-multisig");
+        DeployAgentHub.DeployParams memory params = _params();
+        params.adminMultisig = eoa;
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.NotASafe.selector, eoa, "no code"));
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsNonSafeContract() public {
+        // A contract WITHOUT the Safe interface: getThreshold staticcall
+        // reverts (no fallback), so validation fails closed.
+        MockAgentId notSafe = new MockAgentId();
+        DeployAgentHub.DeployParams memory params = _params();
+        params.adminMultisig = address(notSafe);
+        vm.expectRevert(
+            abi.encodeWithSelector(SafeValidation.NotASafe.selector, address(notSafe), "getThreshold failed")
+        );
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsThresholdOneSafe() public {
+        // 1-of-3 is a single key with extra steps — below the minimum.
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("o1");
+        owners[1] = makeAddr("o2");
+        owners[2] = makeAddr("o3");
+        MockSafe weak = new MockSafe(owners, 1);
+        DeployAgentHub.DeployParams memory params = _params();
+        params.adminMultisig = address(weak);
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.UnsafeThreshold.selector, address(weak), 1, 3));
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsThresholdAboveOwners() public {
+        // Threshold 3 with 2 owners can never reach quorum — unusable Safe.
+        address[] memory owners = new address[](2);
+        owners[0] = makeAddr("o1");
+        owners[1] = makeAddr("o2");
+        MockSafe broken = new MockSafe(owners, 3);
+        DeployAgentHub.DeployParams memory params = _params();
+        params.adminMultisig = address(broken);
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.UnsafeThreshold.selector, address(broken), 3, 2));
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployAcceptsThresholdThreeOfThree() public {
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("o1");
+        owners[1] = makeAddr("o2");
+        owners[2] = makeAddr("o3");
+        MockSafe strict = new MockSafe(owners, 3);
+        DeployAgentHub.DeployParams memory params = _params();
+        params.adminMultisig = address(strict);
+        DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
+        assertTrue(d.questManager != address(0));
+        TimelockController timelock = TimelockController(payable(d.timelock));
+        assertTrue(timelock.hasRole(timelock.PROPOSER_ROLE(), address(strict)));
     }
 
     function test_MainnetRejectsMockAgentId() public {

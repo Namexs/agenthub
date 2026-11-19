@@ -3,6 +3,7 @@ pragma solidity ^0.8.24;
 
 import {Script, console} from "forge-std/Script.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+import {SafeValidation} from "./SafeValidation.sol";
 import {AgentGate} from "../src/AgentGate.sol";
 import {QuestManager} from "../src/QuestManager.sol";
 import {Reputation} from "../src/Reputation.sol";
@@ -22,6 +23,12 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   (2-day delay, multisig proposes + executes), operational roles go to
 ///   the configured addresses, and the deployer renounces admin on every
 ///   contract. Post-deploy assertions verify this on-chain.
+/// - PRE-TESTNET CLEANUP (item 5): ADMIN_MULTISIG is validated as a real
+///   Gnosis Safe with threshold >= 2 BEFORE anything is deployed
+///   (SafeValidation library). An EOA, a non-Safe contract, or a 1-of-n
+///   "multisig" aborts the deployment. Run script/ValidateSafe.s.sol first
+///   for the human-readable check; the check inside deploy() cannot be
+///   skipped.
 /// - `run()` is the env-driven entry point for `forge script`. `deploy()`
 ///   is the parameterized core, unit-tested without env vars or keys.
 /// @dev Usage (dry-run / simulation only — never --broadcast without a
@@ -111,6 +118,11 @@ contract DeployAgentHub is Script {
         if (params.adminMultisig == address(0)) revert ZeroAddress("adminMultisig");
         if (params.questCreator == address(0)) revert ZeroAddress("questCreator");
         if (params.pauser == address(0)) revert ZeroAddress("pauser");
+        // PRE-TESTNET CLEANUP (item 5): the admin multisig must be a real
+        // Safe with threshold >= 2 — checked BEFORE deploying anything,
+        // so a misconfigured ADMIN_MULTISIG aborts the whole deployment
+        // instead of silently centralizing the project.
+        SafeValidation.validate(params.adminMultisig);
         // Mainnet lock (defense in depth — AgentGate enforces it too):
         // the official Agent ID is the ONLY accepted identity on chain 56.
         if (block.chainid == 56 && params.agentId != OFFICIAL_AGENT_ID) {
