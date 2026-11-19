@@ -99,19 +99,19 @@ contract ValidatorAllowlistTest is Test {
         assertFalse(qm.approvedValidators(address(validator)));
         vm.expectEmit(true, false, false, true, address(qm));
         emit IQuestManager.ValidatorApproved(address(validator));
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         assertTrue(qm.approvedValidators(address(validator)));
     }
 
     function test_ApproveValidatorRejectsZeroAddress() public {
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, address(0)));
-        qm.approveValidator(address(0));
+        qm.approveValidator(address(0), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
     }
 
     function test_ApproveValidatorRejectsEoa() public {
         address eoa = makeAddr("eoa-validator");
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidator.selector, eoa));
-        qm.approveValidator(eoa);
+        qm.approveValidator(eoa, "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
     }
 
     function test_ApproveValidatorOnlyAdmin() public {
@@ -120,13 +120,13 @@ contract ValidatorAllowlistTest is Test {
         for (uint256 i = 0; i < callers.length; i++) {
             vm.prank(callers[i]);
             _expectUnauthorized(callers[i], role);
-            qm.approveValidator(address(validator));
+            qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         }
         assertFalse(qm.approvedValidators(address(validator)));
     }
 
     function test_RevokeValidatorByAdminWorks() public {
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         assertTrue(qm.approvedValidators(address(validator)));
         vm.expectEmit(true, false, false, true, address(qm));
         emit IQuestManager.ValidatorRevoked(address(validator));
@@ -135,7 +135,7 @@ contract ValidatorAllowlistTest is Test {
     }
 
     function test_RevokeValidatorOnlyAdmin() public {
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         bytes32 role = qm.DEFAULT_ADMIN_ROLE();
         address[4] memory callers = [creator, pauser, verifier, stranger];
         for (uint256 i = 0; i < callers.length; i++) {
@@ -151,15 +151,15 @@ contract ValidatorAllowlistTest is Test {
         // an emergency revocation can never be blocked by stale state.
         qm.revokeValidator(address(validator));
         assertFalse(qm.approvedValidators(address(validator)));
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         qm.revokeValidator(address(validator));
         qm.revokeValidator(address(validator));
         assertFalse(qm.approvedValidators(address(validator)));
     }
 
     function test_ApproveIsIdempotent() public {
-        qm.approveValidator(address(validator));
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         assertTrue(qm.approvedValidators(address(validator)));
     }
 
@@ -183,7 +183,7 @@ contract ValidatorAllowlistTest is Test {
     }
 
     function test_CreateQuestAcceptsApprovedValidator() public {
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         uint256 id = _createOnChainQuest(address(validator), 100);
         assertEq(qm.getQuest(id).validator, address(validator));
         vm.prank(alice);
@@ -215,7 +215,7 @@ contract ValidatorAllowlistTest is Test {
     // --- Completion-time enforcement (revocation takes effect now) ---
 
     function test_RevocationBlocksCompletionOfExistingQuest() public {
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         uint256 id = _createDailyOnChainQuest(address(validator), 10);
         vm.prank(alice);
         qm.completeQuest(id);
@@ -231,7 +231,7 @@ contract ValidatorAllowlistTest is Test {
     }
 
     function test_ReapprovalRestoresCompletion() public {
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         uint256 id = _createDailyOnChainQuest(address(validator), 10);
         vm.prank(alice);
         qm.completeQuest(id);
@@ -241,7 +241,7 @@ contract ValidatorAllowlistTest is Test {
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.ValidatorNotApproved.selector, address(validator)));
         qm.completeQuest(id);
 
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         vm.prank(alice);
         qm.completeQuest(id);
         assertEq(reputation.points(alice), 20);

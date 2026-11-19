@@ -71,16 +71,29 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// completion. The nonce is global per account, not per quest: a
     /// verifier must read it before signing (see QUEST_VALIDATION_DESIGN.md).
     mapping(address => uint256) public nonces;
-    /// @notice Validators approved by the admin for OnChain quests.
-    /// @dev PRE-TESTNET CLEANUP (item 6): closes the documented
-    /// "creator picks any validator" caveat. A creator can only attach a
-    /// validator the admin has explicitly approved after reviewing it, so
-    /// an always-true rubber-stamp validator cannot be smuggled into a
-    /// quest by a compromised/malicious creator. Approval is per instance
+    /// @notice The validator registry: per-instance approval + metadata
+    /// (name, version, documentation, approval time).
+    /// @dev FINAL REMEDIATION (Phase 5): upgrades the pre-testnet
+    /// allowlist into a registry. Approval is per instance
     /// (TokenBalanceValidator is deployed once per (token, threshold)).
     /// Revocation is checked at creation AND at completion, so it takes
-    /// effect immediately for existing quests too.
-    mapping(address => bool) public approvedValidators;
+    /// effect immediately for existing quests too. Revocation keeps the
+    /// metadata (audit trail); re-approval overwrites it (fresh review).
+    /// Internal (not public): a public mapping getter returns a tuple,
+    /// which cannot satisfy the interface's struct return type — the
+    /// explicit validatorInfo() below returns the struct.
+    mapping(address => IQuestManager.ValidatorInfo) internal _validatorInfo;
+
+    /// @inheritdoc IQuestManager
+    function validatorInfo(address validator) external view returns (IQuestManager.ValidatorInfo memory) {
+        return _validatorInfo[validator];
+    }
+
+    /// @notice Whether `validator` is approved for OnChain quests.
+    /// Backwards-compatible view over the registry.
+    function approvedValidators(address validator) external view returns (bool) {
+        return _validatorInfo[validator].approved;
+    }
 
     constructor(address gate_, address reputation_, address achievement_, address admin_)
         EIP712("AGENTHUB QuestManager", "1")
@@ -136,7 +149,7 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         // contract, even one with code.
         if (validationKind == ValidationKind.OnChain) {
             if (validator == address(0) || validator.code.length == 0) revert InvalidValidator(validator);
-            if (!approvedValidators[validator]) revert ValidatorNotApproved(validator);
+            if (!_validatorInfo[validator].approved) revert ValidatorNotApproved(validator);
         } else if (validator != address(0)) {
             revert InvalidValidator(validator);
         }
@@ -245,14 +258,17 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
             }
         }
         // On-chain validation runs in the CHECKS phase, before any state
-        // change. A false result reverts; a reverting validator reverts too
-        // (fail-closed). Reentrancy from the validator is blocked by
-        // nonReentrant on the entry points.
+        // change. A false result reverts; a reverting validator reverts
+        // too (fail-closed, with a uniform error). The call is a
+        // STATICCALL with a returndata length check: a validator that
+        // attempts a state change (reentry, storage write) has its call
+        // reverted at the EVM level, so `view` is enforced on-chain, not
+        // just promised by the interface (FINAL REMEDIATION, Phase 5).
         // PRE-TESTNET CLEANUP (item 6): approval is re-checked here so a
         // revocation immediately stops completions of existing quests.
         if (quest.validationKind == ValidationKind.OnChain) {
-            if (!approvedValidators[quest.validator]) revert ValidatorNotApproved(quest.validator);
-            if (!IQuestValidator(quest.validator).validate(msg.sender, questId)) {
+            if (!_validatorInfo[quest.validator].approved) revert ValidatorNotApproved(quest.validator);
+            if (!_validateOnChain(quest.validator, msg.sender, questId)) {
                 revert OnChainValidationFailed(questId, msg.sender);
             }
         }
@@ -275,19 +291,67 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     }
 
     /// @inheritdoc IQuestManager
-    function approveValidator(address validator) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (validator == address(0) || validator.code.length == 0) revert InvalidValidator(validator);
-        approvedValidators[validator] = true;
+    /// @dev FINAL REMEDIATION (Phase 5): approval is a registry entry
+    /// with mandatory metadata. Re-approval overwrites metadata +
+    /// approvedAt (the admin re-reviews the instance).
+    function approveValidator(
+        address validator,
+        string calldata name,
+        string calldata version,
+        string calldata documentation
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (validator == address(0) || validator.code.length == 0) {
+            revert InvalidValidator(validator);
+        }
+        if (bytes(name).length == 0 || bytes(version).length == 0 || bytes(documentation).length == 0) {
+            revert InvalidValidatorMetadata();
+        }
+        _validatorInfo[validator] = IQuestManager.ValidatorInfo({
+            name: name, version: version, documentation: documentation, approvedAt: block.timestamp, approved: true
+        });
         emit ValidatorApproved(validator);
     }
 
     /// @inheritdoc IQuestManager
-    /// @dev Idempotent on purpose: revoking a validator that was never
+    /// @dev Metadata is KEPT (audit trail); only `approved` flips.
+    /// Idempotent on purpose: revoking a validator that was never
     /// approved (or already revoked) still succeeds, so an emergency
     /// revocation can never be blocked by stale state.
     function revokeValidator(address validator) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        approvedValidators[validator] = false;
+        _validatorInfo[validator].approved = false;
         emit ValidatorRevoked(validator);
+    }
+
+    /// @inheritdoc IQuestManager
+    /// @dev Fast path (no timelock) for a compromised or malicious
+    /// validator. Same effect as revokeValidator; re-approval still
+    /// requires the admin (timelock). Idempotent.
+    function emergencyRevokeValidator(address validator) external onlyRole(PAUSER_ROLE) {
+        _validatorInfo[validator].approved = false;
+        emit ValidatorRevoked(validator);
+    }
+
+    /// @notice Call a validator's validate() via STATICCALL and check its
+    /// returndata strictly.
+    /// @dev FINAL REMEDIATION (Phase 5): the staticcall enforces
+    /// view-ness at the EVM level — a validator that attempts any state
+    /// change (storage write, reentry into a state-changing function)
+    /// has the whole call reverted. Malformed returndata (wrong length
+    /// or a bool word other than 0/1) reverts with a dedicated error
+    /// instead of an ABI-decoding panic. A reverting validator fails
+    /// closed with ValidatorCallFailed rather than propagating the
+    /// validator's arbitrary revert data.
+    function _validateOnChain(address validator, address account, uint256 questId) internal view returns (bool) {
+        (bool success, bytes memory data) =
+            validator.staticcall(abi.encodeWithSelector(IQuestValidator.validate.selector, account, questId));
+        if (!success) revert ValidatorCallFailed(validator);
+        if (data.length != 32) revert InvalidValidatorReturndata(validator);
+        uint256 word;
+        assembly {
+            word := mload(add(data, 32))
+        }
+        if (word > 1) revert InvalidValidatorReturndata(validator);
+        return word == 1;
     }
 
     /// @inheritdoc IQuestManager

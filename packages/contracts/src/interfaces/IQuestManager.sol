@@ -52,6 +52,22 @@ interface IQuestManager {
         bool active;
     }
 
+    /// @notice A validator registry entry. Approval is per INSTANCE, not
+    /// per implementation: the admin reviews each instance's parameters
+    /// (e.g. token + threshold for TokenBalanceValidator) before
+    /// approving it. Metadata is required — a validator without
+    /// identity, version, and documentation cannot be approved.
+    /// @dev Revocation sets `approved` to false and KEEPS the metadata
+    /// (audit trail); re-approval overwrites metadata + `approvedAt`
+    /// (fresh review).
+    struct ValidatorInfo {
+        string name;
+        string version;
+        string documentation;
+        uint256 approvedAt;
+        bool approved;
+    }
+
     error QuestNotFound(uint256 questId);
     error QuestNotActive(uint256 questId);
     error QuestNotStarted(uint256 questId);
@@ -92,6 +108,17 @@ interface IQuestManager {
     /// quest creation and at completion time, so revocation takes effect
     /// immediately, including for quests already created.
     error ValidatorNotApproved(address validator);
+    /// @dev FINAL REMEDIATION (Phase 5): approveValidator metadata is
+    /// incomplete — name, version, and documentation are all required.
+    error InvalidValidatorMetadata();
+    /// @dev FINAL REMEDIATION (Phase 5): the validator's validate() call
+    /// reverted (staticcall returned success = false). The completion
+    /// fails closed with this error instead of propagating the
+    /// validator's arbitrary revert data.
+    error ValidatorCallFailed(address validator);
+    /// @dev FINAL REMEDIATION (Phase 5): the validator returned malformed
+    /// data (not exactly 32 bytes, or a bool word other than 0/1).
+    error InvalidValidatorReturndata(address validator);
 
     event QuestCreated(
         uint256 indexed questId,
@@ -155,19 +182,37 @@ interface IQuestManager {
     /// @dev TokenBalanceValidator is deployed once per (token, threshold)
     /// pair, so approval is per INSTANCE, not per implementation: the admin
     /// reviews each instance's token + threshold before approving it.
+    /// Backed by the validator registry (`validatorInfo`).
     function approvedValidators(address validator) external view returns (bool approved);
+
+    /// @notice The registry entry for `validator` (name, version,
+    /// documentation, approval time, approval status). Readable by anyone.
+    function validatorInfo(address validator) external view returns (ValidatorInfo memory info);
 
     /// @notice Approve a validator for OnChain quests. Admin only.
     /// @dev The admin must review the validator contract (and, for
     /// TokenBalanceValidator, its token + threshold) before approving:
     /// approval is the trust decision that replaces the old "creator picks
-    /// any contract" model. Reverts on zero / code-less addresses.
-    function approveValidator(address validator) external;
+    /// any contract" model. Reverts on zero / code-less addresses and on
+    /// empty metadata. Re-approval overwrites metadata + approvedAt.
+    function approveValidator(
+        address validator,
+        string calldata name,
+        string calldata version,
+        string calldata documentation
+    ) external;
 
-    /// @notice Revoke a validator's approval. Admin only. Takes effect
-    /// immediately: new quests cannot use it, and completions of existing
-    /// quests using it revert until (and unless) it is re-approved.
+    /// @notice Revoke a validator's approval. Admin only (timelock).
+    /// Takes effect immediately: new quests cannot use it, and completions
+    /// of existing quests using it revert until (and unless) it is
+    /// re-approved. Metadata is kept as an audit trail.
     function revokeValidator(address validator) external;
+
+    /// @notice Emergency-revoke a validator's approval. PAUSER_ROLE only
+    /// (no timelock delay) — the fast path for a compromised or malicious
+    /// validator. Same effect as revokeValidator; re-approval still
+    /// requires the admin (timelock).
+    function emergencyRevokeValidator(address validator) external;
 
     /// @notice Deactivate a quest (creator or admin). No new completions after this.
     function deactivateQuest(uint256 questId) external;

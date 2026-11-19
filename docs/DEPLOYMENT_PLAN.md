@@ -94,17 +94,21 @@ fork (publicnode) `SIMULATION COMPLETE`, 10,294,857 gas (~0.00103 BNB),
    function signatures would pass. The real protection is deployment-time
    discipline: the script deploys all four contracts itself and asserts the
    wiring; dependencies are never supplied from an untrusted source.
-2. **Validators are allowlist-gated.** An OnChain quest's validator is
-   picked by the quest creator, but it must be on the QuestManager
-   allowlist (`approvedValidators`): `createQuest` and quest completion
-   both revert with `ValidatorNotApproved` for an unapproved validator,
-   and revoking a validator takes effect immediately at completion (see
-   `QUEST_VALIDATION_DESIGN.md` §2.4). The allowlist stops a creator
+2. **Validators are registry-gated.** An OnChain quest's validator is
+   picked by the quest creator, but it must be in the QuestManager
+   validator registry (`validatorInfo`, with name/version/documentation):
+   `createQuest` and quest completion both revert with
+   `ValidatorNotApproved` for an unapproved validator, and revoking a
+   validator takes effect immediately at completion (see
+   `QUEST_VALIDATION_DESIGN.md` §2.4). The registry stops a creator
    from wiring an arbitrary always-true validator — but an approved
    validator is still trusted code: never approve a validator whose
    source you have not read, and never approve a validator you do not
    control (a third party could upgrade or replace its logic only if it
-   is a proxy — prefer non-proxy validators).
+   is a proxy — prefer non-proxy validators). The validator call is a
+   STATICCALL, so a validator cannot write state or reenter — but it
+   can still return a wrong answer, which is why approval is a
+   human review decision.
 3. **Verifiers are trusted.** See `QUEST_VALIDATION_DESIGN.md` §2.3 and
    `NEW_THREAT_MODEL.md` T-ATT-01. Attested quests are only as honest as
    their verifiers.
@@ -171,9 +175,10 @@ deployment record:
 
 - Approve the initial validators through the timelock (2-day delay):
   deploy the `TokenBalanceValidator` instance(s) for the launch quests
-  and `approveValidator` each one — see `QUEST_VALIDATION_DESIGN.md`
-  §2.4 for the list and the approval process. No OnChain quest can be
-  created until at least one validator is approved.
+  and `approveValidator` each one with name, version, and documentation
+  — see `QUEST_VALIDATION_DESIGN.md` §2.4 for the list and the approval
+  process. No OnChain quest can be created until at least one validator
+  is approved.
 - Define the first badges (`Achievement.defineBadge`, via the multisig as
   BADGE_MANAGER_ROLE).
 - Grant additional verifiers through the timelock (2-day delay).

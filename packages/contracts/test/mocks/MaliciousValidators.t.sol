@@ -59,3 +59,31 @@ contract AlwaysTrueValidator is IQuestValidator {
         return true;
     }
 }
+
+/// @notice Validator that WRITES state inside validate() — the attack the
+/// interface's `view` annotation cannot stop on its own. Under a regular
+/// CALL this would succeed (and could, e.g., flip its own approval flag
+/// or reenter); under QuestManager's STATICCALL (Phase 5) the storage
+/// write reverts the whole validate() call and the completion fails
+/// closed with ValidatorCallFailed.
+contract StateChangingValidator {
+    uint256 public counter;
+
+    function validate(address, uint256) external returns (bool) {
+        counter += 1; // SSTORE inside a staticcall frame: must revert.
+        return true;
+    }
+}
+
+/// @notice Validator returning a 32-byte word with value 2 — the right
+/// length, but not a valid bool. abi.decode(bool) would revert with a
+/// panic; QuestManager's explicit word check (Phase 5) reverts with
+/// InvalidValidatorReturndata instead.
+contract InvalidBoolValidator {
+    fallback() external {
+        assembly {
+            mstore(0, 0x02)
+            return(0, 32)
+        }
+    }
+}

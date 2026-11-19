@@ -154,21 +154,44 @@ on-chain and attributable to a signer address), fast revocation via the
 PAUSER_ROLE + admin, and monitoring for anomalous completion spikes. This
 residual trust is recorded in `NEW_THREAT_MODEL.md` (T-ATT-01).
 
-### 2.4 OnChain — validator allowlist
+### 2.4 OnChain — validator registry
 
 An OnChain quest's validator is creator-chosen, so an always-true validator
-would silently downgrade the quest to a CheckIn. The allowlist closes that
-gap (final pre-testnet cleanup, item 6):
+would silently downgrade the quest to a CheckIn. The registry closes that
+gap (final pre-testnet cleanup, item 6; upgraded to a registry in final
+remediation, Phase 5):
 
-- **Registry:** `QuestManager.approvedValidators` (address → bool).
+- **Registry:** `QuestManager.validatorInfo` (address →
+  `ValidatorInfo`: name, version, documentation, approvedAt, approved).
   Approval and revocation are admin-only (`approveValidator` /
   `revokeValidator`, `DEFAULT_ADMIN_ROLE` = the timelock after
   deployment) and emit `ValidatorApproved` / `ValidatorRevoked`.
+  Metadata is mandatory — a validator without identity, version, and
+  documentation cannot be approved. `approvedValidators` remains as a
+  backwards-compatible view over the registry.
 - **Enforcement at two points:** `createQuest` reverts with
   `ValidatorNotApproved` for an unapproved validator, and
-  `completeQuest` re-checks the allowlist at completion time — so
+  `completeQuest` re-checks the registry at completion time — so
   revoking a validator takes effect **immediately**, even for quests
   created while it was approved.
+- **Staticcall enforcement (Phase 5):** the validator is called via
+  STATICCALL with a strict returndata check (exactly 32 bytes, word 0
+  or 1). A validator that attempts a state change — storage write,
+  reentry into a state-changing function — has its call reverted at the
+  EVM level, so `view` is now enforced on-chain, not just promised by
+  the interface. A reverting validator fails closed with
+  `ValidatorCallFailed`; malformed returndata with
+  `InvalidValidatorReturndata`. What the staticcall does NOT fix: a
+  validator returning the WRONG ANSWER (always-true). That remains a
+  trust decision gated by admin approval.
+- **Revocation policy (explicit):** revocation is immediate and total —
+  no grace period, no migration path. A quest whose validator is
+  revoked is frozen until the validator is re-approved; to keep the
+  quest running, deactivate it and re-create it with a different
+  approved validator (a quest's validator is immutable). Completions
+  already awarded are never rolled back. Emergency revocation
+  (`emergencyRevokeValidator`, `PAUSER_ROLE`, no timelock delay) exists
+  for a compromised validator; re-approval still requires the timelock.
 - **Initial list:** `TokenBalanceValidator` (the reference validator in
   `contracts/validators/`, fail-closed staticcall, deployed once per
   (token, threshold) pair). Each deployed instance is approved
@@ -177,15 +200,17 @@ gap (final pre-testnet cleanup, item 6):
 - **Adding a new validator:** (1) review the validator source in full —
   it is trusted code, called by QuestManager; (2) deploy the instance
   (prefer non-proxy, immutable configuration); (3) timelock proposal
-  `approveValidator(instance)` (2-day delay); (4) verify on-chain
-  (`approvedValidators(instance)` true) and test one completion of a
-  quest using it on testnet before mainnet; (5) record the instance in
-  the deployment record with its condition in plain language.
-- **Removing a validator:** timelock proposal `revokeValidator(instance)`.
-  Takes effect immediately at completion; quests using it can no longer
-  be completed (they are not deleted — they become uncompletable until a
-  replacement validator is approved and the quest is re-created with it,
-  since a quest's validator is immutable).
+  `approveValidator(instance, name, version, documentation)` (2-day
+  delay); (4) verify on-chain (`approvedValidators(instance)` true) and
+  test one completion of a quest using it on testnet before mainnet; (5)
+  record the instance in the deployment record with its condition in
+  plain language.
+- **Removing a validator:** timelock proposal `revokeValidator(instance)`,
+  or `emergencyRevokeValidator(instance)` by the pauser for an urgent
+  case. Takes effect immediately at completion; quests using it can no
+  longer be completed (they are not deleted — they become uncompletable
+  until a replacement validator is approved and the quest is re-created
+  with it, since a quest's validator is immutable).
 
 ## 3. What the frontend must show
 

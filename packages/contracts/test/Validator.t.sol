@@ -62,7 +62,7 @@ contract ValidatorTest is Test {
         // for the malicious-validator tests below, where approval is the
         // deliberate opt-in that lets the test verify fail-closed behavior
         // IF a bad validator is ever approved.
-        qm.approveValidator(validator);
+        qm.approveValidator(validator, "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         vm.prank(creator);
         return qm.createQuest(
             "Hold 100 Tokens",
@@ -156,7 +156,7 @@ contract ValidatorTest is Test {
 
     function test_OnChainQuestRechecksBalanceEveryCompletion() public {
         TokenBalanceValidator v = new TokenBalanceValidator(address(token), THRESHOLD);
-        qm.approveValidator(address(v));
+        qm.approveValidator(address(v), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         vm.prank(creator);
         uint256 id = qm.createQuest(
             "Daily Hold",
@@ -194,7 +194,10 @@ contract ValidatorTest is Test {
         RevertingValidator bad = new RevertingValidator();
         uint256 id = _createOnChainQuest(address(bad), 100);
         vm.prank(alice);
-        vm.expectRevert(RevertingValidator.ValidatorBoom.selector);
+        // FINAL REMEDIATION (Phase 5): the completion fails closed with
+        // the contract's own uniform error instead of propagating the
+        // validator's arbitrary revert data.
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.ValidatorCallFailed.selector, address(bad)));
         qm.completeQuest(id);
         assertEq(reputation.points(alice), 0);
         assertFalse(qm.hasCompleted(alice, id));
@@ -205,7 +208,9 @@ contract ValidatorTest is Test {
         GarbageValidator garbage = new GarbageValidator();
         uint256 id = _createOnChainQuest(address(garbage), 100);
         vm.prank(alice);
-        vm.expectRevert(); // ABI decode of 1-byte returndata reverts
+        // FINAL REMEDIATION (Phase 5): malformed returndata reverts with
+        // a dedicated error instead of an ABI-decoding panic.
+        vm.expectRevert(abi.encodeWithSelector(IQuestManager.InvalidValidatorReturndata.selector, address(garbage)));
         qm.completeQuest(id);
         assertEq(reputation.points(alice), 0);
         assertFalse(qm.hasCompleted(alice, id));

@@ -121,7 +121,7 @@ contract InvariantTest is StdInvariant, Test {
         validator = new TokenBalanceValidator(address(token), 1);
         // PRE-TESTNET CLEANUP (item 6): the OnChain quest's validator must
         // be admin-approved before the quest is created.
-        qm.approveValidator(address(validator));
+        qm.approveValidator(address(validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         vm.warp(1_000_000);
 
         // Five quests: one-time+badge, daily, weekly, capped one-time,
