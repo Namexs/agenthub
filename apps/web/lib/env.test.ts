@@ -25,6 +25,7 @@ const ENV_KEYS = [
   'NEXT_PUBLIC_REPUTATION_ADDRESS',
   'NEXT_PUBLIC_ACHIEVEMENT_ADDRESS',
   'NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID',
+  'NEXT_PUBLIC_DEPLOY_BLOCK',
 ] as const;
 
 async function loadEnv(vars: Partial<Record<(typeof ENV_KEYS)[number], string>>) {
@@ -162,6 +163,35 @@ describe('env validation', () => {
       NEXT_PUBLIC_REPUTATION_ADDRESS: REP,
     });
     expect(partial).toBe(false);
+  });
+
+  // PHASE 8: NEXT_PUBLIC_DEPLOY_BLOCK (added in Phase 7) — event queries
+  // start at this block, never at genesis.
+  it('accepts a valid deploy block', async () => {
+    const { env } = await loadEnv({ NEXT_PUBLIC_DEPLOY_BLOCK: '12345' });
+    expect(env.NEXT_PUBLIC_DEPLOY_BLOCK).toBe(12345);
+  });
+
+  it('accepts deploy block 0 (genesis deployment)', async () => {
+    const { env } = await loadEnv({ NEXT_PUBLIC_DEPLOY_BLOCK: '0' });
+    expect(env.NEXT_PUBLIC_DEPLOY_BLOCK).toBe(0);
+  });
+
+  it('leaves the deploy block undefined when unset', async () => {
+    const { env } = await loadEnv({});
+    expect(env.NEXT_PUBLIC_DEPLOY_BLOCK).toBeUndefined();
+  });
+
+  it('rejects a negative, non-numeric, or fractional deploy block', async () => {
+    await expect(loadEnv({ NEXT_PUBLIC_DEPLOY_BLOCK: '-1' })).rejects.toThrow(
+      'Invalid environment configuration',
+    );
+    await expect(loadEnv({ NEXT_PUBLIC_DEPLOY_BLOCK: 'abc' })).rejects.toThrow(
+      'Invalid environment configuration',
+    );
+    await expect(loadEnv({ NEXT_PUBLIC_DEPLOY_BLOCK: '1.5' })).rejects.toThrow(
+      'Invalid environment configuration',
+    );
   });
 });
 

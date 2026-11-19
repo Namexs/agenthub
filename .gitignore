@@ -34,3 +34,6 @@ coverage/
 .anvil-deployment.json
 apps/web/.anvil-deployment.json
 packages/contracts/.anvil-deployment.json
+
+# Local E2E smoke server log (Phase 8)
+.e2e-server.log
