@@ -1,0 +1,6 @@
+Verifying commit d48e791f96d57058e2f2f7eea21cc697f34a581e against PACKAGE_MANIFEST.md ...
+Checked 288 files from the manifest.
+OK: submodule packages/contracts/lib/forge-std (8948d45d3d9022c508b83eb5d26fd3a7a93f2f32)
+OK: submodule packages/contracts/lib/openzeppelin-contracts (dbb6104ce834628e473d2173bbc9d47f81a9eec3)
+NOTE: HEAD is the recorded commit.
+MANIFEST VERIFIED: commit d48e791f96d57058e2f2f7eea21cc697f34a581e matches PACKAGE_MANIFEST.md
