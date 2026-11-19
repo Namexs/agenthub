@@ -1,0 +1,258 @@
+Dependency audit	Set up job	﻿2026-11-19T13:39:42.5315759Z Current runner version: '2.338.2'
+Dependency audit	Set up job	2026-11-19T13:39:42.5345325Z ##[group]Runner Image Provisioner
+Dependency audit	Set up job	2026-11-19T13:39:42.5346842Z Hosted Compute Agent
+Dependency audit	Set up job	2026-11-19T13:39:42.5347570Z Version: 20261103.629
+Dependency audit	Set up job	2026-11-19T13:39:42.5348666Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+Dependency audit	Set up job	2026-11-19T13:39:42.5349696Z Build Date: 2026-11-03T17:26:59Z
+Dependency audit	Set up job	2026-11-19T13:39:42.5350603Z Worker ID: {1b0f40fa-d67e-4db5-a80a-26c8b9400365}
+Dependency audit	Set up job	2026-11-19T13:39:42.5351528Z Region: eastus2
+Dependency audit	Set up job	2026-11-19T13:39:42.5352185Z Cloud: Azure
+Dependency audit	Set up job	2026-11-19T13:39:42.5352937Z ##[endgroup]
+Dependency audit	Set up job	2026-11-19T13:39:42.5354855Z ##[group]Operating System
+Dependency audit	Set up job	2026-11-19T13:39:42.5355665Z Ubuntu
+Dependency audit	Set up job	2026-11-19T13:39:42.5356353Z 26.04.1
+Dependency audit	Set up job	2026-11-19T13:39:42.5357103Z LTS
+Dependency audit	Set up job	2026-11-19T13:39:42.5357748Z ##[endgroup]
+Dependency audit	Set up job	2026-11-19T13:39:42.5358729Z ##[group]Runner Image
+Dependency audit	Set up job	2026-11-19T13:39:42.5359469Z Image: ubuntu-26.04
+Dependency audit	Set up job	2026-11-19T13:39:42.5360272Z Version: 20261111.196.1
+Dependency audit	Set up job	2026-11-19T13:39:42.5361609Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+Dependency audit	Set up job	2026-11-19T13:39:42.5363982Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261111.196
+Dependency audit	Set up job	2026-11-19T13:39:42.5365360Z ##[endgroup]
+Dependency audit	Set up job	2026-11-19T13:39:42.5367054Z ##[group]GITHUB_TOKEN Permissions
+Dependency audit	Set up job	2026-11-19T13:39:42.5369673Z Contents: read
+Dependency audit	Set up job	2026-11-19T13:39:42.5370548Z Metadata: read
+Dependency audit	Set up job	2026-11-19T13:39:42.5371240Z ##[endgroup]
+Dependency audit	Set up job	2026-11-19T13:39:42.5373780Z Secret source: Actions
+Dependency audit	Set up job	2026-11-19T13:39:42.5374896Z Cache mode: write
+Dependency audit	Set up job	2026-11-19T13:39:42.5376116Z Prepare workflow directory
+Dependency audit	Set up job	2026-11-19T13:39:42.5820618Z Prepare all required actions
+Dependency audit	Set up job	2026-11-19T13:39:42.5877634Z Getting action download info
+Dependency audit	Set up job	2026-11-19T13:39:42.7660276Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+Dependency audit	Set up job	2026-11-19T13:39:42.9242059Z Download action repository 'pnpm/action-setup@v3' (SHA:a3252b78c470c02df07e9d59298aecedc3ccdd6d)
+Dependency audit	Set up job	2026-11-19T13:39:43.1190364Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Dependency audit	Set up job	2026-11-19T13:39:43.3154722Z Complete job name: Dependency audit
+Dependency audit	Run actions/checkout@v4	﻿2026-11-19T13:39:43.3852601Z ##[group]Run actions/checkout@v4
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3853711Z with:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3854334Z   repository: Namexs/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3859754Z   token: ***
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3860361Z   ssh-strict: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3860930Z   ssh-user: git
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3861637Z   persist-credentials: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3862268Z   clean: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3862854Z   sparse-checkout-cone-mode: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3863519Z   fetch-depth: 1
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3864107Z   fetch-tags: false
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3864672Z   show-progress: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3865232Z   lfs: false
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3865766Z   submodules: false
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3866345Z   set-safe-directory: true
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3866976Z   allow-unsafe-pr-checkout: false
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3867962Z env:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3868695Z   NODE_VERSION: 20.20.2
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3869309Z   PNPM_VERSION: 9.15.4
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3869927Z   FOUNDRY_VERSION: 1.9.0
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3870522Z   SLITHER_VERSION: 0.11.6
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3871182Z   PYTHON_VERSION: 3.12
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.3871746Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6141790Z Syncing repository: Namexs/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6144051Z ##[group]Getting Git version info
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6145027Z Working directory is '/home/runner/work/agenthub/agenthub'
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6146394Z [command]/usr/bin/git version
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6147144Z git version 2.56.1
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6167505Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6175641Z Temporarily overriding HOME='/home/runner/work/_temp/366183b4-4d88-4ae3-a1d3-45debb50f767' before making global git config changes
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6177495Z Adding repository directory to the temporary git global config as a safe directory
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6180040Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agenthub/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6811419Z Deleting the contents of '/home/runner/work/agenthub/agenthub'
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6813535Z ##[group]Initializing the repository
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6814170Z [command]/usr/bin/git init /home/runner/work/agenthub/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6901736Z hint: Using 'master' as the name for the initial branch. This default branch name
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6902738Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6903703Z hint: to use in all of your new repositories, which will suppress this warning,
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6904341Z hint: call:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6904712Z hint:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6905265Z hint: 	git config --global init.defaultBranch <name>
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6905884Z hint:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6906442Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6907617Z hint: 'development'. The just-created branch can be renamed via this command:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6908692Z hint:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6909267Z hint: 	git branch -m <name>
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6909955Z hint:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6910620Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6911832Z Initialized empty Git repository in /home/runner/work/agenthub/agenthub/.git/
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.6920693Z [command]/usr/bin/git remote add origin https://github.com/Namexs/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7003888Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7004577Z ##[group]Disabling automatic garbage collection
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7007853Z [command]/usr/bin/git config --local gc.auto 0
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7036242Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7037186Z ##[group]Setting up auth
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7042126Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7068997Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7401804Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7429910Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7667662Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7699235Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7931689Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7966479Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7967248Z ##[group]Fetching the repository
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:43.7974163Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +39fcb94becf5e5dd18d7f4561868139fd30dce27:refs/remotes/origin/main
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0948850Z From https://github.com/Namexs/agenthub
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0950116Z  * [new ref]         39fcb94becf5e5dd18d7f4561868139fd30dce27 -> origin/main
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0953406Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0954643Z ##[group]Determining the checkout info
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0955882Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.0960213Z [command]/usr/bin/git sparse-checkout disable
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1003942Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1037002Z ##[group]Checking out the ref
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1038087Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1334552Z Switched to a new branch 'main'
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1337981Z branch 'main' set up to track 'origin/main'.
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1345694Z ##[endgroup]
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1387230Z [command]/usr/bin/git log -1 --format=%H
+Dependency audit	Run actions/checkout@v4	2026-11-19T13:39:44.1407982Z 39fcb94becf5e5dd18d7f4561868139fd30dce27
+Dependency audit	Run pnpm/action-setup@v3	﻿2026-11-19T13:39:44.1669399Z ##[group]Run pnpm/action-setup@v3
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1670542Z with:
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1671251Z   version: 9.15.4
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1671978Z   dest: ~/setup-pnpm
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1672723Z   run_install: null
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1673491Z   package_json_file: package.json
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1674341Z   standalone: false
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1675030Z env:
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1675659Z   NODE_VERSION: 20.20.2
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1676396Z   PNPM_VERSION: 9.15.4
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1677142Z   FOUNDRY_VERSION: 1.9.0
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1677909Z   SLITHER_VERSION: 0.11.6
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1678802Z   PYTHON_VERSION: 3.12
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.1679520Z ##[endgroup]
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.2415598Z ##[group]Running self-installer...
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.5712050Z (node:2303) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.5782008Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.7070244Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.7140579Z Packages: +1
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:44.7141662Z +
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0049122Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0493708Z 
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0494356Z dependencies:
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0495035Z + pnpm 9.15.4 (12.21.0 is available)
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0495343Z 
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0515046Z Done in 673ms
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0727522Z ##[endgroup]
+Dependency audit	Run pnpm/action-setup@v3	2026-11-19T13:39:45.0729057Z Installation Completed!
+Dependency audit	Run actions/setup-node@v4	﻿2026-11-19T13:39:45.0886309Z ##[group]Run actions/setup-node@v4
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0886558Z with:
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0886749Z   node-version: 20.20.2
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0886941Z   cache: pnpm
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0887114Z   always-auth: false
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0887292Z   check-latest: false
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0889371Z   token: ***
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0889548Z env:
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0889721Z   NODE_VERSION: 20.20.2
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0889927Z   PNPM_VERSION: 9.15.4
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0890113Z   FOUNDRY_VERSION: 1.9.0
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0890297Z   SLITHER_VERSION: 0.11.6
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0890485Z   PYTHON_VERSION: 3.12
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0890714Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.0890969Z ##[endgroup]
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.2035126Z Attempting to download 20.20.2...
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.2118552Z (node:2317) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.2119506Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:45.8851709Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:46.1846448Z Extracting ...
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:46.1954362Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/4620a9f9-ca03-4371-a6ed-7734236b8040 -f /home/runner/work/_temp/68f3a216-9b88-4750-b89d-7bd912f4840e
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:46.7285285Z Adding to the cache ...
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.2504847Z ##[group]Environment details
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.4387573Z node: v20.20.2
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.4387952Z npm: 10.8.2
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.4388177Z yarn: 1.22.22
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.4388857Z ##[endgroup]
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.4407671Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.7437379Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+Dependency audit	Run actions/setup-node@v4	2026-11-19T13:39:48.8149261Z pnpm cache is not found
+Dependency audit	Run pnpm install --frozen-lockfile	﻿2026-11-19T13:39:48.8411829Z ##[group]Run pnpm install --frozen-lockfile
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8412173Z ^[[36;1mpnpm install --frozen-lockfile^[[0m
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8459975Z shell: /usr/bin/bash -e {0}
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8460194Z env:
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8460360Z   NODE_VERSION: 20.20.2
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8460549Z   PNPM_VERSION: 9.15.4
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8460735Z   FOUNDRY_VERSION: 1.9.0
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8461136Z   SLITHER_VERSION: 0.11.6
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8461317Z   PYTHON_VERSION: 3.12
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8461557Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:48.8461810Z ##[endgroup]
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:49.1794263Z Scope: all 5 workspace projects
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:49.2317201Z Lockfile is up to date, resolution step is skipped
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:49.2919115Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:49.4009602Z Packages: +862
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:49.4039248Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:50.2970492Z Progress: resolved 862, reused 0, downloaded 203, added 198
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:51.2969990Z Progress: resolved 862, reused 0, downloaded 326, added 318
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:52.3178543Z Progress: resolved 862, reused 0, downloaded 335, added 320
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:53.3179808Z Progress: resolved 862, reused 0, downloaded 406, added 394
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:54.3200403Z Progress: resolved 862, reused 0, downloaded 468, added 459
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:55.3186625Z Progress: resolved 862, reused 0, downloaded 605, added 603
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:56.3185844Z Progress: resolved 862, reused 0, downloaded 860, added 860
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.3189012Z Progress: resolved 862, reused 0, downloaded 862, added 861
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.5879482Z Progress: resolved 862, reused 0, downloaded 862, added 862, done
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.8247159Z .../node_modules/bufferutil install$ node-gyp-build
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.8252766Z .../keccak@3.0.4/node_modules/keccak install$ node-gyp-build || exit 0
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.8258800Z .../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.8261842Z .../node_modules/utf-8-validate install$ node-gyp-build
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.9389928Z .../node_modules/bufferutil install: Done
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.9569830Z .../keccak@3.0.4/node_modules/keccak install: Done
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.9781746Z .../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:57.9869577Z .../node_modules/utf-8-validate install: Done
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3377662Z 
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3378463Z devDependencies:
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3378935Z + @typescript-eslint/eslint-plugin 8.12.2
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3379421Z + @typescript-eslint/parser 8.12.2
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3379771Z + eslint 8.57.1
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3380124Z + eslint-config-next 15.5.29
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3380516Z + eslint-config-prettier 9.1.0
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3380837Z + prettier 3.3.3
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3381104Z + typescript 5.6.3
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3381264Z 
+Dependency audit	Run pnpm install --frozen-lockfile	2026-11-19T13:39:58.3536578Z Done in 9.4s
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	﻿2026-11-19T13:39:58.4407520Z ##[group]Run node scripts/pnpm-audit-allowlist.mjs
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4407867Z ^[[36;1mnode scripts/pnpm-audit-allowlist.mjs^[[0m
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4454201Z shell: /usr/bin/bash -e {0}
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4454429Z env:
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4454594Z   NODE_VERSION: 20.20.2
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4454782Z   PNPM_VERSION: 9.15.4
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4454969Z   FOUNDRY_VERSION: 1.9.0
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4455154Z   SLITHER_VERSION: 0.11.6
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4455368Z   PYTHON_VERSION: 3.12
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4455586Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:39:58.4455841Z ##[endgroup]
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5516335Z 
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5517187Z Dependency audit: 6 advisories reported.
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5521329Z 
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5522171Z Non-gating (moderate/low — counted, not failing): {"moderate":5,"low":1}
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5522579Z 
+Dependency audit	Run node scripts/pnpm-audit-allowlist.mjs	2026-11-19T13:40:00.5522992Z AUDIT PASSED: no new high/critical findings; all allowlist entries still apply.
+Dependency audit	Post Run actions/setup-node@v4	﻿2026-11-19T13:40:00.5627226Z Post job cleanup.
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:00.6596665Z (node:2514) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:00.6597718Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:00.6776716Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/agenthub/agenthub --files-from manifest.txt --use-compress-program zstdmt
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:04.1555342Z (node:2514) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:05.1469832Z Sent 0 of 268384432 (0.0%), 0.0 MBs/sec
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:06.0349675Z Sent 268384432 of 268384432 (100.0%), 135.4 MBs/sec
+Dependency audit	Post Run actions/setup-node@v4	2026-11-19T13:40:06.1638904Z Cache saved with the key: node-cache-Linux-x64-pnpm-b473a402a441cd2564c7618a8546cd2fe25dc18089de0c75b6219fce5db527d4
+Dependency audit	Post Run pnpm/action-setup@v3	﻿2026-11-19T13:40:06.1803492Z Post job cleanup.
+Dependency audit	Post Run pnpm/action-setup@v3	2026-11-19T13:40:06.2559038Z Pruning is unnecessary.
+Dependency audit	Post Run actions/checkout@v4	﻿2026-11-19T13:40:06.3720510Z Post job cleanup.
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4560074Z [command]/usr/bin/git version
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4620094Z git version 2.56.1
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4639756Z Temporarily overriding HOME='/home/runner/work/_temp/b32be945-64fb-4b23-bbb4-5689b66d1744' before making global git config changes
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4641147Z Adding repository directory to the temporary git global config as a safe directory
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4642263Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agenthub/agenthub
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4688617Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.4740722Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5012602Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5039390Z http.https://github.com/.extraheader
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5057644Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5089432Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5376982Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Dependency audit	Post Run actions/checkout@v4	2026-11-19T13:40:06.5408049Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Dependency audit	Complete job	﻿2026-11-19T13:40:06.5794196Z Cleaning up orphan processes
+Dependency audit	Complete job	2026-11-19T13:40:06.6130653Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, pnpm/action-setup@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

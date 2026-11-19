@@ -1,0 +1,39 @@
+=== CASE 1: fixture as-is (expect 0) ===
+(test mode: reading audit output from fixture scripts/pnpm-audit-allowlist.fixture.json — NOT a live audit)
+
+Dependency audit: 3 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+AUDIT PASSED: no new high/critical findings; all allowlist entries still apply.
+CASE 1 exit: 0
+=== CASE 2: fixture + fake HIGH (expect 1) ===
+(test mode: reading audit output from fixture /tmp/audit-case2.json — NOT a live audit)
+
+Dependency audit: 4 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+BLOCKING findings (high/critical, NOT allowlisted): 1
+  - GHSA-xxxx-yyyy-zzzz [high] some-package: Fake new HIGH finding
+
+AUDIT FAILED.
+Fix the blocking findings (upgrade the dependency), or — only with a documented, independently justified risk acceptance — add an entry to the ALLOWLIST in scripts/pnpm-audit-allowlist.mjs.
+CASE 2 exit: 1
+=== CASE 3: bogus allowlist entry (expect 1 stale) ===
+(test mode: reading audit output from fixture scripts/pnpm-audit-allowlist.fixture.json — NOT a live audit)
+
+Dependency audit: 3 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+STALE allowlist entries (no longer reported — prune them): 1
+  - GHSA-bogus-bogus-bogus (no-such-package)
+
+AUDIT FAILED.
+Remove the stale entries from the ALLOWLIST in scripts/pnpm-audit-allowlist.mjs (the advisory is gone — usually because the dependency was upgraded).
+CASE 3 exit: 1
+=== CASE 4: malformed audit shape (expect 2) ===
+(test mode: reading audit output from fixture /tmp/audit-case4.json — NOT a live audit)
+pnpm-audit-allowlist: ERROR: pnpm audit output has no advisories and no metadata — unexpected shape, refusing to pass
+CASE 4 exit: 2
