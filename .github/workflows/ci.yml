@@ -116,13 +116,14 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Audit with a documented allowlist (Phase G): the 12 accepted
-      # Next.js 14.2.35 findings (3 CRITICAL + 9 HIGH, fixes only in
-      # Next.js 15.x/16.x) would fail a bare `pnpm audit
-      # --audit-level=high`, so the script fails ONLY on findings that
-      # are NOT explicitly allowlisted — each entry names the advisory,
-      # the package, and its justification (see
-      # DEPENDENCY_REMEDIATION_REPORT.md §6). Allowlisted findings are
+      # Audit with a documented allowlist (Phase G). The 12 accepted
+      # Next.js 14.2.35 findings (3 CRITICAL + 9 HIGH) are GONE — the
+      # Next.js 15.5.29 upgrade removed every high/critical finding
+      # from the tree, so the allowlist is currently EMPTY (see
+      # agenthub-next15-upgrade/NEXT15_UPGRADE_REPORT.md). The
+      # mechanism stays: the script fails ONLY on findings that are
+      # NOT explicitly allowlisted — each entry names the advisory,
+      # the package, and its justification. Allowlisted findings are
       # printed on every run; new high/critical findings, stale
       # allowlist entries, and audit errors all fail the job. The audit
       # is NOT weakened or deleted — it is scoped, visibly.

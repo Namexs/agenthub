@@ -1,13 +1,15 @@
 // pnpm audit with a documented allowlist (Phase G — final release
-// remediation).
+// remediation; allowlist emptied by the Next.js 15 upgrade).
 //
-// PROBLEM: `pnpm audit --audit-level=high` fails on the 12 accepted
-// Next.js 14.2.35 findings (3 CRITICAL + 9 HIGH, fixes only in
-// Next.js 15.x/16.x — see agenthub-final-release/
-// DEPENDENCY_REMEDIATION_REPORT.md §6). Deleting the audit job or
-// lowering its level would hide future vulnerabilities, so instead
-// this script runs the audit and fails ONLY on findings that are
-// NOT explicitly allowlisted here.
+// The 12 accepted Next.js 14.2.35 findings (3 CRITICAL + 9 HIGH,
+// fixes only in Next.js 15.x/16.x — see agenthub-final-release/
+// DEPENDENCY_REMEDIATION_REPORT.md §6) are GONE: the Next.js 15.5.29
+// upgrade (see agenthub-next15-upgrade/NEXT15_UPGRADE_REPORT.md)
+// removed every high/critical finding from the tree, so the
+// allowlist below is currently EMPTY. The mechanism stays in place:
+// deleting the audit job or lowering its level would hide future
+// vulnerabilities, so this script runs the audit and fails ONLY on
+// findings that are NOT explicitly allowlisted here.
 //
 // RULES (non-negotiable):
 // - Every allowlist entry names the exact advisory (full GHSA id),
@@ -39,104 +41,16 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-// --- The allowlist: 12 Next.js 14.2.35 advisories, each individually
-// justified in DEPENDENCY_REMEDIATION_REPORT.md §6 (risk acceptance).
-// All 12 have fixes ONLY in Next.js 15.x/16.x (a React 19 migration —
-// a recorded pre-mainnet requirement, not a testnet blocker).
-const ALLOWLIST = [
-  {
-    id: 'GHSA-2464-fhr4-w9xw',
-    package: 'next',
-    severity: 'critical',
-    reason:
-      'Image-optimization RCE (SVG): not applicable — zero next/image usage, no images.remotePatterns.',
-    fixedIn: '15.5.28 / 16.4.1',
-  },
-  {
-    id: 'GHSA-2xp9-vwfh-vxw4',
-    package: 'next',
-    severity: 'critical',
-    reason:
-      'Image-optimization RCE (AVIF): not applicable — zero next/image usage, no images.remotePatterns.',
-    fixedIn: '15.5.24 / 16.3.3',
-  },
-  {
-    id: 'GHSA-p293-qw3h-jr36',
-    package: 'next',
-    severity: 'critical',
-    reason: 'Windows-hosted RCE: not applicable — Linux-only hosting.',
-    fixedIn: '15.5.24 / 16.3.3',
-  },
-  {
-    id: 'GHSA-36qx-fr4f-26g5',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'Pages Router + i18n middleware bypass: not applicable — App Router only, no pages/, no i18n, no middleware.',
-    fixedIn: '15.5.16 / 16.2.5',
-  },
-  {
-    id: 'GHSA-89xv-2m56-2m9x',
-    package: 'next',
-    severity: 'high',
-    reason: 'Server Actions SSRF: not applicable — no "use server" anywhere in the app.',
-    fixedIn: '15.5.21 / 16.2.11',
-  },
-  {
-    id: 'GHSA-m99w-x7hq-7vfj',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'Server Actions DoS (App Router): not applicable — no "use server" anywhere in the app.',
-    fixedIn: '15.5.21 / 16.2.11',
-  },
-  {
-    id: 'GHSA-p3m5-59mp-jv5r',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'Server Actions DoS (App Router): not applicable — no "use server" anywhere in the app.',
-    fixedIn: '15.5.21 / 16.2.11',
-  },
-  {
-    id: 'GHSA-p9j2-gv94-2wf4',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'Rewrites SSRF: not applicable — no rewrites in next.config (only reactStrictMode + poweredByHeader).',
-    fixedIn: '15.5.21 / 16.2.11',
-  },
-  {
-    id: 'GHSA-c4j6-fc7j-m34r',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'SSRF via WebSocket upgrades: not applicable — no server-side WebSocket upgrade handling.',
-    fixedIn: '15.5.16 / 16.2.5',
-  },
-  {
-    id: 'GHSA-8h8q-6873-q5fj',
-    package: 'next',
-    severity: 'high',
-    reason: 'DoS with Server Components: availability-only, accepted for testnet staging only.',
-    fixedIn: '15.5.16 / 16.2.5',
-  },
-  {
-    id: 'GHSA-q4gf-8mx6-v5v3',
-    package: 'next',
-    severity: 'high',
-    reason: 'DoS with Server Components: availability-only, accepted for testnet staging only.',
-    fixedIn: '15.5.15 / 16.2.3',
-  },
-  {
-    id: 'GHSA-h25m-26qc-wcjf',
-    package: 'next',
-    severity: 'high',
-    reason:
-      'Request-deserialization DoS (RSC): availability-only, accepted for testnet staging only.',
-    fixedIn: '15.0.8+ / 16.0.11+',
-  },
-];
+// --- The allowlist: currently EMPTY. ---
+// The 12 Next.js 14.2.35 entries were pruned by the Next.js 15
+// upgrade (Next.js 15.5.29 + React 19.3.1, 2026-11-19): the OSV
+// re-audit of the new lockfile reports 0 CRITICAL and 0 HIGH
+// findings, so every entry became stale and was removed in the same
+// change (the script's own stale-entry rule requires this).
+// Add an entry ONLY with a documented, independently justified risk
+// acceptance, naming the exact advisory, package, and reason —
+// no wildcards, no severity-only blanket, no "ignore all of next".
+const ALLOWLIST = [];
 
 const GATING = new Set(['critical', 'high']);
 
