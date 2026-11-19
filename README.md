@@ -97,7 +97,8 @@ config. See `docs/ARCHITECTURE.md` for the token table.
    Agent ID contract, testnet/local accept the mock.
 2. `QuestManager` — quest lifecycle + validated completions: CheckIn
    (explicit self-check-in), OnChain (validator contract), Attested
-   (EIP-712 verifier attestation).
+   (EIP-712 verifier attestation, threshold M-of-N: each quest declares
+   how many distinct verifier signatures it requires, 1–3).
 3. `Reputation` — points from validated events only; no admin score function.
 4. `Achievement` — soulbound badges, issuer = QuestManager only.
 

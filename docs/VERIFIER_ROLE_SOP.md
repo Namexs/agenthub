@@ -148,6 +148,66 @@ QuestManager address)`. Use the project's signing tool
    be stale. One pending attestation per account at a time; re-read
    `nonces(account)` before every signature.
 
+### 6.1 Threshold attestations (M-of-N) — Phase 6 (R-010), implemented
+
+A quest declares an `attestationThreshold` (1–3) at creation,
+**immutable afterwards**. A threshold-M quest completes only when the
+submitted signature array carries at least M **distinct**
+`VERIFIER_ROLE` signers over the **same** digest (same account,
+questId, nonce, deadline). All M verifiers sign the same attestation
+struct — no new EIP-712 type, no domain change; each verifier signs
+independently with the existing tool
+(`apps/web/scripts/sign-attestation.mjs`), and the user (or a
+coordinator) collects the signatures and submits them together via the
+AttestationForm, which shows "requires N verifier signatures" from the
+quest's public threshold.
+
+**Threshold policy.** Threshold 2 for any attested quest with
+rewardPoints > 1,000 or a badge with real-world value; threshold 1 for
+everything else. Threshold 3 is available but needs a 3-verifier set
+and slower coordination — use it only for the highest-value quests.
+
+**Coordination flow (threshold 2).**
+
+1. The coordinator (or the user) reads `nonces(account)` **once** and
+   picks one deadline, then shares the same
+   (account, questId, nonce, deadline) with both verifiers.
+2. Each verifier independently verifies the task (§6 step 1) and signs
+   the same digest. A verifier who cannot confirm the task must NOT
+   sign — one missing signature blocks the completion, by design.
+3. The user pastes both signatures + the deadline into the form, which
+   verifies each signer client-side (recovery + `VERIFIER_ROLE`) before
+   submit is enabled. The contract re-verifies everything on-chain:
+   a duplicate signer reverts (`DuplicateAttestationSigner`), fewer
+   than M distinct verifiers reverts (`InsufficientAttestations`), and
+   a junk signature anywhere in the array reverts the whole call.
+4. **Stale sets:** the nonce is global per account, so if the user
+   completes another attested quest while a set is half-collected, the
+   nonce moves and the whole set goes stale — re-collect from step 1.
+   Keep the coordination window short (hours, not days).
+
+**Footguns (read before granting or revoking).**
+
+- **Grant first:** grant at least the threshold number of verifiers
+  **before** creating a threshold quest. A threshold-2 quest with only
+  one verifier can never complete.
+- **Do not revoke below the threshold:** OpenZeppelin `AccessControl`
+  cannot enumerate role holders, so the contract **cannot** check that
+  threshold ≤ live verifier count. If verifiers are revoked until
+  fewer than M remain, every live threshold-M quest becomes
+  uncompletable ("bricked"). Before any revocation, check the highest
+  threshold among live Attested quests: either keep at least that many
+  verifiers, or deactivate the affected quests first (the admin can
+  always deactivate a bricked quest and recreate it at threshold 1).
+- **Rotation on threshold quests:** grant the replacement verifier
+  before revoking the old one (§5 order), and re-issue any in-flight
+  attestation sets that included the old signer — its signature stops
+  working the moment its role is revoked.
+
+**Monitoring:** `AttestationUsed` is emitted once per distinct signer,
+so the per-signer review in §8 works unchanged — a threshold-2
+completion appears as two events, one per verifier.
+
 ## 7. Verifier registry
 
 Keep this table current. It is the off-chain record of who may attest;
@@ -166,7 +226,11 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
   per-signer query is a single topic filter. Review weekly.
 - **Failed `completeQuestWithAttestation` calls** (`UnauthorizedVerifier`
   reverts) — a burst may mean a revoked signer is still signing, or a
-  user holds a stale attestation.
+  user holds a stale attestation. `InsufficientAttestations` /
+  `DuplicateAttestationSigner` reverts mean a threshold set was
+  submitted incomplete or with a repeated signer — usually a
+  coordination failure, not an attack; check the quest's threshold
+  before escalating.
 - **Role events** (`RoleGranted` / `RoleRevoked` for `VERIFIER_ROLE`) —
   any grant/revoke outside a planned change is an incident.
 - **Pause events** — any pause triggers the incident process (§4).

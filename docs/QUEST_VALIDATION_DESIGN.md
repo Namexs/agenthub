@@ -98,7 +98,7 @@ reverts (proven by `test_ReentrantValidatorCannotDoubleAward` — exactly one
 award). QuestManager also never trusts a validator's return value beyond the
 single boolean.
 
-### 2.3 Attested — EIP-712 verifier attestations
+### 2.3 Attested — EIP-712 verifier attestations (threshold M-of-N)
 
 For tasks that happen off-chain (an event, a course, a social action), a
 human or service verifier attests that the task was done. The attestation is
@@ -109,10 +109,22 @@ Attestation(address account, uint256 questId, uint256 nonce, uint256 deadline)
 ```
 
 Domain: `EIP712("AGENTHUB QuestManager", "1")` — bound to this contract's
-address and this chain's id by the EIP-712 domain separator
-(`QuestManager.sol:43-57`, `187-200`).
+address and this chain's id by the EIP-712 domain separator.
 
-Verification (`_verifyAttestation`, `QuestManager.sol:181-208`):
+**Threshold (Phase 6, R-010).** Every quest declares an
+`attestationThreshold` (1–3) at creation, immutable afterwards, and
+`completeQuestWithAttestation` takes a `bytes[]` array of signatures.
+All signers sign the **same** digest (same account, questId, nonce,
+deadline). A completion needs at least the quest's threshold of
+**distinct** `VERIFIER_ROLE` signers — one compromised verifier can no
+longer attest a threshold-2+ quest alone. Policy (see
+`VERIFIER_ROLE_SOP.md` §6.1): threshold 2 for rewardPoints > 1,000 or
+a badge with real-world value, threshold 1 otherwise. Extra signatures
+beyond the threshold are allowed but every signature in the array must
+still recover to a distinct verifier — a junk signature anywhere reverts
+the call. The array is capped at `MAX_ATTESTATION_SIGNATURES` (5).
+
+Verification (`_verifyAttestations` in `QuestManager.sol`):
 
 1. **Deadline:** `deadline` must be in the future (`AttestationExpired`)
    and no more than `MAX_ATTESTATION_LIFETIME` (7 days) ahead
@@ -120,22 +132,30 @@ Verification (`_verifyAttestation`, `QuestManager.sol:181-208`):
    be stockpiled.
 2. **Nonce:** `nonces[account]` is a global per-account counter, incremented
    on every successful verification. The attestation binds to the exact
-   nonce, so each signature is usable exactly once.
-3. **Recovery:** `ECDSA.tryRecover` — malleable signatures (flipped `s`) are
-   rejected, and a zero/invalid signer is rejected. A short or empty
-   signature reverts, never recovers a wrong address.
-4. **Authorization:** the recovered signer must hold `VERIFIER_ROLE`
-   (`UnauthorizedVerifier` otherwise). Role checks happen at verification
-   time, so **revoking a verifier invalidates its outstanding attestations
-   immediately** — no attestation outlives its signer's authority.
-5. **Binding:** the struct hash binds account + questId + nonce + deadline;
+   nonce, so each signature is usable exactly once. The nonce is consumed
+   exactly once per completion, regardless of how many signatures are
+   submitted.
+3. **Recovery (per signature):** `ECDSA.tryRecover` — malleable signatures
+   (flipped `s`) are rejected, and a zero/invalid signer is rejected. A
+   short or empty signature reverts, never recovers a wrong address.
+4. **Authorization (per signature):** every recovered signer must hold
+   `VERIFIER_ROLE` (`UnauthorizedVerifier` otherwise). Role checks happen
+   at verification time, so **revoking a verifier invalidates its
+   outstanding attestations immediately** — no attestation outlives its
+   signer's authority.
+5. **Distinctness + threshold:** the same signer twice reverts
+   (`DuplicateAttestationSigner`) — duplicates are never counted once.
+   Fewer distinct valid verifiers than the quest's threshold reverts
+   (`InsufficientAttestations`); more than 5 signatures reverts
+   (`TooManyAttestationSignatures`).
+6. **Binding:** the struct hash binds account + questId + nonce + deadline;
    the domain separator binds chainId + verifying contract. The same
    signature cannot be replayed on another chain, another QuestManager
    deployment, another quest, or another account.
-6. **Ordering:** the nonce is consumed only after the signature is verified,
-   and completion effects run after that — a failed completion (e.g. the
-   quest filled up first) does **not** burn the nonce, so the user can retry
-   with the same attestation.
+7. **Ordering:** the nonce is consumed only after the signatures are
+   verified, and completion effects run after that — a failed completion
+   (e.g. the quest filled up first) does **not** burn the nonce, so the
+   user can retry with the same attestation set.
 
 **Signer management / rotation:** `VERIFIER_ROLE` is granted and revoked by
 the admin (the 2-day timelock after deployment). Rotation is: grant the new
@@ -144,15 +164,26 @@ signer stop working the moment its role is revoked. There is no on-chain
 "verifier registry" beyond the role; off-chain, the project keeps the list
 of active verifiers and their key-hygiene requirements (hardware-backed keys,
 no shared keys, immediate revocation on suspected compromise).
+**Threshold footgun:** `AccessControl` cannot enumerate role holders, so
+the contract cannot check that threshold ≤ live verifier count — revoking
+verifiers until fewer than M remain bricks every live threshold-M quest.
+Grant at least the threshold number of verifiers before creating a
+threshold quest, and never revoke below the highest live threshold
+without deactivating the affected quests first (see
+`VERIFIER_ROLE_SOP.md` §6.1).
 
 **What attestation does NOT prove:** the verifier is trusted. An attestation
-proves "an authorized verifier signed that this account completed this
-quest" — it does not prove the verifier told the truth. A compromised or
-dishonest verifier can mint reputation for anyone until its role is revoked.
-Mitigations: few verifiers, per-verifier accountability (every attestation is
-on-chain and attributable to a signer address), fast revocation via the
-PAUSER_ROLE + admin, and monitoring for anomalous completion spikes. This
-residual trust is recorded in `NEW_THREAT_MODEL.md` (T-ATT-01).
+proves "authorized verifiers signed that this account completed this
+quest" — it does not prove the verifiers told the truth. A threshold
+raises the bar (M colluding or compromised verifiers are needed to fake
+a threshold-M completion) but does not remove the trust: a single
+compromised verifier can still fake threshold-1 quests, and M colluding
+verifiers can fake a threshold-M quest. Mitigations: few verifiers,
+per-verifier accountability (every attestation is on-chain and
+attributable to a signer address — `AttestationUsed` is emitted once per
+distinct signer), fast revocation via the PAUSER_ROLE + admin, and
+monitoring for anomalous completion spikes. This residual trust is
+recorded in `NEW_THREAT_MODEL.md` (T-ATT-01).
 
 ### 2.4 OnChain — validator registry
 
@@ -219,7 +250,9 @@ must render it honestly:
 
 - CheckIn → "Check-in — no external proof required".
 - OnChain → the validator's human-readable condition (e.g. "Hold ≥ 100 TOKEN").
-- Attested → "Verified by an AGENTHUB verifier" + the verifier's address.
+- Attested → "Verified by an AGENTHUB verifier" + the verifier's address,
+  plus the quest's threshold ("Requires N verifier signatures") and, in the
+  attestation form, one input per required signature with per-signer status.
 
 A quest must never be displayed as "verified" when its kind is CheckIn.
 

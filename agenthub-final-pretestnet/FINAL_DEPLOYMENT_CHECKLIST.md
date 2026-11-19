@@ -215,7 +215,13 @@ broadcast, ALL of the following must hold (see
    clean at `--audit-level=high` + `scripts/osv-audit.mjs` re-run.
 4. Threshold (M-of-N) attestation implemented before any attested
    quest with rewardPoints > 1,000 or a real-world-value badge
-   goes live (R-010).
+   goes live (R-010). **Status: IMPLEMENTED (Phase 6, 2026-11-19)** —
+   per-quest `attestationThreshold` (1–3), `bytes[]` submission,
+   distinct-signer enforcement, multi-signature frontend + threshold-2
+   E2E. **NOT closed yet:** the full regression battery and the
+   testnet smoke (create + complete threshold-1 and threshold-2
+   quests, observe duplicate/insufficient reverts on-chain) are still
+   required to close this item.
 5. Mainnet multisig created + independently verified (§3, on
    chain 56) + owners confirmed out-of-band.
 6. Monitoring + incident response plan in place (completion

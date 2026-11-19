@@ -38,6 +38,17 @@ and climb a leaderboard that anyone can audit — all on BNB Chain.
 Rules: one-time quests can be completed once per wallet; daily quests have a
 24-hour cooldown; each quest shows its time window and reward before you start.
 
+**Attested quests** (marked "Verified by an AGENTHUB verifier") work
+differently: the task happens off-chain, so one or more verifiers must
+sign that you did it. The quest shows how many signatures it requires —
+"Requires 2 verifier signatures", for example. Contact the verifiers
+out-of-band (there is no request button in the app); each verifier signs
+the same deadline for your address, you paste all the signatures into the
+form, and the app verifies every signer before the submit button enables.
+All signatures must be from different verifiers and share one deadline —
+if you complete another attested quest first, the signatures go stale and
+must be re-collected.
+
 ## 5. Reputation and levels
 
 Points come only from validated quest completions. Levels:

@@ -133,39 +133,59 @@ On top of `VERIFIER_ROLE_SOP.md` §8:
   and the registry reconciliation. Monitoring that nobody reads is not
   monitoring.
 
-## 6. Multisig / threshold attestation (design recommendation)
+## 6. Multisig / threshold attestation (implemented, Phase 6 / R-010)
 
-**Status: recommendation + design sketch, NOT implemented.** Single-
-verifier attestation is proportionate for testnet and for low-value
-quests (the blast radius of one compromised verifier is bounded by the
-pause control + the 7-day attestation lifetime + the per-quest reward
-cap of 10,000 points). For high-value attested quests (large point
-rewards, rare badges, or quests whose completion gates real-world
-benefits), require M-of-N verifier signatures.
+**Status: IMPLEMENTED (Phase 6, 2026-11-19).** Single-verifier
+attestation is proportionate for testnet and for low-value quests (the
+blast radius of one compromised verifier is bounded by the pause
+control + the 7-day attestation lifetime + the per-quest reward cap of
+10,000 points). For high-value attested quests (large point rewards,
+rare badges, or quests whose completion gates real-world benefits),
+threshold M-of-N attestation is now available — and the mainnet gate
+(FINAL_DEPLOYMENT_CHECKLIST.md §7 item 4) requires it before any such
+quest goes live.
 
-Design sketch (for a future phase, not this one):
-
-- **Scheme.** The attestation struct gains no new fields; instead,
-  `completeQuestWithAttestation` accepts `bytes[] calldata signatures`
-  and requires at least M distinct `VERIFIER_ROLE` signers over the
-  same digest (same account/quest/nonce/deadline). Distinctness is
-  enforced by comparing recovered addresses (O(M²) comparisons are
-  fine for M ≤ 3).
-- **Threshold policy.** Store a per-quest `attestationThreshold`
-  (default 1) set at creation; high-value quests set 2-of-3. The
-  threshold is part of the quest's public data so the frontend can
-  show "requires 2 verifier signatures".
+- **Scheme (as implemented).** The attestation struct gained no new
+  fields; `completeQuestWithAttestation` accepts
+  `bytes[] calldata signatures` and requires at least M distinct
+  `VERIFIER_ROLE` signers over the same digest (same
+  account/quest/nonce/deadline). Distinctness is enforced by comparing
+  recovered addresses pairwise (O(M²) is fine for M ≤ 3); a duplicate
+  signer reverts (`DuplicateAttestationSigner`), fewer than M distinct
+  verifiers reverts (`InsufficientAttestations`), and the array is
+  capped at `MAX_ATTESTATION_SIGNATURES` (5). The nonce is consumed
+  exactly once per completion regardless of M, and `AttestationUsed`
+  is emitted once per distinct signer (per-signer monitoring in §5
+  works unchanged).
+- **Threshold policy.** Per-quest `attestationThreshold` (1–3), set at
+  creation, immutable afterwards. Threshold 2 for rewardPoints > 1,000
+  or a badge with real-world value; 1 otherwise. The threshold is part
+  of the quest's public data, so the frontend shows "requires N
+  verifier signatures".
 - **Cost.** Each additional signature is one more `ecrecover` (~3k
-  gas) plus the UX cost of collecting two signatures. The verifier
-  service must coordinate (or the user collects both).
+  gas) plus the UX cost of collecting M signatures (the verifiers sign
+  the same digest independently; the user or a coordinator collects
+  them — see `VERIFIER_ROLE_SOP.md` §6.1 for the coordination flow).
 - **What it does NOT fix.** M-of-N stops a SINGLE compromised verifier;
   it does not stop M colluding verifiers, and it does not make a
   verifier honest — it only raises the bar. The pause control and the
-  SOP remain the backstop.
-- **When to implement.** Before any attested quest with rewardPoints
-  above 1,000 or a badge with real-world value goes live on mainnet.
-  Not before testnet — the added complexity is not justified while the
-  verifier set is one person.
+  SOP remain the backstop. It also does not fix verifier availability:
+  a threshold quest needs M verifiers to sign the same nonce+deadline
+  within the coordination window, and the nonce moves on ANY attested
+  completion by the account, so a half-collected set goes stale.
+- **Footgun (SOP mitigation only).** `AccessControl` cannot enumerate
+  role holders, so the contract cannot check that threshold ≤ live
+  verifier count: revoking verifiers until fewer than M remain bricks
+  every live threshold-M quest. Grant ≥ threshold verifiers before
+  creating a threshold quest, and never revoke below the highest live
+  threshold without deactivating the affected quests first
+  (`VERIFIER_ROLE_SOP.md` §6.1).
+- **Closing R-010.** Implementation alone does not close R-010: the
+  full regression battery and the testnet smoke (threshold-1 and
+  threshold-2 quests created and completed on the live testnet;
+  duplicate/insufficient reverts observed on-chain) are still required
+  — see the remediation plan §9 and FINAL_DEPLOYMENT_CHECKLIST.md §7
+  item 4.
 
 ## 7. Residual risks (honest list)
 
