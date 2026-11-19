@@ -1,239 +1,209 @@
 {
- "advisories": {
-  "1001": {
-   "id": 1001,
-   "github_advisory_id": "GHSA-qj3p-xc97-xw74",
-   "module_name": "@metamask/sdk-communication-layer",
-   "severity": "moderate",
-   "title": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
-   "findings": [
-    {
-     "version": "0.30.0",
-     "paths": [
-      "@metamask/sdk-communication-layer"
-     ]
+  "advisories": {
+    "1001": {
+      "id": 1001,
+      "github_advisory_id": "GHSA-qj3p-xc97-xw74",
+      "module_name": "@metamask/sdk-communication-layer",
+      "severity": "moderate",
+      "title": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
+      "findings": [
+        {
+          "version": "0.30.0",
+          "paths": ["@metamask/sdk-communication-layer"]
+        }
+      ]
+    },
+    "1002": {
+      "id": 1002,
+      "github_advisory_id": "GHSA-qj3p-xc97-xw74",
+      "module_name": "@metamask/sdk",
+      "severity": "moderate",
+      "title": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
+      "findings": [
+        {
+          "version": "0.30.1",
+          "paths": ["@metamask/sdk"]
+        }
+      ]
+    },
+    "1003": {
+      "id": 1003,
+      "github_advisory_id": "GHSA-x3ff-w252-2g7j",
+      "module_name": "@stablelib/ed25519",
+      "severity": "moderate",
+      "title": "StableLib Ed25519 Signature Malleability via Missing S < L Check",
+      "findings": [
+        {
+          "version": "1.0.3",
+          "paths": ["@stablelib/ed25519"]
+        }
+      ]
+    },
+    "1004": {
+      "id": 1004,
+      "github_advisory_id": "GHSA-2464-fhr4-w9xw",
+      "module_name": "next",
+      "severity": "critical",
+      "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1005": {
+      "id": 1005,
+      "github_advisory_id": "GHSA-2xp9-vwfh-vxw4",
+      "module_name": "next",
+      "severity": "critical",
+      "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1006": {
+      "id": 1006,
+      "github_advisory_id": "GHSA-36qx-fr4f-26g5",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1007": {
+      "id": 1007,
+      "github_advisory_id": "GHSA-89xv-2m56-2m9x",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1008": {
+      "id": 1008,
+      "github_advisory_id": "GHSA-8h8q-6873-q5fj",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js Vulnerable to Denial of Service with Server Components",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1009": {
+      "id": 1009,
+      "github_advisory_id": "GHSA-c4j6-fc7j-m34r",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1010": {
+      "id": 1010,
+      "github_advisory_id": "GHSA-h25m-26qc-wcjf",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1011": {
+      "id": 1011,
+      "github_advisory_id": "GHSA-m99w-x7hq-7vfj",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js: Denial of Service in App Router using Server Actions",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1012": {
+      "id": 1012,
+      "github_advisory_id": "GHSA-p293-qw3h-jr36",
+      "module_name": "next",
+      "severity": "critical",
+      "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1013": {
+      "id": 1013,
+      "github_advisory_id": "GHSA-p3m5-59mp-jv5r",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js: Denial of Service in App Router using Server Actions",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1014": {
+      "id": 1014,
+      "github_advisory_id": "GHSA-p9j2-gv94-2wf4",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
+    },
+    "1015": {
+      "id": 1015,
+      "github_advisory_id": "GHSA-q4gf-8mx6-v5v3",
+      "module_name": "next",
+      "severity": "high",
+      "title": "Next.js has a Denial of Service with Server Components",
+      "findings": [
+        {
+          "version": "14.2.35",
+          "paths": ["next"]
+        }
+      ]
     }
-   ]
   },
-  "1002": {
-   "id": 1002,
-   "github_advisory_id": "GHSA-qj3p-xc97-xw74",
-   "module_name": "@metamask/sdk",
-   "severity": "moderate",
-   "title": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
-   "findings": [
-    {
-     "version": "0.30.1",
-     "paths": [
-      "@metamask/sdk"
-     ]
+  "metadata": {
+    "vulnerabilities": {
+      "critical": 3,
+      "high": 9,
+      "moderate": 2,
+      "low": 1,
+      "info": 0,
+      "total": 15
     }
-   ]
-  },
-  "1003": {
-   "id": 1003,
-   "github_advisory_id": "GHSA-x3ff-w252-2g7j",
-   "module_name": "@stablelib/ed25519",
-   "severity": "moderate",
-   "title": "StableLib Ed25519 Signature Malleability via Missing S < L Check",
-   "findings": [
-    {
-     "version": "1.0.3",
-     "paths": [
-      "@stablelib/ed25519"
-     ]
-    }
-   ]
-  },
-  "1004": {
-   "id": 1004,
-   "github_advisory_id": "GHSA-2464-fhr4-w9xw",
-   "module_name": "next",
-   "severity": "critical",
-   "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1005": {
-   "id": 1005,
-   "github_advisory_id": "GHSA-2xp9-vwfh-vxw4",
-   "module_name": "next",
-   "severity": "critical",
-   "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1006": {
-   "id": 1006,
-   "github_advisory_id": "GHSA-36qx-fr4f-26g5",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1007": {
-   "id": 1007,
-   "github_advisory_id": "GHSA-89xv-2m56-2m9x",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1008": {
-   "id": 1008,
-   "github_advisory_id": "GHSA-8h8q-6873-q5fj",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js Vulnerable to Denial of Service with Server Components",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1009": {
-   "id": 1009,
-   "github_advisory_id": "GHSA-c4j6-fc7j-m34r",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1010": {
-   "id": 1010,
-   "github_advisory_id": "GHSA-h25m-26qc-wcjf",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1011": {
-   "id": 1011,
-   "github_advisory_id": "GHSA-m99w-x7hq-7vfj",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js: Denial of Service in App Router using Server Actions",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1012": {
-   "id": 1012,
-   "github_advisory_id": "GHSA-p293-qw3h-jr36",
-   "module_name": "next",
-   "severity": "critical",
-   "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1013": {
-   "id": 1013,
-   "github_advisory_id": "GHSA-p3m5-59mp-jv5r",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js: Denial of Service in App Router using Server Actions",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1014": {
-   "id": 1014,
-   "github_advisory_id": "GHSA-p9j2-gv94-2wf4",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
-  },
-  "1015": {
-   "id": 1015,
-   "github_advisory_id": "GHSA-q4gf-8mx6-v5v3",
-   "module_name": "next",
-   "severity": "high",
-   "title": "Next.js has a Denial of Service with Server Components",
-   "findings": [
-    {
-     "version": "14.2.35",
-     "paths": [
-      "next"
-     ]
-    }
-   ]
   }
- },
- "metadata": {
-  "vulnerabilities": {
-   "critical": 3,
-   "high": 9,
-   "moderate": 2,
-   "low": 1,
-   "info": 0,
-   "total": 15
-  }
- }
 }
