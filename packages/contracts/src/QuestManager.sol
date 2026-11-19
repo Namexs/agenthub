@@ -129,10 +129,13 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
 
         // Interactions (trusted contracts only).
         reputation.addPoints(msg.sender, quest.rewardPoints, questId);
-        if (quest.badgeId != 0 && !achievement.hasBadge(msg.sender, quest.badgeId)) {
-            achievement.issue(msg.sender, quest.badgeId);
-        }
-        emit QuestCompleted(questId, msg.sender, quest.rewardPoints);
+        // Capture the minted badge token id and expose it in the event
+        // (Slither unused-return SEC-003): indexers can link the completion
+        // to the badge token without a second lookup. 0 = no badge issued.
+        uint256 badgeTokenId = quest.badgeId != 0 && !achievement.hasBadge(msg.sender, quest.badgeId)
+            ? achievement.issue(msg.sender, quest.badgeId)
+            : 0;
+        emit QuestCompleted(questId, msg.sender, quest.rewardPoints, badgeTokenId);
     }
 
     /// @inheritdoc IQuestManager

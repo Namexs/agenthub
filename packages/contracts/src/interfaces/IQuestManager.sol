@@ -43,7 +43,9 @@ interface IQuestManager {
     error NotQuestCreatorOrAdmin(address account, uint256 questId);
 
     event QuestCreated(uint256 indexed questId, address indexed creator, QuestType questType, uint256 rewardPoints);
-    event QuestCompleted(uint256 indexed questId, address indexed account, uint256 rewardPoints);
+    /// @notice badgeTokenId is the minted Achievement token id, or 0 when the
+    /// quest carries no badge or the completer already held it.
+    event QuestCompleted(uint256 indexed questId, address indexed account, uint256 rewardPoints, uint256 badgeTokenId);
     event QuestDeactivated(uint256 indexed questId);
 
     /// @notice Create a quest. Only QUEST_CREATOR_ROLE. Returns the new quest id.

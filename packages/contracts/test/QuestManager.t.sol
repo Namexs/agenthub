@@ -439,6 +439,24 @@ contract QuestManagerTest is Test {
         assertEq(achievement.issueCalls(), callsBefore); // no second issuance
     }
 
+    function test_QuestCompletedEventCarriesBadgeTokenId() public {
+        // SEC-003 regression: the minted badge token id must be visible in
+        // the completion event (Slither unused-return).
+        uint256 id = _createOneTime(100, BADGE_ID, 0);
+        vm.expectEmit(true, true, false, true, address(qm));
+        emit IQuestManager.QuestCompleted(id, alice, 100, 1);
+        vm.prank(alice);
+        qm.completeQuest(id);
+    }
+
+    function test_QuestCompletedEventHasZeroTokenIdWithoutBadge() public {
+        uint256 id = _createOneTime(100, 0, 0);
+        vm.expectEmit(true, true, false, true, address(qm));
+        emit IQuestManager.QuestCompleted(id, alice, 100, 0);
+        vm.prank(alice);
+        qm.completeQuest(id);
+    }
+
     function test_GetQuestRevertsForUnknownId() public {
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.QuestNotFound.selector, 42));
         qm.getQuest(42);
