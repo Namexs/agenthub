@@ -20,7 +20,7 @@ owner's — this package gives him the evidence to make it.
 | TEMUAN 2 (P1) | Design flaw, integrity-critical | AgentGate accepted any ERC-721 as the Agent ID on mainnet | **FIXED** | Mainnet pins `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`; chain allowlist {56, 97, 31337}; 10 new tests |
 | TEMUAN 3 (P2) | Hardening | QuestManager constructor checked dependencies only for non-zero | **FIXED** | Code-length checks (`NoCodeAtDependency`); documented limit: code check ≠ trust |
 | TEMUAN 4 (P2) | Missing tooling | No deployment script | **DONE** | `script/DeployAgentHub.s.sol` + 15 tests + dry-runs (local + BSC testnet fork, no broadcast) |
-| P3 | Package hygiene | Stale README ("Phase 1, contracts not implemented"); no verifiable manifest | **DONE** | README rewritten; `PACKAGE_MANIFEST.md` (168 files, sha256, verified exit 0) |
+| P3 | Package hygiene | Stale README ("Phase 1, contracts not implemented"); no verifiable manifest | **DONE** | README rewritten; `PACKAGE_MANIFEST.md` (168 files, sha256, verified exit 0 — including from a descendant HEAD) |
 
 ## Test results
 
@@ -32,8 +32,9 @@ owner's — this package gives him the evidence to make it.
 | `forge fmt --check` | clean |
 | `pnpm typecheck` / `lint` / `test` / `build` | all exit 0 |
 
-One unidentified transient failure occurred once during verification and
-was not reproduced in 3 subsequent full runs — recorded honestly in
+One unidentified transient failure occurred twice during verification and
+was not reproduced despite a dedicated hunt (5 consecutive green full
+runs, fuzz × 10 seeds, invariant × 4 seeds) — recorded honestly in
 `REGRESSION_RESULTS.md` §4.4.
 
 ## How to verify this package
@@ -41,16 +42,17 @@ was not reproduced in 3 subsequent full runs — recorded honestly in
 ```bash
 git clone --recurse-submodules <repo-url> agenthub
 cd agenthub
-git checkout 8bcad63
-./scripts/verify-manifest.sh   # checks the manifest commit 0f0a030
+./scripts/verify-manifest.sh   # verifies the recorded commit 18e1aa4's
+                               # tree (168 files + 2 submodules); works
+                               # from any checkout containing the manifest
 cd packages/contracts
 forge test                     # expect 193/193
 ```
 
-Note: the manifest describes commit `0f0a030` (the last code commit); the
-manifest itself was committed separately as `8bcad63`, per the rule that a
-manifest describes the commit it was generated from. To verify the manifest
-exactly, check out `0f0a030` before running `verify-manifest.sh`.
+The manifest describes commit `18e1aa4` (the last code commit) and was
+itself committed separately as `bac423f` — a manifest cannot describe the
+commit that contains it. The verification script checks the recorded
+commit's tree via git, so HEAD does not need to equal `18e1aa4`.
 
 ## Contents
 
@@ -76,7 +78,7 @@ exactly, check out `0f0a030` before running `verify-manifest.sh`.
   - `git-log.txt` — the 7 remediation commits.
   - `secret-scan.log` — CLEAN (2 documented public constants).
 
-## Commits (baseline `c568ee0` → `8bcad63`)
+## Commits (baseline `c568ee0` → `bac423f` + this package)
 
 | Commit | Content |
 |---|---|
@@ -86,7 +88,9 @@ exactly, check out `0f0a030` before running `verify-manifest.sh`.
 | `774ec40` | Slither Medium fix (tryRecover errorArg) |
 | `0ed3d98` | 5 reports, README fix, manifest scripts, evidence logs |
 | `0f0a030` | Manifest scripts: exclude submodule gitlinks |
-| `8bcad63` | PACKAGE_MANIFEST.md for `0f0a030` |
+| `8bcad63` | PACKAGE_MANIFEST.md for `0f0a030` (superseded) |
+| `18e1aa4` | verify-manifest: check the recorded commit's tree, not the working tree |
+| `bac423f` | PACKAGE_MANIFEST.md for `18e1aa4` (current) |
 
 ## Still needs the owner
 

@@ -138,15 +138,22 @@ No other existing test was modified. `AttackSimulation.t.sol` and
    4+32-byte revert data. Fixed by expecting the full error with the exact
    argument (flipped `s` for malleable, length for empty/short, 0 for
    zero). Test update, not a weakening — the assertions are now stricter.
-4. **One unidentified transient failure:** during the final verification
-   pass, one full-suite run reported a single failing test, but only the
-   last two output lines were logged, so the failing test was not
-   identified. Three subsequent full-suite runs (two default seed, one
-   `--fuzz-seed 12345`) all passed 193/193, and the 10,000-run fuzz pass
-   also passed 193/193. The failure was not reproduced. It is recorded
-   here honestly rather than hidden; the likely candidates are a fuzz-seed
-   dependent invariant run or a one-off environment hiccup. Lesson: always
-   log full test output, not just the tail.
+4. **Two unidentified transient failures:** during the final verification
+   pass, two full-suite runs each reported a single failing test, but only
+   the last output lines were logged, so the failing test was not
+   identified in either case. A hunt followed: 5 consecutive full-suite
+   runs all passed 193/193; the 8 fuzz tests passed on 10 different seeds;
+   the invariant suite passed on 4 different seeds; the 10,000-run fuzz
+   pass passed 193/193. No failure corpus was left in `cache/` (no
+   invariant/fuzz replay files). The failure was not reproduced.
+   `foundry.toml` sets no fuzz seed, so Foundry picks a random seed per
+   run — a rare seed-dependent edge case is the leading hypothesis, but it
+   is unproven. It is recorded here honestly rather than hidden.
+   Recommendations: (a) always log FULL test output, never just the tail;
+   (b) consider pinning a fuzz seed in CI for reproducibility once the
+   repo has a remote (note: pinning hides rare seed-dependent bugs, it
+   does not fix them — keep random seeds in local runs); (c) if a failure
+   recurs, capture the test name and the `cache/` replay immediately.
 
 Both are documented here so a future reader does not "fix" them again.
 
