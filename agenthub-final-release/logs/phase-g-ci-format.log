@@ -1,0 +1,10 @@
+
+> agenthub@0.1.0 format:check /var/tmp/agenthub-ci
+> prettier --check "**/*.{ts,tsx,js,jsx,json,md,css}" --ignore-path .prettierignore
+
+Checking formatting...
+[warn] scripts/pnpm-audit-allowlist.fixture.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+ ELIFECYCLE  Command failed with exit code 1.
+PRETTIER:1
+FORGE_FMT:0

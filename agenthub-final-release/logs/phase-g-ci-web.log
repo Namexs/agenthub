@@ -1,0 +1,101 @@
+
+> @agenthub/web@0.1.0 lint /var/tmp/agenthub-ci/apps/web
+> next lint
+
+✔ No ESLint warnings or errors
+WEB_LINT:0
+
+> @agenthub/web@0.1.0 typecheck /var/tmp/agenthub-ci/apps/web
+> tsc --project tsconfig.json --noEmit
+
+WEB_TSC:0
+
+> @agenthub/web@0.1.0 test /var/tmp/agenthub-ci/apps/web
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-ci/apps/web[39m
+
+ [32m✓[39m lib/quests.test.ts [2m([22m[2m26 tests[22m[2m)[22m[33m 633[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks during cooldown and names the cooldown [33m 606[2mms[22m[39m
+ [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m4 tests[22m[2m | [22m[33m4 skipped[39m[2m)[22m
+ [32m✓[39m lib/attestation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 500[2mms[22m[39m
+ [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 883[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 510[2mms[22m[39m
+ [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m50 tests[22m[2m)[22m[33m 699[2mms[22m[39m
+     [33m[2m✓[22m[39m accepts a valid attestation from a VERIFIER_ROLE holder [33m 355[2mms[22m[39m
+ [32m✓[39m lib/events.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 87[2mms[22m[39m
+ [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 323[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (8)[39m
+[2m      Tests [22m [1m[32m136 passed[39m[22m[2m | [22m[33m4 skipped[39m[90m (140)[39m
+[2m   Start at [22m 12:13:57
+[2m   Duration [22m 10.22s[2m (transform 2.88s, setup 0ms, import 10.64s, tests 3.13s, environment 4.41s)[22m
+
+WEB_TEST:0
+
+> @agenthub/web@0.1.0 build /var/tmp/agenthub-ci/apps/web
+> NODE_OPTIONS=--max-old-space-size=1024 next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/var/tmp/agenthub-ci/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/var/tmp/agenthub-ci/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@18.3.11_bufferutil@4.2.0_react@18.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    920 B           172 kB
+├ ○ /_not-found                          873 B          88.2 kB
+├ ○ /campaigns                           1.03 kB         189 kB
+├ ○ /dashboard                           1.94 kB         199 kB
+├ ○ /history                             4.02 kB         189 kB
+├ ○ /leaderboard                         3.31 kB         188 kB
+├ ○ /profile                             1.34 kB         199 kB
+├ ○ /quests                              1.12 kB         190 kB
+└ ○ /security                            138 B          87.5 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/258-9c35acb55bd55d9e.js       31.7 kB
+  ├ chunks/5ca1c6b9-e313f3fff6d2032b.js  53.6 kB
+  └ other shared chunks (total)          1.98 kB
+
+
+○  (Static)  prerendered as static content
+
+WEB_BUILD:0

@@ -1,0 +1,6 @@
+Verifying commit 9d715170b19a783064f9695455e4bd3baf3b32a9 against PACKAGE_MANIFEST.md ...
+Checked 291 files from the manifest.
+OK: submodule packages/contracts/lib/forge-std (8948d45d3d9022c508b83eb5d26fd3a7a93f2f32)
+OK: submodule packages/contracts/lib/openzeppelin-contracts (dbb6104ce834628e473d2173bbc9d47f81a9eec3)
+NOTE: HEAD (d1947b7301cbd7440482ca75610d910cd3ec52e6) differs from the recorded commit (9d715170b19a783064f9695455e4bd3baf3b32a9) — expected when the manifest was committed separately.
+MANIFEST VERIFIED: commit 9d715170b19a783064f9695455e4bd3baf3b32a9 matches PACKAGE_MANIFEST.md
