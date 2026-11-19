@@ -33,8 +33,7 @@ contract DeployLocalTestStack is Script {
     // only ever used against the local anvil instance. It is passed
     // explicitly to startBroadcast: the no-arg form uses forge's default
     // sender, not the --private-key account.
-    uint256 internal constant DEPLOYER_KEY =
-        0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
+    uint256 internal constant DEPLOYER_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
     address internal constant DEPLOYER = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
     address internal constant ALICE = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
     address internal constant BOB = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
@@ -99,9 +98,7 @@ contract DeployLocalTestStack is Script {
         s.qm.grantRole(s.qm.QUEST_CREATOR_ROLE(), DEPLOYER);
         s.qm.grantRole(s.qm.VERIFIER_ROLE(), verifier);
 
-        s.qm.approveValidator(
-            address(s.validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator"
-        );
+        s.qm.approveValidator(address(s.validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         s.achievement.defineBadge(1, "First Steps", "ipfs://badge1");
         s.achievement.defineBadge(2, "Token Holder", "ipfs://badge2");
 
@@ -111,42 +108,45 @@ contract DeployLocalTestStack is Script {
     }
 
     function _seed(Stack memory s) internal {
-        s.q1 = s.qm.createQuest(
-            "First Steps",
-            "Complete your first quest",
-            IQuestManager.QuestType.OneTime,
-            IQuestManager.ValidationKind.CheckIn,
-            address(0),
-            50,
-            1,
-            block.timestamp,
-            block.timestamp + 30 days,
-            0
-        );
-        s.q2 = s.qm.createQuest(
-            "Hold 100 Tokens",
-            "Hold at least 100 TEST tokens",
-            IQuestManager.QuestType.OneTime,
-            IQuestManager.ValidationKind.OnChain,
-            address(s.validator),
-            100,
-            2,
-            block.timestamp,
-            block.timestamp + 30 days,
-            0
-        );
-        s.q3 = s.qm.createQuest(
-            "Post on X",
-            "Share AGENTHUB on X (attested)",
-            IQuestManager.QuestType.OneTime,
-            IQuestManager.ValidationKind.Attested,
-            address(0),
-            100,
-            0,
-            block.timestamp,
-            block.timestamp + 30 days,
-            0
-        );
+        s.q1 = s.qm
+            .createQuest(
+                "First Steps",
+                "Complete your first quest",
+                IQuestManager.QuestType.OneTime,
+                IQuestManager.ValidationKind.CheckIn,
+                address(0),
+                50,
+                1,
+                block.timestamp,
+                block.timestamp + 30 days,
+                0
+            );
+        s.q2 = s.qm
+            .createQuest(
+                "Hold 100 Tokens",
+                "Hold at least 100 TEST tokens",
+                IQuestManager.QuestType.OneTime,
+                IQuestManager.ValidationKind.OnChain,
+                address(s.validator),
+                100,
+                2,
+                block.timestamp,
+                block.timestamp + 30 days,
+                0
+            );
+        s.q3 = s.qm
+            .createQuest(
+                "Post on X",
+                "Share AGENTHUB on X (attested)",
+                IQuestManager.QuestType.OneTime,
+                IQuestManager.ValidationKind.Attested,
+                address(0),
+                100,
+                0,
+                block.timestamp,
+                block.timestamp + 30 days,
+                0
+            );
     }
 
     function _completeAsAlice(Stack memory s) internal {
@@ -197,11 +197,8 @@ contract DeployLocalTestStack is Script {
                 qm
             )
         );
-        bytes32 structHash = keccak256(
-            abi.encode(
-                QuestManager(qm).ATTESTATION_TYPEHASH(), account, questId, nonce, deadline
-            )
-        );
+        bytes32 structHash =
+            keccak256(abi.encode(QuestManager(qm).ATTESTATION_TYPEHASH(), account, questId, nonce, deadline));
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, digest);
         return abi.encodePacked(r, s, v);
