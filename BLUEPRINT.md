@@ -37,7 +37,7 @@ Non-custodial: tidak menyimpan aset pengguna.
 
 ## Kontrak resmi Agent ID
 
-- Alamat (BSC): `0x60b9262456de011f7d15a54cdd8c48baaa8b022f` (ERC-721 non-transferable)
+- Alamat (BSC): `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` (ERC-721 non-transferable)
 - Verifikasi: `balanceOf(address) > 0` pada kontrak resmi itu. Jangan anggap NFT lain valid.
 
 ## Arsitektur
@@ -110,4 +110,4 @@ mobile-first, terlihat seperti platform Web3 produksi, bukan template generik.
 - Pengumuman hackathon (link di atas)
 - Binance Agentic Wallet docs: https://web3.binance.com/en/dev-docs/products/agentic-wallet/introduction
 - OpenZeppelin: https://github.com/OpenZeppelin/openzeppelin-contracts
-- Agent ID di BscScan: https://bscscan.com/address/0x60b9262456de011f7d15a54cdd8c48baaa8b022f
+- Agent ID di BscScan: https://bscscan.com/address/0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F

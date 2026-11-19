@@ -89,7 +89,7 @@ config. See `docs/ARCHITECTURE.md` for the token table.
 3. `Reputation` — points from validated events only
 4. `Achievement` — soulbound badges
 
-Official Agent ID contract (BSC mainnet): `0x60b9262456de011f7d15a54cdd8c48baaa8b022f`.
+Official Agent ID contract (BSC mainnet): `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`.
 Local/testnet uses `MockAgentId` — the official contract is not on testnet.
 
 ## Docs

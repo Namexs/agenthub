@@ -85,7 +85,7 @@ Catatan: build web di VM ini membutuhkan `NODE_OPTIONS=--max-old-space-size=1024
 
 ### Konfigurasi Agent ID (diperiksa khusus)
 
-- Alamat resmi `0x60b9262456de011f7d15a54cdd8c48baaa8b022f` **konsisten di
+- Alamat resmi `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` **konsisten di
   semua file** (constants, env example, interface, mock, script, docs).
   Ditulis lowercase (bukan EIP-55 checksummed) — fungsional identik, kosmetik (L7).
 - `DeployMock.s.sol` menolak jalan di chainId 56 (mainnet) — tapi guard-nya

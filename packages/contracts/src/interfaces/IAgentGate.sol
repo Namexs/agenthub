@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 /// @notice Verifies Binance Agent ID ownership against the OFFICIAL Agent ID
 /// contract. Agent ID is an ERC-721 soulbound token; ownership is proven by
 /// `balanceOf(account) > 0` on the official contract only.
-/// @dev Production: 0x60b9262456de011f7d15a54cdd8c48baaa8b022f (BSC mainnet, chainId 56).
+/// @dev Production: 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F (BSC mainnet, chainId 56).
 /// Local/testnet: MockAgentId (src/mocks/MockAgentId.sol) — the official
 /// contract is NOT deployed on testnet. The implementation MUST NOT accept an
 /// arbitrary NFT contract as an Agent ID.

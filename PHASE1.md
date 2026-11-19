@@ -48,7 +48,7 @@ Do NOT implement arbitrary administrative score increases.
 ## 4. Development environments
 
 - LOCAL/TESTNET: mock Agent ID contract for isolated development and testing.
-- PRODUCTION: official Agent ID contract 0x60b9262456de011f7d15a54cdd8c48baaa8b022f.
+- PRODUCTION: official Agent ID contract 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F.
   Do NOT assume the official mainnet Agent ID contract is deployed on testnet.
 
 ## 5. Documentation

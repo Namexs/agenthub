@@ -23,4 +23,4 @@ pnpm --filter @agenthub/contracts test    # forge test (unit + fuzz)
 ```
 
 Production Agent ID (BSC mainnet, chainId 56):
-`0x60b9262456de011f7d15a54cdd8c48baaa8b022f`
+`0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`

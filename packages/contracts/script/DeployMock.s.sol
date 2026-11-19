@@ -6,7 +6,7 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 
 /// @notice Deploys MockAgentId for LOCAL (Anvil) or BSC TESTNET (chainId 97) only.
 /// @dev NEVER run against BSC mainnet (chainId 56) — production uses the
-/// official Agent ID contract 0x60b9262456de011f7d15a54cdd8c48baaa8b022f.
+/// official Agent ID contract 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F.
 /// Usage (Phase 2):
 ///   forge script script/DeployMock.s.sol --rpc-url $BSC_TESTNET_RPC_URL --broadcast
 /// Requires DEPLOYER_PRIVATE_KEY in the environment (see .env.example).

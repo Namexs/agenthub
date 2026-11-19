@@ -9,7 +9,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// contract, which is NOT deployed on BSC testnet or local chains.
 /// @dev Mirrors the official token's soulbound behaviour (transfers blocked)
 /// so integration tests exercise the same assumptions as production.
-/// Production MUST use 0x60b9262456de011f7d15a54cdd8c48baaa8b022f on BSC
+/// Production MUST use 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F on BSC
 /// mainnet (chainId 56) — never deploy this mock to mainnet.
 contract MockAgentId is ERC721, Ownable {
     error Soulbound();

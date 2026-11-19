@@ -13,7 +13,7 @@ export const CHAINS = {
 } as const;
 
 /** Official Binance Agent ID contract (SPACE ID Agent ID, ERC-721, soulbound). */
-export const AGENT_ID_MAINNET_ADDRESS = '0x60b9262456de011f7d15a54cdd8c48baaa8b022f' as const;
+export const AGENT_ID_MAINNET_ADDRESS = '0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F' as const;
 
 /** Placeholder until the MockAgentId is deployed on testnet (Phase 2). */
 export const AGENT_ID_TESTNET_ADDRESS_PLACEHOLDER =
