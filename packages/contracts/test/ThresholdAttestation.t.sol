@@ -596,11 +596,20 @@ contract ThresholdAttestationTest is Test {
         // Signatures drawn ONLY from {verifier1, verifier2, attacker}
         // (with replacement): at most 2 distinct valid signers exist,
         // so a threshold-3 quest can never complete, whatever the array.
-        vm.assume(picks.length >= 1 && picks.length <= 5);
+        // Cap the array at 5 entries WITHOUT vm.assume: the fuzzer
+        // generates arbitrary lengths, and assume-based filtering
+        // exhausts the 65,536-rejection budget at 10k runs (found by
+        // the Phase 6 regression battery). The property holds for any
+        // length (a >5 array reverts on the cap; an empty array
+        // reverts on insufficient signatures), so truncation
+        // preserves the test's meaning.
+        uint256 len = picks.length > 5 ? 5 : picks.length;
+        if (len == 0) len = 1;
         uint256 deadline = block.timestamp + 1 days;
-        bytes[] memory sigs = new bytes[](picks.length);
-        for (uint256 i = 0; i < picks.length; ++i) {
-            uint256 key = picks[i] % 3 == 0 ? VERIFIER_KEY : picks[i] % 3 == 1 ? VERIFIER2_KEY : ATTACKER_KEY;
+        bytes[] memory sigs = new bytes[](len);
+        for (uint256 i = 0; i < len; ++i) {
+            uint256 pick = i < picks.length ? picks[i] : 0;
+            uint256 key = pick % 3 == 0 ? VERIFIER_KEY : pick % 3 == 1 ? VERIFIER2_KEY : ATTACKER_KEY;
             sigs[i] = _sign(key, alice, questT3, qm.nonces(alice), deadline);
         }
         vm.prank(alice);
@@ -616,11 +625,19 @@ contract ThresholdAttestationTest is Test {
         // completes. (A random 65-byte string recovering to one of our
         // three verifiers is a 2^-160 event per entry; the test would
         // fail loudly if it ever happened.)
-        vm.assume(sigs.length >= 1 && sigs.length <= 5);
+        // Cap the array at 5 entries WITHOUT vm.assume (see the
+        // threshold-3 fuzz test above for why assume is unusable at
+        // 10k runs). The property holds for any length.
+        uint256 len = sigs.length > 5 ? 5 : sigs.length;
+        if (len == 0) len = 1;
+        bytes[] memory arr = new bytes[](len);
+        for (uint256 i = 0; i < len; ++i) {
+            arr[i] = i < sigs.length ? sigs[i] : bytes("");
+        }
         uint256 deadline = block.timestamp + 1 days;
         vm.prank(alice);
         vm.expectRevert();
-        qm.completeQuestWithAttestation(questT2, deadline, sigs);
+        qm.completeQuestWithAttestation(questT2, deadline, arr);
         assertEq(reputation.points(alice), 0);
         assertEq(qm.nonces(alice), 0);
     }
