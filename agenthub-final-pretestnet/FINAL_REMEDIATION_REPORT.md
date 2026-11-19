@@ -277,12 +277,16 @@ content commit (see `PACKAGE_MANIFEST.md` §1 for the exact
 commit): **291 tracked files, SHA-256 100% match**, both
 submodule gitlinks OK (forge-std `8948d45`, OZ `dbb6104`).
 Gitleaks full-history scan before packaging: **0 leaks**.
-The source ZIP was built with `git archive` from the final commit
+The source ZIP was built with `git archive` from the final HEAD
 (same pattern as previous ZIPs — submodules excluded, documented
-in the manifest §3) and verified file-by-file against the
-manifest: **0 mismatches** across all 291 listed files.
-Verification logs: `logs/phase3-manifest-verify.log`,
-`logs/phase3-secrets.log`.
+in the manifest §3). ZIP-vs-manifest comparison: every source
+file (contracts, frontend, scripts, CI, docs) matches the
+manifest exactly; the only files that differ are the manifest
+copy + its 2 verification logs (updated by the manifest commit
+itself, by design — the manifest describes the previous commit)
+and this report (one post-certification wording fix). The
+authoritative check is `./scripts/verify-manifest.sh`, which
+verifies the recorded commit's tree via git: exit 0, 291/291.
 
 ## 3. Source changes — file inventory (120 files, +25,243 / −371)
 
