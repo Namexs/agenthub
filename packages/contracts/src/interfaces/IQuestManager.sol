@@ -132,7 +132,10 @@ interface IQuestManager {
     event QuestCompleted(uint256 indexed questId, address indexed account, uint256 rewardPoints, uint256 badgeTokenId);
     event QuestDeactivated(uint256 indexed questId);
     /// @notice Emitted when an attested completion consumes a nonce.
-    event AttestationUsed(address indexed account, uint256 indexed questId, uint256 nonce);
+    /// @dev FINAL REMEDIATION (Phase 6): `signer` is indexed for
+    /// monitoring attribution — every attested completion is traceable
+    /// to the verifier who signed it (see VERIFIER_SECURITY_SOP.md §5).
+    event AttestationUsed(address indexed account, uint256 indexed questId, uint256 nonce, address indexed signer);
     /// @notice Emitted when the admin approves a validator for OnChain quests.
     event ValidatorApproved(address indexed validator);
     /// @notice Emitted when the admin revokes a validator's approval.

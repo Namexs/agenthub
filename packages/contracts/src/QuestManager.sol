@@ -231,7 +231,7 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         unchecked {
             nonces[account] = nonce + 1;
         }
-        emit AttestationUsed(account, questId, nonce);
+        emit AttestationUsed(account, questId, nonce, signer);
     }
 
     /// @notice Shared completion path for both entry points.

@@ -147,8 +147,8 @@ contract AttestationTest is Test {
     function test_AttestedCompletionWithValidSignature() public {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory sig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
-        vm.expectEmit(true, true, false, true, address(qm));
-        emit IQuestManager.AttestationUsed(alice, attestedQuest, 0);
+        vm.expectEmit(true, true, true, true, address(qm));
+        emit IQuestManager.AttestationUsed(alice, attestedQuest, 0, verifier);
         vm.prank(alice);
         qm.completeQuestWithAttestation(attestedQuest, deadline, sig);
         assertEq(reputation.points(alice), 100);

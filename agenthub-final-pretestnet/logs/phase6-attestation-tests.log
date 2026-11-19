@@ -1,0 +1,38 @@
+No files changed, compilation skipped
+
+Ran 5 tests for test/VerifierSecurity.t.sol:VerifierSecurityTest
+[PASS] test_AttestationUsedEventAttributesSigner() (gas: 261606)
+[PASS] test_DeadlineAtCurrentBlockAccepted() (gas: 264583)
+[PASS] test_FrontRunnerCannotSubmitOthersAttestation() (gas: 393912)
+[PASS] test_NoncesAreIsolatedPerAccount() (gas: 538039)
+[PASS] test_VerifierCannotSubmitForUser() (gas: 113114)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 14.30ms (8.58ms CPU time)
+
+Ran 24 tests for test/Attestation.t.sol:AttestationTest
+[PASS] testFuzz_ValidAttestationAlwaysCompletes(uint256) (runs: 256, μ: 406817, ~: 407058)
+[PASS] testFuzz_WrongNonceAlwaysRejected(uint256) (runs: 256, μ: 95458, ~: 95459)
+[PASS] test_AttestedCompletionEmitsQuestCompleted() (gas: 379791)
+[PASS] test_AttestedCompletionWhilePausedReverts() (gas: 175662)
+[PASS] test_AttestedCompletionWithValidSignature() (gas: 430341)
+[PASS] test_AttestedFarmingBoundedByCooldown() (gas: 541500)
+[PASS] test_CrossChainReplayRejected() (gas: 86779)
+[PASS] test_CrossContractReplayRejected() (gas: 2827139)
+[PASS] test_DeadlineAtMaxLifetimeAccepted() (gas: 390285)
+[PASS] test_DeadlineTooFarReverts() (gas: 89331)
+[PASS] test_EmptySignatureRejected() (gas: 50298)
+[PASS] test_ExpiredAttestationReverts() (gas: 73982)
+[PASS] test_FailedCompletionDoesNotBurnNonce() (gas: 656198)
+[PASS] test_MalleableSignatureRejected() (gas: 82112)
+[PASS] test_NonHolderCannotCompleteWithAttestation() (gas: 132153)
+[PASS] test_OnlyAdminCanGrantVerifierRole() (gas: 50950)
+[PASS] test_ReplaySameAttestationReverts() (gas: 463369)
+[PASS] test_ShortSignatureRejected() (gas: 50904)
+[PASS] test_UnauthorizedSignerRejected() (gas: 102074)
+[PASS] test_VerifierRotationInvalidatesOldAttestations() (gas: 554930)
+[PASS] test_WrongAccountRejected() (gas: 99522)
+[PASS] test_WrongNonceRejected() (gas: 112302)
+[PASS] test_WrongQuestRejected() (gas: 86874)
+[PASS] test_ZeroSignatureRejected() (gas: 54872)
+Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 198.06ms (210.31ms CPU time)
+
+Ran 2 test suites in 200.51ms (212.35ms CPU time): 29 tests passed, 0 failed, 0 skipped (29 total tests)

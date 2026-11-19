@@ -153,7 +153,8 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 - **Completion spikes** on Attested quests (count + points per hour vs
   baseline) — a spike from one verifier is the compromise signal.
 - **`AttestationUsed` events** per signer — every attestation is
-  attributable; review weekly.
+  attributable; the signer is an indexed topic (Phase 6), so a
+  per-signer query is a single topic filter. Review weekly.
 - **Failed `completeQuestWithAttestation` calls** (`UnauthorizedVerifier`
   reverts) — a burst may mean a revoked signer is still signing, or a
   user holds a stale attestation.
