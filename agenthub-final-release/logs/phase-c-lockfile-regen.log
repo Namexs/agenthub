@@ -1,0 +1,51 @@
+Scope: all 5 workspace projects
+Progress: resolved 1, reused 0, downloaded 0, added 0
+ WARN  deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+Progress: resolved 23, reused 0, downloaded 0, added 0
+Progress: resolved 26, reused 0, downloaded 0, added 0
+Progress: resolved 89, reused 0, downloaded 0, added 0
+Progress: resolved 90, reused 0, downloaded 0, added 0
+Progress: resolved 145, reused 0, downloaded 0, added 0
+Progress: resolved 247, reused 0, downloaded 0, added 0
+Progress: resolved 387, reused 0, downloaded 0, added 0
+Progress: resolved 389, reused 0, downloaded 0, added 0
+Progress: resolved 558, reused 0, downloaded 0, added 0
+Progress: resolved 564, reused 0, downloaded 0, added 0
+Progress: resolved 570, reused 0, downloaded 0, added 0
+Progress: resolved 729, reused 0, downloaded 0, added 0
+Progress: resolved 737, reused 0, downloaded 0, added 0
+Progress: resolved 743, reused 0, downloaded 0, added 0
+Progress: resolved 746, reused 0, downloaded 0, added 0
+Progress: resolved 747, reused 0, downloaded 0, added 0
+Progress: resolved 792, reused 0, downloaded 0, added 0
+Progress: resolved 827, reused 0, downloaded 0, added 0
+Progress: resolved 830, reused 0, downloaded 0, added 0
+Progress: resolved 836, reused 0, downloaded 0, added 0
+Progress: resolved 849, reused 0, downloaded 0, added 0
+Progress: resolved 863, reused 0, downloaded 0, added 0
+Progress: resolved 873, reused 0, downloaded 0, added 0
+Progress: resolved 882, reused 0, downloaded 0, added 0
+Progress: resolved 894, reused 0, downloaded 0, added 0
+Progress: resolved 898, reused 0, downloaded 0, added 0
+Progress: resolved 912, reused 0, downloaded 0, added 0
+Progress: resolved 919, reused 0, downloaded 0, added 0
+Progress: resolved 932, reused 0, downloaded 0, added 0
+Progress: resolved 938, reused 0, downloaded 0, added 0
+Progress: resolved 947, reused 0, downloaded 0, added 0
+ WARN  19 deprecated subdependencies found: @humanwhocodes/config-array@0.13.0, @humanwhocodes/object-schema@2.0.3, @metamask/sdk-communication-layer@0.30.0, @metamask/sdk-install-modal-web@0.30.0, @metamask/sdk@0.30.1, @motionone/vue@10.16.4, @safe-global/safe-gateway-typescript-sdk@3.23.1, @walletconnect/ethereum-provider@2.17.0, @walletconnect/modal@2.7.0, @walletconnect/sign-client@2.17.0, @walletconnect/universal-provider@2.17.0, glob@10.5.0, glob@7.2.3, inflight@1.0.6, lodash.isequal@4.5.0, rimraf@3.0.2, uuid@8.3.2, uuid@9.0.1, whatwg-encoding@3.1.1
+Progress: resolved 950, reused 0, downloaded 0, added 0, done
+
+ WARN  Issues with peer dependencies found
+apps/web
+├─┬ react-native 0.88.1
+│ ├── ✕ unmet peer @types/react@^19.1.1: found 18.3.11
+│ ├── ✕ unmet peer react@^19.3.0: found 18.3.1
+│ └─┬ @react-native/virtualized-lists 0.88.1
+│   └── ✕ unmet peer @types/react@^19.2.0: found 18.3.11
+└─┬ wagmi 2.12.29
+  └─┬ @wagmi/connectors 5.3.7
+    └─┬ @metamask/sdk 0.30.1
+      └─┬ @metamask/sdk-communication-layer 0.30.0
+        └── ✕ unmet peer eciesjs@^0.3.16: found 0.4.18
+
+Done in 33s
