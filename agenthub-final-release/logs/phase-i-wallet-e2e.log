@@ -1,0 +1,140 @@
+=== anvil up (pid 4150) ===
+Compiling 54 files with Solc 0.8.24
+Solc 0.8.24 finished in 3.82s
+Compiler run successful!
+Script ran successfully.
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 31337
+
+Estimated max fee per gas: 2.000000001 gwei
+Estimated base fee per gas: 1 gwei
+Estimated max priority fee per gas: 0.000000001 gwei
+
+Estimated total gas used for script: 12006720
+
+Estimated amount required: 0.02401344001200672 ETH
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /var/tmp/agenthub-final/packages/contracts/broadcast/DeployLocalTestStack.s.sol/31337/run-latest.json
+
+Sensitive values saved to: /var/tmp/agenthub-final/packages/contracts/cache/DeployLocalTestStack.s.sol/31337/run-latest.json
+
+=== deployment ===
+{
+  "achievement": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+  "agentGate": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  "agentId": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "alice": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+  "bob": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+  "chainId": 31337,
+  "deployBlock": 0,
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "questManager": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+  "reputation": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+  "token": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+  "validator": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+  "verifier": "0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3"
+}--- next build (against anvil deployment) ---
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/var/tmp/agenthub-final/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/var/tmp/agenthub-final/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@18.3.11_bufferutil@4.2.0_react@18.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    920 B           172 kB
+├ ○ /_not-found                          873 B          88.2 kB
+├ ○ /campaigns                           1.03 kB         190 kB
+├ ○ /dashboard                           1.94 kB         200 kB
+├ ○ /history                             4.02 kB         189 kB
+├ ○ /leaderboard                         3.31 kB         188 kB
+├ ○ /profile                             1.34 kB         199 kB
+├ ○ /quests                              1.12 kB         190 kB
+└ ○ /security                            138 B          87.5 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/258-9c35acb55bd55d9e.js       31.7 kB
+  ├ chunks/5ca1c6b9-e313f3fff6d2032b.js  53.6 kB
+  └ other shared chunks (total)          1.98 kB
+
+
+○  (Static)  prerendered as static content
+
+--- starting next start on :3101 ---
+server ready after 5s
+--- playwright wallet E2E ---
+  PASS home loads
+  PASS wallet connected — truncated bob address shown
+  PASS Agent ID verified for bob (mock ID in test stack)
+  PASS quests page shows the live label
+  PASS quests page does NOT show the undeployed preview label
+  PASS on-chain quest listed: First Steps
+  PASS on-chain quest listed: Hold 100 Tokens
+  PASS on-chain quest listed: Post on X
+  PASS q1 Complete button is enabled for bob
+  PASS q1 shows Completed after tx confirms
+  PASS on-chain: hasCompleted(bob, q1) is true
+  PASS on-chain: points(bob) is 50 after q1
+  PASS dashboard shows 50 pts for bob
+  PASS attestation signed for bob/q3 in Node
+  PASS attestation form appears after toggling
+  PASS form verifies the attestation (signer holds VERIFIER_ROLE)
+  PASS q3 shows Completed after attested tx confirms
+  PASS on-chain: hasCompleted(bob, q3) is true
+  PASS on-chain: points(bob) is 150 after q3
+  PASS q2 button still reads 'Complete (on-chain check)'
+  PASS on-chain: hasCompleted(bob, q2) stays false
+  PASS mobile (375px): no horizontal overflow on /quests
+  PASS mobile: wallet button visible
+  PASS no page errors
+  PASS no console errors
+
+Wallet E2E: 25 passed, 0 failed
+ALL WALLET E2E CHECKS PASSED
+log saved: /var/tmp/agenthub-final/agenthub-final-release/logs/phase-f-wallet-e2e.log
+WALLET_E2E:0

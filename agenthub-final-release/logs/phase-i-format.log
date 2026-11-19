@@ -1,0 +1,8 @@
+
+> agenthub@0.1.0 format:check /var/tmp/agenthub-final
+> prettier --check "**/*.{ts,tsx,js,jsx,json,md,css}" --ignore-path .prettierignore
+
+Checking formatting...
+All matched files use Prettier code style!
+PRETTIER:0
+FORGE_FMT:0

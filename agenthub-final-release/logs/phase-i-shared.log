@@ -1,0 +1,25 @@
+
+> @agenthub/shared@0.1.0 lint /var/tmp/agenthub-final/packages/shared
+> eslint src --ext .ts
+
+SHARED_LINT:0
+
+> @agenthub/shared@0.1.0 typecheck /var/tmp/agenthub-final/packages/shared
+> tsc --project tsconfig.json --noEmit
+
+SHARED_TSC:0
+
+> @agenthub/shared@0.1.0 test /var/tmp/agenthub-final/packages/shared
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-final/packages/shared[39m
+
+ [32m✓[39m src/constants.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 12:42:33
+[2m   Duration [22m 447ms[2m (transform 81ms, setup 0ms, import 102ms, tests 10ms, environment 0ms)[22m
+
+SHARED_TEST:0
