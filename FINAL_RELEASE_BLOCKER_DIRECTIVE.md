@@ -67,14 +67,15 @@ frontend terverifikasi, konfigurasi deployment tervalidasi, tidak ada
 deployment tanpa izin.
 
 ATURAN NON-NEGOTIABLE (user):
+
 1. Jangan hapus test demi hasil lulus. 2. Jangan lemahkan asersi keamanan.
-3. Jangan diam-diam menonaktifkan cek CI. 4. Jangan sembunyikan vuln atau
-menurunkan severity tanpa bukti. 5. Jangan deploy/broadcast tanpa approval
-eksplisit. 6. Jangan pakai production private key di test. 7. Jangan
-tampilkan private key/seed/kredensial di log. 8. Pertahankan arsitektur
-kecuali perubahan diperlukan. 9. Perubahan inkremental + dokumentasikan
-setiap modifikasi. 10. Berhenti dan laporkan bila kegagalan kritis tidak
-bisa diselesaikan dengan aman.
+2. Jangan diam-diam menonaktifkan cek CI. 4. Jangan sembunyikan vuln atau
+   menurunkan severity tanpa bukti. 5. Jangan deploy/broadcast tanpa approval
+   eksplisit. 6. Jangan pakai production private key di test. 7. Jangan
+   tampilkan private key/seed/kredensial di log. 8. Pertahankan arsitektur
+   kecuali perubahan diperlukan. 9. Perubahan inkremental + dokumentasikan
+   setiap modifikasi. 10. Berhenti dan laporkan bila kegagalan kritis tidak
+   bisa diselesaikan dengan aman.
 
 PROTOKOL: kerja berurutan; tiap phase: laporkan temuan → perbaiki →
 jalankan test relevan → catat bukti → commit → lanjut hanya bila gate
@@ -88,6 +89,7 @@ persis, inventaris file berubah, log test, bukti audit dependency, risiko
 tersisa, deployment blocker, keputusan akhir.
 
 KONTEKS PENTING (dari parent):
+
 - Repo BELUM punya GitHub remote → Phase G "verifikasi di GitHub" dan
   syarat GO "CI berhasil di GitHub" TIDAK BISA dipenuhi tanpa remote yang
   dibuat user. Dokumentasikan sebagai blocker eksplisit; jangan klaim GO

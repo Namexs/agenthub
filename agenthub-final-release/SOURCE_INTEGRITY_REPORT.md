@@ -6,13 +6,13 @@
 
 ## 1. Git state
 
-| Check | Result |
-| --- | --- |
-| `git rev-parse HEAD` | `5417787e91a9966aa992e7ed620147626b6f4873` |
-| `git status --short` | Clean, except one untracked file (see §5) |
-| Commits `c5bed05..HEAD` | 18 — matches FINAL_REMEDIATION_REPORT.md |
-| `git remote -v` | **No remote** (documented; blocks Phase G GitHub verification) |
-| Submodules | forge-std `8948d45d3d9022c508b83eb5d26fd3a7a93f2f32` (v1.9.0); openzeppelin-contracts `dbb6104ce834628e473d2173bbc9d47f81a9eec3` (v5.0.0-12-gdbb6104c) — both match the manifest |
+| Check                   | Result                                                                                                                                                                           |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `git rev-parse HEAD`    | `5417787e91a9966aa992e7ed620147626b6f4873`                                                                                                                                       |
+| `git status --short`    | Clean, except one untracked file (see §5)                                                                                                                                        |
+| Commits `c5bed05..HEAD` | 18 — matches FINAL_REMEDIATION_REPORT.md                                                                                                                                         |
+| `git remote -v`         | **No remote** (documented; blocks Phase G GitHub verification)                                                                                                                   |
+| Submodules              | forge-std `8948d45d3d9022c508b83eb5d26fd3a7a93f2f32` (v1.9.0); openzeppelin-contracts `dbb6104ce834628e473d2173bbc9d47f81a9eec3` (v5.0.0-12-gdbb6104c) — both match the manifest |
 
 ## 2. Manifest verification
 
@@ -29,13 +29,13 @@
 `git diff 9d71517..5417787 --stat` — exactly 5 files, 29 insertions /
 25 deletions, **no source-code changes**:
 
-| File | Nature |
-| --- | --- |
-| `PACKAGE_MANIFEST.md` | The manifest itself (root copy) |
-| `agenthub-final-pretestnet/PACKAGE_MANIFEST.md` | Manifest copy in the package |
-| `agenthub-final-pretestnet/FINAL_REMEDIATION_REPORT.md` | One post-certification wording fix |
-| `agenthub-final-pretestnet/logs/phase3-manifest-verify.log` | Verification log update |
-| `agenthub-final-pretestnet/logs/phase3-secrets.log` | Verification log update |
+| File                                                        | Nature                             |
+| ----------------------------------------------------------- | ---------------------------------- |
+| `PACKAGE_MANIFEST.md`                                       | The manifest itself (root copy)    |
+| `agenthub-final-pretestnet/PACKAGE_MANIFEST.md`             | Manifest copy in the package       |
+| `agenthub-final-pretestnet/FINAL_REMEDIATION_REPORT.md`     | One post-certification wording fix |
+| `agenthub-final-pretestnet/logs/phase3-manifest-verify.log` | Verification log update            |
+| `agenthub-final-pretestnet/logs/phase3-secrets.log`         | Verification log update            |
 
 This matches the report's own §Phase 3 description of the ZIP-vs-manifest
 delta. No contract, frontend, script, CI, or test file changed after
@@ -63,8 +63,8 @@ All files named in report §3 (file inventory) were checked for existence:
 - **CI/scripts:** `.github/workflows/ci.yml`, `.gitleaks.toml`,
   `scripts/osv-audit.mjs` — all present.
 - **Package docs:** all 9 remediation documents + `PACKAGE_MANIFEST.md`
-  + `test-results/TEST_RESULTS.md` in `agenthub-final-pretestnet/` —
-  all present.
+  - `test-results/TEST_RESULTS.md` in `agenthub-final-pretestnet/` —
+    all present.
 - **Tracked files at HEAD:** 294 (291 in the manifest + the manifest
   itself + 2 verification logs added by the manifest commits — the
   count is consistent with the §3 delta).

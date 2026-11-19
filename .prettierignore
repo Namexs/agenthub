@@ -24,3 +24,5 @@ apps/web/.anvil-deployment.json
 packages/contracts/.anvil-deployment.json
 # Final-remediation evidence logs must stay byte-identical to tool output.
 agenthub-final-pretestnet/logs/
+# Final-release evidence logs must stay byte-identical to tool output.
+agenthub-final-release/logs/

@@ -17,12 +17,12 @@ symlinks remain. No real test was replaced with a mock.
 
 ## 1. Changes made
 
-| File | Change |
-| --- | --- |
-| `apps/web/package.json` | Declared test deps in `devDependencies` (exact versions proven in the scratch dir): `@testing-library/react` 16.3.3, `jsdom` 26.1.0, `playwright` 1.65.1. `vitest` 4.1.12 was already declared (Phase B). |
-| `apps/web/vitest.config.ts` | Removed the graceful-skip fallback: `include` is now always `lib/**/*.test.ts` + `hooks/**/*.test.tsx`. Missing test deps now fail loudly instead of silently dropping the 58 hook tests. Environment `node`, jsdom via per-file `// @vitest-environment jsdom` docblocks (Vitest 4 mechanism; the `environmentMatchGlobs` option was removed in Phase B). |
-| `apps/web/scripts/run-e2e-smoke.sh` | Updated the stale comment: playwright is now a declared devDependency, no longer resolved from a symlink. No behavior change. |
-| `pnpm-lock.yaml` | Regenerated (same proven /tmp workaround as Phase B: `git archive` copy + `pnpm install --lockfile-only`, lockfile copied back; exit 0, same 4 pre-existing peer warnings). Test deps verified in the lockfile: jsdom 26.1.0, playwright 1.65.1, `@testing-library/react` 16.3.3, `@testing-library/dom` 10.4.2 (transitive). |
+| File                                | Change                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web/package.json`             | Declared test deps in `devDependencies` (exact versions proven in the scratch dir): `@testing-library/react` 16.3.3, `jsdom` 26.1.0, `playwright` 1.65.1. `vitest` 4.1.12 was already declared (Phase B).                                                                                                                                                  |
+| `apps/web/vitest.config.ts`         | Removed the graceful-skip fallback: `include` is now always `lib/**/*.test.ts` + `hooks/**/*.test.tsx`. Missing test deps now fail loudly instead of silently dropping the 58 hook tests. Environment `node`, jsdom via per-file `// @vitest-environment jsdom` docblocks (Vitest 4 mechanism; the `environmentMatchGlobs` option was removed in Phase B). |
+| `apps/web/scripts/run-e2e-smoke.sh` | Updated the stale comment: playwright is now a declared devDependency, no longer resolved from a symlink. No behavior change.                                                                                                                                                                                                                              |
+| `pnpm-lock.yaml`                    | Regenerated (same proven /tmp workaround as Phase B: `git archive` copy + `pnpm install --lockfile-only`, lockfile copied back; exit 0, same 4 pre-existing peer warnings). Test deps verified in the lockfile: jsdom 26.1.0, playwright 1.65.1, `@testing-library/react` 16.3.3, `@testing-library/dom` 10.4.2 (transitive).                              |
 
 No test file was modified, added, or deleted. No test was replaced
 with a mock. The 4 skipped web tests are the pre-existing skips from
@@ -49,16 +49,16 @@ then `pnpm install --frozen-lockfile`.
 
 ## 3. Clean-copy verification results (all exit 0)
 
-| Check | Result | Log |
-| --- | --- | --- |
-| `pnpm -r test` (Foundry) | **255 passed, 0 failed** (19 suites) | `logs/phase-c-clean-test.log` |
-| `pnpm -r test` (shared vitest) | **8 passed** (1 file) | `logs/phase-c-clean-test.log` |
-| `pnpm -r test` (web vitest 4.1.12) | **136 passed + 4 skipped** (7 files passed, 1 skipped) — includes all 58 hook tests | `logs/phase-c-clean-test.log` |
-| `pnpm -r typecheck` | **exit 0** (the 3 pre-existing `@testing-library/react` errors from Phase B are gone) | `logs/phase-c-clean-typecheck.log` |
-| `pnpm -r lint` | **exit 0** | `logs/phase-c-clean-lint.log` |
-| `pnpm --filter @agenthub/web build` | **exit 0**, 8 routes, all static | `logs/phase-c-clean-build.log` |
-| E2E smoke (`run-e2e-smoke.sh`, Playwright chromium) | **23 passed, 0 failed**, no page errors, no console errors | `logs/phase-c-e2e-smoke.log`, `logs/phase-c-e2e-runner.log` |
-| Anvil integration (`run-anvil-integration.sh`) | **27 node checks passed, 0 failed** + **4/4 vitest anvil tests** | `logs/phase-c-anvil-integration.log`, `logs/phase-c-anvil-runner.log` |
+| Check                                               | Result                                                                                | Log                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `pnpm -r test` (Foundry)                            | **255 passed, 0 failed** (19 suites)                                                  | `logs/phase-c-clean-test.log`                                         |
+| `pnpm -r test` (shared vitest)                      | **8 passed** (1 file)                                                                 | `logs/phase-c-clean-test.log`                                         |
+| `pnpm -r test` (web vitest 4.1.12)                  | **136 passed + 4 skipped** (7 files passed, 1 skipped) — includes all 58 hook tests   | `logs/phase-c-clean-test.log`                                         |
+| `pnpm -r typecheck`                                 | **exit 0** (the 3 pre-existing `@testing-library/react` errors from Phase B are gone) | `logs/phase-c-clean-typecheck.log`                                    |
+| `pnpm -r lint`                                      | **exit 0**                                                                            | `logs/phase-c-clean-lint.log`                                         |
+| `pnpm --filter @agenthub/web build`                 | **exit 0**, 8 routes, all static                                                      | `logs/phase-c-clean-build.log`                                        |
+| E2E smoke (`run-e2e-smoke.sh`, Playwright chromium) | **23 passed, 0 failed**, no page errors, no console errors                            | `logs/phase-c-e2e-smoke.log`, `logs/phase-c-e2e-runner.log`           |
+| Anvil integration (`run-anvil-integration.sh`)      | **27 node checks passed, 0 failed** + **4/4 vitest anvil tests**                      | `logs/phase-c-anvil-integration.log`, `logs/phase-c-anvil-runner.log` |
 
 Note: the E2E and anvil runners write their logs into
 `agenthub-final-pretestnet/logs/` inside the clean copy; the logs
@@ -69,8 +69,9 @@ evidence package is untouched.
 ## 4. Repo working-tree verification
 
 After syncing the clean `node_modules` into the repo,
-`pnpm --filter @agenthub/web test` in the repo itself: **136 passed
-+ 4 skipped, exit 0**. Log: `logs/phase-c-repo-web-vitest.log`.
+`pnpm --filter @agenthub/web test` in the repo itself: \*\*136 passed
+
+- 4 skipped, exit 0\*\*. Log: `logs/phase-c-repo-web-vitest.log`.
 
 One non-issue observed: invoking the vitest binary directly via
 `pnpm --filter @agenthub/web exec vitest run` failed with exit 1
@@ -90,16 +91,16 @@ afterwards, as in Phase B.)
 
 ## 6. Comparison vs baseline (commit 5417787)
 
-| Suite | Baseline | Phase C (clean install) | Delta |
-| --- | --- | --- | --- |
-| Foundry | 255/255 | 255/255 | none |
-| Shared vitest | 8/8 | 8/8 | none |
-| Web vitest | 136 + 4 skip (via symlinks) | 136 + 4 skip (declared deps) | none — now reproducible |
-| Typecheck | 0 (after symlink fix) | 0 | none |
-| Lint | 0 | 0 | none |
-| Production build | 0 | 0 | none |
-| E2E smoke | 23/23 | 23/23 | none |
-| Anvil integration | 27/27 + 4/4 | 27/27 + 4/4 | none |
+| Suite             | Baseline                    | Phase C (clean install)      | Delta                   |
+| ----------------- | --------------------------- | ---------------------------- | ----------------------- |
+| Foundry           | 255/255                     | 255/255                      | none                    |
+| Shared vitest     | 8/8                         | 8/8                          | none                    |
+| Web vitest        | 136 + 4 skip (via symlinks) | 136 + 4 skip (declared deps) | none — now reproducible |
+| Typecheck         | 0 (after symlink fix)       | 0                            | none                    |
+| Lint              | 0                           | 0                            | none                    |
+| Production build  | 0                           | 0                            | none                    |
+| E2E smoke         | 23/23                       | 23/23                        | none                    |
+| Anvil integration | 27/27 + 4/4                 | 27/27 + 4/4                  | none                    |
 
 ## 7. Residual notes
 

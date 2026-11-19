@@ -12,13 +12,13 @@ below with evidence. No finding was hidden or downgraded.
 
 ## 1. Upgrades performed (direct dependencies)
 
-| Package | Before | After | Advisories fixed |
-| --- | --- | --- | --- |
-| `next` (web) | 14.2.18 | **14.2.35** (latest 14.x) | CVE-2025-29927 (GHSA-f82v, CRITICAL middleware bypass) + GHSA-5j59 + GHSA-mwv6 (HIGH DoS) |
-| `eslint-config-next` (root + web) | 14.2.18 | **14.2.35** | Kept in sync with Next.js |
-| `vitest` (web + shared) | 3.2.4 | **4.1.12** | GHSA-5xrq (CRITICAL UI RCE); vitest 4 drops the `tinypool` dependency entirely, removing both tinypool CRITICALs (GHSA-5gmw, GHSA-85c8) |
-| `postcss` (web) | 8.4.47 | **8.5.33** | GHSA-6g55 + GHSA-r28c (HIGH, file read / path traversal) |
-| `zod` (web) | 3.23.8 | **4.6.7** | GHSA-mrhx (HIGH memory exhaustion; fix exists only in zod 4.x) |
+| Package                           | Before  | After                     | Advisories fixed                                                                                                                        |
+| --------------------------------- | ------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `next` (web)                      | 14.2.18 | **14.2.35** (latest 14.x) | CVE-2025-29927 (GHSA-f82v, CRITICAL middleware bypass) + GHSA-5j59 + GHSA-mwv6 (HIGH DoS)                                               |
+| `eslint-config-next` (root + web) | 14.2.18 | **14.2.35**               | Kept in sync with Next.js                                                                                                               |
+| `vitest` (web + shared)           | 3.2.4   | **4.1.12**                | GHSA-5xrq (CRITICAL UI RCE); vitest 4 drops the `tinypool` dependency entirely, removing both tinypool CRITICALs (GHSA-5gmw, GHSA-85c8) |
+| `postcss` (web)                   | 8.4.47  | **8.5.33**                | GHSA-6g55 + GHSA-r28c (HIGH, file read / path traversal)                                                                                |
+| `zod` (web)                       | 3.23.8  | **4.6.7**                 | GHSA-mrhx (HIGH memory exhaustion; fix exists only in zod 4.x)                                                                          |
 
 **Why vitest 4.x, not 3.2.6:** vitest 3.2.7 still depends on
 `tinypool@^1.1.1`, so the 3.x line cannot fix the two tinypool
@@ -44,15 +44,15 @@ upgrade remains a **pre-mainnet requirement**.
 
 Added to the root `package.json` (`pnpm.overrides`):
 
-| Override | Reason |
-| --- | --- |
-| `"@coinbase/wallet-sdk": "4.4.0"` | Fixes GHSA-8rgj (HIGH). Bonus: 4.4.0 no longer depends on `vitest`, so the stray `vitest@2.1.9` instance (a dependency of wallet-sdk 4.2.1) leaves the tree entirely. |
-| `"abitype@1.0.6": "1.2.3"` | abitype 1.2.3 accepts `zod@^3 \|\| ^4`; removes the zod-4 peer warning from viem 2.21.45's chain. Same major, backward compatible. |
-| `"postcss@8.4.31": "8.5.33"` | Next.js 14.2.35 pins `postcss@8.4.31` exactly; forced to the fixed 8.5.x line (same major). |
-| `"vite": "6.4.6"` | Forces vitest 4's vite to the fixed 6.x line (GHSA-587h fixed in 6.4.4+). |
-| `"ws@8": "8.23.0"` | Unifies all ws 8.x on the fixed version (GHSA-96hv fixed in 8.21.0+). ws 7.5.14 (different major, no HIGH) is untouched. |
-| `"glob@10.3.10": "10.5.0"` | Fixes GHSA-5j98 (HIGH glob CLI command injection). |
-| `"decode-uri-component@0.2.2": "0.5.1"` | Fixes GHSA-qr28 (HIGH DoS). |
+| Override                                | Reason                                                                                                                                                                |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"@coinbase/wallet-sdk": "4.4.0"`       | Fixes GHSA-8rgj (HIGH). Bonus: 4.4.0 no longer depends on `vitest`, so the stray `vitest@2.1.9` instance (a dependency of wallet-sdk 4.2.1) leaves the tree entirely. |
+| `"abitype@1.0.6": "1.2.3"`              | abitype 1.2.3 accepts `zod@^3 \|\| ^4`; removes the zod-4 peer warning from viem 2.21.45's chain. Same major, backward compatible.                                    |
+| `"postcss@8.4.31": "8.5.33"`            | Next.js 14.2.35 pins `postcss@8.4.31` exactly; forced to the fixed 8.5.x line (same major).                                                                           |
+| `"vite": "6.4.6"`                       | Forces vitest 4's vite to the fixed 6.x line (GHSA-587h fixed in 6.4.4+).                                                                                             |
+| `"ws@8": "8.23.0"`                      | Unifies all ws 8.x on the fixed version (GHSA-96hv fixed in 8.21.0+). ws 7.5.14 (different major, no HIGH) is untouched.                                              |
+| `"glob@10.3.10": "10.5.0"`              | Fixes GHSA-5j98 (HIGH glob CLI command injection).                                                                                                                    |
+| `"decode-uri-component@0.2.2": "0.5.1"` | Fixes GHSA-qr28 (HIGH DoS).                                                                                                                                           |
 
 ## 3. Lockfile regeneration (VM workaround, 3 rounds)
 
@@ -84,15 +84,15 @@ All verification ran in a **clean copy** (`/var/tmp/agenthub-clean`,
 `pnpm install --frozen-lockfile` exit 0 in 2m04s — the first
 verified clean install of this repo):
 
-| Check | Result |
-| --- | --- |
-| Clean install (`--frozen-lockfile`) | **exit 0** |
-| Foundry | **255/255** (unchanged) |
-| Vitest — shared | **8/8** |
-| Vitest — web (lib only; hook tests skip without the not-yet-declared test deps — Phase C) | **78 passed + 4 skipped, 0 failed** |
-| Lint (`pnpm -r lint`) | **exit 0**, no warnings/errors |
-| Typecheck | Only the 3 pre-existing `@testing-library/react` errors (undeclared test deps — Phase C scope). The one Phase B regression found here (see below) is fixed. |
-| Production build (`next build`) | **exit 0** — 8 routes, all static |
+| Check                                                                                     | Result                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Clean install (`--frozen-lockfile`)                                                       | **exit 0**                                                                                                                                                  |
+| Foundry                                                                                   | **255/255** (unchanged)                                                                                                                                     |
+| Vitest — shared                                                                           | **8/8**                                                                                                                                                     |
+| Vitest — web (lib only; hook tests skip without the not-yet-declared test deps — Phase C) | **78 passed + 4 skipped, 0 failed**                                                                                                                         |
+| Lint (`pnpm -r lint`)                                                                     | **exit 0**, no warnings/errors                                                                                                                              |
+| Typecheck                                                                                 | Only the 3 pre-existing `@testing-library/react` errors (undeclared test deps — Phase C scope). The one Phase B regression found here (see below) is fixed. |
+| Production build (`next build`)                                                           | **exit 0** — 8 routes, all static                                                                                                                           |
 
 **Vitest 4 migration fix (found by typecheck):** Vitest 4 removed
 the `environmentMatchGlobs` config option (`vitest.config.ts`
@@ -113,13 +113,13 @@ tree).
 `logs/phase-b-osv-audit-new.log`, JSON
 `logs/phase-b-osv-audit.json`):
 
-| Severity | Before | After | Delta |
-| --- | --- | --- | --- |
-| CRITICAL | 8 | **3** | −5 (vitest UI RCE, tinypool ×2, CVE-2025-29927) |
-| HIGH | 21 | **9** | −12 (postcss ×4, zod, ws, glob, decode-uri-component, coinbase, vite, Next.js DoS ×2) |
-| MODERATE | 41 | 18 | −23 |
-| LOW | 6 | 3 | −3 |
-| **Total** | **76** | **33** | **−43** |
+| Severity  | Before | After  | Delta                                                                                 |
+| --------- | ------ | ------ | ------------------------------------------------------------------------------------- |
+| CRITICAL  | 8      | **3**  | −5 (vitest UI RCE, tinypool ×2, CVE-2025-29927)                                       |
+| HIGH      | 21     | **9**  | −12 (postcss ×4, zod, ws, glob, decode-uri-component, coinbase, vite, Next.js DoS ×2) |
+| MODERATE  | 41     | 18     | −23                                                                                   |
+| LOW       | 6      | 3      | −3                                                                                    |
+| **Total** | **76** | **33** | **−43**                                                                               |
 
 **Every remaining CRITICAL/HIGH finding is `next@14.2.35`** with a
 fix only in 15.x/16.x. No other package in the tree has an open
@@ -132,20 +132,20 @@ documented, independently justified risk acceptance. Each finding
 below was checked against the actual application (verified by grep
 on 2026-11-19; the checks are reproducible):
 
-| ID | Severity | Finding | Applicability | Justification |
-| --- | --- | --- | --- | --- |
-| GHSA-2464 | CRITICAL | Image Optimization RCE (SVG) | **Not applicable** | Zero `next/image` usage (only the `next-env.d.ts` type reference); no `images.remotePatterns` in `next.config.js`. The vulnerable endpoint cannot process attacker-controlled images. |
-| GHSA-2xp9 | CRITICAL | Image Optimization RCE (AVIF) | **Not applicable** | Same as above. |
-| GHSA-p293 | CRITICAL | RCE on Windows-hosted servers | **Not applicable** | Linux-only hosting (CI `ubuntu-latest`; deployment Linux). No Windows host exists in the deployment path. |
-| GHSA-36qx | HIGH | Pages Router + i18n middleware bypass | **Not applicable** | App Router only (no `pages/` directory); no i18n config; no middleware file exists. |
-| GHSA-89xv | HIGH | SSRF in Server Actions (custom servers) | **Not applicable** | No Server Actions (`'use server'` grep: none); no custom server. |
-| GHSA-m99w | HIGH | DoS via Server Actions | **Not applicable** | No Server Actions. |
-| GHSA-p3m5 | HIGH | DoS via Server Actions | **Not applicable** | No Server Actions. |
-| GHSA-p9j2 | HIGH | SSRF in rewrites | **Not applicable** | No `rewrites` in `next.config.js` (only `reactStrictMode` + `poweredByHeader`). |
-| GHSA-c4j6 | HIGH | SSRF via WebSocket upgrades | **Not applicable** | The app implements no server-side WebSocket upgrade handling; client WS connections go from the browser directly to RPC endpoints, not through the Next.js server. |
-| GHSA-8h8q | HIGH | DoS with Server Components | Applicable in principle; **availability-only** | The app serves RSC pages, so the DoS vector exists in principle. Impact is availability-only (no data, auth, or funds at risk) on a **testnet staging** deployment. Accepted for testnet; Next.js 15 upgrade required before mainnet. |
-| GHSA-q4gf | HIGH | DoS with Server Components | Applicable in principle; **availability-only** | Same as GHSA-8h8q. |
-| GHSA-h25m | HIGH | Deserialization DoS ("insecure" RSC) | Applicable in principle; **availability-only** | Same availability-only acceptance. The app's RSC usage is static shells; no user input is deserialized into RSC payloads by application code. |
+| ID        | Severity | Finding                                 | Applicability                                  | Justification                                                                                                                                                                                                                         |
+| --------- | -------- | --------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GHSA-2464 | CRITICAL | Image Optimization RCE (SVG)            | **Not applicable**                             | Zero `next/image` usage (only the `next-env.d.ts` type reference); no `images.remotePatterns` in `next.config.js`. The vulnerable endpoint cannot process attacker-controlled images.                                                 |
+| GHSA-2xp9 | CRITICAL | Image Optimization RCE (AVIF)           | **Not applicable**                             | Same as above.                                                                                                                                                                                                                        |
+| GHSA-p293 | CRITICAL | RCE on Windows-hosted servers           | **Not applicable**                             | Linux-only hosting (CI `ubuntu-latest`; deployment Linux). No Windows host exists in the deployment path.                                                                                                                             |
+| GHSA-36qx | HIGH     | Pages Router + i18n middleware bypass   | **Not applicable**                             | App Router only (no `pages/` directory); no i18n config; no middleware file exists.                                                                                                                                                   |
+| GHSA-89xv | HIGH     | SSRF in Server Actions (custom servers) | **Not applicable**                             | No Server Actions (`'use server'` grep: none); no custom server.                                                                                                                                                                      |
+| GHSA-m99w | HIGH     | DoS via Server Actions                  | **Not applicable**                             | No Server Actions.                                                                                                                                                                                                                    |
+| GHSA-p3m5 | HIGH     | DoS via Server Actions                  | **Not applicable**                             | No Server Actions.                                                                                                                                                                                                                    |
+| GHSA-p9j2 | HIGH     | SSRF in rewrites                        | **Not applicable**                             | No `rewrites` in `next.config.js` (only `reactStrictMode` + `poweredByHeader`).                                                                                                                                                       |
+| GHSA-c4j6 | HIGH     | SSRF via WebSocket upgrades             | **Not applicable**                             | The app implements no server-side WebSocket upgrade handling; client WS connections go from the browser directly to RPC endpoints, not through the Next.js server.                                                                    |
+| GHSA-8h8q | HIGH     | DoS with Server Components              | Applicable in principle; **availability-only** | The app serves RSC pages, so the DoS vector exists in principle. Impact is availability-only (no data, auth, or funds at risk) on a **testnet staging** deployment. Accepted for testnet; Next.js 15 upgrade required before mainnet. |
+| GHSA-q4gf | HIGH     | DoS with Server Components              | Applicable in principle; **availability-only** | Same as GHSA-8h8q.                                                                                                                                                                                                                    |
+| GHSA-h25m | HIGH     | Deserialization DoS ("insecure" RSC)    | Applicable in principle; **availability-only** | Same availability-only acceptance. The app's RSC usage is static shells; no user input is deserialized into RSC payloads by application code.                                                                                         |
 
 **Consequence for CI (honest note):** the CI `audit` job runs
 `pnpm audit --audit-level=high`, which will still FAIL on GitHub

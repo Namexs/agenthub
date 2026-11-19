@@ -6,7 +6,7 @@
 test battery, and a fresh Slither run.
 **Verdict: GATE D — PASSED. No exploitable vulnerability found. No
 contract code changed; no regression test was required** (the
-directive requires a regression test for each *confirmed* issue —
+directive requires a regression test for each _confirmed_ issue —
 none was confirmed). Four non-security observations (§4) are
 recorded for the record; none blocks testnet.
 
@@ -16,25 +16,25 @@ The directive's prompt named `AttestationVerifier.sol` and
 `ReputationManager.sol`; **neither file exists**. Verified by
 directory listing + grep over `src/`, `script/`, `test/`:
 
-| Prompt name | Actual location |
-| --- | --- |
+| Prompt name                   | Actual location                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------ |
 | AttestationVerifier (EIP-712) | `QuestManager.sol` — `_verifyAttestation()` + `completeQuestWithAttestation()` |
-| ReputationManager | `Reputation.sol` |
+| ReputationManager             | `Reputation.sol`                                                               |
 
 Full inventory:
 
-| File | Lines | Role |
-| --- | --- | --- |
-| `src/AgentGate.sol` | 102 | Agent ID holder gating (single trusted contract + chain) |
-| `src/QuestManager.sol` | 406 | Quest creation, 3 validation kinds, EIP-712 attestations, validator registry |
-| `src/Reputation.sol` | 90 | Points ledger (add-only, capped) |
-| `src/Achievement.sol` | 126 | Soulbound ERC-721 badges |
-| `src/validators/TokenBalanceValidator.sol` | ~60 | Reference on-chain validator (ERC-20 balance ≥ threshold) |
-| `src/mocks/MockAgentId.sol` | ~35 | LOCAL/TESTNET ONLY mock Agent ID (owner-minted, soulbound) |
-| `src/interfaces/*.sol` (5) | — | Interfaces + errors + events |
-| `script/DeployAgentHub.s.sol` | ~300 | Full-stack deploy + role wiring + post-deploy verification |
-| `script/SafeValidation.sol` | ~180 | Pre-deploy genuine-Safe validation (singleton + proxy codehash + VERSION) |
-| `script/ValidateSafe.s.sol`, `ProbeSafeProxy.s.sol` | — | Human-readable Safe check; proxy-codehash derivation evidence |
+| File                                                | Lines | Role                                                                         |
+| --------------------------------------------------- | ----- | ---------------------------------------------------------------------------- |
+| `src/AgentGate.sol`                                 | 102   | Agent ID holder gating (single trusted contract + chain)                     |
+| `src/QuestManager.sol`                              | 406   | Quest creation, 3 validation kinds, EIP-712 attestations, validator registry |
+| `src/Reputation.sol`                                | 90    | Points ledger (add-only, capped)                                             |
+| `src/Achievement.sol`                               | 126   | Soulbound ERC-721 badges                                                     |
+| `src/validators/TokenBalanceValidator.sol`          | ~60   | Reference on-chain validator (ERC-20 balance ≥ threshold)                    |
+| `src/mocks/MockAgentId.sol`                         | ~35   | LOCAL/TESTNET ONLY mock Agent ID (owner-minted, soulbound)                   |
+| `src/interfaces/*.sol` (5)                          | —     | Interfaces + errors + events                                                 |
+| `script/DeployAgentHub.s.sol`                       | ~300  | Full-stack deploy + role wiring + post-deploy verification                   |
+| `script/SafeValidation.sol`                         | ~180  | Pre-deploy genuine-Safe validation (singleton + proxy codehash + VERSION)    |
+| `script/ValidateSafe.s.sol`, `ProbeSafeProxy.s.sol` | —     | Human-readable Safe check; proxy-codehash derivation evidence                |
 
 Dependencies: OpenZeppelin Contracts **5.0.2**, Solidity 0.8.24,
 EVM Cancun, optimizer runs 200 (`foundry.toml`).
@@ -42,6 +42,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
 ## 2. The 15 areas — verdicts
 
 ### D1. Access control / role separation — PASS
+
 - Constructors grant ONLY `DEFAULT_ADMIN_ROLE` to the deploy-time
   admin; operational roles (`QUEST_CREATOR_ROLE`, `PAUSER_ROLE`,
   `VERIFIER_ROLE`, `BADGE_MANAGER_ROLE`) are granted explicitly
@@ -57,6 +58,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_OnlyAdminCanGrantVerifierRole`, `test_RoleRevocationWorks`).
 
 ### D2. Reentrancy — PASS
+
 - `completeQuest` / `completeQuestWithAttestation` are
   `nonReentrant`; `_completeQuest` follows checks → effects →
   interactions; `Achievement.issue` is `nonReentrant` and uses
@@ -67,6 +69,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_DownstreamRevertIsAtomic`, `test_GasExhaustionIsAtomic`.
 
 ### D3. Signature replay — PASS
+
 - Per-account nonce, consumed inside `_verifyAttestation` before
   completion effects; a replayed attestation signs a stale nonce.
   A failed completion reverts the whole tx, so the nonce is NOT
@@ -77,6 +80,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_NoncesAreIsolatedPerAccount`.
 
 ### D4. EIP-712 domain separation — PASS
+
 - OpenZeppelin `EIP712("AGENTHUB QuestManager", "1")`; the domain
   separator binds chainId + verifying contract (OZ recomputes on
   chainid change). Typehash
@@ -85,12 +89,14 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_CrossContractReplayRejected`. (Full lifecycle in Phase E.)
 
 ### D5. Chain ID + verifying contract — PASS
+
 - Attestations: domain-bound (D4). AgentGate: `expectedChainId`
   immutable, must equal `block.chainid` at deploy; chain allowlist
   is exactly {56, 97, 31337}; `isAgentHolder` returns false on a
   wrong chain; deploy script rejects other chains.
 
 ### D6. Nonce — PASS
+
 - Global per-account nonce (`nonces[account]`), not per-quest; the
   verifier must read the current nonce before signing (documented
   in code + `QUEST_VALIDATION_DESIGN.md`). `unchecked` increment
@@ -98,6 +104,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   for the operational ordering consequence.
 
 ### D7. Deadline — PASS
+
 - `deadline < block.timestamp` reverts (`AttestationExpired`);
   `deadline > block.timestamp + 7 days` reverts
   (`AttestationDeadlineTooFar`); boundary cases tested
@@ -105,6 +112,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_DeadlineAtMaxLifetimeAccepted`).
 
 ### D8. Validator STATICCALL — PASS
+
 - `_validateOnChain` calls `validate()` via `staticcall` (state
   changes revert at the EVM level) and strictly checks returndata:
   exactly 32 bytes, word must be 0 or 1, else
@@ -115,6 +123,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test/mocks/MaliciousValidators.t.sol`).
 
 ### D9. Validator revocation — PASS
+
 - Approval is re-checked at creation AND at completion, so
   revocation takes effect immediately for existing quests.
   `revokeValidator` (admin/timelock) and
@@ -129,6 +138,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_RevokeKeepsMetadata`, `test_ReapproveUpdatesMetadata`).
 
 ### D10. Safe singleton / proxy authenticity — PASS
+
 - `SafeValidation.validate` (production path, chains 56/97):
   code exists; threshold in [2, ownerCount]; `masterCopy()` is a
   canonical singleton (v1.4.1 `0x41675C…7461a` or v1.3.0
@@ -146,6 +156,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `CanonicalSafe` mocks).
 
 ### D11. Emergency pause / unpause — PASS
+
 - QuestManager: `pause()` is `PAUSER_ROLE` (fast, no timelock);
   `unpause()` is `DEFAULT_ADMIN_ROLE` (timelock — controlled
   recovery). Both completion entry points are `whenNotPaused`.
@@ -158,6 +169,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   `test_NonRoleCannotPause`, `test_NonRoleCannotUnpause`.
 
 ### D12. Timelock execution — PASS
+
 - `TimelockController`, 2-day delay, proposers = executors =
   admin multisig, admin = `address(0)` (self-administered: only the
   timelock itself holds its admin role — verified in
@@ -168,6 +180,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   succeeds and unpauses.
 
 ### D13. Reputation / reward manipulation — PASS
+
 - No admin function can add points arbitrarily: points increase
   ONLY via `SCORE_SOURCE_ROLE` (QuestManager), capped at 10,000
   per event (`MAX_POINTS_PER_EVENT` = `MAX_REWARD_POINTS`), and
@@ -190,6 +203,7 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   a bug. See observation O3.
 
 ### D14. Badge duplication — PASS
+
 - `Achievement.issue` reverts if `_hasBadge[account][badgeId]`
   (`AlreadyHasBadge`); QuestManager additionally checks `hasBadge`
   before issuing (idempotent completion — a repeatable quest does
@@ -202,10 +216,11 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
   (`invariant_BadgesMatchGhost`).
 
 ### D15. Agent ID ownership — PASS
+
 - `AgentGate` trusts exactly ONE immutable contract + chain.
   Mainnet lock enforced on-chain in the constructor (chain 56
   REQUIRES `OFFICIAL_AGENT_ID =
-  0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`) and again in the
+0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`) and again in the
   deploy script (defense in depth). `isAgentHolder` fails closed:
   wrong chain / zero account / failed or malformed `balanceOf`
   staticcall all return false, never revert (SEC-001: manual
@@ -224,14 +239,14 @@ EVM Cancun, optimizer runs 200 (`foundry.toml`).
 
 ## 3. Fresh verification battery (this phase)
 
-| Command | Result | Log |
-| --- | --- | --- |
-| `forge clean && forge build` | exit 0 | `logs/phase-d-forge-build.log` |
-| `forge test` | **255/255**, 0 failed, 19 suites, 53.70s | `logs/phase-d-forge-test.log` |
-| `forge test --fuzz-runs 10000` | **255/255**, 0 failed, 64.57s | `logs/phase-d-fuzz-10k.log` |
-| `forge fmt --check` | exit 0 | `logs/phase-d-fmt.log` |
-| `slither . --exclude-dependencies --fail-medium` | **exit 0** — 0 High/Medium | `logs/phase-d-slither.log` |
-| `slither . --exclude-dependencies --json` | exit 255 (known crytic-compile teardown quirk — JSON valid, `success: true`); **12 detectors: 4 Low + 8 Info**, identical checks to baseline (`assembly`, `cyclomatic-complexity`, `low-level-calls`, `pragma`, `timestamp`) | `logs/phase-d-slither.json`, `logs/phase-d-slither-json.log` |
+| Command                                          | Result                                                                                                                                                                                                                       | Log                                                          |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `forge clean && forge build`                     | exit 0                                                                                                                                                                                                                       | `logs/phase-d-forge-build.log`                               |
+| `forge test`                                     | **255/255**, 0 failed, 19 suites, 53.70s                                                                                                                                                                                     | `logs/phase-d-forge-test.log`                                |
+| `forge test --fuzz-runs 10000`                   | **255/255**, 0 failed, 64.57s                                                                                                                                                                                                | `logs/phase-d-fuzz-10k.log`                                  |
+| `forge fmt --check`                              | exit 0                                                                                                                                                                                                                       | `logs/phase-d-fmt.log`                                       |
+| `slither . --exclude-dependencies --fail-medium` | **exit 0** — 0 High/Medium                                                                                                                                                                                                   | `logs/phase-d-slither.log`                                   |
+| `slither . --exclude-dependencies --json`        | exit 255 (known crytic-compile teardown quirk — JSON valid, `success: true`); **12 detectors: 4 Low + 8 Info**, identical checks to baseline (`assembly`, `cyclomatic-complexity`, `low-level-calls`, `pragma`, `timestamp`) | `logs/phase-d-slither.json`, `logs/phase-d-slither-json.log` |
 
 A `forge build` immediately after the Slither JSON run confirmed
 the build tree is healthy (exit 0). No test was changed, weakened,
