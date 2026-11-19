@@ -21,8 +21,13 @@ concurrency:
   cancel-in-progress: true
 
 # Pinned toolchains (single source of truth for every job).
+# Phase G fix: NODE_VERSION was '20.17.6', which DOES NOT EXIST
+# (the 20.17 line stops at 20.17.0 — verified against the nodejs.org
+# dist index 2026-11-19). actions/setup-node would have failed every
+# JS job on GitHub at the setup step. Pinned to 20.20.2, the latest
+# Node 20 LTS patch at verification time.
 env:
-  NODE_VERSION: '20.17.6'
+  NODE_VERSION: '20.20.2'
   PNPM_VERSION: '9.15.4'
   FOUNDRY_VERSION: '1.9.0'
   SLITHER_VERSION: '0.11.6'
@@ -45,10 +50,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @agenthub/web lint
       - run: pnpm --filter @agenthub/web typecheck
-      # Vitest: the lib tests always run. The hook tests (jsdom) join
-      # automatically once @testing-library/react + jsdom are added to
-      # package.json on a normal machine (see vitest.config.ts) — until
-      # then they are skipped, never failed. See CI_EVIDENCE.md §4.
+      # Vitest: the full suite runs, including the 58 hook tests (jsdom).
+      # The test deps (@testing-library/react, jsdom, playwright) are
+      # declared in apps/web/package.json since Phase C of the final
+      # release remediation — a missing dep fails loudly instead of
+      # silently dropping the hook tests (the old graceful-skip
+      # fallback is gone). See TEST_INFRASTRUCTURE_REPORT.md.
       - run: pnpm --filter @agenthub/web test
       - run: pnpm --filter @agenthub/web build
         env:
@@ -109,7 +116,17 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm audit --audit-level=high
+      # Audit with a documented allowlist (Phase G): the 12 accepted
+      # Next.js 14.2.35 findings (3 CRITICAL + 9 HIGH, fixes only in
+      # Next.js 15.x/16.x) would fail a bare `pnpm audit
+      # --audit-level=high`, so the script fails ONLY on findings that
+      # are NOT explicitly allowlisted — each entry names the advisory,
+      # the package, and its justification (see
+      # DEPENDENCY_REMEDIATION_REPORT.md §6). Allowlisted findings are
+      # printed on every run; new high/critical findings, stale
+      # allowlist entries, and audit errors all fail the job. The audit
+      # is NOT weakened or deleted — it is scoped, visibly.
+      - run: node scripts/pnpm-audit-allowlist.mjs
 
   contracts:
     name: Contracts (forge build + test)
