@@ -61,8 +61,8 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
     /// @inheritdoc IAchievement
     function issue(address account, uint256 badgeId)
         external
-        whenNotPaused
         nonReentrant
+        whenNotPaused
         onlyRole(ISSUER_ROLE)
         returns (uint256 tokenId)
     {
@@ -107,11 +107,11 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
     }
 
     /// @notice Approvals are meaningless for soulbound tokens — revert explicitly.
-    function approve(address, uint256) public override {
+    function approve(address, uint256) public pure override {
         revert Soulbound();
     }
 
-    function setApprovalForAll(address, bool) public override {
+    function setApprovalForAll(address, bool) public pure override {
         revert Soulbound();
     }
 

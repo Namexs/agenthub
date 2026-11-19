@@ -25,7 +25,7 @@ function isAgentHolder(address account) public view returns (bool) {
 ```
 
 Why it was wrong: `try/catch` catches reverts from the external call, but
-ABI-decoding of the returndata happens in the *caller* — a short or
+ABI-decoding of the returndata happens in the _caller_ — a short or
 malformed return (fewer than 32 bytes) reverts the decoding itself, outside
 the `try` region, so `isAgentHolder` reverted instead of returning `false`.
 
@@ -160,8 +160,8 @@ variable is a Slither false positive — see SEC-005).
 
 ## Remediation summary
 
-| Finding | Severity | Remediation | Commit | Regression test |
-| --- | --- | --- | --- | --- |
-| SEC-001 | High | Low-level staticcall + length check + `mload` | `a597a2d` | `test_GarbageReturnFailsClosed` |
-| SEC-002 | Medium | Constructors grant admin role only; explicit setup grants | `aadf24f` | `test_DeployerLostAdminAfterRenounce` |
-| SEC-003 | Low | Capture `issue()` return, emit in `QuestCompleted` | `ee7592e` | `test_QuestCompletedEventCarriesBadgeTokenId` |
+| Finding | Severity | Remediation                                               | Commit    | Regression test                               |
+| ------- | -------- | --------------------------------------------------------- | --------- | --------------------------------------------- |
+| SEC-001 | High     | Low-level staticcall + length check + `mload`             | `a597a2d` | `test_GarbageReturnFailsClosed`               |
+| SEC-002 | Medium   | Constructors grant admin role only; explicit setup grants | `aadf24f` | `test_DeployerLostAdminAfterRenounce`         |
+| SEC-003 | Low      | Capture `issue()` return, emit in `QuestCompleted`        | `ee7592e` | `test_QuestCompletedEventCarriesBadgeTokenId` |

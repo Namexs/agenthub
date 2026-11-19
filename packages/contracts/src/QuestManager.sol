@@ -99,7 +99,7 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// @dev Order: checks (gate, active, window, cap, duplicate, cooldown) →
     /// effects (all state) → interactions (Reputation, Achievement) →
     /// event. Guarded by nonReentrant + whenNotPaused.
-    function completeQuest(uint256 questId) external whenNotPaused nonReentrant {
+    function completeQuest(uint256 questId) external nonReentrant whenNotPaused {
         Quest storage quest = _quests[questId];
         if (quest.id == 0) revert QuestNotFound(questId);
         gate.requireAgentHolder(msg.sender);

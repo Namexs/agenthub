@@ -1,0 +1,6 @@
+=== web typecheck ===
+
+> @agenthub/web@0.1.0 typecheck /home/hatch/workspace/agenthub/apps/web
+> tsc --project tsconfig.json --noEmit
+
+exit=0

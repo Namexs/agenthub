@@ -9,19 +9,19 @@
 
 ## 1. Test inventory (final run: 120 passed, 0 failed)
 
-| Suite | File | Tests | What it proves |
-| --- | --- | --- | --- |
-| MockAgentId | `test/MockAgentId.t.sol` | 5 | Soulbound mock behaves like the real Agent ID (incl. 1 fuzz) |
-| AgentGate | `test/AgentGate.t.sol` | 18 | Fail-closed gate: reverts, garbage, reentrancy, chain binding (incl. 1 fuzz) |
-| QuestManager | `test/QuestManager.t.sol` | 32 | Validation, roles, cooldowns, caps, pause, badge skip, event token id (incl. 1 fuzz) |
-| Reputation | `test/Reputation.t.sol` | 15 | Role-only points, caps, level thresholds, pause (incl. 1 fuzz) |
-| Achievement | `test/Achievement.t.sol` | 19 | Soulbound enforcement, one-badge rule, roles, pause (incl. 1 fuzz) |
-| Integration | `test/Integration.t.sol` | 6 | Real wiring end-to-end + TimelockController admin flow |
-| Invariant | `test/Invariant.t.sol` | 2 | 5 stateful invariants over ~32,768 randomized handler calls + 1 sanity test |
-| AttackSimulation | `test/AttackSimulation.t.sol` | 7 | Reentrancy, malicious Agent ID, downstream revert, OOG, delegation, ID transfer |
-| AccessControl | `test/AccessControl.t.sol` | 10 | Full role matrix incl. admin-has-no-implicit-power |
-| EconomicAttack | `test/EconomicAttack.t.sol` | 6 | Cooldown farming bounds, emission caps, Sybil-without-ID |
-| **Total** | | **120** | |
+| Suite            | File                          | Tests   | What it proves                                                                       |
+| ---------------- | ----------------------------- | ------- | ------------------------------------------------------------------------------------ |
+| MockAgentId      | `test/MockAgentId.t.sol`      | 5       | Soulbound mock behaves like the real Agent ID (incl. 1 fuzz)                         |
+| AgentGate        | `test/AgentGate.t.sol`        | 18      | Fail-closed gate: reverts, garbage, reentrancy, chain binding (incl. 1 fuzz)         |
+| QuestManager     | `test/QuestManager.t.sol`     | 32      | Validation, roles, cooldowns, caps, pause, badge skip, event token id (incl. 1 fuzz) |
+| Reputation       | `test/Reputation.t.sol`       | 15      | Role-only points, caps, level thresholds, pause (incl. 1 fuzz)                       |
+| Achievement      | `test/Achievement.t.sol`      | 19      | Soulbound enforcement, one-badge rule, roles, pause (incl. 1 fuzz)                   |
+| Integration      | `test/Integration.t.sol`      | 6       | Real wiring end-to-end + TimelockController admin flow                               |
+| Invariant        | `test/Invariant.t.sol`        | 2       | 5 stateful invariants over ~32,768 randomized handler calls + 1 sanity test          |
+| AttackSimulation | `test/AttackSimulation.t.sol` | 7       | Reentrancy, malicious Agent ID, downstream revert, OOG, delegation, ID transfer      |
+| AccessControl    | `test/AccessControl.t.sol`    | 10      | Full role matrix incl. admin-has-no-implicit-power                                   |
+| EconomicAttack   | `test/EconomicAttack.t.sol`   | 6       | Cooldown farming bounds, emission caps, Sybil-without-ID                             |
+| **Total**        |                               | **120** |                                                                                      |
 
 Category totals: unit 89 · integration 6 · invariant 2 (5 invariant
 functions) · attack simulation 7 · access control 10 · economic 6.
@@ -53,22 +53,24 @@ Static analysis (venv `~/workspace/slither-venv`, Slither 0.11.6, solc 0.8.24):
 cd packages/contracts
 slither . --exclude-dependencies
 # Exit code 255 is Slither's "findings present" signal, not a crash.
-# Final run: 0 Critical/High, 1 Medium (false positive, reviewed),
+# Final run (verified twice): 7 detectors — 0 Critical/High/Medium,
 # 3 Low (accepted), 4 Informational (reviewed). See SECURITY_FINDINGS.md.
+# (An intermediate run reported 1 Medium uninitialized-local, reviewed as
+# a false positive; it is absent from the final run — see SEC-005.)
 ```
 
 ## 3. Coverage by threat (threat model `docs/SECURITY_THREAT_MODEL.md`)
 
-| Threat | Covered by |
-| --- | --- |
-| T1 non-holder completes quests | Unit (gate checks) + invariant `NonHolderEarnsNothing` + economic Sybil test |
-| T2 double claim / replay | Unit (duplicate, cooldown) + invariant (points/completions match ghost) + attack sim (delegation, mint-callback, ID transfer) |
-| T3 reentrancy | Attack sim (badge callback, mint callback, fallback) + `nonReentrant` + `_mint` (no callback) |
-| T4 privilege escalation | Access-control matrix (10 tests) + integration (timelock flow, deployer renounce) |
-| T5 malformed/untrusted input | AgentGate garbage/revert tests + attack sim (malicious Agent ID fails closed) |
-| T6 economic farming | Economic suite (daily/weekly bounds, emission caps) + invariant (cap respected) |
-| T7 downstream failure / OOG | Attack sim (downstream revert atomicity, gas-exhaustion atomicity) |
-| T8 misconfiguration (wrong chain/contract) | Frontend M5 env checks (8-case harness + negative build) + gate chain binding |
+| Threat                                     | Covered by                                                                                                                    |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| T1 non-holder completes quests             | Unit (gate checks) + invariant `NonHolderEarnsNothing` + economic Sybil test                                                  |
+| T2 double claim / replay                   | Unit (duplicate, cooldown) + invariant (points/completions match ghost) + attack sim (delegation, mint-callback, ID transfer) |
+| T3 reentrancy                              | Attack sim (badge callback, mint callback, fallback) + `nonReentrant` + `_mint` (no callback)                                 |
+| T4 privilege escalation                    | Access-control matrix (10 tests) + integration (timelock flow, deployer renounce)                                             |
+| T5 malformed/untrusted input               | AgentGate garbage/revert tests + attack sim (malicious Agent ID fails closed)                                                 |
+| T6 economic farming                        | Economic suite (daily/weekly bounds, emission caps) + invariant (cap respected)                                               |
+| T7 downstream failure / OOG                | Attack sim (downstream revert atomicity, gas-exhaustion atomicity)                                                            |
+| T8 misconfiguration (wrong chain/contract) | Frontend M5 env checks (8-case harness + negative build) + gate chain binding                                                 |
 
 ## 4. What was NOT tested (honest gaps)
 

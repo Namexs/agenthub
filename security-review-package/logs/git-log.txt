@@ -1,0 +1,13 @@
+23ff8d8 docs(security): test plan, findings, remediation, deployment gate; L7 checksummed Agent ID address repo-wide
+ee7592e security: fix Slither unused-return (SEC-003) — QuestCompleted now carries badge token id + 2 regression tests
+1a24e91 security: M5 chain-AgentID consistency + M3 CI foundry pin + L1/L3/L5/L6 fixes; forge fmt + prettier clean
+aadf24f security: least-privilege constructors (SEC-002) + attack sim, access-control matrix, economic attacks — 118 tests green
+4c759e9 test(contracts): integration (real wiring + timelock admin) + stateful invariants (32k handler calls)
+0e0dbf5 feat(contracts): implement Reputation + Achievement — capped points, soulbound badges + 34 tests
+1713b2e feat(contracts): implement QuestManager — role-gated quests, cooldowns, caps + 30 tests
+a597a2d feat(contracts): implement AgentGate — fail-closed staticcall gate + 18 tests (SEC-001 fixed)
+4a690c4 config: pin evm_version cancun, drop redundant solc key (M2/L2); DeployMock allowlist (L4)
+7f5e828 docs: security directive + threat model with Phase 1 review (step 0)
+2775ecb Add Phase 1 validation audit
+bae7ce6 Fix flaky fuzz test: restrict mint recipient to EOAs
+a08dc40 Phase 1: repository foundation

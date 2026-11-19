@@ -1,0 +1,8 @@
+=== prettier format:check (final) ===
+
+> agenthub@0.1.0 format:check /home/hatch/workspace/agenthub
+> prettier --check "**/*.{ts,tsx,js,jsx,json,md,css}" --ignore-path .prettierignore
+
+Checking formatting...
+All matched files use Prettier code style!
+exit=0

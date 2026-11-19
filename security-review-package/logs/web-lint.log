@@ -1,0 +1,7 @@
+=== web lint ===
+
+> @agenthub/web@0.1.0 lint /home/hatch/workspace/agenthub/apps/web
+> next lint
+
+✔ No ESLint warnings or errors
+exit=0

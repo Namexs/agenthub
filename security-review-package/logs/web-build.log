@@ -1,0 +1,66 @@
+=== web build (NEXT_PUBLIC_CHAIN_ID=97) ===
+
+> @agenthub/web@0.1.0 build /home/hatch/workspace/agenthub/apps/web
+> NODE_OPTIONS=--max-old-space-size=1024 next build
+
+  ▲ Next.js 14.2.18
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/home/hatch/workspace/agenthub/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+node@20.17.6_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack_yqw5djhrmszjw6l3wera7drzmi/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+node@20.17.6_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack_yqw5djhrmszjw6l3wera7drzmi/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_kgnuasrvengpbbcqzvxgmfa4wa/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/home/hatch/workspace/agenthub/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@18.3.11_bufferutil@4.2.0_react@18.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+node@20.17.6_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack_yqw5djhrmszjw6l3wera7drzmi/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+node@20.17.6_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack_yqw5djhrmszjw6l3wera7drzmi/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_kgnuasrvengpbbcqzvxgmfa4wa/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    1.79 kB         151 kB
+├ ○ /_not-found                          873 B            88 kB
+├ ○ /campaigns                           150 B          87.3 kB
+├ ○ /dashboard                           1.78 kB         144 kB
+├ ○ /history                             150 B          87.3 kB
+├ ○ /leaderboard                         150 B          87.3 kB
+├ ○ /profile                             1.78 kB         144 kB
+├ ○ /quests                              2.42 kB         111 kB
+└ ○ /security                            150 B          87.3 kB
++ First Load JS shared by all            87.2 kB
+  ├ chunks/136-319674c9855f6b3e.js       31.6 kB
+  ├ chunks/1ff68e2a-bbb543de1a3b187a.js  53.6 kB
+  └ other shared chunks (total)          1.95 kB
+
+
+○  (Static)  prerendered as static content
+
+exit=0

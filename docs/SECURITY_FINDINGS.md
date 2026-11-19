@@ -10,14 +10,14 @@
 
 ## Summary
 
-| Severity | Total | Fixed | Open (accepted / false positive) |
-| --- | --- | --- | --- |
-| Critical | 0 | 0 | 0 |
-| High | 1 | 1 | 0 |
-| Medium | 1 | 1 | 0 |
-| Low | 2 | 1 | 1 (accepted risk) |
-| Informational | 2 | 0 | 2 (1 false positive, 1 accepted group) |
-| **Total** | **6** | **3** | **3 (0 exploitable)** |
+| Severity      | Total | Fixed | Open (accepted)          | Closed as false positive |
+| ------------- | ----- | ----- | ------------------------ | ------------------------ |
+| Critical      | 0     | 0     | 0                        | 0                        |
+| High          | 1     | 1     | 0                        | 0                        |
+| Medium        | 1     | 1     | 0                        | 0                        |
+| Low           | 2     | 1     | 1 (accepted risk)        | 0                        |
+| Informational | 2     | 0     | 1 (accepted group)       | 1                        |
+| **Total**     | **6** | **3** | **2 (0 exploitable)**    | **1**                    |
 
 ---
 
@@ -32,7 +32,7 @@
   `try/catch` catches reverts from the external call, but it does **not**
   catch ABI-decoding errors of malformed returndata: if the target returns
   fewer than 32 bytes (or garbage), the decoding itself reverts in the
-  *caller*, outside the `try` region — so `isAgentHolder` reverted instead
+  _caller_, outside the `try` region — so `isAgentHolder` reverted instead
   of returning `false`.
 - **PoC (reproducible):** `test/AgentGate.t.sol` —
   `test_GarbageReturnFailsClosed`: a mock Agent ID contract whose fallback
@@ -76,7 +76,7 @@
   operational roles, so the deployer EOA silently kept them forever.
 - **PoC (reproducible):** `test/AccessControl.t.sol` —
   `test_PauseUnpauseRoleMatrix` failed with "next call did not revert as
-  expected": the test asserted the admin could *not* pause, but the admin
+  expected": the test asserted the admin could _not_ pause, but the admin
   held `PAUSER_ROLE` from construction. `test/Integration.t.sol` —
   `test_DeployerLostAdminAfterRenounce` (strengthened as the regression
   test) asserts the deployer holds **no** operational role after renounce.
@@ -114,7 +114,7 @@
   was not linked to the completion event.
 - **PoC (reproducible):** Slither 0.11.6, detector `unused-return`,
   first run: `QuestManager.completeQuest ignores return value by
-  achievement.issue(...) (src/QuestManager.sol#133)`.
+achievement.issue(...) (src/QuestManager.sol#133)`.
 - **Exploit scenario / impact:** None exploitable. This is an
   observability gap only: indexers and the frontend could not learn the
   badge token id from the completion event and needed a second lookup
@@ -159,30 +159,38 @@
   `test_WeeklyCooldownEnforced`, and the economic farming bounds.
 - **Verification:** Reviewed; Slither findings acknowledged.
 
-## SEC-005 — Slither `uninitialized-local` on `badgeTokenId` (false positive)
+## SEC-005 — Slither `uninitialized-local` on `badgeTokenId` (false positive, no longer reported)
 
 - **Severity:** Informational
-- **Status:** OPEN — false positive, reviewed, no action
+- **Status:** CLOSED — false positive. Reported in intermediate Slither runs
+  (after the SEC-003 fix, before the modifier reorder), reviewed as a false
+  positive at the time, and **absent from the final run** (two consecutive
+  runs, 7 detectors, 0 Medium — see
+  `security-review-package/logs/slither-final.json`). The detector's
+  dataflow analysis changed when `nonReentrant` was moved to the first
+  modifier position; no code change was made to silence it.
 - **Contract / function:** `packages/contracts/src/QuestManager.sol` —
   `completeQuest(uint256)`, line 135
 - **Root cause (of the report):** Slither 0.11.6's `uninitialized-local`
-  detector flags `badgeTokenId` as "never initialized" even though it is
+  detector flagged `badgeTokenId` as "never initialized" even though it is
   initialized in its declaration. Two forms were tried — `uint256
   badgeTokenId = 0;` followed by conditional assignment, and a ternary
-  initializer covering both branches — and the detector flags both.
+  initializer covering both branches — and the detector flagged both in
+  the intermediate runs.
 - **Proof it is a false positive:** (1) The variable has an explicit
   initializer expression that always evaluates (ternary, both branches
   produce a value). (2) Solidity value types are zero-initialized by
   default, so no read of this variable can ever observe undefined data.
   (3) Both branches are covered by tests asserting the emitted value:
-  `test_QuestCompletedEventCarriesBadgeTokenId` (badge path → token id
-  1) and `test_QuestCompletedEventHasZeroTokenIdWithoutBadge` (no-badge
-  path → 0).
+  `test_QuestCompletedEventCarriesBadgeTokenId` (badge path, token id 1)
+  and `test_QuestCompletedEventHasZeroTokenIdWithoutBadge` (no-badge
+  path, token id 0).
 - **Exploit scenario / impact:** None — no uninitialized read exists.
 - **Remediation:** None. The code was deliberately **not** contorted to
   silence the detector; the ternary single-assignment form is kept.
-- **Verification:** Reviewed against the Slither 0.11.6 report
-  (`security-review-package/logs/slither-final.json`).
+- **Verification:** Reviewed against the intermediate Slither 0.11.6
+  reports; confirmed absent from the final report
+  (`security-review-package/logs/slither-final.json`, re-run twice).
 
 ## SEC-006 — Slither Informational findings (reviewed, intentional)
 
@@ -201,29 +209,54 @@
      (`^0.8.20` in OpenZeppelin, `^0.8.24` in our files). Not an issue:
      `foundry.toml` pins `solc_version = "0.8.24"` and the CI toolchain
      is pinned to 1.9.0, so the actual compiler is fixed and reproducible.
-  4. `cyclomatic-complexity` — `QuestManager.completeQuest`, complexity
-     12. The function is a linear sequence of guard clauses, each
+  4. `cyclomatic-complexity` — `QuestManager.completeQuest`, complexity 12. The function is a linear sequence of guard clauses, each
      independently tested (32 QuestManager tests). Splitting it would
      hurt readability without improving safety.
 - **Verification:** Reviewed against the Slither 0.11.6 report.
 
 ---
 
+## Appendix — Compiler and Foundry linter warnings (all reviewed)
+
+`forge build` (solc 0.8.24, Foundry 1.9.0) initially emitted 24 warnings.
+4 were fixed in code; the remaining 20 were each reviewed and are
+documented below. Final state: **0 solc warnings** ("Compiler run
+successful!"), 20 linter warnings, all dispositioned.
+
+### Fixed (4)
+
+| Warning                                      | Location                                          | Fix                                                 |
+| -------------------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| `Warning (2018)` mutability can be `pure` ×2 | `Achievement.sol` `approve` / `setApprovalForAll` | Added `pure` (both functions only revert)           |
+| `non-reentrant-not-first` ×2                 | `QuestManager.completeQuest`, `Achievement.issue` | Moved `nonReentrant` to the first modifier position |
+
+### Reviewed, no change (20)
+
+| Warning                            | Count                                                | Disposition                                                                                                                                                                                                                                              |
+| ---------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reentrancy-no-eth`                | 2 (`QuestManager.completeQuest` external calls)      | False positive: `nonReentrant` is now the first modifier, so the guard is set before the function body runs; the calls go to trusted contracts (own Reputation/Achievement) that make no callbacks. Attack-sim tests prove no reentrancy surface exists. |
+| `reentrancy-events`                | 2 (`AgentGate.verify`, `QuestManager.completeQuest`) | Benign: the AgentGate "external call" is a `staticcall` (cannot change state or reenter); the QuestManager event follows calls to trusted contracts under `nonReentrant`, with all state already committed (checks-effects-interactions).                |
+| `block-timestamp`                  | 5 (`QuestManager`)                                   | Same as SEC-004 — accepted risk.                                                                                                                                                                                                                         |
+| `unsafe-oz-erc721-mint`            | 1 (`Achievement._mint`)                              | Intentional by design: `_mint` (not `_safeMint`) removes the `onERC721Received` callback and with it the reentrancy surface; soulbound badges need no receiver check. Documented in the contract NatSpec.                                                |
+| `environment-read-across-mutation` | 10 (test files only)                                 | Benign test patterns: `vm.warp(block.timestamp + X)` reads the timestamp fresh to compute the warp target; helper functions read `block.timestamp` twice in one expression with no warp between the reads. All affected tests pass.                      |
+
+---
+
 ## Phase 1 audit items addressed in this phase
 
-| ID | Severity | Disposition |
-| --- | --- | --- |
-| M2 (evm_version unpinned) | Medium | Fixed — `foundry.toml` pins `cancun` (`4a690c4`) |
-| M5 (chain↔Agent ID consistency) | Medium | Fixed — `env.ts` allowlist + cross-checks, 8-case harness + negative build (`1a24e91`) |
-| M3 (CI foundry `stable`) | Medium | Fixed — pinned to 1.9.0 (`1a24e91`) |
-| L2 (redundant solc keys) | Low | Fixed (`4a690c4`) |
-| L4 (DeployMock denylist) | Low | Fixed — allowlist {97, 31337} (`4a690c4`) |
-| L1 (`.gitignore` misses `.env.*`) | Low | Fixed — `.env.*` ignored except `.env.example` (`1a24e91`) |
-| L3 (web tsconfig duplicates base) | Low | Fixed — extends `@agenthub/config/typescript/base`, typecheck passes (`1a24e91`) |
-| L5 (CI gaps) | Low | Partially fixed — format job, audit job, `permissions:` block added; secret scanning is a repo setting, listed as a pre-deploy checklist item |
-| L6 (build memory cap) | Low | Fixed — `NODE_OPTIONS=--max-old-space-size=1024` in web build script (`1a24e91`) |
-| L7 (lowercase Agent ID address) | Low | Fixed — checksummed `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` everywhere (verified with viem `getAddress`) |
-| M1 (`pnpm install` EPERM) | Medium | Not a repo defect — VM environment quirk, noted in Phase 1 audit |
-| M4 (zero web/shared unit tests) | Medium | **Still open** — vitest not added in this phase; see deployment gate |
-| L8 (peer-dep warnings) | Low | Not addressed — cosmetic, environment-level |
-| L9 (`pnpm audit` blocked in VM) | Low | Mitigated — CI audit job runs on GitHub runners; no local result exists |
+| ID                                | Severity | Disposition                                                                                                                                   |
+| --------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| M2 (evm_version unpinned)         | Medium   | Fixed — `foundry.toml` pins `cancun` (`4a690c4`)                                                                                              |
+| M5 (chain↔Agent ID consistency)  | Medium   | Fixed — `env.ts` allowlist + cross-checks, 8-case harness + negative build (`1a24e91`)                                                        |
+| M3 (CI foundry `stable`)          | Medium   | Fixed — pinned to 1.9.0 (`1a24e91`)                                                                                                           |
+| L2 (redundant solc keys)          | Low      | Fixed (`4a690c4`)                                                                                                                             |
+| L4 (DeployMock denylist)          | Low      | Fixed — allowlist {97, 31337} (`4a690c4`)                                                                                                     |
+| L1 (`.gitignore` misses `.env.*`) | Low      | Fixed — `.env.*` ignored except `.env.example` (`1a24e91`)                                                                                    |
+| L3 (web tsconfig duplicates base) | Low      | Fixed — extends `@agenthub/config/typescript/base`, typecheck passes (`1a24e91`)                                                              |
+| L5 (CI gaps)                      | Low      | Partially fixed — format job, audit job, `permissions:` block added; secret scanning is a repo setting, listed as a pre-deploy checklist item |
+| L6 (build memory cap)             | Low      | Fixed — `NODE_OPTIONS=--max-old-space-size=1024` in web build script (`1a24e91`)                                                              |
+| L7 (lowercase Agent ID address)   | Low      | Fixed — checksummed `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` everywhere (verified with viem `getAddress`)                                 |
+| M1 (`pnpm install` EPERM)         | Medium   | Not a repo defect — VM environment quirk, noted in Phase 1 audit                                                                              |
+| M4 (zero web/shared unit tests)   | Medium   | **Still open** — vitest not added in this phase; see deployment gate                                                                          |
+| L8 (peer-dep warnings)            | Low      | Not addressed — cosmetic, environment-level                                                                                                   |
+| L9 (`pnpm audit` blocked in VM)   | Low      | Mitigated — CI audit job runs on GitHub runners; no local result exists                                                                       |

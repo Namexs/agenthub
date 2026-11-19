@@ -6,15 +6,15 @@
 
 ## Gate verdict
 
-| Gate (§7 directive) | Status | Evidence |
-| --- | --- | --- |
-| 0 unresolved Critical/High | ✅ PASS | 0 Critical; 1 High (SEC-001) fixed + regression-tested |
-| Medium fixed or mitigated + documented | ✅ PASS | 1 Medium (SEC-002) fixed + regression-tested; M4 (vitest) is the only open Medium and is a test-coverage gap, not a contract vulnerability — see below |
-| All tests pass | ✅ PASS | `forge test`: 120 passed, 0 failed; web lint/typecheck/build pass; format checks pass |
-| Invariants hold | ✅ PASS | 5 invariants over ~32,768 randomized handler calls, 0 violations |
-| Static analysis findings reviewed | ✅ PASS | Slither 0.11.6: 8 findings, all reviewed — 1 fixed (SEC-003), 1 false positive (SEC-005), 6 accepted with rationale |
-| No secrets exposed | ✅ PASS | No keys/secrets in the repo; `.gitignore` covers `.env.*`; grep-verified (see review package logs) |
-| No unverified dependencies | ⚠️ PARTIAL | OpenZeppelin 5.0.2 (pinned, audited upstream) + npm deps pinned in lockfile; **`pnpm audit` never ran locally** (registry 403) — CI audit job covers it on runners |
+| Gate (§7 directive)                    | Status     | Evidence                                                                                                                                                           |
+| -------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0 unresolved Critical/High             | ✅ PASS    | 0 Critical; 1 High (SEC-001) fixed + regression-tested                                                                                                             |
+| Medium fixed or mitigated + documented | ✅ PASS    | 1 Medium (SEC-002) fixed + regression-tested; M4 (vitest) is the only open Medium and is a test-coverage gap, not a contract vulnerability — see below             |
+| All tests pass                         | ✅ PASS    | `forge test`: 120 passed, 0 failed; web lint/typecheck/build pass; format checks pass                                                                              |
+| Invariants hold                        | ✅ PASS    | 5 invariants over ~32,768 randomized handler calls, 0 violations                                                                                                   |
+| Static analysis findings reviewed      | ✅ PASS    | Slither 0.11.6 final run (verified twice): 7 findings, all reviewed — 3 Low accepted (SEC-004), 4 Informational accepted (SEC-006); 1 Medium fixed during the phase (SEC-003); 1 false positive from intermediate runs (SEC-005) is absent from the final run |
+| No secrets exposed                     | ✅ PASS    | No keys/secrets in the repo; `.gitignore` covers `.env.*`; grep-verified (see review package logs)                                                                 |
+| No unverified dependencies             | ⚠️ PARTIAL | OpenZeppelin 5.0.2 (pinned, audited upstream) + npm deps pinned in lockfile; **`pnpm audit` never ran locally** (registry 403) — CI audit job covers it on runners |
 
 **Overall: GO for BSC testnet staging** (once the user provides tBNB + a
 deployer key). **NOT YET GO for mainnet** — see the pre-mainnet list.
