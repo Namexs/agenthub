@@ -1,0 +1,42 @@
+== 8. gate.agentId ==
+0x1CAAD50d31dE47eaAce94C7F4ceBD679CBC1a433
+expected: 0x1CAAD50d31dE47eaAce94C7F4ceBD679CBC1a433
+== 9. mint test Agent ID + isAgentHolder ==
+mint status: 0x1
+holder: true
+Error: parser error:
+0x9965507D1a55bcC2695C58baC3E2452EAfeF038
+^
+odd number of digits
+non-holder: 
+== 10. QM deps ==
+gate: 0xE403096A7c038A18061C5bCD9239846c40a402F9
+reputation: 0x02d5728015C3B45Aa9b9C6811E403Da56C5F18b9
+achievement: 0x77E4fE4E704dda69BdD3DfFdAD0386796ed14bB8
+== 11/12. roles ==
+rep.admin==timelock: true
+ach.admin==timelock: true
+qm.admin==timelock: true
+rep.scoreSource==qm: true
+ach.issuer==qm: true
+ach.badgeManager==safe: true
+qm.creator==creator: true
+qm.pauser==safe(default): true
+qm.verifier==verifier: true
+deployer rep.admin: false
+deployer ach.admin: false
+deployer qm.admin: false
+deployer qm.creator: false
+deployer qm.pauser: false
+deployer qm.verifier: false
+== 13. timelock ==
+minDelay: 172800 [1.728e5] (expect 172800)
+proposer==safe: true
+executor==safe: true
+canceller==safe: true
+selfAdmin: true
+multisigAdmin: false
+== 14. paused ==
+rep: false ach: false qm: false
+non-holder (anvil #5): 
+non-holder (fresh deployer, no mock): false

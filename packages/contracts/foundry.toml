@@ -21,6 +21,18 @@ remappings = [
   "@openzeppelin/=lib/openzeppelin-contracts/",
   "@agenthub/=src/",
 ]
+# Etherscan / BscScan verification (Phase H): foundry does NOT read
+# BSCSCAN_API_KEY — `forge script --verify` and `forge verify-contract`
+# look for ETHERSCAN_API_KEY (verified 2026-11-19: with only
+# BSCSCAN_API_KEY set, --verifier etherscan fails with
+# "ETHERSCAN_API_KEY must be set"). This section maps the repo's
+# documented BSCSCAN_API_KEY env var onto both BSC chains, so the
+# operator sets ONE variable (see .env.example). The value is an env
+# interpolation — no key material lives in this file.
+[etherscan]
+bsc = { key = "${BSCSCAN_API_KEY}" }
+bsc-testnet = { key = "${BSCSCAN_API_KEY}" }
+
 # Fuzz + invariant defaults (Phase 1 smoke tests use these; Phase 2 expands).
 [fuzz]
 runs = 256

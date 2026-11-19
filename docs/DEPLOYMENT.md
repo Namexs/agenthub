@@ -19,45 +19,81 @@ Nothing is deployed in Phase 1.
 
 - Foundry (`forge` 1.x) and a funded deployer wallet:
   - Testnet: tBNB from the [BNB Chain testnet faucet](https://testnet.bnbchain.org/faucet-smart).
-  - Mainnet: a small amount of BNB for gas (deploying 4 contracts is a few dollars).
+  - Mainnet: a small amount of BNB for gas (deploying 6 contracts is a few dollars).
 - `BSCSCAN_API_KEY` for source verification (works for testnet + mainnet).
+  Foundry reads it via the `[etherscan]` mapping in
+  `packages/contracts/foundry.toml` (bsc + bsc-testnet) — see §5.
 - `.env` file (from `.env.example`) with `DEPLOYER_PRIVATE_KEY` — a
   dedicated deployer wallet, never a personal main wallet, never committed.
+- `ADMIN_MULTISIG` (a genuine Safe on the target chain, threshold ≥ 2)
+  and `QUEST_CREATOR` — both required by the deploy script; see
+  `docs/DEPLOYMENT_PLAN.md` §3 for the full variable list.
 
-## 4. Deploy order (Phase 2)
+## 4. Deploy order
 
-Contracts deploy in build order; each step records its address before the next:
+One script deploys the whole stack in dependency order — see
+`docs/DEPLOYMENT_PLAN.md` (the authoritative procedure) and
+`agenthub-final-pretestnet/FINAL_DEPLOYMENT_CHECKLIST.md` (the
+operational checklist, incl. the 8 blocking user inputs):
 
 ```bash
-# 1. Testnet staging — mock Agent ID first (official contract is not on testnet)
-forge script script/DeployMock.s.sol --rpc-url $BSC_TESTNET_RPC_URL --broadcast --verify
+cd packages/contracts
 
-# 2-5. AGENTHUB contracts (scripts land in Phase 2, in this order)
-#   AgentGate(mockAgentId) -> QuestManager(gate) -> Reputation(questManager)
-#   -> Achievement(questManager)
-#   Each deploy script asserts the expected chainId before broadcasting.
+# Dry-run first (simulation only — no broadcast, no funds spent):
+DEPLOYER_PRIVATE_KEY=<key> \
+ADMIN_MULTISIG=<0x..> QUEST_CREATOR=<0x..> \
+[PAUSER=<0x..>] [VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>] \
+forge script script/DeployAgentHub.s.sol --fork-url <rpc-url>
 
-# 6. Mainnet — same scripts, official Agent ID address, --rpc-url $BSC_MAINNET_RPC_URL
-#   Mainnet deploy requires the full checklist in section 6 to be complete.
+# Only after reviewing the dry-run output AND getting explicit approval:
+# same command + --broadcast --verify
 ```
 
+Order (single run): MockAgentId (testnet/local only, when
+`AGENT_ID_ADDRESS` is unset) → AgentGate → TimelockController
+(2-day delay) → Reputation → Achievement → QuestManager, then role
+wiring, admin handover to the timelock, deployer renounce, and
+post-deploy verification (`_verifyWiring` reverts on any mismatch —
+29 checks). The script validates `ADMIN_MULTISIG` as a genuine Safe
+(canonical singleton + proxy codehash + threshold ≥ 2) BEFORE
+deploying anything. Mainnet additionally requires the official Agent
+ID address and `CONFIRM_MAINNET_DEPLOY=true`.
+
 After each deploy, update `apps/web/.env.local` with the new addresses
-(`NEXT_PUBLIC_*_ADDRESS`) and redeploy the frontend.
+(`NEXT_PUBLIC_*_ADDRESS`, `NEXT_PUBLIC_DEPLOY_BLOCK`) and redeploy the
+frontend.
 
 ## 5. BscScan verification
 
+`forge script ... --broadcast --verify` verifies automatically.
+To verify one contract manually:
+
 ```bash
 forge verify-contract <ADDRESS> <ContractName> \
-  --chain-id 97 \
-  --verifier bscscan \
-  --verifier-url https://api-testnet.bscscan.com/api \
-  --etherscan-api-key $BSCSCAN_API_KEY \
-  --constructor-args $(cast abi-encode "constructor(address)" <ARG>)
+  --chain 97 \
+  --verifier etherscan \
+  --constructor-args $(cast abi-encode "constructor(...)" <ARGS>)
 ```
 
-Mainnet uses `--chain-id 56` and `https://api.bscscan.com/api`.
-Verification is mandatory for the hackathon submission — unverified contracts
-are not eligible.
+Notes (Phase H, verified 2026-11-19):
+
+- The verifier is `etherscan` (BscScan is Etherscan-compatible) —
+  `--verifier bscscan` is not a valid foundry value and fails
+  immediately. `--chain 97` / `--chain 56` resolve the BscScan API
+  URLs from foundry's built-in config; no `--verifier-url` needed.
+- The API key comes from `BSCSCAN_API_KEY` via the `[etherscan]`
+  mapping in `packages/contracts/foundry.toml`. Foundry does NOT
+  read `BSCSCAN_API_KEY` on its own — without that mapping,
+  verification fails with "ETHERSCAN_API_KEY must be set".
+  (Alternatively: export `ETHERSCAN_API_KEY=$BSCSCAN_API_KEY` or
+  pass `--etherscan-api-key "$BSCSCAN_API_KEY"`.)
+- Without `BSCSCAN_API_KEY` set, verification fails fast with
+  "environment variable `BSCSCAN_API_KEY` not found". Build, test,
+  and CI are unaffected (the mapping is only evaluated when
+  verifying).
+
+Mainnet uses `--chain 56`. Verification is mandatory for the
+hackathon submission — unverified contracts are not eligible.
 
 ## 6. Mainnet checklist (all must be true before mainnet deploy)
 

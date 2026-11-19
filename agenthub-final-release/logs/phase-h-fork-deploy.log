@@ -1,0 +1,39 @@
+No files changed, compilation skipped
+Script ran successfully.
+
+== Return ==
+deployment: struct DeployAgentHub.Deployment Deployment({ mockAgentId: 0x1CAAD50d31dE47eaAce94C7F4ceBD679CBC1a433, agentGate: 0xE403096A7c038A18061C5bCD9239846c40a402F9, timelock: 0x64548FDaB73b6D6426EDe41602B7F7eB1eEF27F6, reputation: 0x02d5728015C3B45Aa9b9C6811E403Da56C5F18b9, achievement: 0x77E4fE4E704dda69BdD3DfFdAD0386796ed14bB8, questManager: 0xf563c29477151fD886aC101b944d51746E49B117 })
+
+== Logs ==
+  MockAgentId: 0x1CAAD50d31dE47eaAce94C7F4ceBD679CBC1a433
+  AgentGate: 0xE403096A7c038A18061C5bCD9239846c40a402F9
+  TimelockController: 0x64548FDaB73b6D6426EDe41602B7F7eB1eEF27F6
+  Reputation: 0x02d5728015C3B45Aa9b9C6811E403Da56C5F18b9
+  Achievement: 0x77E4fE4E704dda69BdD3DfFdAD0386796ed14bB8
+  QuestManager: 0xf563c29477151fD886aC101b944d51746E49B117
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 97
+
+Estimated max fee per gas: 0.226502021 gwei
+Estimated base fee per gas: 0 gwei
+Estimated max priority fee per gas: 0.226502021 gwei
+
+Estimated total gas used for script: 10937808
+
+Estimated amount required: 0.002477435617309968 BNB
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /home/hatch/workspace/agenthub/packages/contracts/broadcast/DeployAgentHub.s.sol/97/run-latest.json
+
+Sensitive values saved to: /home/hatch/workspace/agenthub/packages/contracts/cache/DeployAgentHub.s.sol/97/run-latest.json
+

@@ -1,0 +1,16 @@
+=== A. no BSCSCAN_API_KEY (mapping present, var unset) ===
+Error: environment variable `BSCSCAN_API_KEY` not found
+
+Context:
+
+=== B. BSCSCAN_API_KEY=BOGUS (mapping picks it up) ===
+Start verifying contract `0x41675C099F32341bf84BFc5382aF534df5C7461a` deployed on bsc-testnet
+
+Verifying on etherscan...
+
+
+=== C. missing-env fail-fast: no ADMIN_MULTISIG ===
+
+
+Error: script failed: vm.envAddress: environment variable "ADMIN_MULTISIG" not found
+MISSING_ENV_EXIT:1
