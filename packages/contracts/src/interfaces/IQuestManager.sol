@@ -86,6 +86,12 @@ interface IQuestManager {
     /// @dev Validator address mismatches the quest's validation kind:
     /// non-zero for CheckIn/Attested, or zero / code-less for OnChain.
     error InvalidValidator(address validator);
+    /// @dev PRE-TESTNET CLEANUP (item 6): an OnChain quest may only use a
+    /// validator the admin has approved. A validator that was never
+    /// approved — or was approved and later revoked — is rejected both at
+    /// quest creation and at completion time, so revocation takes effect
+    /// immediately, including for quests already created.
+    error ValidatorNotApproved(address validator);
 
     event QuestCreated(
         uint256 indexed questId,
@@ -100,6 +106,11 @@ interface IQuestManager {
     event QuestDeactivated(uint256 indexed questId);
     /// @notice Emitted when an attested completion consumes a nonce.
     event AttestationUsed(address indexed account, uint256 indexed questId, uint256 nonce);
+    /// @notice Emitted when the admin approves a validator for OnChain quests.
+    event ValidatorApproved(address indexed validator);
+    /// @notice Emitted when the admin revokes a validator's approval.
+    /// Revocation blocks new quests AND completions using that validator.
+    event ValidatorRevoked(address indexed validator);
 
     /// @notice Create a quest. Only QUEST_CREATOR_ROLE. Returns the new quest id.
     /// @dev Rules (review R3/R4/R5): title 1–128 bytes, description ≤ 1024 bytes,
@@ -139,6 +150,24 @@ interface IQuestManager {
     /// @notice The next attestation nonce for `account`. Verifiers sign the
     /// current nonce; it increments on every attested completion.
     function nonces(address account) external view returns (uint256 nonce);
+
+    /// @notice Whether `validator` is approved for OnChain quests.
+    /// @dev TokenBalanceValidator is deployed once per (token, threshold)
+    /// pair, so approval is per INSTANCE, not per implementation: the admin
+    /// reviews each instance's token + threshold before approving it.
+    function approvedValidators(address validator) external view returns (bool approved);
+
+    /// @notice Approve a validator for OnChain quests. Admin only.
+    /// @dev The admin must review the validator contract (and, for
+    /// TokenBalanceValidator, its token + threshold) before approving:
+    /// approval is the trust decision that replaces the old "creator picks
+    /// any contract" model. Reverts on zero / code-less addresses.
+    function approveValidator(address validator) external;
+
+    /// @notice Revoke a validator's approval. Admin only. Takes effect
+    /// immediately: new quests cannot use it, and completions of existing
+    /// quests using it revert until (and unless) it is re-approved.
+    function revokeValidator(address validator) external;
 
     /// @notice Deactivate a quest (creator or admin). No new completions after this.
     function deactivateQuest(uint256 questId) external;

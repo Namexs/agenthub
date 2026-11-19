@@ -71,6 +71,16 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// completion. The nonce is global per account, not per quest: a
     /// verifier must read it before signing (see QUEST_VALIDATION_DESIGN.md).
     mapping(address => uint256) public nonces;
+    /// @notice Validators approved by the admin for OnChain quests.
+    /// @dev PRE-TESTNET CLEANUP (item 6): closes the documented
+    /// "creator picks any validator" caveat. A creator can only attach a
+    /// validator the admin has explicitly approved after reviewing it, so
+    /// an always-true rubber-stamp validator cannot be smuggled into a
+    /// quest by a compromised/malicious creator. Approval is per instance
+    /// (TokenBalanceValidator is deployed once per (token, threshold)).
+    /// Revocation is checked at creation AND at completion, so it takes
+    /// effect immediately for existing quests too.
+    mapping(address => bool) public approvedValidators;
 
     constructor(address gate_, address reputation_, address achievement_, address admin_)
         EIP712("AGENTHUB QuestManager", "1")
@@ -121,8 +131,12 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         // Validation-kind rules (TEMUAN 1): OnChain quests REQUIRE a
         // validator contract (code must exist); CheckIn and Attested
         // quests REQUIRE validator == address(0).
+        // PRE-TESTNET CLEANUP (item 6): the validator must ALSO be on the
+        // admin-approved allowlist — a creator cannot attach an arbitrary
+        // contract, even one with code.
         if (validationKind == ValidationKind.OnChain) {
             if (validator == address(0) || validator.code.length == 0) revert InvalidValidator(validator);
+            if (!approvedValidators[validator]) revert ValidatorNotApproved(validator);
         } else if (validator != address(0)) {
             revert InvalidValidator(validator);
         }
@@ -234,7 +248,10 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         // change. A false result reverts; a reverting validator reverts too
         // (fail-closed). Reentrancy from the validator is blocked by
         // nonReentrant on the entry points.
+        // PRE-TESTNET CLEANUP (item 6): approval is re-checked here so a
+        // revocation immediately stops completions of existing quests.
         if (quest.validationKind == ValidationKind.OnChain) {
+            if (!approvedValidators[quest.validator]) revert ValidatorNotApproved(quest.validator);
             if (!IQuestValidator(quest.validator).validate(msg.sender, questId)) {
                 revert OnChainValidationFailed(questId, msg.sender);
             }
@@ -255,6 +272,22 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
             ? achievement.issue(msg.sender, quest.badgeId)
             : 0;
         emit QuestCompleted(questId, msg.sender, quest.rewardPoints, badgeTokenId);
+    }
+
+    /// @inheritdoc IQuestManager
+    function approveValidator(address validator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (validator == address(0) || validator.code.length == 0) revert InvalidValidator(validator);
+        approvedValidators[validator] = true;
+        emit ValidatorApproved(validator);
+    }
+
+    /// @inheritdoc IQuestManager
+    /// @dev Idempotent on purpose: revoking a validator that was never
+    /// approved (or already revoked) still succeeds, so an emergency
+    /// revocation can never be blocked by stale state.
+    function revokeValidator(address validator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        approvedValidators[validator] = false;
+        emit ValidatorRevoked(validator);
     }
 
     /// @inheritdoc IQuestManager

@@ -57,6 +57,12 @@ contract ValidatorTest is Test {
     }
 
     function _createOnChainQuest(address validator, uint256 reward) internal returns (uint256) {
+        // PRE-TESTNET CLEANUP (item 6): OnChain quests require an
+        // admin-approved validator. The test admin approves here — including
+        // for the malicious-validator tests below, where approval is the
+        // deliberate opt-in that lets the test verify fail-closed behavior
+        // IF a bad validator is ever approved.
+        qm.approveValidator(validator);
         vm.prank(creator);
         return qm.createQuest(
             "Hold 100 Tokens",
@@ -150,6 +156,7 @@ contract ValidatorTest is Test {
 
     function test_OnChainQuestRechecksBalanceEveryCompletion() public {
         TokenBalanceValidator v = new TokenBalanceValidator(address(token), THRESHOLD);
+        qm.approveValidator(address(v));
         vm.prank(creator);
         uint256 id = qm.createQuest(
             "Daily Hold",
@@ -217,11 +224,13 @@ contract ValidatorTest is Test {
     }
 
     function test_AlwaysTrueValidatorBehavesLikeCheckIn() public {
-        // DOCUMENTED TRUST CAVEAT: a rubber-stamp validator makes the
-        // quest equivalent to a CheckIn quest. This test pins that
-        // behavior — the mitigation is governance review of validators
-        // before creators use them, not a code check (see
-        // QUEST_VALIDATION_DESIGN.md).
+        // PRE-TESTNET CLEANUP (item 6): the rubber-stamp caveat is now
+        // gated by the admin allowlist. This test pins the completion
+        // behavior WHEN the admin has explicitly approved the validator
+        // (an admin mistake, not a creator attack): the quest behaves
+        // like a CheckIn quest. The allowlist itself is tested in
+        // ValidatorAllowlist.t.sol — an unapproved rubber-stamp validator
+        // is rejected at creation, so a creator cannot smuggle one in.
         AlwaysTrueValidator rubber = new AlwaysTrueValidator();
         uint256 id = _createOnChainQuest(address(rubber), 100);
         vm.prank(bob); // bob holds 0 tokens
