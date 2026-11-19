@@ -1,0 +1,23 @@
+[
+  {
+    "RuleID": "generic-api-key",
+    "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+    "StartLine": 251,
+    "EndLine": 251,
+    "StartColumn": 110,
+    "EndColumn": 164,
+    "Match": "cache-key: REDACTED",
+    "Secret": "REDACTED",
+    "File": "agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt",
+    "SymlinkFile": "",
+    "Commit": "71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d",
+    "Link": "https://github.com/Namexs/agenthub/blob/71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d/agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt#L251",
+    "Entropy": 3.874236,
+    "Author": "Asta",
+    "Email": "asta@agenthub.local",
+    "Date": "2026-11-19T13:54:02Z",
+    "Message": "docs(phase-1-2): commit+branch verification and GitHub Actions 10/10 validation with Playwright pin proof",
+    "Tags": [],
+    "Fingerprint": "71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d:agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt:generic-api-key:251"
+  }
+]

@@ -23,12 +23,15 @@ useDefault = true
 # that lived in one old commit (fixed in the tree since); it is
 # allowlisted because gitleaks scans full history.
 #
-# The `cache-key: e2e-39fcb94…` entry is a GitHub Actions cache key
-# printed by foundry-toolchain in a CI job log (Phase 2 evidence,
-# commit 71223bd). It is the literal string "e2e-" + the HEAD commit
-# SHA — public by construction, not a credential, and useless for
-# authentication. The generic-api-key rule misfires on the 40-hex-char
-# SHA. Allowlisted by EXACT VALUE (same convention as the anvil keys).
+# The `e2e-39fcb94…` entry is a GitHub Actions cache key printed by
+# foundry-toolchain in a CI job log (Phase 2 evidence, commit 71223bd).
+# It is the literal string "e2e-" + the HEAD commit SHA — public by
+# construction, not a credential, and useless for authentication. The
+# generic-api-key rule misfires on the 40-hex-char SHA. Allowlisted by
+# EXACT VALUE (same convention as the anvil keys); the regex must match
+# the bare secret, NOT the `cache-key: ` line prefix (gitleaks
+# allowlists match the secret only — a prefixed regex does not match,
+# verified 2026-11-19).
 # NOTE: future CI job logs will print cache keys with different commit
 # SHAs; each new one needs its own exact-value entry, or the log-capture
 # step should redact `cache-key:` lines before committing.
@@ -43,5 +46,5 @@ regexes = [
   '''0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d''',
   '''0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a''',
   '''0x5FC8d32690cc91D4c39d9d3abcBD16989F875707''',
-  '''cache-key: e2e-39fcb94becf5e5dd18d7f4561868139fd30dce27''',
+  '''e2e-39fcb94becf5e5dd18d7f4561868139fd30dce27''',
 ]
