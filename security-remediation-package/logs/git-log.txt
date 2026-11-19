@@ -1,0 +1,9 @@
+bac423f docs: PACKAGE_MANIFEST.md for commit 18e1aa4 (regenerated)
+18e1aa4 fix(scripts): verify-manifest checks the recorded commit's tree, not the working tree
+8bcad63 docs: PACKAGE_MANIFEST.md for commit 0f0a030
+0f0a030 fix(scripts): exclude submodule gitlinks from the manifest file list
+0ed3d98 docs(remediation): 5 reports, README status fix, manifest scripts, evidence logs
+774ec40 security(remediation): carry tryRecover errorArg into InvalidAttestationSignature
+7d3d386 security(remediation): deployment script for all 4 contracts (TEMUAN 4)
+655cbb2 security(remediation): quest completion validation (TEMUAN 1) + dependency validation (TEMUAN 3)
+8c5122f security(remediation): lock official Agent ID on mainnet (TEMUAN 2)
