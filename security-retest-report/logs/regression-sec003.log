@@ -1,0 +1,8 @@
+No files changed, compilation skipped
+
+Ran 2 tests for test/QuestManager.t.sol:QuestManagerTest
+[PASS] test_QuestCompletedEventCarriesBadgeTokenId() (gas: 593148)
+[PASS] test_QuestCompletedEventHasZeroTokenIdWithoutBadge() (gas: 489022)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 2.87ms (1.01ms CPU time)
+
+Ran 1 test suite in 6.86ms (2.87ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)

@@ -1,0 +1,11 @@
+No files changed, compilation skipped
+
+Ran 1 test for test/AccessControl.t.sol:AccessControlTest
+[PASS] test_PauseUnpauseRoleMatrix() (gas: 195824)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.46ms (278.51µs CPU time)
+
+Ran 1 test for test/Integration.t.sol:IntegrationTest
+[PASS] test_DeployerLostAdminAfterRenounce() (gas: 137578)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.84ms (233.12µs CPU time)
+
+Ran 2 test suites in 9.19ms (5.31ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)

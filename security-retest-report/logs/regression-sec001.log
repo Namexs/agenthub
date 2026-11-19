@@ -1,0 +1,12 @@
+No files changed, compilation skipped
+
+Ran 2 tests for test/AgentGate.t.sol:AgentGateTest
+[PASS] test_GarbageReturnFailsClosed() (gas: 409699)
+[PASS] test_RevertingAgentIdFailsClosed() (gas: 452807)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 12.37ms (557.74µs CPU time)
+
+Ran 1 test for test/AttackSimulation.t.sol:AttackSimulationTest
+[PASS] test_MaliciousAgentIdFailsClosed() (gas: 5001686)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 15.09ms (1.89ms CPU time)
+
+Ran 2 test suites in 17.16ms (27.47ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)

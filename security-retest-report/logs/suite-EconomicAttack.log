@@ -1,0 +1,12 @@
+No files changed, compilation skipped
+
+Ran 6 tests for test/EconomicAttack.t.sol:EconomicAttackTest
+[PASS] test_CappedQuestTotalEmissionBounded() (gas: 758434)
+[PASS] test_CooldownFarmingBoundedToOnePerDay() (gas: 42818453)
+[PASS] test_CreatorCannotExceedRewardCap() (gas: 42713)
+[PASS] test_MaxRewardQuestEmissionBounded() (gas: 703709)
+[PASS] test_SybilWithoutAgentIdsEarnsNothing() (gas: 868160)
+[PASS] test_WeeklyFarmingBoundedToOnePerWeek() (gas: 39099694)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 63.19ms (120.49ms CPU time)
+
+Ran 1 test suite in 63.88ms (63.19ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)

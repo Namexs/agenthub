@@ -1,0 +1,169 @@
+No files changed, compilation skipped
+
+Ran 10 tests for test/AccessControl.t.sol:AccessControlTest
+[PASS] test_AchievementPauseRoleMatrix() (gas: 96261)
+[PASS] test_AddPointsRoleMatrix() (gas: 159144)
+[PASS] test_CreateQuestRoleMatrix() (gas: 373479)
+[PASS] test_DeactivateQuestRoleMatrix() (gas: 363237)
+[PASS] test_DefineBadgeRoleMatrix() (gas: 147511)
+[PASS] test_GrantRoleRequiresAdmin() (gas: 194530)
+[PASS] test_IssueRoleMatrix() (gas: 227560)
+[PASS] test_PauseUnpauseRoleMatrix() (gas: 195824)
+[PASS] test_RenounceRoleIsIrreversibleForCaller() (gas: 82105)
+[PASS] test_ReputationPauseRoleMatrix() (gas: 134666)
+Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 4.81ms (1.85ms CPU time)
+
+Ran 6 tests for test/Integration.t.sol:IntegrationTest
+[PASS] test_DeployerLostAdminAfterRenounce() (gas: 137578)
+[PASS] test_EmergencyPauseIsFastUnpauseNeedsTimelock() (gas: 863519)
+[PASS] test_EndToEndCompletionAwardsPointsAndBadge() (gas: 707028)
+[PASS] test_NonProposerCannotSchedule() (gas: 53348)
+[PASS] test_TimelockCanGrantRoleAfterDelay() (gas: 572552)
+[PASS] test_TimelockRejectsShortDelay() (gas: 52978)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 5.57ms (1.93ms CPU time)
+
+Ran 7 tests for test/AttackSimulation.t.sol:AttackSimulationTest
+[PASS] test_AgentIdTransferBlockedSoNoDoubleClaim() (gas: 552648)
+[PASS] test_DelegatedCompletionImpossible() (gas: 968268)
+[PASS] test_DownstreamRevertIsAtomic() (gas: 2385608)
+[PASS] test_GasExhaustionIsAtomic() (gas: 695901)
+[PASS] test_MaliciousAgentIdFailsClosed() (gas: 5001686)
+[PASS] test_MintCallbackCompletionBoundedToOne() (gas: 1104211)
+[PASS] test_ReentrancyViaBadgeCallbackImpossible() (gas: 862822)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 9.49ms (6.75ms CPU time)
+
+Ran 6 tests for test/EconomicAttack.t.sol:EconomicAttackTest
+[PASS] test_CappedQuestTotalEmissionBounded() (gas: 758434)
+[PASS] test_CooldownFarmingBoundedToOnePerDay() (gas: 42818453)
+[PASS] test_CreatorCannotExceedRewardCap() (gas: 42713)
+[PASS] test_MaxRewardQuestEmissionBounded() (gas: 703709)
+[PASS] test_SybilWithoutAgentIdsEarnsNothing() (gas: 868160)
+[PASS] test_WeeklyFarmingBoundedToOnePerWeek() (gas: 39099694)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 153.85ms (151.63ms CPU time)
+
+Ran 18 tests for test/AgentGate.t.sol:AgentGateTest
+[PASS] testFuzz_GateAgreesWithDirectBalance(address,bool) (runs: 10000, μ: 67869, ~: 28238)
+[PASS] test_ConstructorRejectsAddressWithoutCode() (gas: 112982)
+[PASS] test_ConstructorRejectsWrongChain() (gas: 113543)
+[PASS] test_ConstructorRejectsZeroAddress() (gas: 107802)
+[PASS] test_ConstructorRejectsZeroChainId() (gas: 113359)
+[PASS] test_ConstructorStoresImmutableConfig() (gas: 18700)
+[PASS] test_FakeAgentIdContractIsIgnored() (gas: 145497)
+[PASS] test_GarbageReturnFailsClosed() (gas: 409699)
+[PASS] test_HolderIsHolder() (gas: 116950)
+[PASS] test_NonHolderIsNotHolder() (gas: 16571)
+[PASS] test_ReentrantAgentIdCannotChangeState() (gas: 1024220289)
+[PASS] test_RequireAgentHolderPassesForHolder() (gas: 97761)
+[PASS] test_RequireAgentHolderRevertsForNonHolder() (gas: 17286)
+[PASS] test_RevertingAgentIdFailsClosed() (gas: 452807)
+[PASS] test_VerifyEmitsEvent() (gas: 124579)
+[PASS] test_VerifyRevertsForNonHolder() (gas: 38564)
+[PASS] test_WrongChainReturnsFalseAndReverts() (gas: 127703)
+[PASS] test_ZeroAccountIsNotHolder() (gas: 8513)
+Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 1.27s (1.26s CPU time)
+
+Ran 5 tests for test/MockAgentId.t.sol:MockAgentIdTest
+[PASS] testFuzz_MintGrantsBalance(address) (runs: 10000, μ: 96095, ~: 96160)
+[PASS] test_MintGrantsOwnership() (gas: 105104)
+[PASS] test_NonHolderHasZeroBalance() (gas: 12831)
+[PASS] test_OnlyOwnerCanMint() (gas: 36708)
+[PASS] test_TransferIsBlocked_Soulbound() (gas: 125287)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 1.79s (1.79s CPU time)
+
+Ran 32 tests for test/QuestManager.t.sol:QuestManagerTest
+[PASS] testFuzz_CreateQuestStoresParams(uint256,uint256,uint256) (runs: 10000, μ: 336705, ~: 337069)
+[PASS] test_BadgeAlreadyHeldIsSkippedNotReverted() (gas: 641729)
+[PASS] test_CommunityQuestIsOneTimePerAccount() (gas: 732687)
+[PASS] test_CompleteNonexistentQuestReverts() (gas: 42043)
+[PASS] test_CompleteOneTimeAwardsPointsAndBadge() (gas: 674980)
+[PASS] test_CompleteQuestRequiresAgentId() (gas: 322843)
+[PASS] test_ConstructorRejectsZeroAddresses() (gas: 235899)
+[PASS] test_CreateQuestRejectsBadWindow() (gas: 37548)
+[PASS] test_CreateQuestRejectsEmptyTitle() (gas: 37076)
+[PASS] test_CreateQuestRejectsEndedQuest() (gas: 37494)
+[PASS] test_CreateQuestRejectsOversizedDescription() (gas: 44194)
+[PASS] test_CreateQuestRejectsOversizedTitle() (gas: 38454)
+[PASS] test_CreateQuestRejectsRewardAboveCap() (gas: 42699)
+[PASS] test_CreateQuestRejectsUndefinedBadge() (gas: 43387)
+[PASS] test_CreateQuestRejectsZeroReward() (gas: 37321)
+[PASS] test_CreateQuestRequiresCreatorRole() (gas: 43315)
+[PASS] test_CreateQuestStoresAllFields() (gas: 364444)
+[PASS] test_DailyCooldownEnforced() (gas: 648665)
+[PASS] test_DeactivateByCreatorOrAdminOnly() (gas: 368192)
+[PASS] test_DeactivatedQuestCannotComplete() (gas: 343688)
+[PASS] test_DuplicateOneTimeReverts() (gas: 549587)
+[PASS] test_GetQuestRevertsForUnknownId() (gas: 14541)
+[PASS] test_MaxCompletionsCapEnforced() (gas: 561164)
+[PASS] test_NextCompletionAtForCompletedOneTimeIsMax() (gas: 514246)
+[PASS] test_NextCompletionAtForFreshUserIsZero() (gas: 262275)
+[PASS] test_OnlyPauserCanPauseAndOnlyAdminCanUnpause() (gas: 118326)
+[PASS] test_PauseBlocksCompletionButNotReads() (gas: 653402)
+[PASS] test_QuestCompletedEventCarriesBadgeTokenId() (gas: 593148)
+[PASS] test_QuestCompletedEventHasZeroTokenIdWithoutBadge() (gas: 489022)
+[PASS] test_QuestEndedReverts() (gas: 320192)
+[PASS] test_QuestNotStartedReverts() (gas: 317442)
+[PASS] test_WeeklyCooldownEnforced() (gas: 646753)
+Suite result: ok. 32 passed; 0 failed; 0 skipped; finished in 3.80s (3.80s CPU time)
+
+Ran 15 tests for test/Reputation.t.sol:ReputationTest
+[PASS] testFuzz_AddPointsAccumulates(uint256,uint256) (runs: 10000, μ: 163645, ~: 164000)
+[PASS] test_AddPointsAcceptsExactlyCap() (gas: 97474)
+[PASS] test_AddPointsEmitsEventWithQuestId() (gas: 88799)
+[PASS] test_AddPointsIncreasesTotalAndEvents() (gas: 172402)
+[PASS] test_AddPointsRejectsAboveCap() (gas: 44998)
+[PASS] test_AddPointsRejectsZeroAccount() (gas: 37201)
+[PASS] test_AddPointsRejectsZeroPoints() (gas: 39627)
+[PASS] test_AddPointsRequiresScoreSourceRole() (gas: 93243)
+[PASS] test_ConstructorRejectsZeroAdmin() (gas: 135548)
+[PASS] test_InitialStateIsZero() (gas: 39342)
+[PASS] test_LevelThresholdGetter() (gas: 42447)
+[PASS] test_LevelThresholdRejectsInvalidLevel() (gas: 18667)
+[PASS] test_LevelsFollowThresholds() (gas: 318921)
+[PASS] test_PauseBlocksAddPointsButNotReads() (gas: 210986)
+[PASS] test_RevokingScoreSourceStopsPoints() (gas: 78190)
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 1.83s (1.83s CPU time)
+
+Ran 19 tests for test/Achievement.t.sol:AchievementTest
+[PASS] testFuzz_IssueGrantsUniqueTokenIds(uint8) (runs: 10000, μ: 924125, ~: 740824)
+[PASS] test_ApproveRevertsSoulbound() (gas: 187110)
+[PASS] test_BadgeOfRevertsForNonexistentToken() (gas: 11242)
+[PASS] test_ConstructorRejectsZeroAdmin() (gas: 295704)
+[PASS] test_DefineBadgeRejectsDuplicate() (gas: 38881)
+[PASS] test_DefineBadgeRejectsEmptyName() (gas: 38269)
+[PASS] test_DefineBadgeRejectsZeroId() (gas: 36238)
+[PASS] test_DefineBadgeRequiresManagerRole() (gas: 42289)
+[PASS] test_DefineBadgeStoresMetadata() (gas: 21184)
+[PASS] test_IssueEmitsEvent() (gas: 145013)
+[PASS] test_IssueMintsSoulboundToken() (gas: 204107)
+[PASS] test_IssueRejectsDuplicateBadge() (gas: 187950)
+[PASS] test_IssueRejectsUndefinedBadge() (gas: 47123)
+[PASS] test_IssueRejectsZeroAccount() (gas: 42118)
+[PASS] test_IssueRequiresIssuerRole() (gas: 85312)
+[PASS] test_IssueToNonReceiverContractSucceeds() (gas: 245373)
+[PASS] test_PauseBlocksIssueButNotReads() (gas: 273476)
+[PASS] test_TokenURIRevertsForNonexistentToken() (gas: 13246)
+[PASS] test_TransferRevertsSoulbound() (gas: 205621)
+Suite result: ok. 19 passed; 0 failed; 0 skipped; finished in 7.70s (7.70s CPU time)
+
+Ran 2 tests for test/Invariant.t.sol:InvariantTest
+[PASS]
+InvariantTest invariants:
+[PASS] invariant_BadgesMatchGhost
+[PASS] invariant_CompletionsMatchAndRespectCap
+[PASS] invariant_EventsMatchGhost
+[PASS] invariant_NonHolderEarnsNothing
+[PASS] invariant_PointsMatchGhost
+ InvariantTest invariants (runs: 256, calls: 32768, reverts: 0)
+
+╭------------------+---------------+-------+---------+----------╮
+| Contract         | Selector      | Calls | Reverts | Discards |
++===============================================================+
+| InvariantHandler | completeQuest | 16288 | 0       | 0        |
+|------------------+---------------+-------+---------+----------|
+| InvariantHandler | warpTime      | 16480 | 0       | 0        |
+╰------------------+---------------+-------+---------+----------╯
+
+[PASS] test_HandlerActuallyCompletesQuests() (gas: 970920)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 39.24s (39.20s CPU time)
+
+Ran 10 test suites in 39.25s (55.80s CPU time): 120 tests passed, 0 failed, 0 skipped (120 total tests)

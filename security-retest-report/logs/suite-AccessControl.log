@@ -1,0 +1,16 @@
+No files changed, compilation skipped
+
+Ran 10 tests for test/AccessControl.t.sol:AccessControlTest
+[PASS] test_AchievementPauseRoleMatrix() (gas: 96261)
+[PASS] test_AddPointsRoleMatrix() (gas: 159144)
+[PASS] test_CreateQuestRoleMatrix() (gas: 373479)
+[PASS] test_DeactivateQuestRoleMatrix() (gas: 363237)
+[PASS] test_DefineBadgeRoleMatrix() (gas: 147511)
+[PASS] test_GrantRoleRequiresAdmin() (gas: 194530)
+[PASS] test_IssueRoleMatrix() (gas: 227560)
+[PASS] test_PauseUnpauseRoleMatrix() (gas: 195824)
+[PASS] test_RenounceRoleIsIrreversibleForCaller() (gas: 82105)
+[PASS] test_ReputationPauseRoleMatrix() (gas: 134666)
+Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 3.61ms (2.98ms CPU time)
+
+Ran 1 test suite in 6.69ms (3.61ms CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)

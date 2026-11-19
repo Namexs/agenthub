@@ -1,0 +1,84 @@
+No files changed, compilation skipped
+
+Ran 2 tests for test/Invariant.t.sol:InvariantTest
+[PASS]
+InvariantTest invariants:
+[PASS] invariant_BadgesMatchGhost
+[PASS] invariant_CompletionsMatchAndRespectCap
+[PASS] invariant_EventsMatchGhost
+[PASS] invariant_NonHolderEarnsNothing
+[PASS] invariant_PointsMatchGhost
+ InvariantTest invariants (runs: 256, calls: 32768, reverts: 0)
+
+╭------------------+---------------+-------+---------+----------╮
+| Contract         | Selector      | Calls | Reverts | Discards |
++===============================================================+
+| InvariantHandler | completeQuest | 16548 | 0       | 0        |
+|------------------+---------------+-------+---------+----------|
+| InvariantHandler | warpTime      | 16220 | 0       | 0        |
+╰------------------+---------------+-------+---------+----------╯
+
+Logs:
+  Bound result 1241
+  Bound result 223371
+  Bound result 4205
+  Bound result 1024
+  Bound result 151096
+  Bound result 259200
+  Bound result 300
+  Bound result 239384
+  Bound result 9333
+  Bound result 4726
+  Bound result 4678
+  Bound result 120
+  Bound result 5859
+  Bound result 32
+  Bound result 4437
+  Bound result 180516
+  Bound result 10000
+  Bound result 1493
+  Bound result 10000
+  Bound result 2252
+  Bound result 61378
+  Bound result 10
+  Bound result 1024
+  Bound result 1
+  Bound result 195012
+  Bound result 5193
+  Bound result 198359
+  Bound result 18901
+  Bound result 5503
+  Bound result 3544
+  Bound result 50
+  Bound result 96
+  Bound result 4342
+  Bound result 2
+  Bound result 55199
+  Bound result 222397
+  Bound result 2096
+  Bound result 70
+  Bound result 185475
+  Bound result 220641
+  Bound result 100
+  Bound result 4
+  Bound result 239135
+  Bound result 259200
+  Bound result 251193
+  Bound result 142997
+  Bound result 259200
+  Bound result 247954
+  Bound result 117629
+  Bound result 300
+  Bound result 10
+  Bound result 0
+  Bound result 6409
+  Bound result 220
+  Bound result 1326
+
+[PASS] test_HandlerActuallyCompletesQuests() (gas: 970920)
+Logs:
+  Bound result 172800
+
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 42.39s (42.38s CPU time)
+
+Ran 1 test suite in 42.42s (42.39s CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
