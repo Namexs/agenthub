@@ -1,0 +1,28 @@
+Phase 6A — wallet-app compatibility audit (2026-11-19, HEAD af75bcc)
+Config (apps/web/lib/wagmi.ts, read in full):
+- connectors: [injected()] ONLY — Binance Wallet / MetaMask / any EVM wallet via window.ethereum
+- NO WalletConnect (comment: later addition, needs a project id)
+- chains: env-driven — 56 -> [bsc, bscTestnet]; 31337 -> [anvil, bscTestnet, bsc]; else [bscTestnet, bsc]
+- transports: http() defaults for bsc + bscTestnet (viem public RPCs); anvil -> http://127.0.0.1:8545
+- ssr: true
+- chains.ts: supportedChains = [bscTestnet, bsc, anvil] (viem chain defs, no custom RPC URLs)
+
+Wagmi hooks used by the app (apps/web/hooks + components):
+- useAccount (7), useReadContract (9), useReadContracts (2), usePublicClient (1) — reads/logs
+- useWriteContract (1) + useWaitForTransactionReceipt (1) — completions (useCompleteQuest.ts)
+- useSwitchChain (1) — wrong-network handling (useChainGuard.ts)
+- useConnect/useDisconnect (ConnectButton.tsx)
+- NO useSignTypedData anywhere in the app: attestation signatures are PASTED by the user (verifier signs out-of-band with sign-attestation.mjs); the app only verifies them client-side (viem recoverTypedDataAddress) + on-chain.
+
+Wallet E2E stub (apps/web/scripts/wallet-e2e.mjs, 25/25 on GitHub run #44535662688):
+- Browser side: window.ethereum = { isMetaMask: true, request -> __e2e_rpc, on/removeListener }
+- Node side handles: eth_requestAccounts, eth_accounts, eth_chainId, net_version, wallet_switchEthereumChain, wallet_addEthereumChain, eth_sendTransaction, personal_sign, eth_signTypedData_v4; all other methods proxied to local anvil.
+- This proves the REAL wagmi injected() code path (connect, read, write, switch chain) against a local deployment — it does NOT prove a real wallet app.
+
+HONESTLY NOT PROVEN without a real device (O4 remains OPEN):
+- Real Binance Wallet / MetaMask extension popup flows (connect approval, tx confirmation UX, chain-switch prompts, rejection handling)
+- Mobile wallets + deep links (no WalletConnect configured — mobile users have NO connect path unless their wallet injects into an in-app browser)
+- Multi-wallet environments (EIP-6963 announcement; injected() without discovery may pick the wrong provider when several wallets are installed)
+- Real-network RPC latency/rate-limits on viem's default public endpoints (no custom RPC configured)
+- The "Connect Binance Wallet" button label vs actual installed wallet (cosmetic, but untested against the real Binance Wallet extension)
+What IS proven: the wagmi injected() path works end-to-end on anvil (25/25 wallet E2E, incl. connect + quest completion + chain guard), and the config contains no mainnet/testnet mismatch (env chain<->Agent ID check at startup).

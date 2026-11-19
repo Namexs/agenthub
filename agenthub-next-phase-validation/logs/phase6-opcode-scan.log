@@ -1,0 +1,15 @@
+=== Cancun-only opcode scan (cast disassemble, deployedBytecode) ===
+--- QuestManager ---
+none
+--- AgentGate ---
+none
+--- Reputation ---
+00000946: MCOPY
+--- Achievement ---
+00001887: MCOPY
+=== source greps ===
+transient in src: 0 files
+blob builtins in src: 0
+evm_version: evm_version = "cancun"
+solc: solc_version = "0.8.24" | via_ir: via_ir = false
+OZ version:   "version": "5.0.2",
