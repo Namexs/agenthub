@@ -1,0 +1,11 @@
+=== forge clean ===
+=== forge build ===
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+=== forge test -vvv ===
+  Bound result 172800
+
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 81.83s (81.79s CPU time)
+
+Ran 19 test suites in 81.92s (84.44s CPU time): 255 tests passed, 0 failed, 0 skipped (255 total tests)

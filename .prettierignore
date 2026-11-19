@@ -22,3 +22,5 @@ apps/web/lib/abis/
 .anvil-deployment.json
 apps/web/.anvil-deployment.json
 packages/contracts/.anvil-deployment.json
+# Final-remediation evidence logs must stay byte-identical to tool output.
+agenthub-final-pretestnet/logs/

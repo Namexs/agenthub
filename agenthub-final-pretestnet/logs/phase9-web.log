@@ -1,0 +1,21 @@
+=== web lint ===
+✔ No ESLint warnings or errors
+=== web typecheck ===
+
+TSC_OK
+=== web test ===
+ Test Files  7 passed | 1 skipped (8)
+      Tests  136 passed | 4 skipped (140)
+=== shared lint+typecheck+test ===
+
+
+SHARED_TSC_OK
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+=== format:check ===
+ ELIFECYCLE  Command failed with exit code 1.
+=== format:check (re-run after .prettierignore fix) ===
+All matched files use Prettier code style!
+=== web build ===
+ ✓ Compiled successfully
+ ✓ Generating static pages (11/11)
