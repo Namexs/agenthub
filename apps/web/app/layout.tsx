@@ -1,0 +1,30 @@
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { Providers } from '@/lib/providers';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+
+export const metadata: Metadata = {
+  title: 'AGENTHUB — Your Agent ID. Your Onchain Reputation.',
+  description:
+    'Activity and reputation platform for Binance Agent ID holders: quests, on-chain reputation, soulbound badges, and a transparent leaderboard on BNB Chain.',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={inter.variable}>
+      <body className="min-h-screen bg-navy-950 font-sans text-ink-100">
+        <Providers>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </Providers>
+      </body>
+    </html>
+  );
+}

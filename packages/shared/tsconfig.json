@@ -1,0 +1,9 @@
+{
+  "extends": "@agenthub/config/typescript/base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": true
+  },
+  "include": ["src"]
+}

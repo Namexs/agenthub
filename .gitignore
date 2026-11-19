@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Builds
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Foundry
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/
+packages/contracts/coverage/
+packages/contracts/docs/
+
+# Env / secrets — NEVER commit real keys
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Misc
+.DS_Store
+.turbo/
+coverage/
+.vercel
