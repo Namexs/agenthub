@@ -40,22 +40,41 @@ These are hard rules, enforced by architecture — not policy:
 | Frontend compromise     | Frontend holds no secrets and no signing power; worst case is a misleading UI, which users can cross-check on BscScan.                          |
 | Service outage          | Frontend is static hosting (Vercel); chain data remains valid and readable via any explorer or RPC.                                             |
 
-## 4. Roles and permissions (Phase 2 implementation)
+## 4. Roles and permissions
 
-| Role                     | Powers                                      | Held by (production)                     |
-| ------------------------ | ------------------------------------------- | ---------------------------------------- |
-| `DEFAULT_ADMIN_ROLE`     | Grant/revoke roles, pause/unpause           | Multisig (to be set up before mainnet)   |
-| `QUEST_CREATOR_ROLE`     | Create/deactivate quests                    | Campaign team multisig / vetted creators |
-| QuestManager (as caller) | `Reputation.addPoints`, `Achievement.issue` | QuestManager contract only               |
-| `PAUSER_ROLE`            | Emergency pause                             | Multisig                                 |
+The full role matrix is `docs/ROLE_MATRIX.md` (single source of truth).
+Summary of the production default:
+
+| Role                       | Powers                                | Held by (production)                                           |
+| -------------------------- | ------------------------------------- | -------------------------------------------------------------- |
+| `DEFAULT_ADMIN_ROLE`       | Grant/revoke roles, unpause           | TimelockController (2-day delay; multisig proposes + executes) |
+| `PAUSER_ROLE`              | Emergency pause (no delay)            | Admin multisig (verified Safe)                                 |
+| `QUEST_CREATOR_ROLE`       | Create/deactivate quests              | Campaign team / vetted creators                                |
+| `VERIFIER_ROLE`            | Sign EIP-712 attestations (off-chain) | Named verifiers (see `VERIFIER_ROLE_SOP.md`)                   |
+| `SCORE_SOURCE_ROLE`        | `Reputation.addPoints`                | QuestManager contract only                                     |
+| `ISSUER_ROLE`              | `Achievement.issue`                   | QuestManager contract only                                     |
+| `BADGE_MANAGER_ROLE`       | `Achievement.defineBadge`             | Admin multisig                                                 |
+| Timelock proposer/executor | Schedule/execute timelock proposals   | Admin multisig                                                 |
+| Any role                   | —                                     | **Deployer: NONE after deployment**                            |
 
 There is intentionally **no role that can set an arbitrary reputation score**,
-transfer badges, or move user assets.
+transfer badges, or move user assets. Unpause is deliberately slow
+(timelock, 2 days) so a compromised pauser can stop the platform but
+cannot resume it alone.
 
 ## 5. Emergency procedures
 
-- **Pause:** `Pausable` on QuestManager/Reputation/Achievement. Pausing stops
-  new completions and issuances; reads (points, badges, leaderboard) keep working.
+- **Pause (fast path):** `QuestManager.pause()` via `PAUSER_ROLE`
+  (admin multisig, no timelock delay). Pausing stops new completions —
+  and therefore all new points and badges, since both flow only through
+  completions. Reads (points, badges, leaderboard) keep working.
+  `Reputation` and `Achievement` are also pausable, but their
+  `pause()`/`unpause()` are admin-only (timelock, 2-day delay).
+- **Unpause is slow on purpose:** `QuestManager.unpause()` needs
+  `DEFAULT_ADMIN_ROLE` (the timelock), so a compromised pauser cannot
+  resume the platform alone. Worst case ~4 days paused in a
+  pause → revoke → unpause incident sequence (see
+  `VERIFIER_ROLE_SOP.md` §4).
 - **Incident response:** pause first, disclose what happened, fix, and only then
   unpause. Post-mortems are public in the repo.
 - **Upgrade policy:** Phase 1 contracts are non-upgradeable by design. If an

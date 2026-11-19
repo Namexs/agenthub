@@ -39,9 +39,13 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 /// @dev Usage (dry-run / simulation only — never --broadcast without a
 /// reviewed decision, see docs/DEPLOYMENT_PLAN.md):
 ///   DEPLOYER_PRIVATE_KEY=<key> ADMIN_MULTISIG=<0x..> QUEST_CREATOR=<0x..>
-///   PAUSER=<0x..> [VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>]
+///   [PAUSER=<0x..>] [VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>]
 ///   [SAFE_SINGLETON=<0x..> SAFE_PROXY_CODEHASH=<0x..>]   # local (31337) only
 ///   forge script script/DeployAgentHub.s.sol
+/// @dev FINAL REMEDIATION (Phase 2): PAUSER is OPTIONAL — when unset,
+/// PAUSER_ROLE goes to the verified admin multisig (the production
+/// default). An explicit PAUSER overrides the default (documented as a
+/// non-default configuration in docs/ROLE_MATRIX.md).
 contract DeployAgentHub is Script {
     /// @notice Timelock delay for admin actions (matches IntegrationTest).
     uint256 public constant TIMELOCK_DELAY = 2 days;
@@ -72,6 +76,9 @@ contract DeployAgentHub is Script {
         /// @dev Address receiving QUEST_CREATOR_ROLE.
         address questCreator;
         /// @dev Address receiving PAUSER_ROLE (fast pause, no timelock).
+        /// FINAL REMEDIATION (Phase 2): address(0) means "default to the
+        /// verified admin multisig" — the production default. An explicit
+        /// address overrides the default (non-default configuration).
         address pauser;
         /// @dev Optional first verifier (VERIFIER_ROLE). address(0) = none.
         address verifier;
@@ -108,7 +115,7 @@ contract DeployAgentHub is Script {
             agentId: vm.envOr("AGENT_ID_ADDRESS", address(0)),
             adminMultisig: vm.envAddress("ADMIN_MULTISIG"),
             questCreator: vm.envAddress("QUEST_CREATOR"),
-            pauser: vm.envAddress("PAUSER"),
+            pauser: vm.envOr("PAUSER", address(0)),
             verifier: vm.envOr("VERIFIER", address(0)),
             safeSingleton: vm.envOr("SAFE_SINGLETON", address(0)),
             safeProxyCodehash: vm.envOr("SAFE_PROXY_CODEHASH", bytes32(0))
@@ -141,7 +148,11 @@ contract DeployAgentHub is Script {
         if (deployer == address(0)) revert ZeroAddress("deployer");
         if (params.adminMultisig == address(0)) revert ZeroAddress("adminMultisig");
         if (params.questCreator == address(0)) revert ZeroAddress("questCreator");
-        if (params.pauser == address(0)) revert ZeroAddress("pauser");
+        // FINAL REMEDIATION (Phase 2): pauser == address(0) is NOT an
+        // error — it means "default PAUSER_ROLE to the verified admin
+        // multisig" (the production default). The effective pauser is
+        // resolved here and used for both the grant and the verification.
+        address effectivePauser = params.pauser == address(0) ? params.adminMultisig : params.pauser;
         // FINAL REMEDIATION (Phase 1): the admin multisig must be a
         // GENUINE Safe — checked BEFORE deploying anything, so a
         // misconfigured ADMIN_MULTISIG aborts the whole deployment instead
@@ -208,7 +219,7 @@ contract DeployAgentHub is Script {
         achievement.grantRole(achievement.ISSUER_ROLE(), address(qm));
         achievement.grantRole(achievement.BADGE_MANAGER_ROLE(), params.adminMultisig);
         qm.grantRole(qm.QUEST_CREATOR_ROLE(), params.questCreator);
-        qm.grantRole(qm.PAUSER_ROLE(), params.pauser);
+        qm.grantRole(qm.PAUSER_ROLE(), effectivePauser);
         if (params.verifier != address(0)) {
             qm.grantRole(qm.VERIFIER_ROLE(), params.verifier);
         }
@@ -222,10 +233,15 @@ contract DeployAgentHub is Script {
         qm.renounceRole(qm.DEFAULT_ADMIN_ROLE(), deployer);
 
         // --- 8. Post-deploy verification: revert if wiring is wrong. ---
-        _verifyWiring(deployment, params, deployer);
+        _verifyWiring(deployment, params, deployer, effectivePauser);
     }
 
-    function _verifyWiring(Deployment memory deployment, DeployParams memory params, address deployer) internal view {
+    function _verifyWiring(
+        Deployment memory deployment,
+        DeployParams memory params,
+        address deployer,
+        address effectivePauser
+    ) internal view {
         AgentGate gate = AgentGate(deployment.agentGate);
         Reputation reputation = Reputation(deployment.reputation);
         Achievement achievement = Achievement(deployment.achievement);
@@ -280,7 +296,7 @@ contract DeployAgentHub is Script {
         if (!qm.hasRole(qm.QUEST_CREATOR_ROLE(), params.questCreator)) {
             revert WiringCheckFailed("qm.creator");
         }
-        if (!qm.hasRole(qm.PAUSER_ROLE(), params.pauser)) {
+        if (!qm.hasRole(qm.PAUSER_ROLE(), effectivePauser)) {
             revert WiringCheckFailed("qm.pauser");
         }
         if (params.verifier != address(0) && !qm.hasRole(qm.VERIFIER_ROLE(), params.verifier)) {

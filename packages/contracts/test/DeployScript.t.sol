@@ -208,11 +208,26 @@ contract DeployScriptTest is CanonicalSafeHelper {
         script.deploy(params, deployer);
     }
 
-    function test_DeployRejectsZeroPauser() public {
+    function test_DeployDefaultsPauserToMultisig() public {
+        // FINAL REMEDIATION (Phase 2): pauser == address(0) is NOT an
+        // error — PAUSER_ROLE defaults to the verified admin multisig
+        // (the production default). The old behavior (revert) was
+        // replaced by this default by design.
         DeployAgentHub.DeployParams memory params = _params();
         params.pauser = address(0);
-        vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.ZeroAddress.selector, "pauser"));
-        script.deploy(params, deployer);
+        DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
+        QuestManager qm = QuestManager(d.questManager);
+        assertTrue(qm.hasRole(qm.PAUSER_ROLE(), multisig), "multisig is not pauser by default");
+        assertFalse(qm.hasRole(qm.PAUSER_ROLE(), pauser), "explicit pauser got the role by default");
+    }
+
+    function test_DeployExplicitPauserOverridesDefault() public {
+        // An explicit pauser still works — it is a documented non-default
+        // configuration (see docs/ROLE_MATRIX.md).
+        DeployAgentHub.Deployment memory d = script.deploy(_params(), deployer);
+        QuestManager qm = QuestManager(d.questManager);
+        assertTrue(qm.hasRole(qm.PAUSER_ROLE(), pauser));
+        assertFalse(qm.hasRole(qm.PAUSER_ROLE(), multisig));
     }
 
     function test_DeployRejectsUnsupportedChain() public {
@@ -365,38 +380,50 @@ contract DeployScriptTest is CanonicalSafeHelper {
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "false");
     }
 
-    function test_RunDeploysLocalStack() public {
+    /// @notice The four env-driven run() scenarios in ONE test, run
+    /// sequentially. This is deliberate, not laziness: forge runs tests
+    /// in parallel threads and vm.setEnv is process-global, so four
+    /// separate run() tests with CONFLICTING env values flaked against
+    /// each other (observed: NoCodeAtAgentId from a leaked
+    /// AGENT_ID_ADDRESS, MainnetDeployNotConfirmed from a leaked
+    /// CONFIRM_MAINNET_DEPLOY, LocalSafeConfigMissing from leaked
+    /// SAFE_* values). Inside one test there is no interleaving — every
+    /// env set sits immediately before its run() call. All four
+    /// scenarios keep their original assertions; only the grouping
+    /// changed.
+    function test_RunEnvDrivenPaths() public {
+        // (1) Local deploy via run(): mock Agent ID is deployed, the
+        // broadcast deployer (Anvil account 0) keeps nothing.
         _setRunEnv();
-        // No AGENT_ID_ADDRESS set: a mock is deployed (local chain).
-        DeployAgentHub.Deployment memory d = script.run();
-        assertTrue(d.mockAgentId != address(0));
-        assertTrue(d.questManager != address(0));
-        // The broadcast deployer is Anvil account 0, and it keeps nothing.
+        DeployAgentHub.Deployment memory dLocal = script.run();
+        assertTrue(dLocal.mockAgentId != address(0), "(1) mock not deployed");
+        assertTrue(dLocal.questManager != address(0), "(1) no quest manager");
         address anvilDeployer = vm.addr(ANVIL_KEY);
-        QuestManager qm = QuestManager(d.questManager);
-        assertFalse(qm.hasRole(qm.DEFAULT_ADMIN_ROLE(), anvilDeployer));
-        assertFalse(qm.hasRole(qm.VERIFIER_ROLE(), anvilDeployer));
-        assertTrue(qm.hasRole(qm.VERIFIER_ROLE(), verifier));
-    }
+        QuestManager qmLocal = QuestManager(dLocal.questManager);
+        assertFalse(qmLocal.hasRole(qmLocal.DEFAULT_ADMIN_ROLE(), anvilDeployer), "(1) deployer kept admin");
+        assertFalse(qmLocal.hasRole(qmLocal.VERIFIER_ROLE(), anvilDeployer), "(1) deployer kept verifier");
+        assertTrue(qmLocal.hasRole(qmLocal.VERIFIER_ROLE(), verifier), "(1) verifier role missing");
 
-    function test_RunRefusesMainnetWithoutConfirmation() public {
+        // (2) FINAL REMEDIATION (Phase 2): PAUSER unset (zero) in run()
+        // → PAUSER_ROLE defaults to the verified admin multisig.
+        _setRunEnv();
+        vm.setEnv("PAUSER", "0x0000000000000000000000000000000000000000");
+        DeployAgentHub.Deployment memory dDefault = script.run();
+        QuestManager qmDefault = QuestManager(dDefault.questManager);
+        assertTrue(qmDefault.hasRole(qmDefault.PAUSER_ROLE(), multisig), "(2) multisig is not default pauser");
+        assertFalse(qmDefault.hasRole(qmDefault.PAUSER_ROLE(), pauser), "(2) explicit pauser got the role");
+
+        // (3) Mainnet without confirmation → reverts (never deploys).
         vm.chainId(56);
         _setRunEnv();
         vm.setEnv("AGENT_ID_ADDRESS", vm.toString(OFFICIAL));
-        // Explicitly false: vm.setEnv persists across tests in one run,
-        // so a sibling test's "true" would otherwise leak in here.
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "false");
         vm.expectRevert(DeployAgentHub.MainnetDeployNotConfirmed.selector);
         script.run();
-    }
 
-    function test_RunMainnetWithConfirmationDeploys() public {
-        vm.chainId(56);
-        // Slow setup FIRST: forge runs tests in parallel threads and
-        // vm.setEnv is process-global, so the env sets must sit
-        // immediately adjacent to run() — any slow work between a setEnv
-        // and run() lets a sibling test's values interleave (this flaked
-        // with MainnetDeployNotConfirmed in the first version).
+        // (4) Mainnet with confirmation → deploys with the official
+        // Agent ID. Production chain: the multisig must be a canonical
+        // Safe and the explicit local values must be cleared.
         address[] memory owners = new address[](3);
         owners[0] = makeAddr("safe-owner-1");
         owners[1] = makeAddr("safe-owner-2");
@@ -404,17 +431,14 @@ contract DeployScriptTest is CanonicalSafeHelper {
         address canonicalSafe = deployCanonicalSafe(owners, 2);
         MockAgentId mock = new MockAgentId();
         vm.etch(OFFICIAL, address(mock).code);
-        // Production chain: the multisig must be a canonical Safe and
-        // the explicit local values must be cleared (a sibling test's
-        // env would otherwise leak in and trip the production guard).
         _setRunEnv();
         vm.setEnv("AGENT_ID_ADDRESS", vm.toString(OFFICIAL));
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "true");
         vm.setEnv("ADMIN_MULTISIG", vm.toString(canonicalSafe));
         vm.setEnv("SAFE_SINGLETON", "0x0000000000000000000000000000000000000000");
         vm.setEnv("SAFE_PROXY_CODEHASH", "0x0000000000000000000000000000000000000000000000000000000000000000");
-        DeployAgentHub.Deployment memory d = script.run();
-        assertEq(d.mockAgentId, address(0));
-        assertEq(AgentGate(d.agentGate).agentIdContract(), OFFICIAL);
+        DeployAgentHub.Deployment memory dMainnet = script.run();
+        assertEq(dMainnet.mockAgentId, address(0), "(4) mock deployed on mainnet");
+        assertEq(AgentGate(dMainnet.agentGate).agentIdContract(), OFFICIAL, "(4) wrong Agent ID");
     }
 }

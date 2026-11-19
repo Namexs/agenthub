@@ -25,21 +25,21 @@ and post-deploy verification (`_verifyWiring` — reverts on any mismatch).
 
 ## 2. Role wiring (final state)
 
-| Contract     | Role                           | Holder                                       |
-| ------------ | ------------------------------ | -------------------------------------------- |
-| Reputation   | DEFAULT_ADMIN_ROLE             | Timelock                                     |
-| Reputation   | SCORE_SOURCE_ROLE              | QuestManager                                 |
-| Achievement  | DEFAULT_ADMIN_ROLE             | Timelock                                     |
-| Achievement  | ISSUER_ROLE                    | QuestManager                                 |
-| Achievement  | BADGE_MANAGER_ROLE             | Admin multisig                               |
-| QuestManager | DEFAULT_ADMIN_ROLE             | Timelock                                     |
-| QuestManager | QUEST_CREATOR_ROLE             | Quest creator address                        |
-| QuestManager | PAUSER_ROLE                    | Pauser address (fast pause, no timelock)     |
-| QuestManager | VERIFIER_ROLE                  | First verifier (optional; more via timelock) |
-| Timelock     | DEFAULT_ADMIN_ROLE             | Timelock itself                              |
-| Timelock     | PROPOSER_ROLE / CANCELLER_ROLE | Admin multisig                               |
-| Timelock     | EXECUTOR_ROLE                  | Admin multisig                               |
-| **All**      | **any role**                   | **Deployer: NONE**                           |
+| Contract     | Role                           | Holder                                                              |
+| ------------ | ------------------------------ | ------------------------------------------------------------------- |
+| Reputation   | DEFAULT_ADMIN_ROLE             | Timelock                                                            |
+| Reputation   | SCORE_SOURCE_ROLE              | QuestManager                                                        |
+| Achievement  | DEFAULT_ADMIN_ROLE             | Timelock                                                            |
+| Achievement  | ISSUER_ROLE                    | QuestManager                                                        |
+| Achievement  | BADGE_MANAGER_ROLE             | Admin multisig                                                      |
+| QuestManager | DEFAULT_ADMIN_ROLE             | Timelock                                                            |
+| QuestManager | QUEST_CREATOR_ROLE             | Quest creator address                                               |
+| QuestManager | PAUSER_ROLE                    | **Admin multisig (default)** — `PAUSER` env overrides (non-default) |
+| QuestManager | VERIFIER_ROLE                  | First verifier (optional; more via timelock)                        |
+| Timelock     | DEFAULT_ADMIN_ROLE             | Timelock itself                                                     |
+| Timelock     | PROPOSER_ROLE / CANCELLER_ROLE | Admin multisig                                                      |
+| Timelock     | EXECUTOR_ROLE                  | Admin multisig                                                      |
+| **All**      | **any role**                   | **Deployer: NONE**                                                  |
 
 The deployer holds zero privileges after deployment (SEC-002). Admin actions
 (role grants, quest-type changes, unpausing after a timelock delay) go
@@ -53,8 +53,9 @@ cd packages/contracts
 
 # 1. DRY-RUN first (simulation only — no broadcast, no funds spent):
 DEPLOYER_PRIVATE_KEY=<key> \
-ADMIN_MULTISIG=<0x..> QUEST_CREATOR=<0x..> PAUSER=<0x..> \
-[VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>] \
+ADMIN_MULTISIG=<0x..> QUEST_CREATOR=<0x..> \
+[PAUSER=<0x..>] [VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>] \
+[SAFE_SINGLETON=<0x..> SAFE_PROXY_CODEHASH=<0x..>]   # local (31337) only
 forge script script/DeployAgentHub.s.sol \
   --fork-url <rpc-url>   # omit for a local in-memory simulation
 
@@ -72,7 +73,7 @@ Environment variables:
 | `SAFE_SINGLETON`         | local only | LOCAL CHAIN (31337) ONLY: expected Safe singleton for the explicit validation path. Must be UNSET on 56/97 (canonical enforcement; an explicit value reverts the deploy).                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `SAFE_PROXY_CODEHASH`    | local only | LOCAL CHAIN (31337) ONLY: expected Safe proxy codehash for the explicit validation path. Must be UNSET on 56/97.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `QUEST_CREATOR`          | yes        | Address that creates quests.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `PAUSER`                 | yes        | Address that can pause QuestManager instantly.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `PAUSER`                 | no         | Address that can pause QuestManager instantly. **Default (unset): the verified admin multisig** (production default, Phase 2). An explicit address overrides the default — a documented non-default configuration (see `ROLE_MATRIX.md`).                                                                                                                                                                                                                                                                                                                                                                                  |
 | `VERIFIER`               | no         | First attestation verifier (VERIFIER_ROLE).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `AGENT_ID_ADDRESS`       | no         | Agent ID contract. Unset on 97/31337 = deploy MockAgentId. On 56 MUST be `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `CONFIRM_MAINNET_DEPLOY` | on 56      | Must be `true` on chain 56, otherwise the script reverts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
