@@ -1,0 +1,24 @@
+=== anvil up ===
+questManager: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+=== 1. sign for bob / quest 3 (valid verifier key) ===
+Attestation signed. Deliver these values to the user (paste into the attestation form):
+  chainId:   31337
+  questManager: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+  account:   0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+  questId:   3
+  nonce:     0
+  deadline:  1795092771 (2026-11-19T12:52:51.000Z)
+  signer:    0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3 (VERIFIER_ROLE confirmed on-chain)
+  signature: 0x7dc13c42e37b3297a1889f4cf30825baedbf6690774230b7b077166075feb37721531b6784e928404bbfd25482bf3778780e5db31c21f574124e7eab7712426b1b
+=== 2. submit completeQuestWithAttestation as bob ===
+tx status: 0x1
+=== 3. verify on-chain ===
+hasCompleted(bob,3): true
+nonces(bob): 1
+=== 4. refusal path: non-verifier key must exit 2 ===
+sign-attestation: ERROR: signer 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC does NOT hold VERIFIER_ROLE on QuestManager 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 (chain 31337). Refusing to sign — an attestation from this key would be rejected on-chain. Check the key, the contract address, and the RPC endpoint.
+REFUSAL_EXIT:2
+=== 5. usage path: missing key must exit 1 ===
+sign-attestation: ERROR: VERIFIER_PRIVATE_KEY is not set. Export it in this shell only (never commit it, never pass it as a CLI argument — CLI args leak into shell history).
+NOKEY_EXIT:1
+=== SIGNING TOOL TEST DONE ===

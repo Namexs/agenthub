@@ -128,16 +128,25 @@ so a fresh attestation from the new signer uses the same current nonce.
    leaks.
 4. **Sign the EIP-712 struct** `Attestation(account, questId, nonce,
 deadline)` in the domain `("AGENTHUB QuestManager", "1", chainId,
-QuestManager address)`. Use the project's signing tooling (never a
-   raw `eth_sign` of a hash — the domain binding is what prevents
-   cross-chain and cross-contract replay).
+QuestManager address)`. Use the project's signing tool
+   `apps/web/scripts/sign-attestation.mjs` (local-only: the key is read
+   from `VERIFIER_PRIVATE_KEY`, never leaves your machine, and the tool
+   refuses to sign unless the key holds `VERIFIER_ROLE` on-chain — see
+   its header comment for the full trust assumptions). Never use a raw
+   `eth_sign` of a hash — the domain binding is what prevents
+   cross-chain and cross-contract replay. A production service verifier
+   must sign with a hardware wallet or HSM instead of a plaintext env
+   key (§1).
 5. **Deliver the signature to the user** over the normal channel. The
    user submits it via `completeQuestWithAttestation`.
 6. **Never sign:** an attestation for an account you cannot identify, a
    quest you cannot confirm, a deadline beyond 7 days, or a second
-   attestation for the same (account, quest) without checking whether
-   the first was already used (the nonce tells you — if it moved, the
-   first was consumed).
+   attestation for the same account — for ANY quest, not just the same
+   one — without re-reading the nonce first. The nonce is global per
+   account: if the user completed another attested quest since your
+   last signing, the nonce has moved and your second signature would
+   be stale. One pending attestation per account at a time; re-read
+   `nonces(account)` before every signature.
 
 ## 7. Verifier registry
 
