@@ -42,6 +42,11 @@ const envSchema = z
     NEXT_PUBLIC_REPUTATION_ADDRESS: addressSchema,
     NEXT_PUBLIC_ACHIEVEMENT_ADDRESS: addressSchema,
     NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().optional(),
+    // Block the contracts were deployed at. Event-based features
+    // (leaderboard, history, badges) query logs from this block — never
+    // from genesis, which public RPCs refuse over large ranges. Unset =
+    // event features show "not configured" instead of guessing.
+    NEXT_PUBLIC_DEPLOY_BLOCK: z.coerce.number().int().nonnegative().optional(),
   })
   .superRefine((data, ctx) => {
     const agentId = data.NEXT_PUBLIC_AGENT_ID_ADDRESS;
@@ -74,6 +79,7 @@ const parsed = envSchema.safeParse({
   NEXT_PUBLIC_ACHIEVEMENT_ADDRESS: process.env.NEXT_PUBLIC_ACHIEVEMENT_ADDRESS || undefined,
   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || undefined,
+  NEXT_PUBLIC_DEPLOY_BLOCK: process.env.NEXT_PUBLIC_DEPLOY_BLOCK || undefined,
 });
 
 if (!parsed.success) {

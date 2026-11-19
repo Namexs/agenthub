@@ -16,3 +16,5 @@ security-review-package/logs/
 security-retest-report/
 security-remediation-package/
 final-pre-testnet-package/
+# Generated ABI modules (export-abis.mjs output) — machine-written.
+apps/web/lib/abis/

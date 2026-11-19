@@ -1,0 +1,87 @@
+=== anvil up (pid 33388) ===
+No files changed, compilation skipped
+Script ran successfully.
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 31337
+
+Estimated max fee per gas: 2.000000001 gwei
+Estimated base fee per gas: 1 gwei
+Estimated max priority fee per gas: 0.000000001 gwei
+
+Estimated total gas used for script: 12006720
+
+Estimated amount required: 0.02401344001200672 ETH
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /home/hatch/workspace/agenthub/packages/contracts/broadcast/DeployLocalTestStack.s.sol/31337/run-latest.json
+
+Sensitive values saved to: /home/hatch/workspace/agenthub/packages/contracts/cache/DeployLocalTestStack.s.sol/31337/run-latest.json
+
+=== deployment ===
+{
+  "achievement": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+  "agentGate": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  "agentId": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "alice": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+  "bob": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+  "chainId": 31337,
+  "deployBlock": 0,
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "questManager": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+  "reputation": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+  "token": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+  "validator": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+  "verifier": "0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3"
+}=== node checks (viem, exact hook RPC patterns) ===
+PASS chainId is 31337
+PASS isAgentHolder(alice) is true
+PASS isAgentHolder(deployer) is false
+PASS questCount is 3
+PASS quest 1 is CheckIn "First Steps" 50pts badge 1
+PASS quest 2 is OnChain with the validator
+PASS quest 3 is Attested
+PASS hasCompleted(alice, 1) is true
+PASS hasCompleted(alice, 2) is true
+PASS hasCompleted(alice, 3) is true
+PASS hasCompleted(bob, 1) is false
+PASS points(alice) is 250
+PASS level(alice) is 2 (1-based: 250 pts >= 100)
+PASS totalEvents(alice) is 3
+PASS QuestCompleted logs: 3, all alice
+PASS PointsAdded logs sum to 250
+PASS BadgeIssued logs for alice: 2 (badges 1+2)
+PASS BadgeDefined logs: 2 with names
+PASS AttestationUsed logs: 1, signer is the verifier
+PASS hasBadge(alice, 1) is true
+PASS hasBadge(bob, 1) is false
+PASS validatorInfo: approved, named TokenBalanceValidator
+PASS new Attested quest created (questCount 4)
+PASS nonces(alice) is 1 (one attestation used)
+PASS viem attestation recovers the verifier
+PASS completeQuestWithAttestation receipt status is success
+PASS points(alice) is now 275
+
+27 passed, 0 failed
+=== vitest anvil test (real frontend lib vs live chain) ===
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v3.2.4 /home/hatch/workspace/agenthub/apps/web
+
+ ✓ lib/anvil-integration.test.ts (4 tests) 398ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  10:11:12
+   Duration  4.98s (transform 365ms, setup 0ms, collect 1.32s, tests 398ms, environment 0ms, prepare 2.52s)
+
+=== ALL ANVIL INTEGRATION CHECKS PASSED ===

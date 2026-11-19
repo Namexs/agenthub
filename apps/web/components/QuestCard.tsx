@@ -8,6 +8,9 @@ const TYPE_LABEL: Record<QuestType, string> = {
   [QuestType.Community]: 'Community',
 };
 
+// Static preview card — used only while the contracts are NOT deployed
+// (the launch catalogue). Once QuestManager is live, QuestCardLive
+// renders the on-chain quest with completion actions.
 export function QuestCard({
   title,
   description,
@@ -33,7 +36,7 @@ export function QuestCard({
       <p className="flex-1 text-sm leading-relaxed text-ink-400">{description}</p>
       <div className="flex items-center justify-between text-xs text-ink-500">
         <span>{badgeId > 0 ? `Badge #${badgeId} on completion` : 'No badge'}</span>
-        <span className="text-ink-400">On-chain in Phase 2</span>
+        <span className="text-ink-400">Goes on-chain at the testnet deploy</span>
       </div>
     </GlassCard>
   );

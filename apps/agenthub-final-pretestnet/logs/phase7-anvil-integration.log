@@ -1,0 +1,2 @@
+=== anvil up (pid 31811) ===
+apps/web/scripts/run-anvil-integration.sh: line 29: cd: /home/hatch/workspace/agenthub/apps/packages/contracts: No such file or directory

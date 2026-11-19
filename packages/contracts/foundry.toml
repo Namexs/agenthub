@@ -3,6 +3,10 @@ src = "src"
 out = "out"
 libs = ["lib"]
 solc_version = "0.8.24"
+# FINAL REMEDIATION (Phase 7): the local test-stack script writes its
+# deployment JSON into the project root. Scoped to that one file — the
+# script cannot write anywhere else.
+fs_permissions = [{ access = "read-write", path = "./.anvil-deployment.json" }]
 # M2 fix (Phase 1 audit): pin the EVM version explicitly. "cancun" matches
 # the solc 0.8.24 default. Our contracts use no transient storage and no
 # Cancun-only opcodes (OZ 5.0.2 ReentrancyGuard is storage-based — verified

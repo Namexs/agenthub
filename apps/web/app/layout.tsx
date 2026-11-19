@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from '@/lib/providers';
 import { Navbar } from '@/components/Navbar';
+import { ChainGuard } from '@/components/ChainGuard';
 import { Footer } from '@/components/Footer';
 import './globals.css';
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Navbar />
+            <ChainGuard />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

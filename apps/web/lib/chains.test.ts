@@ -1,14 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { bsc, bscTestnet } from 'viem/chains';
+import { anvil, bsc, bscTestnet } from 'viem/chains';
 import { supportedChains, chainName } from './chains';
 
 // PRE-TESTNET CLEANUP (item 3, closes M4): first unit tests for
 // @agenthub/web chain helpers.
 
 describe('supportedChains', () => {
-  it('supports BSC testnet and BSC mainnet (testnet first)', () => {
-    expect(supportedChains).toEqual([bscTestnet, bsc]);
-    expect(supportedChains.map((c) => c.id)).toEqual([97, 56]);
+  it('supports BSC testnet, BSC mainnet, and local Anvil (testnet first)', () => {
+    // FINAL REMEDIATION (Phase 7): Anvil (31337) is the local
+    // integration-test chain — the frontend is tested against a local
+    // deployment before any testnet use.
+    expect(supportedChains).toEqual([bscTestnet, bsc, anvil]);
+    expect(supportedChains.map((c) => c.id)).toEqual([97, 56, 31337]);
   });
 });
 

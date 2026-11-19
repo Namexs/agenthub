@@ -1,9 +1,10 @@
-import { bsc, bscTestnet } from 'viem/chains';
+import { anvil, bsc, bscTestnet } from 'viem/chains';
 import { CHAINS } from '@agenthub/shared';
 
 // Mainnet (56) is the competition target; testnet (97) is staging.
-// Local Anvil (31337) is supported in Phase 2 via a custom chain definition.
-export const supportedChains = [bscTestnet, bsc] as const;
+// Local Anvil (31337) is the integration-test chain (Phase 7): the
+// frontend is tested against a local deployment before any testnet use.
+export const supportedChains = [bscTestnet, bsc, anvil] as const;
 
 export function chainName(chainId: number): string {
   switch (chainId) {

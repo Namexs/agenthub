@@ -34,7 +34,7 @@ const STEPS = [
   {
     n: '2',
     title: 'Verify your Agent ID',
-    text: 'We read balanceOf on the official Agent ID contract. Holders only.',
+    text: 'We check AgentGate on-chain — the same gate the contracts enforce. Holders only.',
   },
   {
     n: '3',
@@ -107,8 +107,8 @@ export default function HomePage() {
           ))}
         </div>
         <p className="mt-10 text-center text-sm text-ink-500">
-          Phase 1: foundation is live. Contracts deploy to BSC testnet in Phase 2 — mainnet is the
-          competition target.
+          Contracts deploy to BSC testnet next — mainnet is the competition target. The frontend
+          already reads and writes the real contracts (tested against a local deployment).
         </p>
       </section>
     </div>

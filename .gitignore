@@ -28,3 +28,9 @@ packages/contracts/docs/
 .turbo/
 coverage/
 .vercel
+
+# Local anvil integration artifacts (Phase 7)
+.anvil.log
+.anvil-deployment.json
+apps/web/.anvil-deployment.json
+packages/contracts/.anvil-deployment.json

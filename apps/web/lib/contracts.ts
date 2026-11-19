@@ -1,9 +1,19 @@
 import { env } from './env';
 import type { Address } from 'viem';
+import { AGENT_GATE_ABI } from './abis/AgentGate';
+import { QUEST_MANAGER_ABI } from './abis/QuestManager';
+import { REPUTATION_ABI } from './abis/Reputation';
+import { ACHIEVEMENT_ABI } from './abis/Achievement';
 
-// Minimal ABIs — only the read functions the Phase 1 UI needs.
-// Full ABIs are generated from the Foundry build in Phase 2 (forge build
-// output) and replace these stubs.
+// ABIs exported from the Foundry build (Phase 7) — committed TypeScript
+// modules, see packages/contracts/script/export-abis.mjs. Regenerate
+// after any contract change: `node packages/contracts/script/export-abis.mjs`
+// (from the repo root, after `forge build`).
+//
+// The Agent ID contract is an EXTERNAL ERC-721 (Binance/SPACE ID), not
+// one of ours — the frontend uses a minimal balanceOf ABI for it.
+
+export { AGENT_GATE_ABI, QUEST_MANAGER_ABI, REPUTATION_ABI, ACHIEVEMENT_ABI };
 
 export const AGENT_ID_ABI = [
   {
@@ -15,23 +25,6 @@ export const AGENT_ID_ABI = [
   },
 ] as const;
 
-export const AGENT_GATE_ABI = [
-  {
-    type: 'function',
-    name: 'isAgentHolder',
-    stateMutability: 'view',
-    inputs: [{ name: 'account', type: 'address' }],
-    outputs: [{ name: '', type: 'bool' }],
-  },
-  {
-    type: 'function',
-    name: 'agentIdContract',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ name: '', type: 'address' }],
-  },
-] as const;
-
 export const contractAddresses = {
   agentId: (env.NEXT_PUBLIC_AGENT_ID_ADDRESS ?? undefined) as Address | undefined,
   agentGate: (env.NEXT_PUBLIC_AGENT_GATE_ADDRESS ?? undefined) as Address | undefined,
@@ -39,3 +32,6 @@ export const contractAddresses = {
   reputation: (env.NEXT_PUBLIC_REPUTATION_ADDRESS ?? undefined) as Address | undefined,
   achievement: (env.NEXT_PUBLIC_ACHIEVEMENT_ADDRESS ?? undefined) as Address | undefined,
 } as const;
+
+/** Block the contracts were deployed at (event queries start here). */
+export const deployBlock = env.NEXT_PUBLIC_DEPLOY_BLOCK;

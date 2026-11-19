@@ -10,12 +10,24 @@ export enum QuestType {
   Community = 'community',
 }
 
+/** How a quest's completion is proven (FINAL REMEDIATION, Phase 7). */
+export enum ValidationKind {
+  CheckIn = 'check-in',
+  OnChain = 'on-chain',
+  Attested = 'attested',
+}
+
 export interface Quest {
   id: number;
   creator: Address;
   title: string;
   description: string;
   questType: QuestType;
+  /** What the completion proves. The UI must render this honestly:
+   * CheckIn is never "verified" — see QUEST_VALIDATION_DESIGN.md §3. */
+  validationKind: ValidationKind;
+  /** OnChain quests only: the validator contract. Zero address otherwise. */
+  validator: Address;
   rewardPoints: number;
   /** 0 = no badge awarded. */
   badgeId: number;
@@ -48,6 +60,24 @@ export interface LeaderboardEntry {
   points: number;
   level: number;
   questsCompleted: number;
+}
+
+/** One row of the on-chain activity history (built from contract events). */
+export type TxHistoryKind = 'quest' | 'points' | 'badge' | 'attestation';
+
+export interface TxHistoryEntry {
+  kind: TxHistoryKind;
+  /** Quest id for quest/points/attestation entries. */
+  questId?: number;
+  points?: number;
+  badgeId?: number;
+  tokenId?: number;
+  /** Attestation entries only: the verifier who signed. */
+  signer?: Address;
+  hash: `0x${string}`;
+  blockNumber: number;
+  /** Log index within the block (tiebreaker for ordering). */
+  logIndex: number;
 }
 
 export interface ContractAddresses {

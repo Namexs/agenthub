@@ -29,7 +29,7 @@ export function ConnectButton() {
       onClick={() => injected && connect({ connector: injected })}
       className="rounded-pill bg-gradient-to-r from-agent-500 to-electric-600 px-4 py-2 text-sm font-semibold text-white shadow-glow-cyan transition hover:opacity-90 disabled:opacity-50"
     >
-      {isPending ? 'Connecting…' : 'Connect Wallet'}
+      {isPending ? 'Connecting…' : 'Connect Binance Wallet'}
     </button>
   );
 }
