@@ -1,0 +1,39 @@
+packages in lockfile: 920
+queried 500/920
+queried 920/920
+
+findings: 76
+by severity: {"HIGH":21,"MODERATE":41,"LOW":6,"CRITICAL":8}
+
+HIGH/CRITICAL findings (29):
+- HIGH GHSA-8rgj-285w-qcq4  — @coinbase/wallet-sdk@4.2.1 (fixed in: 4.3.0) — Unknown vulnerability in Coinbase Wallet SDK
+- HIGH GHSA-qr28-fpjm-wq7f CVE-2026-118664 — decode-uri-component@0.2.2 (fixed in: 0.5.1) — decode-uri-component vulnerable to denial of service via quadratic replacement of percent-encoded runs
+- HIGH GHSA-5j98-mcp5-4vw2 CVE-2025-64756 — glob@10.3.10 (fixed in: 10.5.0, 11.1.0) — glob CLI: Command injection via -c/--cmd executes matches with shell:true
+- CRITICAL GHSA-2464-fhr4-w9xw  — next@14.2.18 (fixed in: 15.5.28, 16.4.1) — Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used
+- CRITICAL GHSA-2xp9-vwfh-vxw4  — next@14.2.18 (fixed in: 15.5.24, 16.3.3) — Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used
+- HIGH GHSA-36qx-fr4f-26g5 CVE-2026-44573 — next@14.2.18 (fixed in: 15.5.16, 16.2.5) — Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n
+- HIGH GHSA-5j59-xgg2-r9c4  — next@14.2.18 (fixed in: 14.2.35, 15.0.7, 15.1.11, 15.2.8, 15.3.8, 15.4.10, 15.5.9, 15.6.0-canary.60, 16.0.10, 16.1.0-canary.19) — Next has a Denial of Service with Server Components - Incomplete Fix Follow-Up
+- HIGH GHSA-89xv-2m56-2m9x CVE-2026-64649 — next@14.2.18 (fixed in: 15.5.21, 16.2.11) — Next.js: Server-Side Request Forgery in Server Actions on custom servers
+- HIGH GHSA-8h8q-6873-q5fj  — next@14.2.18 (fixed in: 15.5.16, 16.2.5) — Next.js Vulnerable to Denial of Service with Server Components
+- HIGH GHSA-c4j6-fc7j-m34r CVE-2026-44578 — next@14.2.18 (fixed in: 15.5.16, 16.2.5) — Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades
+- CRITICAL GHSA-f82v-jwr5-mffw CVE-2025-29927 — next@14.2.18 (fixed in: 12.3.5, 13.5.9, 14.2.25, 15.2.3) — Authorization Bypass in Next.js Middleware
+- HIGH GHSA-h25m-26qc-wcjf  — next@14.2.18 (fixed in: 15.0.8, 15.1.12, 15.2.9, 15.3.9, 15.4.11, 15.5.10, 15.6.0-canary.61, 16.0.11, 16.1.5) — Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components
+- HIGH GHSA-m99w-x7hq-7vfj CVE-2026-64641 — next@14.2.18 (fixed in: 15.5.21, 16.2.11) — Next.js: Denial of Service in App Router using Server Actions
+- HIGH GHSA-mwv6-3258-q52c  — next@14.2.18 (fixed in: 14.2.34, 15.0.6, 15.1.10, 15.2.7, 15.3.7, 15.4.9, 15.5.8, 15.6.0-canary.59, 16.0.9, 16.1.0-canary.17) — Next Vulnerable to Denial of Service with Server Components
+- CRITICAL GHSA-p293-qw3h-jr36 CVE-2026-75604 — next@14.2.18 (fixed in: 15.5.24, 16.3.3) — Next.js: Unauthenticated Remote Code Execution on windows-hosted servers
+- HIGH GHSA-p3m5-59mp-jv5r CVE-2026-94482 — next@14.2.18 (fixed in: 15.5.28, 16.4.1) — Next.js: Denial of Service in App Router using Server Actions
+- HIGH GHSA-p9j2-gv94-2wf4 CVE-2026-64645 — next@14.2.18 (fixed in: 15.5.21, 16.2.11) — Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname
+- HIGH GHSA-q4gf-8mx6-v5v3  — next@14.2.18 (fixed in: 15.5.15, 16.2.3) — Next.js has a Denial of Service with Server Components
+- HIGH GHSA-6g55-p6wh-862q CVE-2026-45623 — postcss@8.4.31 (fixed in: 8.5.12) — PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments
+- HIGH GHSA-6g55-p6wh-862q CVE-2026-45623 — postcss@8.4.47 (fixed in: 8.5.12) — PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments
+- HIGH GHSA-r28c-9q8g-f849 CVE-2026-73646 — postcss@8.4.31 (fixed in: 8.5.18) — PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure
+- HIGH GHSA-r28c-9q8g-f849 CVE-2026-73646 — postcss@8.4.47 (fixed in: 8.5.18) — PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure
+- CRITICAL GHSA-5gmw-xhrv-c9v3 CVE-2026-104848 — tinypool@1.1.1 (fixed in: 2.1.1) — Tinypool: Prototype Pollution gadget in worker options leads to Remote Code Execution
+- CRITICAL GHSA-85c8-ppgw-ccpr CVE-2026-104849 — tinypool@1.1.1 (fixed in: 2.1.2) — Tinypool: Prototype Pollution Gadget to RCE in run() options
+- HIGH GHSA-587h-7wmj-h5pm CVE-2026-112942 — vite@5.4.21 (fixed in: 6.4.4, 7.3.7, 8.1.6, 8.2.4, 8.3.3) — launch-editor: `fs.existsSync()` existence check can be bypassed on Windows
+- CRITICAL GHSA-5xrq-8626-4rwp CVE-2026-47429 — vitest@2.1.9 (fixed in: 3.2.6, 4.1.0) — When Vitest UI server is listening, arbitrary file can be read and executed
+- CRITICAL GHSA-5xrq-8626-4rwp CVE-2026-47429 — vitest@3.2.4 (fixed in: 3.2.6, 4.1.0) — When Vitest UI server is listening, arbitrary file can be read and executed
+- HIGH GHSA-96hv-2xvq-fx4p CVE-2026-48779 — ws@8.18.0 (fixed in: 5.2.5, 6.2.4, 7.5.11, 8.21.0) — ws: Memory exhaustion DoS from tiny fragments and data chunks
+- HIGH GHSA-mrhx-c7xc-m3w5 CVE-2023-54404 — zod@3.23.8 (fixed in: 4.6.6) — Zod can exhaust memory while validating oversized constrained collections
+
+full JSON written to agenthub-final-pretestnet/logs/phase4-osv-audit.json

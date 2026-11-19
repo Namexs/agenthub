@@ -1,0 +1,13 @@
+=== web lint ===
+
+✔ No ESLint warnings or errors
+=== web typecheck ===
+> tsc --project tsconfig.json --noEmit
+
+TYPECHECK_OK
+=== web test ===
+ Test Files  7 passed | 1 skipped (8)
+      Tests  136 passed | 4 skipped (140)
+=== web build ===
+ ✓ Compiled successfully
+ ✓ Generating static pages (11/11)

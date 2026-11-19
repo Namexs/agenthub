@@ -1,0 +1,9 @@
+=== shared lint ===
+> eslint src --ext .ts
+
+=== shared typecheck ===
+
+TYPECHECK_OK
+=== shared test ===
+ Test Files  1 passed (1)
+      Tests  8 passed (8)

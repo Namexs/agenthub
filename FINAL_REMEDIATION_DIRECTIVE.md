@@ -72,6 +72,7 @@ JANGAN menyatakan GO bila ada Critical/High terbuka, test utama gagal,
 konfigurasi identitas salah, atau deployment authority belum diverifikasi.
 
 KONTEKS PENTING (dari parent):
+
 - Deployment authority BELUM diverifikasi: user belum memberikan tBNB,
   deployer key, alamat Safe, atau kunci verifier. Ini membatasi keputusan
   maksimal menjadi CONDITIONAL GO — jangan klaim GO penuh.
@@ -98,6 +99,7 @@ KONTEKS PENTING (dari parent):
 Kerjakan secara BERURUTAN. Jangan melewati phase bila pengujian phase
 sebelumnya gagal — perbaiki dulu sampai hijau, baru lanjut. Tiga hasil
 yang harus didapat:
+
 1. Smart contract: konfigurasi Safe, role, validator, verifier
    benar-benar diperkuat.
 2. Frontend: website tidak lagi hanya data contoh, tetapi terhubung

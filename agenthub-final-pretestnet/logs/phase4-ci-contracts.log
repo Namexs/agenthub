@@ -1,0 +1,6 @@
+=== forge build ===
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+=== forge test ===
+
+Ran 19 test suites in 49.30s (51.61s CPU time): 255 tests passed, 0 failed, 0 skipped (255 total tests)

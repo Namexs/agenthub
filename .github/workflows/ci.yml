@@ -1,5 +1,11 @@
 name: CI
 
+# NOTE: this repo has NO GitHub remote yet, so this workflow has NEVER
+# run on GitHub. Every step below is verified locally instead — see
+# agenthub-final-pretestnet/CI_EVIDENCE.md for the per-step commands,
+# logs, and results. Do not claim "CI passed" until a remote exists and
+# a real run is green.
+
 on:
   push:
     branches: [main]
@@ -9,59 +15,81 @@ on:
 permissions:
   contents: read
 
+# One run per branch at a time; a new push cancels the stale run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Pinned toolchains (single source of truth for every job).
+env:
+  NODE_VERSION: '20.17.6'
+  PNPM_VERSION: '9.15.4'
+  FOUNDRY_VERSION: '1.9.0'
+  SLITHER_VERSION: '0.11.6'
+  PYTHON_VERSION: '3.12'
+
 jobs:
   web:
-    name: Web (lint, typecheck, build)
+    name: Web (lint, typecheck, vitest, build)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.15.4
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @agenthub/web lint
       - run: pnpm --filter @agenthub/web typecheck
+      # Vitest: the lib tests always run. The hook tests (jsdom) join
+      # automatically once @testing-library/react + jsdom are added to
+      # package.json on a normal machine (see vitest.config.ts) — until
+      # then they are skipped, never failed. See CI_EVIDENCE.md §4.
+      - run: pnpm --filter @agenthub/web test
       - run: pnpm --filter @agenthub/web build
         env:
           NEXT_PUBLIC_CHAIN_ID: '97'
 
   shared:
-    name: Shared (lint, typecheck)
+    name: Shared (lint, typecheck, vitest)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.15.4
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @agenthub/shared lint
       - run: pnpm --filter @agenthub/shared typecheck
+      - run: pnpm --filter @agenthub/shared test
 
   format:
     name: Format check (prettier + forge fmt)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.15.4
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - uses: foundry-rs/foundry-toolchain@v1
         with:
-          version: 1.9.0
+          version: ${{ env.FOUNDRY_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run: forge fmt --check
@@ -70,24 +98,23 @@ jobs:
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.15.4
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Runs on GitHub runners (the dev VM's registry returns 403 for the
-      # audit endpoint — see PHASE1_AUDIT.md L9 — so this cannot be
-      # verified locally; a failing audit blocks the merge here instead).
       - run: pnpm audit --audit-level=high
 
   contracts:
     name: Contracts (forge build + test)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -96,8 +123,64 @@ jobs:
       # between runs and could change compiler behavior silently.
       - uses: foundry-rs/foundry-toolchain@v1
         with:
-          version: 1.9.0
+          version: ${{ env.FOUNDRY_VERSION }}
       - run: forge build
         working-directory: packages/contracts
       - run: forge test
         working-directory: packages/contracts
+
+  fuzz:
+    name: Contracts fuzz + invariant (10k runs, pinned seed)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FOUNDRY_VERSION }}
+      - run: forge build
+        working-directory: packages/contracts
+      # The seed is pinned so a failure is reproducible: an
+      # unreproduced transient failure (1 in ~13 runs, cause never
+      # identified) was documented during the remediation — see
+      # docs/REGRESSION_RESULTS.md §4.4. The main `contracts` job keeps
+      # the default random seed for breadth.
+      - run: forge test --fuzz-runs 10000 --fuzz-seed 42
+        working-directory: packages/contracts
+
+  slither:
+    name: Slither static analysis (fail on Medium+)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FOUNDRY_VERSION }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install slither-analyzer==${{ env.SLITHER_VERSION }}
+      - run: forge build
+        working-directory: packages/contracts
+      # crytic-compile detects the Foundry project and reuses the forge
+      # build, so no standalone solc is needed. --fail-medium matches
+      # the project's bar (0 High/Medium); the 4 Low + 6 Info findings
+      # are documented accepted risks — see FINAL_SECURITY_FINDINGS.md.
+      - run: slither . --exclude-dependencies --fail-medium
+        working-directory: packages/contracts
+
+  secrets:
+    name: Secret scanning (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Gitleaks scans the full history, not just the tip.
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2

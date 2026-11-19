@@ -18,3 +18,7 @@ security-remediation-package/
 final-pre-testnet-package/
 # Generated ABI modules (export-abis.mjs output) — machine-written.
 apps/web/lib/abis/
+# Local anvil deployment artifacts — machine-written JSON, gitignored.
+.anvil-deployment.json
+apps/web/.anvil-deployment.json
+packages/contracts/.anvil-deployment.json

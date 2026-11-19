@@ -1,0 +1,1069 @@
+{
+  "packages": 920,
+  "findings": [
+    {
+      "pkg": "@coinbase/wallet-sdk",
+      "version": "4.2.1",
+      "id": "GHSA-8rgj-285w-qcq4",
+      "summary": "Unknown vulnerability in Coinbase Wallet SDK",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "4.3.0"
+      ]
+    },
+    {
+      "pkg": "@metamask/sdk-communication-layer",
+      "version": "0.30.0",
+      "id": "GHSA-qj3p-xc97-xw74",
+      "summary": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
+      "severity": "MODERATE",
+      "aliases": [],
+      "fixed": [
+        "0.33.1"
+      ]
+    },
+    {
+      "pkg": "@metamask/sdk",
+      "version": "0.30.1",
+      "id": "GHSA-qj3p-xc97-xw74",
+      "summary": "MetaMask SDK indirectly exposed via malicious debug@4.4.2 dependency",
+      "severity": "MODERATE",
+      "aliases": [],
+      "fixed": [
+        "0.33.1"
+      ]
+    },
+    {
+      "pkg": "@stablelib/ed25519",
+      "version": "1.0.3",
+      "id": "GHSA-x3ff-w252-2g7j",
+      "summary": "StableLib Ed25519 Signature Malleability via Missing S < L Check",
+      "severity": "MODERATE",
+      "aliases": [],
+      "fixed": []
+    },
+    {
+      "pkg": "@vitest/mocker",
+      "version": "2.1.9",
+      "id": "GHSA-82fw-gwwq-j7x9",
+      "summary": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-84373"
+      ],
+      "fixed": [
+        "4.1.11",
+        "5.0.0-rc.2"
+      ]
+    },
+    {
+      "pkg": "@vitest/mocker",
+      "version": "2.1.9",
+      "id": "GHSA-qxg6-89mg-rqv8",
+      "summary": "Vitest: Code injection via unauthenticated manual mock registration",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-112949"
+      ],
+      "fixed": [
+        "4.1.12",
+        "5.0.3"
+      ]
+    },
+    {
+      "pkg": "@vitest/mocker",
+      "version": "3.2.4",
+      "id": "GHSA-82fw-gwwq-j7x9",
+      "summary": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-84373"
+      ],
+      "fixed": [
+        "4.1.11",
+        "5.0.0-rc.2"
+      ]
+    },
+    {
+      "pkg": "@vitest/mocker",
+      "version": "3.2.4",
+      "id": "GHSA-qxg6-89mg-rqv8",
+      "summary": "Vitest: Code injection via unauthenticated manual mock registration",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-112949"
+      ],
+      "fixed": [
+        "4.1.12",
+        "5.0.3"
+      ]
+    },
+    {
+      "pkg": "decode-uri-component",
+      "version": "0.2.2",
+      "id": "GHSA-qr28-fpjm-wq7f",
+      "summary": "decode-uri-component vulnerable to denial of service via quadratic replacement of percent-encoded runs",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-118664"
+      ],
+      "fixed": [
+        "0.5.1"
+      ]
+    },
+    {
+      "pkg": "decode-uri-component",
+      "version": "0.2.2",
+      "id": "GHSA-vcc3-ghjq-m6fr",
+      "summary": "decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-45822"
+      ],
+      "fixed": [
+        "0.5.0"
+      ]
+    },
+    {
+      "pkg": "elliptic",
+      "version": "6.6.1",
+      "id": "GHSA-848j-6mx2-7j84",
+      "summary": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2025-14505"
+      ],
+      "fixed": []
+    },
+    {
+      "pkg": "esbuild",
+      "version": "0.21.5",
+      "id": "GHSA-67mh-4wv8-2f99",
+      "summary": "esbuild enables any website to send any requests to the development server and read the response",
+      "severity": "MODERATE",
+      "aliases": [],
+      "fixed": [
+        "0.25.0"
+      ]
+    },
+    {
+      "pkg": "glob",
+      "version": "10.3.10",
+      "id": "GHSA-3g3m-2fjr-6pw4",
+      "summary": "Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-118773"
+      ],
+      "fixed": [
+        "14.0.2"
+      ]
+    },
+    {
+      "pkg": "glob",
+      "version": "10.3.10",
+      "id": "GHSA-5j98-mcp5-4vw2",
+      "summary": "glob CLI: Command injection via -c/--cmd executes matches with shell:true",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2025-64756"
+      ],
+      "fixed": [
+        "10.5.0",
+        "11.1.0"
+      ]
+    },
+    {
+      "pkg": "minimatch",
+      "version": "9.0.9",
+      "id": "GHSA-g3hv-75wg-m249",
+      "summary": "minimatch has potential denial of service via globparts amplification",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-118764"
+      ],
+      "fixed": [
+        "11.0.1"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-2464-fhr4-w9xw",
+      "summary": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+      "severity": "CRITICAL",
+      "aliases": [],
+      "fixed": [
+        "15.5.28",
+        "16.4.1"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-2xp9-vwfh-vxw4",
+      "summary": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+      "severity": "CRITICAL",
+      "aliases": [],
+      "fixed": [
+        "15.5.24",
+        "16.3.3"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-36qx-fr4f-26g5",
+      "summary": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-44573"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-3g8h-86w9-wvmq",
+      "summary": "Next.js's Middleware / Proxy redirects can be cache-poisoned",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2026-44572"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-3h52-269p-cp9r",
+      "summary": "Information exposure in Next.js dev server due to lack of origin verification",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2025-48068"
+      ],
+      "fixed": [
+        "14.2.30",
+        "15.2.2"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-3x4c-7xq6-9pq8",
+      "summary": "Next.js: Unbounded next/image disk cache growth can exhaust storage",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-27980"
+      ],
+      "fixed": [
+        "15.5.14",
+        "16.1.7"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-4342-x723-ch2f",
+      "summary": "Next.js Improper Middleware Redirect Handling Leads to SSRF",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2025-57822"
+      ],
+      "fixed": [
+        "14.2.32",
+        "15.4.7"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-4633-3j49-mh5q",
+      "summary": "Next.js: Cache confusion of response bodies for requests with bodies containing invalid UTF-8 byte sequences",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-64647"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-4c39-4ccg-62r3",
+      "summary": "Next.js: Unbounded Server Action payload in Edge runtime",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-64646"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-5j59-xgg2-r9c4",
+      "summary": "Next has a Denial of Service with Server Components - Incomplete Fix Follow-Up",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "14.2.35",
+        "15.0.7",
+        "15.1.11",
+        "15.2.8",
+        "15.3.8",
+        "15.4.10",
+        "15.5.9",
+        "15.6.0-canary.60",
+        "16.0.10",
+        "16.1.0-canary.19"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-68g3-v927-f742",
+      "summary": "Next.js: Cache confusion of response bodies for requests with bodies",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-64648"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-7m27-7ghc-44w9",
+      "summary": "Next.js Allows a Denial of Service (DoS) with Server Actions",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2024-56332"
+      ],
+      "fixed": [
+        "13.5.8",
+        "14.2.21",
+        "15.1.2"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-89xv-2m56-2m9x",
+      "summary": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-64649"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-8h8q-6873-q5fj",
+      "summary": "Next.js Vulnerable to Denial of Service with Server Components",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-955p-x3mx-jcvp",
+      "summary": "Next.js: Unauthenticated disclosure of internal Server Function endpoints",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-64643"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-9g9p-9gw9-jx7f",
+      "summary": "Next.js self-hosted applications vulnerable to DoS via Image Optimizer remotePatterns configuration",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2025-59471"
+      ],
+      "fixed": [
+        "15.5.10",
+        "16.1.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-c4j6-fc7j-m34r",
+      "summary": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-44578"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-f82v-jwr5-mffw",
+      "summary": "Authorization Bypass in Next.js Middleware",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2025-29927"
+      ],
+      "fixed": [
+        "12.3.5",
+        "13.5.9",
+        "14.2.25",
+        "15.2.3"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-ffhc-5mcf-pf4q",
+      "summary": "Next.js vulnerable to cross-site scripting in App Router applications using CSP nonces",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-44581"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-g5qg-72qw-gw5v",
+      "summary": "Next.js Affected by Cache Key Confusion for Image Optimization API Routes",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2025-57752"
+      ],
+      "fixed": [
+        "14.2.31",
+        "15.4.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-ggv3-7p47-pfv8",
+      "summary": "Next.js: HTTP request smuggling in rewrites",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-29057"
+      ],
+      "fixed": [
+        "15.5.13",
+        "16.1.7"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-gx5p-jg67-6x7h",
+      "summary": "Next.js has cross-site scripting in beforeInteractive scripts with untrusted input",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-44580"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-h25m-26qc-wcjf",
+      "summary": "Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "15.0.8",
+        "15.1.12",
+        "15.2.9",
+        "15.3.9",
+        "15.4.11",
+        "15.5.10",
+        "15.6.0-canary.61",
+        "16.0.11",
+        "16.1.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-h64f-5h5j-jqjh",
+      "summary": "Next.js has a Denial of Service in the Image Optimization API",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-44577"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-m99w-x7hq-7vfj",
+      "summary": "Next.js: Denial of Service in App Router using Server Actions",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-64641"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-mwv6-3258-q52c",
+      "summary": "Next Vulnerable to Denial of Service with Server Components",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "14.2.34",
+        "15.0.6",
+        "15.1.10",
+        "15.2.7",
+        "15.3.7",
+        "15.4.9",
+        "15.5.8",
+        "15.6.0-canary.59",
+        "16.0.9",
+        "16.1.0-canary.17"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-p293-qw3h-jr36",
+      "summary": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2026-75604"
+      ],
+      "fixed": [
+        "15.5.24",
+        "16.3.3"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-p3m5-59mp-jv5r",
+      "summary": "Next.js: Denial of Service in App Router using Server Actions",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-94482"
+      ],
+      "fixed": [
+        "15.5.28",
+        "16.4.1"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-p9j2-gv94-2wf4",
+      "summary": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-64645"
+      ],
+      "fixed": [
+        "15.5.21",
+        "16.2.11"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-q4gf-8mx6-v5v3",
+      "summary": "Next.js has a Denial of Service with Server Components",
+      "severity": "HIGH",
+      "aliases": [],
+      "fixed": [
+        "15.5.15",
+        "16.2.3"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-qpjv-v59x-3qc4",
+      "summary": "Next.js Race Condition to Cache Poisoning",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2025-32421"
+      ],
+      "fixed": [
+        "14.2.24",
+        "15.1.6"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-vfv6-92ff-j949",
+      "summary": "Next.js vulnerable to cache poisoning via collisions in React Server Component cache-busting",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2026-44582"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-wfc6-r584-vfw7",
+      "summary": "Next.js vulnerable to cache poisoning in React Server Component responses",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-44576"
+      ],
+      "fixed": [
+        "15.5.16",
+        "16.2.5"
+      ]
+    },
+    {
+      "pkg": "next",
+      "version": "14.2.18",
+      "id": "GHSA-xv57-4mr9-wg8v",
+      "summary": "Next.js Content Injection Vulnerability for Image Optimization",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2025-55173"
+      ],
+      "fixed": [
+        "14.2.31",
+        "15.4.5"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.31",
+      "id": "GHSA-6g55-p6wh-862q",
+      "summary": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-45623"
+      ],
+      "fixed": [
+        "8.5.12"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.31",
+      "id": "GHSA-fxqj-rqcc-2cmp",
+      "summary": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-69153"
+      ],
+      "fixed": [
+        "8.5.23"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.31",
+      "id": "GHSA-qx2v-qp2m-jg93",
+      "summary": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-41305"
+      ],
+      "fixed": [
+        "8.5.10"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.31",
+      "id": "GHSA-r28c-9q8g-f849",
+      "summary": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-73646"
+      ],
+      "fixed": [
+        "8.5.18"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.47",
+      "id": "GHSA-6g55-p6wh-862q",
+      "summary": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-45623"
+      ],
+      "fixed": [
+        "8.5.12"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.47",
+      "id": "GHSA-fxqj-rqcc-2cmp",
+      "summary": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-69153"
+      ],
+      "fixed": [
+        "8.5.23"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.47",
+      "id": "GHSA-qx2v-qp2m-jg93",
+      "summary": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-41305"
+      ],
+      "fixed": [
+        "8.5.10"
+      ]
+    },
+    {
+      "pkg": "postcss",
+      "version": "8.4.47",
+      "id": "GHSA-r28c-9q8g-f849",
+      "summary": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-73646"
+      ],
+      "fixed": [
+        "8.5.18"
+      ]
+    },
+    {
+      "pkg": "tinypool",
+      "version": "1.1.1",
+      "id": "GHSA-5gmw-xhrv-c9v3",
+      "summary": "Tinypool: Prototype Pollution gadget in worker options leads to Remote Code Execution",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2026-104848"
+      ],
+      "fixed": [
+        "2.1.1"
+      ]
+    },
+    {
+      "pkg": "tinypool",
+      "version": "1.1.1",
+      "id": "GHSA-85c8-ppgw-ccpr",
+      "summary": "Tinypool: Prototype Pollution Gadget to RCE in run() options",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2026-104849"
+      ],
+      "fixed": [
+        "2.1.2"
+      ]
+    },
+    {
+      "pkg": "uuid",
+      "version": "8.3.2",
+      "id": "GHSA-w5hq-g745-h8pq",
+      "summary": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-41907",
+        "CVE-2026-41988"
+      ],
+      "fixed": [
+        "11.1.1",
+        "12.0.1",
+        "13.0.1"
+      ]
+    },
+    {
+      "pkg": "uuid",
+      "version": "9.0.1",
+      "id": "GHSA-w5hq-g745-h8pq",
+      "summary": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-41907",
+        "CVE-2026-41988"
+      ],
+      "fixed": [
+        "11.1.1",
+        "12.0.1",
+        "13.0.1"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-4w7w-66w2-5vf9",
+      "summary": "Vite Vulnerable to Path Traversal in Optimized Deps `.map` Handling",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-39365"
+      ],
+      "fixed": [
+        "6.4.2",
+        "7.3.2",
+        "8.0.5"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-587h-7wmj-h5pm",
+      "summary": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-112942"
+      ],
+      "fixed": [
+        "6.4.4",
+        "7.3.7",
+        "8.1.6",
+        "8.2.4",
+        "8.3.3"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-698v-4r3x-3vcv",
+      "summary": "launch-editor: escapeCmdArgs() omits % escaping on Windows",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-112943"
+      ],
+      "fixed": [
+        "6.4.4",
+        "7.3.7",
+        "8.1.6",
+        "8.2.4",
+        "8.3.3"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-9jrq-w75r-8gcw",
+      "summary": "Vite: Cross origin script execution through Vite custom middleware",
+      "severity": "LOW",
+      "aliases": [
+        "CVE-2026-112945"
+      ],
+      "fixed": [
+        "6.4.4",
+        "7.3.7",
+        "8.1.6",
+        "8.2.4",
+        "8.3.3"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-fx2h-pf6j-xcff",
+      "summary": "vite: `server.fs.deny` bypass on Windows alternate paths",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-53571"
+      ],
+      "fixed": [
+        "6.4.3",
+        "7.3.5",
+        "8.0.16"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-r825-w8mm-5pxw",
+      "summary": "launch-editor: Editor CLI flag misinterpretation causing arbitrary command execution for some editors",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-112944"
+      ],
+      "fixed": [
+        "6.4.4",
+        "7.3.7",
+        "8.1.6",
+        "8.2.4",
+        "8.3.3"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-rq7h-c2jc-7f22",
+      "summary": "Vite: Files outside `server.fs.allow` could be served when project paths match system paths on non-Windows machine",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-112946"
+      ],
+      "fixed": [
+        "6.4.4",
+        "7.3.7",
+        "8.1.6",
+        "8.2.4",
+        "8.3.3"
+      ]
+    },
+    {
+      "pkg": "vite",
+      "version": "5.4.21",
+      "id": "GHSA-v6wh-96g9-6wx3",
+      "summary": "launch-editor: NTLMv2 hash disclosure via UNC path handling on Windows",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-53632"
+      ],
+      "fixed": [
+        "6.4.3",
+        "7.3.5",
+        "8.0.16"
+      ]
+    },
+    {
+      "pkg": "vitest",
+      "version": "2.1.9",
+      "id": "GHSA-5xrq-8626-4rwp",
+      "summary": "When Vitest UI server is listening, arbitrary file can be read and executed",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2026-47429"
+      ],
+      "fixed": [
+        "3.2.6",
+        "4.1.0"
+      ]
+    },
+    {
+      "pkg": "vitest",
+      "version": "2.1.9",
+      "id": "GHSA-82fw-gwwq-j7x9",
+      "summary": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-84373"
+      ],
+      "fixed": [
+        "4.1.11",
+        "5.0.0-rc.2"
+      ]
+    },
+    {
+      "pkg": "vitest",
+      "version": "3.2.4",
+      "id": "GHSA-5xrq-8626-4rwp",
+      "summary": "When Vitest UI server is listening, arbitrary file can be read and executed",
+      "severity": "CRITICAL",
+      "aliases": [
+        "CVE-2026-47429"
+      ],
+      "fixed": [
+        "3.2.6",
+        "4.1.0"
+      ]
+    },
+    {
+      "pkg": "vitest",
+      "version": "3.2.4",
+      "id": "GHSA-82fw-gwwq-j7x9",
+      "summary": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-84373"
+      ],
+      "fixed": [
+        "4.1.11",
+        "5.0.0-rc.2"
+      ]
+    },
+    {
+      "pkg": "ws",
+      "version": "8.18.0",
+      "id": "GHSA-58qx-3vcg-4xpx",
+      "summary": "ws: Uninitialized memory disclosure",
+      "severity": "MODERATE",
+      "aliases": [
+        "CVE-2026-45736"
+      ],
+      "fixed": [
+        "8.20.1"
+      ]
+    },
+    {
+      "pkg": "ws",
+      "version": "8.18.0",
+      "id": "GHSA-96hv-2xvq-fx4p",
+      "summary": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2026-48779"
+      ],
+      "fixed": [
+        "5.2.5",
+        "6.2.4",
+        "7.5.11",
+        "8.21.0"
+      ]
+    },
+    {
+      "pkg": "zod",
+      "version": "3.23.8",
+      "id": "GHSA-mrhx-c7xc-m3w5",
+      "summary": "Zod can exhaust memory while validating oversized constrained collections",
+      "severity": "HIGH",
+      "aliases": [
+        "CVE-2023-54404"
+      ],
+      "fixed": [
+        "4.6.6"
+      ]
+    }
+  ]
+}
