@@ -1,3 +1,4 @@
+c666878 security: fix 4 forge warnings (pure approvals, nonReentrant first); document remaining 20; Slither final 7 findings
 23ff8d8 docs(security): test plan, findings, remediation, deployment gate; L7 checksummed Agent ID address repo-wide
 ee7592e security: fix Slither unused-return (SEC-003) — QuestCompleted now carries badge token id + 2 regression tests
 1a24e91 security: M5 chain-AgentID consistency + M3 CI foundry pin + L1/L3/L5/L6 fixes; forge fmt + prettier clean

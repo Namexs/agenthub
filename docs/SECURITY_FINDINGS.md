@@ -10,14 +10,14 @@
 
 ## Summary
 
-| Severity      | Total | Fixed | Open (accepted)          | Closed as false positive |
-| ------------- | ----- | ----- | ------------------------ | ------------------------ |
-| Critical      | 0     | 0     | 0                        | 0                        |
-| High          | 1     | 1     | 0                        | 0                        |
-| Medium        | 1     | 1     | 0                        | 0                        |
-| Low           | 2     | 1     | 1 (accepted risk)        | 0                        |
-| Informational | 2     | 0     | 1 (accepted group)       | 1                        |
-| **Total**     | **6** | **3** | **2 (0 exploitable)**    | **1**                    |
+| Severity      | Total | Fixed | Open (accepted)       | Closed as false positive |
+| ------------- | ----- | ----- | --------------------- | ------------------------ |
+| Critical      | 0     | 0     | 0                     | 0                        |
+| High          | 1     | 1     | 0                     | 0                        |
+| Medium        | 1     | 1     | 0                     | 0                        |
+| Low           | 2     | 1     | 1 (accepted risk)     | 0                        |
+| Informational | 2     | 0     | 1 (accepted group)    | 1                        |
+| **Total**     | **6** | **3** | **2 (0 exploitable)** | **1**                    |
 
 ---
 
@@ -174,7 +174,7 @@ achievement.issue(...) (src/QuestManager.sol#133)`.
 - **Root cause (of the report):** Slither 0.11.6's `uninitialized-local`
   detector flagged `badgeTokenId` as "never initialized" even though it is
   initialized in its declaration. Two forms were tried — `uint256
-  badgeTokenId = 0;` followed by conditional assignment, and a ternary
+badgeTokenId = 0;` followed by conditional assignment, and a ternary
   initializer covering both branches — and the detector flagged both in
   the intermediate runs.
 - **Proof it is a false positive:** (1) The variable has an explicit

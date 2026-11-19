@@ -9,3 +9,5 @@ packages/contracts/lib
 packages/contracts/out
 packages/contracts/cache
 packages/contracts/broadcast
+# Review-package evidence logs must stay byte-identical to tool output.
+security-review-package/logs/

@@ -1,0 +1,23 @@
+=== M5 env validation harness (apps/web/lib/env.ts, compiled with tsc, run with node) ===
+OFFICIAL Agent ID: 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F
+MOCK address:    0x1111111111111111111111111111111111111111
+--- 1: 97 + unset (expect OK)
+RESULT-OK
+--- 2: 97 + mock (expect OK)
+RESULT-OK
+--- 3: 97 + official (expect REJECT)
+RESULT-REJECTED
+on BSC testnet (97) the Agent ID MUST NOT be the official mainnet contract — use the deployed MockAgentId
+--- 4: 56 + official (expect OK)
+RESULT-OK
+--- 5: 56 + mock (expect REJECT)
+RESULT-REJECTED
+on BSC mainnet (56) the Agent ID MUST be the official contract 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F
+--- 6: 31337 + mock (expect OK)
+RESULT-OK
+--- 7: chain 1 (expect REJECT)
+RESULT-REJECTED
+must be one of 56, 97, 31337
+--- 8: 97 + zero address (expect REJECT)
+RESULT-REJECTED
+zero address is not allowed
