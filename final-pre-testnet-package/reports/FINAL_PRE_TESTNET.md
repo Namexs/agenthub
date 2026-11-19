@@ -41,7 +41,7 @@ Why GO, on evidence rather than test counts alone:
 
 `PACKAGE_MANIFEST.md` regenerated for the final commit with
 `scripts/generate-manifest.sh` and verified with
-`scripts/verify-manifest.sh`: **210 file hashes, 0 mismatches**, both
+`scripts/verify-manifest.sh`: **209 file hashes, 0 mismatches**, both
 submodules match. The old manifest described commit `18e1aa4` (168
 hashes) and was stale by design (it describes the commit it was generated
 from, committed separately). No script changes were needed — the design
@@ -137,7 +137,7 @@ vitest).
 | `pnpm format:check` | exit 0 (was failing pre-existing at baseline — see §5) | `logs/final-pnpm-format2.log` (first failing run: `logs/final-pnpm-format.log`) |
 | `forge fmt --check` | exit 0 | `logs/final-forge-fmt.log` |
 | Web build (`NODE_OPTIONS=--max-old-space-size=1024`) | exit 0 | `logs/final-pnpm-build.log` |
-| Manifest verification | **210 hashes, 0 mismatches** | (run at commit time; see §2 items 1–2) |
+| Manifest verification | **209 hashes, 0 mismatches** | (run at commit time; see §2 items 1–2) |
 
 Baseline preserved: **no existing test was deleted or weakened**. The
 suite grew 193 → 218 purely by addition (14 allowlist + 11 Safe).

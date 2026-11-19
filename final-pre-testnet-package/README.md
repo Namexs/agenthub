@@ -22,7 +22,7 @@ reproduced after 8 full green runs). **NO-GO for mainnet.**
 | Slither 0.11.6 | 10 findings: 0 Critical/High/Medium, 4 Low, 6 Informational (identical set to baseline) |
 | lint / typecheck / format / forge fmt / web build | all exit 0 |
 | Aggregate `pnpm test` | exit 0 (forge 218 + vitest 24) |
-| Manifest | 210 hashes, 0 mismatches |
+| Manifest | 209 hashes, 0 mismatches |
 
 ## Contents
 
