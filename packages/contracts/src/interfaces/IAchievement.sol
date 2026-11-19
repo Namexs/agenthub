@@ -12,6 +12,10 @@ interface IAchievement {
     error UnauthorizedIssuer(address caller);
     /// @dev Thrown by any transfer/approval attempt — badges are soulbound.
     error Soulbound();
+    error ZeroAddress();
+    error InvalidBadgeId();
+    error InvalidBadgeMetadata();
+    error BadgeAlreadyDefined(uint256 badgeId);
 
     event BadgeDefined(uint256 indexed badgeId, string name, string tokenURI);
     event BadgeIssued(address indexed account, uint256 indexed badgeId, uint256 indexed tokenId);
@@ -21,6 +25,10 @@ interface IAchievement {
 
     /// @notice Issue a badge to `account`. Only authorized issuer. Returns tokenId.
     function issue(address account, uint256 badgeId) external returns (uint256 tokenId);
+
+    /// @return defined True when `badgeId` was defined via defineBadge.
+    /// (Review R5: QuestManager validates badge existence at creation time.)
+    function isBadgeDefined(uint256 badgeId) external view returns (bool defined);
 
     /// @return True when `account` holds the badge.
     function hasBadge(address account, uint256 badgeId) external view returns (bool);

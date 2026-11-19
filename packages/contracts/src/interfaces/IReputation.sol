@@ -9,6 +9,8 @@ pragma solidity ^0.8.24;
 interface IReputation {
     error UnauthorizedScoreSource(address caller);
     error InvalidPoints();
+    error ZeroAddress();
+    error InvalidLevel(uint8 level_);
 
     event PointsAdded(address indexed account, uint256 indexed questId, uint256 points, uint256 newTotal);
 

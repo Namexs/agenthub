@@ -13,6 +13,9 @@ interface IAgentGate {
     error NotAgentHolder(address account);
     error WrongChain(uint256 expected, uint256 actual);
     error ZeroAddress();
+    /// @dev The configured Agent ID address has no code (not a contract).
+    error NoCodeAtAgentId(address agentId);
+    error InvalidChainId(uint256 chainId);
 
     /// @notice Emitted when an account's Agent ID ownership is verified on-chain.
     event AgentHolderVerified(address indexed account);
@@ -28,4 +31,9 @@ interface IAgentGate {
 
     /// @notice Reverts with NotAgentHolder unless `account` holds an Agent ID.
     function requireAgentHolder(address account) external view;
+
+    /// @notice Record an on-chain verification for the caller. Reverts unless
+    /// the caller holds an Agent ID; emits AgentHolderVerified on success.
+    /// (Review R1: the event needs a non-view entry point to ever fire.)
+    function verify() external;
 }

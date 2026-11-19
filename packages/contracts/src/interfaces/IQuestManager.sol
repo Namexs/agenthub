@@ -39,12 +39,18 @@ interface IQuestManager {
     error AlreadyCompleted(address account, uint256 questId);
     error CooldownActive(address account, uint256 questId, uint256 readyAt);
     error InvalidQuestParams();
+    error ZeroAddress();
+    error NotQuestCreatorOrAdmin(address account, uint256 questId);
 
     event QuestCreated(uint256 indexed questId, address indexed creator, QuestType questType, uint256 rewardPoints);
     event QuestCompleted(uint256 indexed questId, address indexed account, uint256 rewardPoints);
     event QuestDeactivated(uint256 indexed questId);
 
     /// @notice Create a quest. Only QUEST_CREATOR_ROLE. Returns the new quest id.
+    /// @dev Rules (review R3/R4/R5): title 1–128 bytes, description ≤ 1024 bytes,
+    /// 0 < rewardPoints ≤ MAX_REWARD_POINTS, startTime < endTime, endTime in the
+    /// future, maxCompletions == 0 means unlimited, and a non-zero badgeId must
+    /// already be defined on the Achievement contract.
     function createQuest(
         string calldata title,
         string calldata description,
@@ -58,6 +64,7 @@ interface IQuestManager {
 
     /// @notice Complete a quest. Caller must hold an Agent ID. Enforces
     /// one-time rules and cooldowns (daily/weekly). Awards points + badge.
+    /// @dev Community quests behave like OneTime: one completion per account.
     function completeQuest(uint256 questId) external;
 
     /// @notice Deactivate a quest (creator or admin). No new completions after this.
