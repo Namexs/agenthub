@@ -74,7 +74,9 @@ SUBJECT="$(git show -s --format=%s "$COMMIT")"
   echo "generated from the described commit and committed separately."
   echo
   echo '```'
-  git ls-tree -r --name-only "$COMMIT" | sort | while IFS= read -r f; do
+  # ls-tree lists submodule gitlinks (mode 160000) too; skip them — they
+  # are covered by §2, and git cat-file cannot hash a gitlink.
+  git ls-tree -r "$COMMIT" | grep -v '^160000 ' | sed 's/.*\t//' | sort | while IFS= read -r f; do
     [ "$f" = "PACKAGE_MANIFEST.md" ] && continue
     printf '%s  %s\n' "$(git cat-file blob "$COMMIT:$f" | sha256sum | cut -d' ' -f1)" "$f"
   done

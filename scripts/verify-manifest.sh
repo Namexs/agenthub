@@ -29,6 +29,9 @@ CHECKED=0
 while IFS= read -r line; do
   hash="${line%%  *}"
   path="${line#*  }"
+  # Submodule paths are directories, covered by the submodule check (§3);
+  # skip them if an older manifest listed them.
+  if [ -d "$path" ]; then continue; fi
   [ -f "$path" ] || { echo "MISSING: $path"; FAILURES=$((FAILURES + 1)); continue; }
   actual="$(sha256sum "$path" | cut -d' ' -f1)"
   if [ "$actual" != "$hash" ]; then
