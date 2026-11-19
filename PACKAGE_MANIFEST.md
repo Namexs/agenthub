@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `cfbd350396ebdb1f1ce62357462531f8f20ebd72`
-- Date: 2026-11-19T09:18:42+00:00
-- Subject: docs(cleanup): fix last manifest count 210 -> 209 (line-wrapped instance)
+- Commit: `c1aaebc0f5f5bc0db42835b944da70c342fe22bc`
+- Date: 2026-11-19T16:20:43+07:00
+- Subject: chore(cleanup): prettier-format final report + gate doc (format:check green)
 
 ## 2. Submodules
 
@@ -117,13 +117,13 @@ c5fc304a6b848207b55f19f38cac02144fd6c3c48e92953a6c2bc1818fb03473  apps/web/tscon
 ddebd4124ae042184f36b94a6e85fe56c02f815dfff3f19811834b764ea4bb4d  docs/ARCHITECTURE.md
 c6aeaf7ace691d7868ea05e68f32ee7f2625ea2aa3516483f1771cfbb3add8e4  docs/DEPLOYMENT.md
 9f6b2e5ca559b52a113902bff97197ccd5f69aaec20b59d52f4dba0f9f070a9a  docs/DEPLOYMENT_PLAN.md
-6a3f6770b37009986e75fb9e0025c50fb86d7ca207aa526a6c49d90f654d02ec  docs/FINAL_PRE_TESTNET.md
+5acf7970ece654b01f89226fc11e38c637ae9b9b47a5a58c83c2989efa0614b8  docs/FINAL_PRE_TESTNET.md
 02e92d8eaae9b86768852298b0d450d556f18f8a272d29e8e5adfc543884ca55  docs/NEW_THREAT_MODEL.md
 5032bdc080498602c4e5195bde6b430c5ec34ca68df23946dc1a3c8403846bc8  docs/QUEST_VALIDATION_DESIGN.md
 1b956db14e42e7b5c06a344e6adda6f0caad2bc526f97ad7ee038a5eb57a76cb  docs/REGRESSION_RESULTS.md
 fd753f7a778d582a92cc79f4bd12d0246042cdbbc3e8ee4dedfb05faaa727f8a  docs/REMEDIATION_REPORT.md
 fec2a2482f7be32aca6714566f5058469f77e4ea99f658bd497dc407ce556069  docs/SECURITY.md
-6a34b3a124af02cc6f58121703602e5fc5897d5d534180aab9bdc7a5d1fe3b5a  docs/SECURITY_DEPLOYMENT_GATE.md
+bb90bdf7f24121048abf24c2d08c7de84a872d70df0ae9674f5b105763096aea  docs/SECURITY_DEPLOYMENT_GATE.md
 9ef9e32233dae0631ab5a34895a3b6ac135dc94dc05b37ea24afa39a905d1e67  docs/SECURITY_FINDINGS.md
 b5ed6d81b2ea9591bad7bcff39c96cce4e919d4a70f5fa0aa5515696264e307a  docs/SECURITY_REMEDIATION.md
 d3a11e66c68c190e1b08b4f55f2a1c647322542842efb4df5ff5b5b454c47b04  docs/SECURITY_TEST_PLAN.md
