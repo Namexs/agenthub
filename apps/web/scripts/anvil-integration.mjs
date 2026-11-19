@@ -10,19 +10,12 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  createPublicClient,
-  createWalletClient,
-  http,
-  recoverTypedDataAddress,
-} from 'viem';
+import { createPublicClient, createWalletClient, http, recoverTypedDataAddress } from 'viem';
 import { anvil } from 'viem/chains';
 import { privateKeyToAccount } from 'viem/accounts';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const deployment = JSON.parse(
-  readFileSync(join(here, '..', '.anvil-deployment.json'), 'utf8'),
-);
+const deployment = JSON.parse(readFileSync(join(here, '..', '.anvil-deployment.json'), 'utf8'));
 const contractsOut = join(here, '..', '..', '..', 'packages', 'contracts', 'out');
 const abiOf = (name) =>
   JSON.parse(readFileSync(join(contractsOut, `${name}.sol`, `${name}.json`), 'utf8')).abi;
@@ -35,6 +28,8 @@ const ACHIEVEMENT_ABI = abiOf('Achievement');
 const DEPLOYER_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 const ALICE_KEY = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d';
 const VERIFIER_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce5';
+// PHASE 6 (R-010): second verifier — q3 is a threshold-2 quest now.
+const VERIFIER2_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce6';
 
 const publicClient = createPublicClient({ chain: anvil, transport: http('http://127.0.0.1:8545') });
 
@@ -85,14 +80,23 @@ const q1 = await publicClient.readContract({
   functionName: 'getQuest',
   args: [1n],
 });
-check('quest 1 is CheckIn "First Steps" 50pts badge 1', q1.title === 'First Steps' && q1.validationKind === 0 && eq(q1.rewardPoints, 50) && eq(q1.badgeId, 1));
+check(
+  'quest 1 is CheckIn "First Steps" 50pts badge 1',
+  q1.title === 'First Steps' &&
+    q1.validationKind === 0 &&
+    eq(q1.rewardPoints, 50) &&
+    eq(q1.badgeId, 1),
+);
 const q2 = await publicClient.readContract({
   address: d.questManager,
   abi: QUEST_MANAGER_ABI,
   functionName: 'getQuest',
   args: [2n],
 });
-check('quest 2 is OnChain with the validator', q2.validationKind === 1 && q2.validator.toLowerCase() === d.validator.toLowerCase());
+check(
+  'quest 2 is OnChain with the validator',
+  q2.validationKind === 1 && q2.validator.toLowerCase() === d.validator.toLowerCase(),
+);
 const q3 = await publicClient.readContract({
   address: d.questManager,
   abi: QUEST_MANAGER_ABI,
@@ -100,6 +104,16 @@ const q3 = await publicClient.readContract({
   args: [3n],
 });
 check('quest 3 is Attested', q3.validationKind === 2);
+check(
+  'quest 3 is threshold-2 (Phase 6)',
+  Number(q3.attestationThreshold) === 2,
+  `(got ${q3.attestationThreshold})`,
+);
+check('quest 1 is threshold-1', Number(q1.attestationThreshold) === 1);
+check(
+  'verifier2 key matches the deployment JSON',
+  privateKeyToAccount(VERIFIER2_KEY).address.toLowerCase() === d.verifier2.toLowerCase(),
+);
 
 // 3. Completion state
 for (const id of [1n, 2n, 3n]) {
@@ -158,7 +172,12 @@ const completedLogs = await publicClient.getLogs({
   fromBlock,
   toBlock: 'latest',
 });
-check('QuestCompleted logs: 3, all alice', completedLogs.length === 3 && completedLogs.every((l) => l.args.account.toLowerCase() === d.alice.toLowerCase()), `(got ${completedLogs.length})`);
+check(
+  'QuestCompleted logs: 3, all alice',
+  completedLogs.length === 3 &&
+    completedLogs.every((l) => l.args.account.toLowerCase() === d.alice.toLowerCase()),
+  `(got ${completedLogs.length})`,
+);
 
 const pointsLogs = await publicClient.getLogs({
   address: d.reputation,
@@ -176,7 +195,11 @@ const pointsLogs = await publicClient.getLogs({
   toBlock: 'latest',
 });
 const pointsSum = pointsLogs.reduce((sum, l) => sum + Number(l.args.points), 0);
-check('PointsAdded logs sum to 250', pointsLogs.length === 3 && pointsSum === 250, `(got ${pointsLogs.length} logs, sum ${pointsSum})`);
+check(
+  'PointsAdded logs sum to 250',
+  pointsLogs.length === 3 && pointsSum === 250,
+  `(got ${pointsLogs.length} logs, sum ${pointsSum})`,
+);
 
 const badgeLogs = await publicClient.getLogs({
   address: d.achievement,
@@ -193,7 +216,15 @@ const badgeLogs = await publicClient.getLogs({
   fromBlock,
   toBlock: 'latest',
 });
-check('BadgeIssued logs for alice: 2 (badges 1+2)', badgeLogs.length === 2 && badgeLogs.map((l) => Number(l.args.badgeId)).sort().join() === '1,2', `(got ${badgeLogs.length})`);
+check(
+  'BadgeIssued logs for alice: 2 (badges 1+2)',
+  badgeLogs.length === 2 &&
+    badgeLogs
+      .map((l) => Number(l.args.badgeId))
+      .sort()
+      .join() === '1,2',
+  `(got ${badgeLogs.length})`,
+);
 
 const definedLogs = await publicClient.getLogs({
   address: d.achievement,
@@ -209,7 +240,15 @@ const definedLogs = await publicClient.getLogs({
   fromBlock,
   toBlock: 'latest',
 });
-check('BadgeDefined logs: 2 with names', definedLogs.length === 2 && definedLogs.map((l) => l.args.name).sort().join() === 'First Steps,Token Holder', `(got ${definedLogs.length})`);
+check(
+  'BadgeDefined logs: 2 with names',
+  definedLogs.length === 2 &&
+    definedLogs
+      .map((l) => l.args.name)
+      .sort()
+      .join() === 'First Steps,Token Holder',
+  `(got ${definedLogs.length})`,
+);
 
 const attLogs = await publicClient.getLogs({
   address: d.questManager,
@@ -226,7 +265,15 @@ const attLogs = await publicClient.getLogs({
   fromBlock,
   toBlock: 'latest',
 });
-check('AttestationUsed logs: 1, signer is the verifier', attLogs.length === 1 && attLogs[0].args.signer.toLowerCase() === d.verifier.toLowerCase(), `(got ${attLogs.length})`);
+check(
+  'AttestationUsed logs: 2, one per threshold-2 signer (Phase 6)',
+  attLogs.length === 2 &&
+    attLogs
+      .map((l) => l.args.signer.toLowerCase())
+      .sort()
+      .join() === [d.verifier.toLowerCase(), d.verifier2.toLowerCase()].sort().join(),
+  `(got ${attLogs.length})`,
+);
 
 // 6. Badges + validator registry reads
 const hasBadge1 = await publicClient.readContract({
@@ -249,7 +296,10 @@ const vInfo = await publicClient.readContract({
   functionName: 'validatorInfo',
   args: [d.validator],
 });
-check('validatorInfo: approved, named TokenBalanceValidator', vInfo.approved === true && vInfo.name === 'TokenBalanceValidator');
+check(
+  'validatorInfo: approved, named TokenBalanceValidator',
+  vInfo.approved === true && vInfo.name === 'TokenBalanceValidator',
+);
 
 // 7. Full attestation flow via viem (exactly what AttestationForm does):
 // create a new Attested quest, sign as the verifier, recover + verify,
@@ -264,7 +314,20 @@ const createHash = await deployerWallet.writeContract({
   address: d.questManager,
   abi: QUEST_MANAGER_ABI,
   functionName: 'createQuest',
-  args: ['Daily Post', 'Post daily (attested)', 0, 2, '0x0000000000000000000000000000000000000000', 25n, 0n, BigInt(now - 60), BigInt(now + 30 * 24 * 3600), 0n],
+  // PHASE 6 (R-010): createQuest takes 11 params now — threshold 1 here.
+  args: [
+    'Daily Post',
+    'Post daily (attested)',
+    0,
+    2,
+    '0x0000000000000000000000000000000000000000',
+    25n,
+    0n,
+    BigInt(now - 60),
+    BigInt(now + 30 * 24 * 3600),
+    0n,
+    1,
+  ],
 });
 await publicClient.waitForTransactionReceipt({ hash: createHash });
 const count2 = await publicClient.readContract({
@@ -285,7 +348,12 @@ check('nonces(alice) is 1 (one attestation used)', eq(nonce, 1), `(got ${nonce})
 const deadline = BigInt(now + 3600);
 const verifierAccount = privateKeyToAccount(VERIFIER_KEY);
 const signature = await verifierAccount.signTypedData({
-  domain: { name: 'AGENTHUB QuestManager', version: '1', chainId: 31337, verifyingContract: d.questManager },
+  domain: {
+    name: 'AGENTHUB QuestManager',
+    version: '1',
+    chainId: 31337,
+    verifyingContract: d.questManager,
+  },
   types: {
     Attestation: [
       { name: 'account', type: 'address' },
@@ -298,7 +366,12 @@ const signature = await verifierAccount.signTypedData({
   message: { account: d.alice, questId: 4n, nonce, deadline },
 });
 const recovered = await recoverTypedDataAddress({
-  domain: { name: 'AGENTHUB QuestManager', version: '1', chainId: 31337, verifyingContract: d.questManager },
+  domain: {
+    name: 'AGENTHUB QuestManager',
+    version: '1',
+    chainId: 31337,
+    verifyingContract: d.questManager,
+  },
   types: {
     Attestation: [
       { name: 'account', type: 'address' },
@@ -311,7 +384,11 @@ const recovered = await recoverTypedDataAddress({
   message: { account: d.alice, questId: 4n, nonce, deadline },
   signature,
 });
-check('viem attestation recovers the verifier', recovered.toLowerCase() === d.verifier.toLowerCase(), `(got ${recovered})`);
+check(
+  'viem attestation recovers the verifier',
+  recovered.toLowerCase() === d.verifier.toLowerCase(),
+  `(got ${recovered})`,
+);
 
 const aliceWallet = createWalletClient({
   account: privateKeyToAccount(ALICE_KEY),
@@ -322,7 +399,9 @@ const submitHash = await aliceWallet.writeContract({
   address: d.questManager,
   abi: QUEST_MANAGER_ABI,
   functionName: 'completeQuestWithAttestation',
-  args: [4n, deadline, signature],
+  // PHASE 6 (R-010): signatures are a bytes[] array now (threshold 1
+  // for this quest, so one signature suffices).
+  args: [4n, deadline, [signature]],
 });
 const receipt = await publicClient.waitForTransactionReceipt({ hash: submitHash });
 check('completeQuestWithAttestation receipt status is success', receipt.status === 'success');

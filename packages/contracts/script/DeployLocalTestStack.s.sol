@@ -39,6 +39,9 @@ contract DeployLocalTestStack is Script {
     address internal constant BOB = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
     uint256 internal constant ALICE_KEY = 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
     uint256 internal constant VERIFIER_KEY = 0xA11CE5; // same as AttestationTest
+    // PHASE 6 (R-010): second verifier for the threshold-2 attested quest.
+    // Both are PUBLIC test keys (local anvil only, no real funds anywhere).
+    uint256 internal constant VERIFIER2_KEY = 0xA11CE6;
 
     bytes32 internal constant EIP712_DOMAIN_TYPEHASH =
         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
@@ -70,8 +73,8 @@ contract DeployLocalTestStack is Script {
         vm.stopBroadcast();
 
         // Alice completes all three quests (the third via a real EIP-712
-        // attestation signed by the verifier — the exact flow the
-        // frontend's AttestationForm performs).
+        // attestation signed by BOTH verifiers — threshold 2, the exact
+        // flow the frontend's AttestationForm performs).
         vm.startBroadcast(ALICE_KEY);
         _completeAsAlice(s);
         vm.stopBroadcast();
@@ -97,6 +100,7 @@ contract DeployLocalTestStack is Script {
         s.achievement.grantRole(s.achievement.BADGE_MANAGER_ROLE(), DEPLOYER);
         s.qm.grantRole(s.qm.QUEST_CREATOR_ROLE(), DEPLOYER);
         s.qm.grantRole(s.qm.VERIFIER_ROLE(), verifier);
+        s.qm.grantRole(s.qm.VERIFIER_ROLE(), vm.addr(VERIFIER2_KEY));
 
         s.qm.approveValidator(address(s.validator), "TokenBalanceValidator", "1.0.0", "docs/token-balance-validator");
         s.achievement.defineBadge(1, "First Steps", "ipfs://badge1");
@@ -148,7 +152,7 @@ contract DeployLocalTestStack is Script {
                 block.timestamp,
                 block.timestamp + 30 days,
                 0,
-                1
+                2 // PHASE 6 (R-010): threshold 2 — two distinct verifiers
             );
     }
 
@@ -156,8 +160,9 @@ contract DeployLocalTestStack is Script {
         s.qm.completeQuest(s.q1);
         s.qm.completeQuest(s.q2);
         uint256 deadline = block.timestamp + 1 days;
-        bytes memory sig = _signAttestation(VERIFIER_KEY, address(s.qm), ALICE, s.q3, 0, deadline);
-        s.qm.completeQuestWithAttestation(s.q3, deadline, _sigs(sig));
+        bytes memory sig1 = _signAttestation(VERIFIER_KEY, address(s.qm), ALICE, s.q3, 0, deadline);
+        bytes memory sig2 = _signAttestation(VERIFIER2_KEY, address(s.qm), ALICE, s.q3, 0, deadline);
+        s.qm.completeQuestWithAttestation(s.q3, deadline, _sigs2(sig1, sig2));
     }
 
     function _writeJson(Stack memory s) internal {
@@ -179,6 +184,7 @@ contract DeployLocalTestStack is Script {
         vm.serializeAddress(obj, "deployer", DEPLOYER);
         vm.serializeAddress(obj, "alice", ALICE);
         vm.serializeAddress(obj, "bob", BOB);
+        vm.serializeAddress(obj, "verifier2", vm.addr(VERIFIER2_KEY));
         string memory json = vm.serializeAddress(obj, "verifier", vm.addr(VERIFIER_KEY));
         vm.writeJson(json, ".anvil-deployment.json");
     }
@@ -208,10 +214,10 @@ contract DeployLocalTestStack is Script {
     }
 
     /// @dev PHASE 6 (R-010): completeQuestWithAttestation takes a bytes[]
-    /// array now; this wraps a single signature (mechanical adapter, no
-    /// behavior change).
-    function _sigs(bytes memory sig) internal pure returns (bytes[] memory sigs) {
-        sigs = new bytes[](1);
-        sigs[0] = sig;
+    /// array now; this wraps two signatures (the threshold-2 pair for q3).
+    function _sigs2(bytes memory sig1, bytes memory sig2) internal pure returns (bytes[] memory sigs) {
+        sigs = new bytes[](2);
+        sigs[0] = sig1;
+        sigs[1] = sig2;
     }
 }

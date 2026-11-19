@@ -6,7 +6,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { QUEST_MANAGER_ABI } from './abis/QuestManager';
 import { REPUTATION_ABI } from './abis/Reputation';
 import { mapQuest, questEligibility, type RawQuest } from './quests';
-import { checkAttestation } from './attestation';
+import { checkAttestations } from './attestation';
 import { aggregateLeaderboard, buildTxHistory, computeLevel, EVENT_SIGNATURES } from './events';
 import { parseAbiItem } from 'viem';
 
@@ -36,10 +36,13 @@ interface Deployment {
   alice: `0x${string}`;
   bob: `0x${string}`;
   verifier: `0x${string}`;
+  verifier2: `0x${string}`;
 }
 
 const BOB_KEY = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a';
 const VERIFIER_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce5';
+// PHASE 6 (R-010): second verifier — q3 is a threshold-2 quest now.
+const VERIFIER2_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce6';
 
 describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () => {
   let d: Deployment;
@@ -65,6 +68,20 @@ describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () =
     expect(quest.badgeId).toBe(1);
     expect(quest.completions).toBe(1);
     expect(quest.active).toBe(true);
+    expect(quest.attestationThreshold).toBe(1);
+  });
+
+  it('mapQuest maps the threshold-2 attested quest (Phase 6)', async () => {
+    const raw = (await client.readContract({
+      address: d.questManager,
+      abi: QUEST_MANAGER_ABI,
+      functionName: 'getQuest',
+      args: [3n],
+    })) as unknown as RawQuest;
+    const quest = mapQuest(raw);
+    expect(quest.title).toBe('Post on X');
+    expect(quest.validationKind).toBe('attested');
+    expect(quest.attestationThreshold).toBe(2);
   });
 
   it('questEligibility matches on-chain state for alice (done) and bob (open)', async () => {
@@ -87,8 +104,8 @@ describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () =
     ).toMatchObject({ canComplete: false, reason: 'Requires an Agent ID' });
   });
 
-  it('checkAttestation verifies a real verifier signature, and the submission lands', async () => {
-    // Bob has not completed quest 3 (Attested); his nonce is 0.
+  it('checkAttestations verifies a real threshold-2 pair, and the submission lands', async () => {
+    // Bob has not completed quest 3 (Attested, threshold 2); his nonce is 0.
     const nonce = (await client.readContract({
       address: d.questManager,
       abi: QUEST_MANAGER_ABI,
@@ -98,35 +115,54 @@ describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () =
     expect(nonce).toBe(0n);
 
     const deadline = Math.floor(Date.now() / 1000) + 3600;
-    const verifierAccount = privateKeyToAccount(VERIFIER_KEY);
-    const signature = await verifierAccount.signTypedData({
-      domain: {
-        name: 'AGENTHUB QuestManager',
-        version: '1',
-        chainId: 31337,
-        verifyingContract: d.questManager,
-      },
-      types: {
-        Attestation: [
-          { name: 'account', type: 'address' },
-          { name: 'questId', type: 'uint256' },
-          { name: 'nonce', type: 'uint256' },
-          { name: 'deadline', type: 'uint256' },
-        ],
-      },
+    // PHASE 6 (R-010): BOTH verifiers sign the SAME digest (same
+    // account, quest, nonce, deadline) — exactly what the form collects.
+    const domain = {
+      name: 'AGENTHUB QuestManager',
+      version: '1',
+      chainId: 31337,
+      verifyingContract: d.questManager,
+    } as const;
+    const types = {
+      Attestation: [
+        { name: 'account', type: 'address' },
+        { name: 'questId', type: 'uint256' },
+        { name: 'nonce', type: 'uint256' },
+        { name: 'deadline', type: 'uint256' },
+      ],
+    } as const;
+    const message = { account: d.bob, questId: 3n, nonce, deadline: BigInt(deadline) };
+    const signature1 = await privateKeyToAccount(VERIFIER_KEY).signTypedData({
+      domain,
+      types,
       primaryType: 'Attestation',
-      message: { account: d.bob, questId: 3n, nonce, deadline: BigInt(deadline) },
+      message,
+    });
+    const signature2 = await privateKeyToAccount(VERIFIER2_KEY).signTypedData({
+      domain,
+      types,
+      primaryType: 'Attestation',
+      message,
     });
 
     // The REAL frontend check (lib/attestation.ts) against live data.
-    const result = await checkAttestation(
-      { account: d.bob, questId: 3, nonce: Number(nonce), deadline, signature },
+    const result = await checkAttestations(
+      {
+        account: d.bob,
+        questId: 3,
+        nonce: Number(nonce),
+        deadline,
+        signatures: [signature1, signature2],
+      },
+      2,
       31337,
       d.questManager,
       Math.floor(Date.now() / 1000),
     );
     expect(result.valid).toBe(true);
-    expect(result.signer?.toLowerCase()).toBe(d.verifier.toLowerCase());
+    expect(result.signers.map((s) => s.toLowerCase()).sort()).toEqual(
+      [d.verifier.toLowerCase(), d.verifier2.toLowerCase()].sort(),
+    );
     expect(result.errors).toEqual([]);
 
     // And the submission the AttestationForm performs.
@@ -139,7 +175,7 @@ describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () =
       address: d.questManager,
       abi: QUEST_MANAGER_ABI,
       functionName: 'completeQuestWithAttestation',
-      args: [3n, BigInt(deadline), signature],
+      args: [3n, BigInt(deadline), [signature1, signature2]],
     });
     const receipt = await client.waitForTransactionReceipt({ hash });
     expect(receipt.status).toBe('success');
@@ -218,9 +254,11 @@ describe.skipIf(!enabled)('anvil integration (frontend lib vs live chain)', () =
     });
     const attEntries = history.filter((e) => e.kind === 'attestation');
     expect(attEntries.length).toBeGreaterThanOrEqual(2);
-    expect(attEntries.every((e) => e.signer?.toLowerCase() === d.verifier.toLowerCase())).toBe(
-      true,
-    );
+    // PHASE 6 (R-010): threshold-2 completions emit one AttestationUsed
+    // event PER signer — both verifiers appear in the history.
+    const verifiers = [d.verifier.toLowerCase(), d.verifier2.toLowerCase()];
+    expect(attEntries.every((e) => verifiers.includes(e.signer?.toLowerCase() ?? ''))).toBe(true);
+    expect(new Set(attEntries.map((e) => e.signer?.toLowerCase())).size).toBe(2);
     // Newest first.
     for (let i = 1; i < history.length; i++) {
       const prev = history[i - 1];

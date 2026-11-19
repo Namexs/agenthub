@@ -249,12 +249,15 @@ await page.waitForTimeout(2000);
 const dashText = await page.textContent('body');
 check('dashboard shows 50 pts for bob', dashText?.includes('50 pts') ?? false);
 
-// --- 6. Full attestation flow for q3 "Post on X" (Attested) ---
-// Sign the attestation in Node with the test-stack verifier key, then
-// drive the real form in the browser: toggle -> paste -> verify ->
-// submit -> confirmed on-chain.
+// --- 6. Full attestation flow for q3 "Post on X" (Attested, threshold 2) ---
+// PHASE 6 (R-010): BOTH test-stack verifiers sign the SAME digest (same
+// account, quest, nonce, deadline), then drive the real form in the
+// browser: toggle -> paste 2 signatures -> verify -> submit ->
+// confirmed on-chain.
 const VERIFIER_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce5';
+const VERIFIER2_KEY = '0x0000000000000000000000000000000000000000000000000000000000a11ce6';
 const verifierAccount = privateKeyToAccount(VERIFIER_KEY);
+const verifier2Account = privateKeyToAccount(VERIFIER2_KEY);
 const NONCE_ABI = [
   {
     type: 'function',
@@ -271,7 +274,7 @@ const bobNonce = await publicClient.readContract({
   args: [BOB],
 });
 const attDeadline = Math.floor(Date.now() / 1000) + 3600;
-const attSignature = await verifierAccount.signTypedData({
+const attestationTypedData = {
   domain: {
     name: 'AGENTHUB QuestManager',
     version: '1',
@@ -288,8 +291,14 @@ const attSignature = await verifierAccount.signTypedData({
   },
   primaryType: 'Attestation',
   message: { account: BOB, questId: 3n, nonce: bobNonce, deadline: BigInt(attDeadline) },
-});
-check('attestation signed for bob/q3 in Node', attSignature.length === 132, `nonce ${bobNonce}`);
+};
+const attSignature = await verifierAccount.signTypedData(attestationTypedData);
+const attSignature2 = await verifier2Account.signTypedData(attestationTypedData);
+check(
+  'threshold-2 pair signed for bob/q3 in Node (same digest, 2 verifiers)',
+  attSignature.length === 132 && attSignature2.length === 132 && attSignature !== attSignature2,
+  `nonce ${bobNonce}`,
+);
 await page.goto(`${BASE}/quests`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(2000);
 await page.getByRole('button', { name: 'Submit attestation' }).first().click();
@@ -299,17 +308,25 @@ check(
   'attestation form appears after toggling',
   formText?.includes('paste the signature your verifier gave you') ?? false,
 );
-await page.getByLabel('Signature (65-byte 0x hex)').fill(attSignature);
+check(
+  'form shows the threshold-2 requirement',
+  formText?.includes('requires 2 verifier signatures') ?? false,
+);
+await page.getByLabel('Signature 1 (65-byte 0x hex)').fill(attSignature);
+await page.getByLabel('Signature 2 (65-byte 0x hex)').fill(attSignature2);
 await page.getByLabel('Deadline (Unix timestamp, seconds)').fill(String(attDeadline));
 await page.getByRole('button', { name: 'Verify attestation' }).click();
 await page
   .getByText('(verified verifier ✓)')
+  .first()
   .waitFor({ timeout: 15000 })
   .catch(() => {});
-const verifyText = await page.textContent('body');
+await page.waitForTimeout(1500);
+const verifiedCount = await page.getByText('(verified verifier ✓)').count();
 check(
-  'form verifies the attestation (signer holds VERIFIER_ROLE)',
-  verifyText?.includes('(verified verifier ✓)') ?? false,
+  'form verifies BOTH attestation signers (each holds VERIFIER_ROLE)',
+  verifiedCount === 2,
+  `got ${verifiedCount}`,
 );
 await page.getByRole('button', { name: 'Submit attestation' }).click();
 await page.waitForTimeout(6000);
