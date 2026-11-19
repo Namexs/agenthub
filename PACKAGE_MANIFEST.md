@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `83c5163d3cd8141615494f2a367e9a421db27b8e`
-- Date: 2026-11-19T11:03:58+00:00
-- Subject: docs(phase3): describe the 9th CI job + Phase 3 in the final report
+- Commit: `9d715170b19a783064f9695455e4bd3baf3b32a9`
+- Date: 2026-11-19T11:04:36+00:00
+- Subject: docs(phase3): correct manifest file count 288 -> 291 in reports
 
 ## 2. Submodules
 
@@ -78,12 +78,12 @@ f7d7d508245574c6a7900e7f92289d54952a0e95328573a2ade27fb442b1ec7d  PHASE1.md
 b605e2bee19e8af4a9d35f5827431433f137d089e3e397b110818fa9ce0dd017  SECURITY_DIRECTIVE.md
 8d91aef34604db2b7f4adb745ce98e84c3dbbcc6995f3840b080055e4b27be64  SECURITY_REMEDIATION_DIRECTIVE.md
 b27c8dc29965d9a3a76838bfde441c3fe7ba3a7787b2a20c55130ce771574e7f  agenthub-final-pretestnet/APPROVED_VALIDATOR_REGISTRY.md
-bb6d82832b03cbb8f6e29f1f1093b372308184767dcd6095ceb138276f729292  agenthub-final-pretestnet/CI_EVIDENCE.md
+489dfc2cca40ac8a9f205089cccb77860e5232ebccd43036c0106e7f06a19a25  agenthub-final-pretestnet/CI_EVIDENCE.md
 38f10f5cc163a0762506ba15034a954b227345822c77b483ba01ffd7bc222bda  agenthub-final-pretestnet/FINAL_DEPLOYMENT_CHECKLIST.md
-8bb5e9a6aac1fa1383defffbf1fba441ea4182b97ff329980f5594b1c27a73dd  agenthub-final-pretestnet/FINAL_REMEDIATION_REPORT.md
+bf983f60c331afc519e26f9497c96976740f7c943b7d28b704cc71ce0b045985  agenthub-final-pretestnet/FINAL_REMEDIATION_REPORT.md
 672e45930ca33f83554dab9d917332c159a0767bf0676ce43dab0c40b6aa3778  agenthub-final-pretestnet/FINAL_SECURITY_FINDINGS.md
 ee84be52c40f8caa5c3a7831dddfc4bc3dd82acf353067decac8613406449514  agenthub-final-pretestnet/FRONTEND_INTEGRATION_REPORT.md
-51d5216636b16d8cb5bc4aef860cc75005ef398738281b7f852f97e0f2a975a1  agenthub-final-pretestnet/PACKAGE_MANIFEST.md
+dfda4ab5534b3fe5c1050b0b728b5659bd4ed6fe7308cd0445c3e8ba3921a694  agenthub-final-pretestnet/PACKAGE_MANIFEST.md
 6688d7512e9e78600fed175b9f90910f9c15cefc00d52494d2a26208b46473a8  agenthub-final-pretestnet/PAUSER_ROLE_REVIEW.md
 a840393f88c7e4dccbb0d5f6bbeac28e08de5e264bde1a94872ca364ffdfdf93  agenthub-final-pretestnet/SAFE_VALIDATION_REVIEW.md
 2ab7d3d2a141fb5bceb8b536f3747a8ebdc25e19e18bd1e9c9ed04e517ec70f6  agenthub-final-pretestnet/VERIFIER_SECURITY_SOP.md
@@ -91,8 +91,8 @@ d89b653c14cc1ea97bb31fe9c95d69a3103ae4633c32e0c21538c425987cd1ed  agenthub-final
 6cd39c4f6cbadb0dbf058d46bfeffff0a97bd16931c104baafe5a911bddc892f  agenthub-final-pretestnet/logs/phase1-safe-tests.log
 8a60feffb5bd34fb0171a5602be328feb48b9ad53027a958dfa9a60b6a8ed6de  agenthub-final-pretestnet/logs/phase2-full-suite.log
 b82fbda55c8c85e696bbeaf8301286c004dd466757620bf6622ca66bb1c29925  agenthub-final-pretestnet/logs/phase2-pauser-tests.log
-f7b3045d328d26eb94eeadc7b1fd51043ba577647bea87df6ec18d1ad6300647  agenthub-final-pretestnet/logs/phase3-manifest-verify.log
-e7f80a19459ccfc3de100af853ecf7a4d2e3843d6ce9e743ee4abf78f1447d8b  agenthub-final-pretestnet/logs/phase3-secrets.log
+c19d7d12a58f5a3f317374dd6f5db4080c3ecda8a9ce52f0ac2f2ee51a4accd3  agenthub-final-pretestnet/logs/phase3-manifest-verify.log
+3d09648494a23b4d7e83cef1a5a72de65d2176a13257a7050b8444affae2ee5b  agenthub-final-pretestnet/logs/phase3-secrets.log
 2e5bbce4c6fd7d8d4cff5525cd68b44677d33b7385594d22fc965470e72cb318  agenthub-final-pretestnet/logs/phase4-ci-audit-osv.log
 9676218e6f875022c4d2d8550de0a8a258099391845ff0f6576fe1bf8b0e13c1  agenthub-final-pretestnet/logs/phase4-ci-audit.log
 5217b9020d063c86db44d3ee8baf07cd9dad7168d83ff4b35fc595d73685e6d8  agenthub-final-pretestnet/logs/phase4-ci-contracts.log
