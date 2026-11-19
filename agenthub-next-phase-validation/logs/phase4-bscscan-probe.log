@@ -1,0 +1,20 @@
+=== A: BSCSCAN_API_KEY=bogus, chain 97 (expect 'Invalid API Key' = key IS sent) ===
+Start verifying contract `0x0000000000000000000000000000000000000001` deployed on bsc-testnet
+
+Verifying on etherscan...
+
+Verifying on sourcify...
+Submitting verification for [AgentGate] 0x0000000000000000000000000000000000000001.
+=== B: BSCSCAN_API_KEY unset (expect fail-fast 'not found') ===
+Error: environment variable `BSCSCAN_API_KEY` not found
+
+Context:
+- environment variable not found
+=== C: build/test unaffected without the key ===
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+=== A2: bogus key, full output ===
+Error: Failed to obtain contract ABI for 0x0000000000000000000000000000000000000001
+- Invalid API Key
+=== C2: forge build exit code without key ===
+build exit: 0

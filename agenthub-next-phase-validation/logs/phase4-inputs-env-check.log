@@ -1,0 +1,14 @@
+=== 8 deployment inputs: any present in repo? ===
+-- .env files (other than .env.example):
+none
+-- DEPLOYMENT_RECORD.md:
+ls: cannot access 'docs/DEPLOYMENT_RECORD.md': No such file or directory
+-- checklist §1 status lines:
+8
+-- any real Safe/creator/verifier addresses recorded? (grep for ADMIN_MULTISIG assignments with 0x):
+=== frontend env chain-97 ===
+14:/** Chains the app may run on. 56 = BSC mainnet, 97 = BSC testnet, 31337 = local Anvil/fork. */
+15:export const ALLOWED_CHAIN_IDS = [56, 97, 31337] as const;
+38:      .default(97),
+62:    if (data.NEXT_PUBLIC_CHAIN_ID === 97 && isOfficial) {
+67:          'on BSC testnet (97) the Agent ID MUST NOT be the official mainnet contract — use the deployed MockAgentId',

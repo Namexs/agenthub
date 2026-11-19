@@ -1,0 +1,64 @@
+[phase4] starting anvil fork of BSC testnet (chain 97) on :8550
+[phase4] fork up at block 143650600, chain 97
+[phase4] deployer=0x0273B857E1a02253A7eb6464408A3C641f5A4B23 creator=0xF9D328dab8d4E655dadF8e71d8Ba52d20fc3a116 verifier=0xC08d78278aA701E3E2Ab878f8Df69aE1c5521174 holder=0x542db3DA866274c9b91cC310a4534A80aadaF7AA
+[phase4] predicted Safe: 0x3d70BC1646E139C52E72DF7676ECBA5Ff8B5AE06
+[phase4] safe threshold: 2
+[phase4] safe owners: [0xBB0BB4512a3d2732364660E62039C559bD1068D0, 0xB2DabeCCB0CD841aEC49F1f59D54e99c33058128]
+[phase4] safe VERSION: "1.4.1"
+[phase4] --- ValidateSafe POSITIVE ---
+threshold: uint256 2
+  OK: ADMIN_MULTISIG is a genuine Safe with threshold >= 2
+[phase4] --- ValidateSafe NEGATIVE (0x1111...) ---
+[phase4] negative check correctly rejected 0x1111 (NotASafe)
+[phase4] --- DeployAgentHub to fork ---
+  MockAgentId: 0x3E39316CEa096CB8234AD5b19416E01e3b566Ff8
+  AgentGate: 0xb7d10190748bd29a7A769f237D10453cD7111218
+  TimelockController: 0x3130718aE2eAC21B8A0B927cA2680F0d01fD26E1
+  Reputation: 0xf28AD2acCc254B0f4F68a71faa893Ad060588126
+  Achievement: 0xD432C9a3c7E9045350FF205B072aE5803Abc6ddb
+  QuestManager: 0x788d2C2e1882EaD695D256A161eDD9b3B16a7dE7
+Estimated total gas used for script: 10937808
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+Transactions saved to: /home/hatch/workspace/agenthub/packages/contracts/broadcast/DeployAgentHub.s.sol/97/run-latest.json
+[phase4] deployed: MOCK=0x3e39316cea096cb8234ad5b19416e01e3b566ff8 GATE=0xb7d10190748bd29a7a769f237d10453cd7111218 TIMELOCK=0x3130718ae2eac21b8a0b927ca2680f0d01fd26e1 REP=0xf28ad2accc254b0f4f68a71faa893ad060588126 ACH=0xd432c9a3c7e9045350ff205b072ae5803abc6ddb QM=0x788d2c2e1882ead695d256a161edd9b3b16a7de7
+[phase4] txs=18 creates=6 totalGasUsed=0
+== 8. gate.agentId ==
+0x3E39316CEa096CB8234AD5b19416E01e3b566Ff8
+expected: 0x3e39316cea096cb8234ad5b19416e01e3b566ff8
+== 9. mint test Agent ID + isAgentHolder ==
+mint status: 0x1
+holder: true
+non-holder (creator, never minted): false
+== 10. QM deps ==
+gate: 0xb7d10190748bd29a7A769f237D10453cD7111218
+reputation: 0xf28AD2acCc254B0f4F68a71faa893Ad060588126
+achievement: 0xD432C9a3c7E9045350FF205B072aE5803Abc6ddb
+== 11/12. roles ==
+rep.admin==timelock: true
+ach.admin==timelock: true
+qm.admin==timelock: true
+rep.scoreSource==qm: true
+ach.issuer==qm: true
+ach.badgeManager==safe: true
+qm.creator==creator: true
+qm.pauser==safe(default): true
+qm.verifier==verifier: true
+deployer rep.admin: false
+deployer ach.admin: false
+deployer qm.admin: false
+deployer qm.creator: false
+deployer qm.pauser: false
+deployer qm.verifier: false
+== 13. timelock ==
+minDelay: 172800 [1.728e5]
+proposer==safe: true
+executor==safe: true
+canceller==safe: true
+getRoleAdmin(DEFAULT_ADMIN)==timelock (self-admin): 0x0000000000000000000000000000000000000000000000000000000000000000
+multisig is admin: false
+== 14. paused ==
+rep: false
+ach: false
+qm: false
+[phase4] anvil stopped; throwaway keys discarded from memory
+[phase4] PHASE 4 FORK DEPLOY + VERIFY COMPLETE

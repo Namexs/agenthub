@@ -1,0 +1,38 @@
+== 8. gate.agentId ==
+0x3E39316CEa096CB8234AD5b19416E01e3b566Ff8
+expected: 0x3e39316cea096cb8234ad5b19416e01e3b566ff8
+== 9. mint test Agent ID + isAgentHolder ==
+mint status: 0x1
+holder: true
+non-holder (creator, never minted): false
+== 10. QM deps ==
+gate: 0xb7d10190748bd29a7A769f237D10453cD7111218
+reputation: 0xf28AD2acCc254B0f4F68a71faa893Ad060588126
+achievement: 0xD432C9a3c7E9045350FF205B072aE5803Abc6ddb
+== 11/12. roles ==
+rep.admin==timelock: true
+ach.admin==timelock: true
+qm.admin==timelock: true
+rep.scoreSource==qm: true
+ach.issuer==qm: true
+ach.badgeManager==safe: true
+qm.creator==creator: true
+qm.pauser==safe(default): true
+qm.verifier==verifier: true
+deployer rep.admin: false
+deployer ach.admin: false
+deployer qm.admin: false
+deployer qm.creator: false
+deployer qm.pauser: false
+deployer qm.verifier: false
+== 13. timelock ==
+minDelay: 172800 [1.728e5]
+proposer==safe: true
+executor==safe: true
+canceller==safe: true
+getRoleAdmin(DEFAULT_ADMIN)==timelock (self-admin): 0x0000000000000000000000000000000000000000000000000000000000000000
+multisig is admin: false
+== 14. paused ==
+rep: false
+ach: false
+qm: false
