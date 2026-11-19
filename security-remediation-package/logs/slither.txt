@@ -1,0 +1,79 @@
+'forge clean' running (wd: /home/hatch/workspace/agenthub/packages/contracts)
+'forge config --json' running
+'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: /home/hatch/workspace/agenthub/packages/contracts)
+INFO:Detectors:
+Detector: timestamp
+QuestManager.createQuest(string,string,IQuestManager.QuestType,IQuestManager.ValidationKind,address,uint256,uint256,uint256,uint256,uint256) (src/QuestManager.sol#100-147) uses timestamp for comparisons
+	Dangerous comparisons:
+	- startTime >= endTime || endTime <= block.timestamp (src/QuestManager.sol#117)
+QuestManager._verifyAttestation(address,uint256,uint256,bytes) (src/QuestManager.sol#185-208) uses timestamp for comparisons
+	Dangerous comparisons:
+	- deadline < block.timestamp (src/QuestManager.sol#186)
+	- deadline > block.timestamp + MAX_ATTESTATION_LIFETIME (src/QuestManager.sol#187)
+QuestManager._completeQuest(IQuestManager.Quest,uint256) (src/QuestManager.sol#214-258) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < quest.startTime (src/QuestManager.sol#217)
+	- block.timestamp > quest.endTime (src/QuestManager.sol#218)
+	- block.timestamp < readyAt (src/QuestManager.sol#228)
+QuestManager.nextCompletionAt(address,uint256) (src/QuestManager.sol#293-303) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= ready (src/QuestManager.sol#302)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+Detector: assembly
+AgentGate.isAgentHolder(address) (src/AgentGate.sol#72-83) uses assembly
+	- INLINE ASM (src/AgentGate.sol#79-81)
+TokenBalanceValidator.validate(address,uint256) (src/validators/TokenBalanceValidator.sol#38-55) uses assembly
+	- INLINE ASM (src/validators/TokenBalanceValidator.sol#51-53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+INFO:Detectors:
+Detector: pragma
+2 different versions of Solidity are used:
+	- Version constraint ^0.8.20 is used by:
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/access/AccessControl.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/access/IAccessControl.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/access/Ownable.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/interfaces/IERC5267.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol#3)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/Context.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/Pausable.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/ShortStrings.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/StorageSlot.sol#5)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/Strings.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/cryptography/EIP712.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/cryptography/MessageHashUtils.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/math/Math.sol#4)
+		-^0.8.20 (lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol#4)
+	- Version constraint ^0.8.24 is used by:
+		-^0.8.24 (src/Achievement.sol#2)
+		-^0.8.24 (src/AgentGate.sol#2)
+		-^0.8.24 (src/QuestManager.sol#2)
+		-^0.8.24 (src/Reputation.sol#2)
+		-^0.8.24 (src/interfaces/IAchievement.sol#2)
+		-^0.8.24 (src/interfaces/IAgentGate.sol#2)
+		-^0.8.24 (src/interfaces/IQuestManager.sol#2)
+		-^0.8.24 (src/interfaces/IQuestValidator.sol#2)
+		-^0.8.24 (src/interfaces/IReputation.sol#2)
+		-^0.8.24 (src/mocks/MockAgentId.sol#2)
+		-^0.8.24 (src/validators/TokenBalanceValidator.sol#2)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#different-pragma-directives-are-used
+INFO:Detectors:
+Detector: cyclomatic-complexity
+QuestManager._completeQuest(IQuestManager.Quest,uint256) (src/QuestManager.sol#214-258) has a high cyclomatic complexity (13).
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cyclomatic-complexity
+INFO:Detectors:
+Detector: low-level-calls
+Low level call in AgentGate.isAgentHolder(address) (src/AgentGate.sol#72-83):
+	- (success,data) = agentIdContract.staticcall(abi.encodeWithSelector(IERC721Balance.balanceOf.selector,account)) (src/AgentGate.sol#75-76)
+Low level call in TokenBalanceValidator.validate(address,uint256) (src/validators/TokenBalanceValidator.sol#38-55):
+	- (success,data) = token.staticcall(abi.encodeWithSelector(IERC20Balance.balanceOf.selector,account)) (src/validators/TokenBalanceValidator.sol#47-48)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+INFO:Slither:. analyzed (37 contracts with 102 detectors), 10 result(s) found

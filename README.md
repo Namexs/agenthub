@@ -8,10 +8,16 @@ AGENTHUB combines a quest marketplace, on-chain reputation, soulbound
 (non-transferable) achievement badges, and a transparent leaderboard — all
 gated by real Agent ID ownership on BNB Chain.
 
-> **Status: Phase 1 — Repository Foundation.** Scaffolding, tooling,
-> contract interfaces, and documentation are in place. Contract
-> implementations and the testnet deployment land in Phase 2.
-> **Nothing is deployed yet, and nothing has been submitted to the hackathon.**
+> **Status: contracts implemented, security-reviewed, and remediated.**
+> All four contracts (AgentGate, QuestManager, Reputation, Achievement) are
+> implemented with a TimelockController admin, a deployment script, and
+> **193/193 Foundry tests passing** (baseline 120 before the remediation).
+> A user-led review of the source found 2 design issues (quest completion
+> did not prove the task was done; AgentGate did not pin the official
+> Agent ID address on mainnet) — both are fixed and regression-tested; see
+> `docs/REMEDIATION_REPORT.md`. **Nothing is deployed yet, and nothing has
+> been submitted to the hackathon.** Testnet staging awaits the owner's
+> go-ahead; final deployment targets BSC mainnet.
 
 ## Competition target
 
@@ -39,8 +45,11 @@ agenthub/
 │   ├── hooks/                useAgentId, useReputation, useQuests
 │   └── lib/                  env validation, wagmi config, contract ABIs
 ├── packages/
-│   ├── contracts/            Foundry: interfaces + MockAgentId + tests
-│   │   └── src/interfaces/   IAgentGate, IQuestManager, IReputation, IAchievement
+│   ├── contracts/            Foundry: 4 implemented contracts + validators
+│   │   ├── src/              AgentGate, QuestManager, Reputation, Achievement,
+│   │   │                     validators/, mocks/, interfaces/
+│   │   ├── script/           DeployAgentHub.s.sol (dry-run only, no broadcast)
+│   │   └── test/             193 tests (unit, fuzz, invariant, attack sim)
 │   ├── shared/               Types + constants (chains, addresses, thresholds)
 │   └── config/               Shared TS / ESLint / Tailwind preset (theme tokens)
 ├── docs/                     ARCHITECTURE, SECURITY, DEPLOYMENT, USER_GUIDE
@@ -82,12 +91,15 @@ typography (Inter), mobile-first. Design tokens live in a single source of
 truth: `packages/config/tailwind/preset.js`, consumed by the app's Tailwind
 config. See `docs/ARCHITECTURE.md` for the token table.
 
-## Contract build order (Phase 2)
+## Contracts (implemented)
 
-1. `AgentGate` — Agent ID ownership verification
-2. `QuestManager` — quest lifecycle + validated completions
-3. `Reputation` — points from validated events only
-4. `Achievement` — soulbound badges
+1. `AgentGate` — Agent ID ownership verification; mainnet pins the official
+   Agent ID contract, testnet/local accept the mock.
+2. `QuestManager` — quest lifecycle + validated completions: CheckIn
+   (explicit self-check-in), OnChain (validator contract), Attested
+   (EIP-712 verifier attestation).
+3. `Reputation` — points from validated events only; no admin score function.
+4. `Achievement` — soulbound badges, issuer = QuestManager only.
 
 Official Agent ID contract (BSC mainnet): `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`.
 Local/testnet uses `MockAgentId` — the official contract is not on testnet.
@@ -97,6 +109,11 @@ Local/testnet uses `MockAgentId` — the official contract is not on testnet.
 - [Architecture](docs/ARCHITECTURE.md) — system design, data flow, trust assumptions
 - [Security](docs/SECURITY.md) — threat model, layered defense, red lines
 - [Deployment](docs/DEPLOYMENT.md) — local → testnet staging → mainnet target
+- [Deployment Plan](docs/DEPLOYMENT_PLAN.md) — deployment script, role wiring, trust assumptions
+- [Quest Validation Design](docs/QUEST_VALIDATION_DESIGN.md) — CheckIn / OnChain / Attested
+- [Remediation Report](docs/REMEDIATION_REPORT.md) — fixes for the 2 user-found design issues
+- [New Threat Model](docs/NEW_THREAT_MODEL.md) — threats after the remediation
+- [Regression Results](docs/REGRESSION_RESULTS.md) — test evidence vs the 120-test baseline
 - [User Guide](docs/USER_GUIDE.md) — how to use AGENTHUB
 
 ## Security commitments (short version)
