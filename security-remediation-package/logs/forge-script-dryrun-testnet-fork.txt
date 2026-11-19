@@ -1,0 +1,12 @@
+Estimated total gas used for script: 10294857
+
+Estimated amount required: 0.0010294857 BNB
+
+==========================
+
+SIMULATION COMPLETE. To broadcast these transactions, add --broadcast and wallet configuration(s) to the previous command. See forge script --help for more.
+
+Transactions saved to: /home/hatch/workspace/agenthub/packages/contracts/broadcast/DeployAgentHub.s.sol/97/dry-run/run-latest.json
+
+Sensitive values saved to: /home/hatch/workspace/agenthub/packages/contracts/cache/DeployAgentHub.s.sol/97/dry-run/run-latest.json
+

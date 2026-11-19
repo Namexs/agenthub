@@ -1,0 +1,29 @@
+Ran 11 tests for test/AccessControl.t.sol:AccessControlTest
+Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 33.98ms (28.07ms CPU time)
+Ran 5 tests for test/MockAgentId.t.sol:MockAgentIdTest
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 47.61ms (46.70ms CPU time)
+Ran 15 tests for test/Reputation.t.sol:ReputationTest
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 140.88ms (139.58ms CPU time)
+Ran 6 tests for test/EconomicAttack.t.sol:EconomicAttackTest
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 165.50ms (162.87ms CPU time)
+Ran 7 tests for test/Integration.t.sol:IntegrationTest
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 64.41ms (61.11ms CPU time)
+Ran 40 tests for test/QuestManager.t.sol:QuestManagerTest
+Suite result: ok. 40 passed; 0 failed; 0 skipped; finished in 191.59ms (188.49ms CPU time)
+Ran 10 tests for test/AgentGateMainnet.t.sol:AgentGateMainnetTest
+Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 2.81ms (1.82ms CPU time)
+Ran 7 tests for test/AttackSimulation.t.sol:AttackSimulationTest
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 6.95ms (4.54ms CPU time)
+Ran 14 tests for test/Validator.t.sol:ValidatorTest
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 189.02ms (186.80ms CPU time)
+Ran 15 tests for test/DeployScript.t.sol:DeployScriptTest
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 12.72ms (10.66ms CPU time)
+Ran 18 tests for test/AgentGate.t.sol:AgentGateTest
+Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 14.71ms (14.00ms CPU time)
+Ran 19 tests for test/Achievement.t.sol:AchievementTest
+Suite result: ok. 19 passed; 0 failed; 0 skipped; finished in 504.52ms (504.24ms CPU time)
+Ran 24 tests for test/Attestation.t.sol:AttestationTest
+Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 296.74ms (300.16ms CPU time)
+Ran 2 tests for test/Invariant.t.sol:InvariantTest
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 39.77s (39.77s CPU time)
+Ran 14 test suites in 40.01s (41.45s CPU time): 193 tests passed, 0 failed, 0 skipped (193 total tests)

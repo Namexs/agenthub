@@ -1,0 +1,16 @@
+No files changed, compilation skipped
+Script ran successfully.
+Gas used: 8467332
+
+== Return ==
+deployment: struct DeployAgentHub.Deployment Deployment({ mockAgentId: 0xb77a76C5b8CDcF9cf7c1A60D914a144451D73A69, agentGate: 0x3aC4275A940F90cCA5CfF744DfB18A35Bc7Ac0ce, timelock: 0x5A36F8F59003DB9B69cC5CfA1d7B2c8EB8503d4E, reputation: 0x923D2ba14cFAb5A6a9722903dDD926aF3091A53a, achievement: 0x24c1f498d69c580D12C2055878e5D392F2f44d9d, questManager: 0x9Aefd53078A3a2F9E07ad7c19922aFeA5c2f5504 })
+
+== Logs ==
+  MockAgentId: 0xb77a76C5b8CDcF9cf7c1A60D914a144451D73A69
+  AgentGate: 0x3aC4275A940F90cCA5CfF744DfB18A35Bc7Ac0ce
+  TimelockController: 0x5A36F8F59003DB9B69cC5CfA1d7B2c8EB8503d4E
+  Reputation: 0x923D2ba14cFAb5A6a9722903dDD926aF3091A53a
+  Achievement: 0x24c1f498d69c580D12C2055878e5D392F2f44d9d
+  QuestManager: 0x9Aefd53078A3a2F9E07ad7c19922aFeA5c2f5504
+
+If you wish to simulate on-chain transactions pass a RPC URL.
