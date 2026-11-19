@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test} from "forge-std/Test.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {DeployAgentHub} from "../script/DeployAgentHub.s.sol";
 import {SafeValidation} from "../script/SafeValidation.sol";
@@ -12,6 +11,8 @@ import {Achievement} from "../src/Achievement.sol";
 import {IQuestManager} from "../src/interfaces/IQuestManager.sol";
 import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 import {MockSafe} from "./mocks/MockSafe.sol";
+import {MockSafeProxy, MockSafeSingleton} from "./mocks/MockSafeProxy.sol";
+import {CanonicalSafeHelper} from "./mocks/CanonicalSafe.sol";
 
 /// @notice TEMUAN 4 deployment-script tests: the full stack deploys in the
 /// right order with the right roles, the deployer keeps nothing, mainnet
@@ -19,16 +20,21 @@ import {MockSafe} from "./mocks/MockSafe.sol";
 /// No real network is touched: everything runs on the local test EVM.
 /// @dev The run() test uses the well-known Anvil test-account-0 private key
 /// (public, no real funds) via vm.setEnv, for local simulation only.
-contract DeployScriptTest is Test {
+contract DeployScriptTest is CanonicalSafeHelper {
     DeployAgentHub internal script;
 
     // Direct deploy() calls originate from the script contract,
     // so the script IS the deployer in those tests.
     address internal deployer;
-    // PRE-TESTNET CLEANUP (item 5): the admin multisig is a MockSafe
-    // (2-of-3), not an EOA — deploy() now validates it as a Safe.
-    MockSafe internal safe;
+    // FINAL REMEDIATION (Phase 1): the admin multisig is a MockSafeProxy
+    // (2-of-3, proxy-shaped with a singleton) validated via the LOCAL
+    // explicit path (31337) — deploy() now verifies the singleton +
+    // proxy codehash, not just getThreshold/getOwners. Chain 56/97
+    // tests use a canonical-bytecode proxy instead (see _canonicalParams).
+    MockSafeProxy internal safeProxy;
     address internal multisig;
+    address internal safeSingleton;
+    bytes32 internal safeProxyCodehash;
     address internal creator = makeAddr("creator");
     address internal pauser = makeAddr("pauser");
     address internal verifier = makeAddr("verifier");
@@ -45,8 +51,11 @@ contract DeployScriptTest is Test {
         owners[0] = makeAddr("safe-owner-1");
         owners[1] = makeAddr("safe-owner-2");
         owners[2] = makeAddr("safe-owner-3");
-        safe = new MockSafe(owners, 2);
-        multisig = address(safe);
+        MockSafeSingleton singleton = new MockSafeSingleton("1.4.1");
+        safeProxy = new MockSafeProxy(address(singleton), owners, 2);
+        multisig = address(safeProxy);
+        safeSingleton = address(singleton);
+        safeProxyCodehash = address(safeProxy).codehash;
         vm.warp(1_000_000);
     }
 
@@ -56,7 +65,29 @@ contract DeployScriptTest is Test {
             adminMultisig: multisig,
             questCreator: creator,
             pauser: pauser,
-            verifier: verifier
+            verifier: verifier,
+            safeSingleton: safeSingleton,
+            safeProxyCodehash: safeProxyCodehash
+        });
+    }
+
+    /// @notice Params for chain 56/97 tests: a canonical-bytecode Safe
+    /// proxy as the multisig, with NO explicit Safe values — production
+    /// chains enforce the canonical singleton + codehash sets.
+    function _canonicalParams() internal returns (DeployAgentHub.DeployParams memory) {
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("safe-owner-1");
+        owners[1] = makeAddr("safe-owner-2");
+        owners[2] = makeAddr("safe-owner-3");
+        address canonicalSafe = deployCanonicalSafe(owners, 2);
+        return DeployAgentHub.DeployParams({
+            agentId: address(0),
+            adminMultisig: canonicalSafe,
+            questCreator: creator,
+            pauser: pauser,
+            verifier: verifier,
+            safeSingleton: address(0),
+            safeProxyCodehash: bytes32(0)
         });
     }
 
@@ -242,19 +273,44 @@ contract DeployScriptTest is Test {
         owners[0] = makeAddr("o1");
         owners[1] = makeAddr("o2");
         owners[2] = makeAddr("o3");
-        MockSafe strict = new MockSafe(owners, 3);
+        MockSafeSingleton singleton = new MockSafeSingleton("1.4.1");
+        MockSafeProxy strict = new MockSafeProxy(address(singleton), owners, 3);
         DeployAgentHub.DeployParams memory params = _params();
         params.adminMultisig = address(strict);
+        params.safeSingleton = address(singleton);
+        params.safeProxyCodehash = address(strict).codehash;
         DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
         assertTrue(d.questManager != address(0));
         TimelockController timelock = TimelockController(payable(d.timelock));
         assertTrue(timelock.hasRole(timelock.PROPOSER_ROLE(), address(strict)));
     }
 
+    function test_DeployRejectsExplicitSafeValuesOnProduction() public {
+        // FINAL REMEDIATION (Phase 1): explicit singleton/codehash are a
+        // local-only escape hatch — passing them on chain 97 must revert
+        // even though the multisig itself is a genuine canonical Safe.
+        vm.chainId(97);
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
+        params.safeSingleton = makeAddr("explicit-singleton");
+        params.safeProxyCodehash = bytes32(uint256(1));
+        vm.expectRevert(DeployAgentHub.ExplicitSingletonNotAllowedOnProduction.selector);
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsMissingLocalSafeConfig() public {
+        // On 31337 the explicit Safe values are REQUIRED (canonical
+        // Safes are not deployed locally) — omitting them reverts.
+        DeployAgentHub.DeployParams memory params = _params();
+        params.safeSingleton = address(0);
+        params.safeProxyCodehash = bytes32(0);
+        vm.expectRevert(DeployAgentHub.LocalSafeConfigMissing.selector);
+        script.deploy(params, deployer);
+    }
+
     function test_MainnetRejectsMockAgentId() public {
         vm.chainId(56);
         MockAgentId mock = new MockAgentId();
-        DeployAgentHub.DeployParams memory params = _params();
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
         params.agentId = address(mock);
         vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.MainnetRequiresOfficialAgentId.selector, address(mock)));
         script.deploy(params, deployer);
@@ -262,7 +318,7 @@ contract DeployScriptTest is Test {
 
     function test_MainnetRejectsZeroAgentId() public {
         vm.chainId(56);
-        DeployAgentHub.DeployParams memory params = _params();
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
         params.agentId = address(0);
         vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.MainnetRequiresOfficialAgentId.selector, address(0)));
         script.deploy(params, deployer);
@@ -274,7 +330,7 @@ contract DeployScriptTest is Test {
         // passes (the real mainnet contract cannot be tested locally).
         MockAgentId mock = new MockAgentId();
         vm.etch(OFFICIAL, address(mock).code);
-        DeployAgentHub.DeployParams memory params = _params();
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
         params.agentId = OFFICIAL;
         DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
         assertEq(d.mockAgentId, address(0), "mock deployed on mainnet");
@@ -283,7 +339,7 @@ contract DeployScriptTest is Test {
 
     function test_TestnetAcceptsMock() public {
         vm.chainId(97);
-        DeployAgentHub.Deployment memory d = script.deploy(_params(), deployer);
+        DeployAgentHub.Deployment memory d = script.deploy(_canonicalParams(), deployer);
         assertTrue(d.mockAgentId != address(0));
         assertEq(AgentGate(d.agentGate).agentIdContract(), d.mockAgentId);
     }
@@ -291,11 +347,22 @@ contract DeployScriptTest is Test {
     // --- run() entry point (env-driven) ---
 
     function _setRunEnv() internal {
+        // NOTE: forge runs tests in parallel threads and vm.setEnv is
+        // process-global, so EVERY env var run() reads must be set here,
+        // immediately adjacent to the run() call — a var left unset can
+        // be read as a sibling test's value (test_RunDeploysLocalStack
+        // flaked with NoCodeAtAgentId when AGENT_ID_ADDRESS leaked in
+        // from the mainnet tests). Tests that need different values
+        // override them right after this call, still adjacent to run().
         vm.setEnv("DEPLOYER_PRIVATE_KEY", vm.toString(bytes32(ANVIL_KEY)));
         vm.setEnv("ADMIN_MULTISIG", vm.toString(multisig));
         vm.setEnv("QUEST_CREATOR", vm.toString(creator));
         vm.setEnv("PAUSER", vm.toString(pauser));
         vm.setEnv("VERIFIER", vm.toString(verifier));
+        vm.setEnv("SAFE_SINGLETON", vm.toString(safeSingleton));
+        vm.setEnv("SAFE_PROXY_CODEHASH", vm.toString(safeProxyCodehash));
+        vm.setEnv("AGENT_ID_ADDRESS", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("CONFIRM_MAINNET_DEPLOY", "false");
     }
 
     function test_RunDeploysLocalStack() public {
@@ -325,11 +392,27 @@ contract DeployScriptTest is Test {
 
     function test_RunMainnetWithConfirmationDeploys() public {
         vm.chainId(56);
+        // Slow setup FIRST: forge runs tests in parallel threads and
+        // vm.setEnv is process-global, so the env sets must sit
+        // immediately adjacent to run() — any slow work between a setEnv
+        // and run() lets a sibling test's values interleave (this flaked
+        // with MainnetDeployNotConfirmed in the first version).
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("safe-owner-1");
+        owners[1] = makeAddr("safe-owner-2");
+        owners[2] = makeAddr("safe-owner-3");
+        address canonicalSafe = deployCanonicalSafe(owners, 2);
+        MockAgentId mock = new MockAgentId();
+        vm.etch(OFFICIAL, address(mock).code);
+        // Production chain: the multisig must be a canonical Safe and
+        // the explicit local values must be cleared (a sibling test's
+        // env would otherwise leak in and trip the production guard).
         _setRunEnv();
         vm.setEnv("AGENT_ID_ADDRESS", vm.toString(OFFICIAL));
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "true");
-        MockAgentId mock = new MockAgentId();
-        vm.etch(OFFICIAL, address(mock).code);
+        vm.setEnv("ADMIN_MULTISIG", vm.toString(canonicalSafe));
+        vm.setEnv("SAFE_SINGLETON", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("SAFE_PROXY_CODEHASH", "0x0000000000000000000000000000000000000000000000000000000000000000");
         DeployAgentHub.Deployment memory d = script.run();
         assertEq(d.mockAgentId, address(0));
         assertEq(AgentGate(d.agentGate).agentIdContract(), OFFICIAL);

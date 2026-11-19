@@ -23,18 +23,24 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   (2-day delay, multisig proposes + executes), operational roles go to
 ///   the configured addresses, and the deployer renounces admin on every
 ///   contract. Post-deploy assertions verify this on-chain.
-/// - PRE-TESTNET CLEANUP (item 5): ADMIN_MULTISIG is validated as a real
-///   Gnosis Safe with threshold >= 2 BEFORE anything is deployed
-///   (SafeValidation library). An EOA, a non-Safe contract, or a 1-of-n
-///   "multisig" aborts the deployment. Run script/ValidateSafe.s.sol first
-///   for the human-readable check; the check inside deploy() cannot be
-///   skipped.
+/// - FINAL REMEDIATION (Phase 1): ADMIN_MULTISIG is validated as a GENUINE
+///   Safe BEFORE anything is deployed (SafeValidation library): the
+///   singleton must be a canonical Safe singleton (v1.3.0 / v1.4.1) and
+///   the proxy's runtime codehash must be a canonical Safe proxy codehash,
+///   with threshold >= 2. An EOA, a non-Safe contract, a fake "Safe", or
+///   a 1-of-n "multisig" aborts the deployment. On the LOCAL chain (31337)
+///   canonical Safes are not deployed, so the operator must pass the
+///   expected singleton + proxy codehash explicitly (SAFE_SINGLETON /
+///   SAFE_PROXY_CODEHASH); that path reverts on any other chain.
+///   Run script/ValidateSafe.s.sol first for the human-readable check;
+///   the check inside deploy() cannot be skipped.
 /// - `run()` is the env-driven entry point for `forge script`. `deploy()`
 ///   is the parameterized core, unit-tested without env vars or keys.
 /// @dev Usage (dry-run / simulation only — never --broadcast without a
 /// reviewed decision, see docs/DEPLOYMENT_PLAN.md):
 ///   DEPLOYER_PRIVATE_KEY=<key> ADMIN_MULTISIG=<0x..> QUEST_CREATOR=<0x..>
 ///   PAUSER=<0x..> [VERIFIER=<0x..>] [AGENT_ID_ADDRESS=<0x..>]
+///   [SAFE_SINGLETON=<0x..> SAFE_PROXY_CODEHASH=<0x..>]   # local (31337) only
 ///   forge script script/DeployAgentHub.s.sol
 contract DeployAgentHub is Script {
     /// @notice Timelock delay for admin actions (matches IntegrationTest).
@@ -48,6 +54,14 @@ contract DeployAgentHub is Script {
     error MainnetDeployNotConfirmed();
     error ZeroAddress(string param);
     error WiringCheckFailed(string check);
+    /// @dev FINAL REMEDIATION (Phase 1): on the local chain (31337) the
+    /// operator must supply the expected Safe singleton + proxy codehash
+    /// explicitly (canonical Safes are not deployed locally).
+    error LocalSafeConfigMissing();
+    /// @dev FINAL REMEDIATION (Phase 1): explicit Safe values are a
+    /// local-only escape hatch — production chains enforce the canonical
+    /// singleton + codehash sets and reject any override.
+    error ExplicitSingletonNotAllowedOnProduction();
 
     struct DeployParams {
         /// @dev Agent ID contract to trust. address(0) on testnet/local
@@ -61,6 +75,14 @@ contract DeployAgentHub is Script {
         address pauser;
         /// @dev Optional first verifier (VERIFIER_ROLE). address(0) = none.
         address verifier;
+        /// @dev LOCAL CHAIN (31337) ONLY: expected Safe singleton for the
+        /// explicit validation path. MUST be address(0) on 56/97
+        /// (canonical enforcement). MUST be non-zero on 31337.
+        address safeSingleton;
+        /// @dev LOCAL CHAIN (31337) ONLY: expected Safe proxy codehash for
+        /// the explicit validation path. MUST be bytes32(0) on 56/97.
+        /// MUST be non-zero on 31337.
+        bytes32 safeProxyCodehash;
     }
 
     struct Deployment {
@@ -87,7 +109,9 @@ contract DeployAgentHub is Script {
             adminMultisig: vm.envAddress("ADMIN_MULTISIG"),
             questCreator: vm.envAddress("QUEST_CREATOR"),
             pauser: vm.envAddress("PAUSER"),
-            verifier: vm.envOr("VERIFIER", address(0))
+            verifier: vm.envOr("VERIFIER", address(0)),
+            safeSingleton: vm.envOr("SAFE_SINGLETON", address(0)),
+            safeProxyCodehash: vm.envOr("SAFE_PROXY_CODEHASH", bytes32(0))
         });
         uint256 deployerKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         // The deployer address is DERIVED from the key, never msg.sender:
@@ -118,11 +142,26 @@ contract DeployAgentHub is Script {
         if (params.adminMultisig == address(0)) revert ZeroAddress("adminMultisig");
         if (params.questCreator == address(0)) revert ZeroAddress("questCreator");
         if (params.pauser == address(0)) revert ZeroAddress("pauser");
-        // PRE-TESTNET CLEANUP (item 5): the admin multisig must be a real
-        // Safe with threshold >= 2 — checked BEFORE deploying anything,
-        // so a misconfigured ADMIN_MULTISIG aborts the whole deployment
-        // instead of silently centralizing the project.
-        SafeValidation.validate(params.adminMultisig);
+        // FINAL REMEDIATION (Phase 1): the admin multisig must be a
+        // GENUINE Safe — checked BEFORE deploying anything, so a
+        // misconfigured ADMIN_MULTISIG aborts the whole deployment instead
+        // of silently centralizing the project. Production chains (56/97)
+        // enforce the canonical singleton + proxy codehash sets; the
+        // local chain (31337) uses the explicit path with
+        // operator-supplied expected values (canonical Safes are not
+        // deployed locally). Explicit values are REJECTED on production
+        // chains — there is no override for the canonical check.
+        if (block.chainid == 31337) {
+            if (params.safeSingleton == address(0) || params.safeProxyCodehash == bytes32(0)) {
+                revert LocalSafeConfigMissing();
+            }
+            SafeValidation.validate(params.adminMultisig, params.safeSingleton, params.safeProxyCodehash);
+        } else {
+            if (params.safeSingleton != address(0) || params.safeProxyCodehash != bytes32(0)) {
+                revert ExplicitSingletonNotAllowedOnProduction();
+            }
+            SafeValidation.validate(params.adminMultisig);
+        }
         // Mainnet lock (defense in depth — AgentGate enforces it too):
         // the official Agent ID is the ONLY accepted identity on chain 56.
         if (block.chainid == 56 && params.agentId != OFFICIAL_AGENT_ID) {
