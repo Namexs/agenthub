@@ -43,6 +43,9 @@ contract MockAgentIdTest is Test {
 
     function testFuzz_MintGrantsBalance(address to) public {
         vm.assume(to != address(0));
+        // _safeMint reverts for contract recipients without onERC721Received;
+        // fuzz only EOAs (Agent ID holders are EOAs in practice).
+        vm.assume(to.code.length == 0);
         mock.mint(to);
         assertEq(mock.balanceOf(to), 1);
     }
