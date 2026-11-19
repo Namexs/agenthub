@@ -1,0 +1,22 @@
+packages in lockfile: 907
+queried 500/907
+queried 907/907
+
+findings: 33
+by severity: {"MODERATE":18,"LOW":3,"CRITICAL":3,"HIGH":9}
+
+HIGH/CRITICAL findings (12):
+- CRITICAL GHSA-2464-fhr4-w9xw  — next@14.2.35 (fixed in: 15.5.28, 16.4.1) — Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used
+- CRITICAL GHSA-2xp9-vwfh-vxw4  — next@14.2.35 (fixed in: 15.5.24, 16.3.3) — Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used
+- HIGH GHSA-36qx-fr4f-26g5 CVE-2026-44573 — next@14.2.35 (fixed in: 15.5.16, 16.2.5) — Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n
+- HIGH GHSA-89xv-2m56-2m9x CVE-2026-64649 — next@14.2.35 (fixed in: 15.5.21, 16.2.11) — Next.js: Server-Side Request Forgery in Server Actions on custom servers
+- HIGH GHSA-8h8q-6873-q5fj  — next@14.2.35 (fixed in: 15.5.16, 16.2.5) — Next.js Vulnerable to Denial of Service with Server Components
+- HIGH GHSA-c4j6-fc7j-m34r CVE-2026-44578 — next@14.2.35 (fixed in: 15.5.16, 16.2.5) — Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades
+- HIGH GHSA-h25m-26qc-wcjf  — next@14.2.35 (fixed in: 15.0.8, 15.1.12, 15.2.9, 15.3.9, 15.4.11, 15.5.10, 15.6.0-canary.61, 16.0.11, 16.1.5) — Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components
+- HIGH GHSA-m99w-x7hq-7vfj CVE-2026-64641 — next@14.2.35 (fixed in: 15.5.21, 16.2.11) — Next.js: Denial of Service in App Router using Server Actions
+- CRITICAL GHSA-p293-qw3h-jr36 CVE-2026-75604 — next@14.2.35 (fixed in: 15.5.24, 16.3.3) — Next.js: Unauthenticated Remote Code Execution on windows-hosted servers
+- HIGH GHSA-p3m5-59mp-jv5r CVE-2026-94482 — next@14.2.35 (fixed in: 15.5.28, 16.4.1) — Next.js: Denial of Service in App Router using Server Actions
+- HIGH GHSA-p9j2-gv94-2wf4 CVE-2026-64645 — next@14.2.35 (fixed in: 15.5.21, 16.2.11) — Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname
+- HIGH GHSA-q4gf-8mx6-v5v3  — next@14.2.35 (fixed in: 15.5.15, 16.2.3) — Next.js has a Denial of Service with Server Components
+
+full JSON written to agenthub-final-pretestnet/logs/phase4-osv-audit.json

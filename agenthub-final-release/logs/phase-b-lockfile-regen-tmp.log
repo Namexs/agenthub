@@ -1,0 +1,80 @@
+Scope: all 5 workspace projects
+Progress: resolved 1, reused 0, downloaded 0, added 0
+ WARN  deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+Progress: resolved 22, reused 0, downloaded 0, added 0
+Progress: resolved 71, reused 0, downloaded 0, added 0
+Progress: resolved 96, reused 0, downloaded 0, added 0
+Progress: resolved 101, reused 0, downloaded 0, added 0
+Progress: resolved 143, reused 0, downloaded 0, added 0
+Progress: resolved 252, reused 0, downloaded 0, added 0
+Progress: resolved 253, reused 0, downloaded 0, added 0
+Progress: resolved 264, reused 0, downloaded 0, added 0
+Progress: resolved 270, reused 0, downloaded 0, added 0
+Progress: resolved 278, reused 0, downloaded 0, added 0
+Progress: resolved 285, reused 0, downloaded 0, added 0
+Progress: resolved 294, reused 0, downloaded 0, added 0
+Progress: resolved 329, reused 0, downloaded 0, added 0
+Progress: resolved 340, reused 0, downloaded 0, added 0
+Progress: resolved 347, reused 0, downloaded 0, added 0
+Progress: resolved 357, reused 0, downloaded 0, added 0
+Progress: resolved 360, reused 0, downloaded 0, added 0
+Progress: resolved 363, reused 0, downloaded 0, added 0
+Progress: resolved 463, reused 0, downloaded 0, added 0
+Progress: resolved 468, reused 0, downloaded 0, added 0
+Progress: resolved 481, reused 0, downloaded 0, added 0
+Progress: resolved 492, reused 0, downloaded 0, added 0
+Progress: resolved 497, reused 0, downloaded 0, added 0
+Progress: resolved 507, reused 0, downloaded 0, added 0
+Progress: resolved 514, reused 0, downloaded 0, added 0
+Progress: resolved 522, reused 0, downloaded 0, added 0
+Progress: resolved 588, reused 0, downloaded 0, added 0
+Progress: resolved 590, reused 0, downloaded 0, added 0
+Progress: resolved 595, reused 0, downloaded 0, added 0
+Progress: resolved 646, reused 0, downloaded 0, added 0
+Progress: resolved 693, reused 0, downloaded 0, added 0
+Progress: resolved 702, reused 0, downloaded 0, added 0
+Progress: resolved 712, reused 0, downloaded 0, added 0
+Progress: resolved 713, reused 0, downloaded 0, added 0
+Progress: resolved 783, reused 0, downloaded 0, added 0
+Progress: resolved 786, reused 0, downloaded 0, added 0
+Progress: resolved 795, reused 0, downloaded 0, added 0
+Progress: resolved 812, reused 0, downloaded 0, added 0
+Progress: resolved 813, reused 0, downloaded 0, added 0
+Progress: resolved 834, reused 0, downloaded 0, added 0
+Progress: resolved 839, reused 0, downloaded 0, added 0
+Progress: resolved 852, reused 0, downloaded 0, added 0
+Progress: resolved 858, reused 0, downloaded 0, added 0
+Progress: resolved 871, reused 0, downloaded 0, added 0
+Progress: resolved 875, reused 0, downloaded 0, added 0
+Progress: resolved 891, reused 0, downloaded 0, added 0
+Progress: resolved 901, reused 0, downloaded 0, added 0
+ WARN  18 deprecated subdependencies found: @humanwhocodes/config-array@0.13.0, @humanwhocodes/object-schema@2.0.3, @metamask/sdk-communication-layer@0.30.0, @metamask/sdk-install-modal-web@0.30.0, @metamask/sdk@0.30.1, @motionone/vue@10.16.4, @safe-global/safe-gateway-typescript-sdk@3.23.1, @walletconnect/ethereum-provider@2.17.0, @walletconnect/modal@2.7.0, @walletconnect/sign-client@2.17.0, @walletconnect/universal-provider@2.17.0, glob@10.5.0, glob@7.2.3, inflight@1.0.6, lodash.isequal@4.5.0, rimraf@3.0.2, uuid@8.3.2, uuid@9.0.1
+Progress: resolved 907, reused 0, downloaded 0, added 0
+Progress: resolved 907, reused 0, downloaded 0, added 0, done
+
+ WARN  Issues with peer dependencies found
+apps/web
+├─┬ viem 2.21.45
+│ └─┬ ox 0.1.2
+│   └─┬ abitype 1.0.6
+│     └── ✕ unmet peer zod@"^3 >=3.22.0": found 4.6.7
+├─┬ react-native 0.88.1
+│ ├── ✕ unmet peer @types/react@^19.1.1: found 18.3.11
+│ ├── ✕ unmet peer react@^19.3.0: found 18.3.1
+│ └─┬ @react-native/virtualized-lists 0.88.1
+│   └── ✕ unmet peer @types/react@^19.2.0: found 18.3.11
+├─┬ vitest 4.1.12
+│ ├── ✕ unmet peer vite@"^6.0.0 || ^7.0.0 || ^8.0.0": found 5.4.21
+│ └─┬ @vitest/mocker 4.1.12
+│   └── ✕ unmet peer vite@"^6.0.0 || ^7.0.0 || ^8.0.0": found 5.4.21
+└─┬ wagmi 2.12.29
+  └─┬ @wagmi/connectors 5.3.7
+    ├─┬ @metamask/sdk 0.30.1
+    │ └─┬ @metamask/sdk-communication-layer 0.30.0
+    │   └── ✕ unmet peer eciesjs@^0.3.16: found 0.4.18
+    └─┬ @coinbase/wallet-sdk 4.4.0
+      └─┬ viem 2.58.1
+        └─┬ isows 1.0.7
+          └── ✕ unmet peer ws@8.23.0: found 8.21.0
+
+Done in 49.6s

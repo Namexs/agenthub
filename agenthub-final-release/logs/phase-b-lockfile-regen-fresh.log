@@ -1,0 +1,106 @@
+Scope: all 5 workspace projects
+Progress: resolved 1, reused 0, downloaded 0, added 0
+ WARN  deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+Progress: resolved 22, reused 0, downloaded 0, added 0
+Progress: resolved 29, reused 0, downloaded 0, added 0
+Progress: resolved 30, reused 0, downloaded 0, added 0
+Progress: resolved 44, reused 0, downloaded 0, added 0
+Progress: resolved 45, reused 0, downloaded 0, added 0
+Progress: resolved 62, reused 0, downloaded 0, added 0
+Progress: resolved 63, reused 0, downloaded 0, added 0
+Progress: resolved 71, reused 0, downloaded 0, added 0
+Progress: resolved 75, reused 0, downloaded 0, added 0
+Progress: resolved 87, reused 0, downloaded 0, added 0
+Progress: resolved 88, reused 0, downloaded 0, added 0
+Progress: resolved 104, reused 0, downloaded 0, added 0
+Progress: resolved 125, reused 0, downloaded 0, added 0
+Progress: resolved 145, reused 0, downloaded 0, added 0
+Progress: resolved 153, reused 0, downloaded 0, added 0
+Progress: resolved 158, reused 0, downloaded 0, added 0
+Progress: resolved 171, reused 0, downloaded 0, added 0
+Progress: resolved 177, reused 0, downloaded 0, added 0
+Progress: resolved 190, reused 0, downloaded 0, added 0
+Progress: resolved 195, reused 0, downloaded 0, added 0
+Progress: resolved 208, reused 0, downloaded 0, added 0
+Progress: resolved 213, reused 0, downloaded 0, added 0
+Progress: resolved 221, reused 0, downloaded 0, added 0
+Progress: resolved 232, reused 0, downloaded 0, added 0
+Progress: resolved 239, reused 0, downloaded 0, added 0
+Progress: resolved 249, reused 0, downloaded 0, added 0
+Progress: resolved 267, reused 0, downloaded 0, added 0
+Progress: resolved 268, reused 0, downloaded 0, added 0
+Progress: resolved 284, reused 0, downloaded 0, added 0
+Progress: resolved 285, reused 0, downloaded 0, added 0
+Progress: resolved 297, reused 0, downloaded 0, added 0
+Progress: resolved 306, reused 0, downloaded 0, added 0
+Progress: resolved 314, reused 0, downloaded 0, added 0
+Progress: resolved 318, reused 0, downloaded 0, added 0
+Progress: resolved 349, reused 0, downloaded 0, added 0
+Progress: resolved 352, reused 0, downloaded 0, added 0
+Progress: resolved 367, reused 0, downloaded 0, added 0
+Progress: resolved 371, reused 0, downloaded 0, added 0
+Progress: resolved 393, reused 0, downloaded 0, added 0
+Progress: resolved 400, reused 0, downloaded 0, added 0
+Progress: resolved 407, reused 0, downloaded 0, added 0
+Progress: resolved 417, reused 0, downloaded 0, added 0
+Progress: resolved 421, reused 0, downloaded 0, added 0
+Progress: resolved 429, reused 0, downloaded 0, added 0
+Progress: resolved 436, reused 0, downloaded 0, added 0
+Progress: resolved 446, reused 0, downloaded 0, added 0
+Progress: resolved 450, reused 0, downloaded 0, added 0
+Progress: resolved 459, reused 0, downloaded 0, added 0
+Progress: resolved 500, reused 0, downloaded 0, added 0
+Progress: resolved 504, reused 0, downloaded 0, added 0
+Progress: resolved 513, reused 0, downloaded 0, added 0
+Progress: resolved 518, reused 0, downloaded 0, added 0
+Progress: resolved 532, reused 0, downloaded 0, added 0
+Progress: resolved 537, reused 0, downloaded 0, added 0
+Progress: resolved 558, reused 0, downloaded 0, added 0
+Progress: resolved 566, reused 0, downloaded 0, added 0
+Progress: resolved 574, reused 0, downloaded 0, added 0
+Progress: resolved 582, reused 0, downloaded 0, added 0
+Progress: resolved 589, reused 0, downloaded 0, added 0
+Progress: resolved 602, reused 0, downloaded 0, added 0
+Progress: resolved 608, reused 0, downloaded 0, added 0
+Progress: resolved 618, reused 0, downloaded 0, added 0
+Progress: resolved 623, reused 0, downloaded 0, added 0
+Progress: resolved 638, reused 0, downloaded 0, added 0
+Progress: resolved 641, reused 0, downloaded 0, added 0
+Progress: resolved 653, reused 0, downloaded 0, added 0
+Progress: resolved 663, reused 0, downloaded 0, added 0
+Progress: resolved 669, reused 0, downloaded 0, added 0
+Progress: resolved 687, reused 0, downloaded 0, added 0
+Progress: resolved 692, reused 0, downloaded 0, added 0
+Progress: resolved 705, reused 0, downloaded 0, added 0
+Progress: resolved 710, reused 0, downloaded 0, added 0
+Progress: resolved 711, reused 0, downloaded 0, added 0
+Progress: resolved 779, reused 0, downloaded 0, added 0
+Progress: resolved 791, reused 0, downloaded 0, added 0
+Progress: resolved 804, reused 0, downloaded 0, added 0
+Progress: resolved 812, reused 0, downloaded 0, added 0
+Progress: resolved 825, reused 0, downloaded 0, added 0
+Progress: resolved 836, reused 0, downloaded 0, added 0
+Progress: resolved 842, reused 0, downloaded 0, added 0
+Progress: resolved 857, reused 0, downloaded 0, added 0
+Progress: resolved 864, reused 0, downloaded 0, added 0
+Progress: resolved 881, reused 0, downloaded 0, added 0
+Progress: resolved 888, reused 0, downloaded 0, added 0
+Progress: resolved 899, reused 0, downloaded 0, added 0
+Progress: resolved 906, reused 0, downloaded 0, added 0
+ WARN  18 deprecated subdependencies found: @humanwhocodes/config-array@0.13.0, @humanwhocodes/object-schema@2.0.3, @metamask/sdk-communication-layer@0.30.0, @metamask/sdk-install-modal-web@0.30.0, @metamask/sdk@0.30.1, @motionone/vue@10.16.4, @safe-global/safe-gateway-typescript-sdk@3.23.1, @walletconnect/ethereum-provider@2.17.0, @walletconnect/modal@2.7.0, @walletconnect/sign-client@2.17.0, @walletconnect/universal-provider@2.17.0, glob@10.5.0, glob@7.2.3, inflight@1.0.6, lodash.isequal@4.5.0, rimraf@3.0.2, uuid@8.3.2, uuid@9.0.1
+Progress: resolved 907, reused 0, downloaded 0, added 0, done
+
+ WARN  Issues with peer dependencies found
+apps/web
+├─┬ react-native 0.88.1
+│ ├── ✕ unmet peer @types/react@^19.1.1: found 18.3.11
+│ ├── ✕ unmet peer react@^19.3.0: found 18.3.1
+│ └─┬ @react-native/virtualized-lists 0.88.1
+│   └── ✕ unmet peer @types/react@^19.2.0: found 18.3.11
+└─┬ wagmi 2.12.29
+  └─┬ @wagmi/connectors 5.3.7
+    └─┬ @metamask/sdk 0.30.1
+      └─┬ @metamask/sdk-communication-layer 0.30.0
+        └── ✕ unmet peer eciesjs@^0.3.16: found 0.4.18
+
+Done in 1m 28.5s
