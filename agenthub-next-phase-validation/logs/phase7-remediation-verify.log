@@ -1,0 +1,15 @@
+=== PRETTIER --check (CI command) ===
+Checking formatting...
+[warn] agenthub-next-phase-validation/logs/phase7-gitleaks-finding.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+PRETTIER_EXIT:1
+=== FORGE FMT --check ===
+FORGE_FMT_EXIT:0
+=== GITLEAKS full history (git mode, all refs) ===
+Fingerprint: 71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d:agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt:generic-api-key:251
+Link:        https://github.com/Namexs/agenthub/blob/71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d/agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt#L251
+
+[90m2:17PM[0m [32mINF[0m [1m85 commits scanned.[0m
+[90m2:17PM[0m [32mINF[0m [1mscanned ~4623189 bytes (4.62 MB) in 3.01s[0m
+[90m2:17PM[0m [33mWRN[0m [1mleaks found: 1[0m
+GITLEAKS_EXIT:0

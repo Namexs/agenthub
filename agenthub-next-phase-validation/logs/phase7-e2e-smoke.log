@@ -1,0 +1,99 @@
+=== playwright install chromium (browser-only) ===
+PLAYWRIGHT_INSTALL:0
+=== E2E SMOKE ===
+start: 2026-11-19T14:08:46Z
+=== E2E smoke run: 2026-11-19T14:08:46Z ===
+--- next build ---
+   ▲ Next.js 15.5.29
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 25.8s
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/var/tmp/agenthub-nextphase/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/var/tmp/agenthub-nextphase/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@19.3.0_bufferutil@4.2.0_react@19.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully in 48s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      915 B         181 kB
+├ ○ /_not-found                            993 B         103 kB
+├ ○ /campaigns                           1.02 kB         204 kB
+├ ○ /dashboard                           1.92 kB         213 kB
+├ ○ /history                             3.96 kB         203 kB
+├ ○ /leaderboard                         3.25 kB         202 kB
+├ ○ /profile                             1.32 kB         213 kB
+├ ○ /quests                              1.11 kB         204 kB
+└ ○ /security                              121 B         103 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/564e42df-2247f253e50666f7.js  54.2 kB
+  ├ chunks/7-8b623af2d9538d79.js         46.2 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)  prerendered as static content
+
+--- starting next start on :3100 ---
+server ready after 5s
+--- playwright smoke ---
+  PASS GET / -> 200
+  PASS home shows the AGENTHUB intro
+  PASS home shows the Connect button
+  PASS GET /quests -> 200
+  PASS quests heading
+  PASS quests shows the undeployed preview label
+  PASS quests shows the First Agent card
+  PASS quests shows the Daily Check-in card
+  PASS quests does NOT claim live data while undeployed
+  PASS GET /dashboard -> 200
+  PASS /dashboard heading is "Dashboard"
+  PASS GET /profile -> 200
+  PASS /profile heading is "Profile"
+  PASS GET /leaderboard -> 200
+  PASS /leaderboard heading is "Leaderboard"
+  PASS GET /history -> 200
+  PASS /history heading is "Activity History"
+  PASS GET /campaigns -> 200
+  PASS /campaigns heading is "Community Campaigns"
+  PASS GET /security -> 200
+  PASS /security heading is "Security"
+  PASS no page errors
+  PASS no console errors
+
+E2E smoke: 23 passed, 0 failed
+ALL E2E SMOKE CHECKS PASSED
+log saved: /var/tmp/agenthub-nextphase/agenthub-final-pretestnet/logs/phase8-e2e-smoke.log
+E2E_SMOKE:0
+end: 2026-11-19T14:10:46Z
+tmpfs           2.0G  1.8G  237M  89% /var/tmp

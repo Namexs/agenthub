@@ -1,0 +1,38 @@
+=== GITLEAKS A: history reachable from TESTED commit af75bcc (83 commits) ===
+start: 2026-11-19T14:15:04Z
+
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+[90m2:15PM[0m [32mINF[0m [1m83 commits scanned.[0m
+[90m2:15PM[0m [32mINF[0m [1mscanned ~4614272 bytes (4.61 MB) in 2.41s[0m
+[90m2:15PM[0m [33mWRN[0m [1mleaks found: 1[0m
+GITLEAKS_TESTED:1
+
+=== GITLEAKS B: full history, all refs, current HEAD d4f84a7 (84 commits) ===
+
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+[90m2:15PM[0m [32mINF[0m [1m84 commits scanned.[0m
+[90m2:15PM[0m [32mINF[0m [1mscanned ~4618097 bytes (4.62 MB) in 1.01s[0m
+[90m2:15PM[0m [33mWRN[0m [1mleaks found: 1[0m
+GITLEAKS_ALL:1
+end: 2026-11-19T14:15:09Z
+
+=== FINDING DETAIL (redacted re-run, --verbose + --redact) ===
+RuleID: generic-api-key
+File: agenthub-next-phase-validation/logs/phase2-e2e-job-log.txt, line 251
+Commit: 71223bdcc525e921c2e67ba6bf0d3ee6b9ec212d (docs(phase-1-2), 2026-11-19T13:54:02Z, author Asta)
+Match: cache-key: e2e-39fcb94b... (GitHub Actions cache key for foundry-toolchain, derived from commit SHA)
+Entropy: 3.874236
+Assessment: FALSE POSITIVE — the matched string is a CI cache identifier, not a credential.
+It still fails the gate: gitleaks exits 1 and the CI secrets job would fail at this HEAD.
+Reproduced identically in 3 runs (scan A, scan B, verbose re-run) — deterministic, not transient.
+Redacted JSON finding saved alongside as phase7-gitleaks-finding.json (secret field = REDACTED).

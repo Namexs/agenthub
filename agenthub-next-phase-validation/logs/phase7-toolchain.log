@@ -1,0 +1,39 @@
+Phase 7 toolchain — 2026-11-19T14:01:37Z
+HEAD tested: d584a8ed37f1a8a4aaa4ddd26a77a45d60f29602
+--- node:
+v20.20.2
+--- npm:
+10.8.2
+--- pnpm:
+9.15.4
+--- pnpm path:
+/home/hatch/workspace/.tmp/pnpm-9.15.4/node_modules/.bin/pnpm
+--- forge:
+forge Version: 1.9.0
+--- anvil:
+anvil Version: 1.9.0
+--- cast:
+cast Version: 1.9.0
+--- slither:
+0.11.6
+--- gitleaks:
+8.24.3
+--- python3:
+Python 3.12.3
+--- playwright pinned (web package.json):
+1.65.1
+--- playwright chromium cache:
+chromium-1255
+chromium_headless_shell-1255
+ffmpeg-1013
+
+=== CORRECTION (verified 2026-11-19T14:08:40Z) ===
+HEAD at task start was d584a8ed37f1a8a4aaa4ddd26a77a45d60f29602, but the parent
+committed af75bcc (docs, phase-5) at 14:00:12Z while setup was in progress.
+The clean copy was archived AFTER that commit: its file list is IDENTICAL
+to the af75bcc tree (only extra file is generated apps/web/tsconfig.tsbuildinfo),
+and both prettier-failing files hash-match af75bcc blobs. d4f84a7 (phase-6,
+3 log files) is NOT in the copy (all 3 files absent).
+TESTED COMMIT: af75bcc96ea17474394b6e73ee99ba2d4d8409c3
+d584a8e..af75bcc diff: 2 files added, docs/logs only, 0 code changes —
+all code results below are valid for d584a8e as well.

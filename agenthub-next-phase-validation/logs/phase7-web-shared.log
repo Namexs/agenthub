@@ -1,0 +1,72 @@
+=== WEB LINT ===
+
+> @agenthub/web@0.1.0 lint /var/tmp/agenthub-nextphase/apps/web
+> next lint
+
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+✔ No ESLint warnings or errors
+WEB_LINT:0
+=== WEB TYPECHECK ===
+
+> @agenthub/web@0.1.0 typecheck /var/tmp/agenthub-nextphase/apps/web
+> tsc --project tsconfig.json --noEmit
+
+WEB_TSC:0
+=== WEB TEST ===
+
+> @agenthub/web@0.1.0 test /var/tmp/agenthub-nextphase/apps/web
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-nextphase/apps/web[39m
+
+ [32m✓[39m lib/quests.test.ts [2m([22m[2m26 tests[22m[2m)[22m[33m 388[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks during cooldown and names the cooldown [33m 354[2mms[22m[39m
+ [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m4 tests[22m[2m | [22m[33m4 skipped[39m[2m)[22m
+ [32m✓[39m lib/attestation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 593[2mms[22m[39m
+ [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 684[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 420[2mms[22m[39m
+ [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m50 tests[22m[2m)[22m[33m 1002[2mms[22m[39m
+     [33m[2m✓[22m[39m accepts a valid attestation from a VERIFIER_ROLE holder [33m 403[2mms[22m[39m
+ [32m✓[39m lib/events.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 305[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (8)[39m
+[2m      Tests [22m [1m[32m136 passed[39m[22m[2m | [22m[33m4 skipped[39m[90m (140)[39m
+[2m   Start at [22m 14:04:59
+[2m   Duration [22m 10.57s[2m (transform 3.05s, setup 0ms, import 12.53s, tests 3.03s, environment 4.38s)[22m
+
+WEB_TEST:0
+=== SHARED LINT ===
+
+> @agenthub/shared@0.1.0 lint /var/tmp/agenthub-nextphase/packages/shared
+> eslint src --ext .ts
+
+SHARED_LINT:0
+=== SHARED TYPECHECK ===
+
+> @agenthub/shared@0.1.0 typecheck /var/tmp/agenthub-nextphase/packages/shared
+> tsc --project tsconfig.json --noEmit
+
+SHARED_TSC:0
+=== SHARED TEST ===
+
+> @agenthub/shared@0.1.0 test /var/tmp/agenthub-nextphase/packages/shared
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/var/tmp/agenthub-nextphase/packages/shared[39m
+
+ [32m✓[39m src/constants.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 14:05:17
+[2m   Duration [22m 415ms[2m (transform 81ms, setup 0ms, import 101ms, tests 10ms, environment 0ms)[22m
+
+SHARED_TEST:0

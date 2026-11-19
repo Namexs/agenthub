@@ -1,0 +1,33 @@
+
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+Finding:     [1;3;mREDACTED[0m
+Secret:      [1;3;mREDACTED[0m
+RuleID:      private-key
+Entropy:     5.073963
+File:        fake-key.pem
+Line:        1
+Fingerprint: fake-key.pem:private-key:1
+
+Finding:     token = "[1;3;mREDACTED[0m23"
+Secret:      [1;3;mREDACTED[0m
+RuleID:      github-pat
+Entropy:     5.121928
+File:        fake-token.txt
+Line:        1
+Fingerprint: fake-token.txt:github-pat:1
+
+Finding:     token = "[1;3;mREDACTED[0m"
+Secret:      [1;3;mREDACTED[0m
+RuleID:      generic-api-key
+Entropy:     5.106603
+File:        fake-token.txt
+Line:        1
+Fingerprint: fake-token.txt:generic-api-key:1
+
+[90m2:18PM[0m [32mINF[0m [1mscanned ~179 bytes (179 bytes) in 242ms[0m
+[90m2:18PM[0m [33mWRN[0m [1mleaks found: 3[0m

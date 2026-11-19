@@ -1,0 +1,8 @@
+=== PRETTIER --check (CI command) ===
+PRETTIER_EXIT:0
+Checking formatting...
+All matched files use Prettier code style!
+=== GITLEAKS full history ===
+GITLEAKS_EXIT:0
+[90m2:18PM[0m [32mINF[0m [1m86 commits scanned.[0m
+[90m2:18PM[0m [32mINF[0m [1mno leaks found[0m
