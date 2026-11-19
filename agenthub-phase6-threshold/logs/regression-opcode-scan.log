@@ -1,0 +1,15 @@
+=== Cancun-only opcode scan (cast disassemble, deployedBytecode) — via-IR build ===
+--- QuestManager ---
+none
+--- AgentGate ---
+none
+--- Reputation ---
+none
+--- Achievement ---
+none
+=== source greps ===
+transient in src: 0
+blob builtins in src: 0
+evm_version = "cancun"
+via_ir = true
+  "version": "5.0.2",

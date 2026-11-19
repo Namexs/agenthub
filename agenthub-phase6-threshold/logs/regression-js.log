@@ -1,0 +1,34 @@
+=== shared test ===
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 15:46:56
+[2m   Duration [22m 455ms[2m (transform 90ms, setup 0ms, import 114ms, tests 11ms, environment 0ms)[22m
+
+=== shared typecheck ===
+> tsc --project tsconfig.json --noEmit
+
+EXIT:0
+=== web lint ===
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+✔ No ESLint warnings or errors
+=== web typecheck ===
+> tsc --project tsconfig.json --noEmit
+
+=== web test ===
+[2m Test Files [22m [1m[32m9 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (10)[39m
+[2m      Tests [22m [1m[32m159 passed[39m[22m[2m | [22m[33m5 skipped[39m[90m (164)[39m
+[2m   Start at [22m 15:47:31
+[2m   Duration [22m 12.84s[2m (transform 3.25s, setup 0ms, import 13.72s, tests 3.75s, environment 6.75s)[22m
+
+=== web build ===
+  ├ chunks/7-8b623af2d9538d79.js         46.2 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)  prerendered as static content
+
+=== format:check ===
+
+Checking formatting...
+All matched files use Prettier code style!
+=== forge fmt --check ===
