@@ -45,16 +45,24 @@ SUBJECT="$(git show -s --format=%s "$COMMIT")"
   echo
   echo "## 3. How to verify"
   echo
+  echo "The verification script checks the RECORDED COMMIT's tree (via git),"
+  echo "not the working tree — so it works from any checkout that contains"
+  echo "this manifest and the git history. HEAD does not need to equal the"
+  echo "recorded commit."
+  echo
   echo '```bash'
   echo "git clone --recurse-submodules <repo-url> agenthub"
   echo "cd agenthub"
-  echo "git checkout $COMMIT"
   echo "./scripts/verify-manifest.sh"
   echo '```'
   echo
-  echo "The script recomputes the sha256 of every file listed in §4 and"
-  echo "compares it to this manifest, checks the submodule commits, and"
-  echo "checks that HEAD is the described commit."
+  echo "The script recomputes the sha256 of every file listed in §4 from the"
+  echo "recorded commit (git cat-file) and compares it to this manifest, and"
+  echo "checks the submodule gitlink commits against §2."
+  echo
+  echo "To also confirm your WORKING TREE matches the recorded commit, run"
+  echo "\`git status\` (clean) and \`git rev-parse HEAD\` (should print the"
+  echo "commit above, or a descendant of it)."
   echo
   echo "### Honest note about ZIPs and git archive"
   echo
