@@ -246,7 +246,7 @@ incidents remains unidentified, and the root cause remains unknown.
   check in §3 and every run in §4.2.
 - `final-pre-testnet-package/reports/FINAL_PRE_TESTNET.md` — frozen
   copy of this report.
-- `PACKAGE_MANIFEST.md` — regenerated for the final commit (210
+- `PACKAGE_MANIFEST.md` — regenerated for the final commit (209
   hashes, verified).
 - Commits (cleanup, on top of `76572c6`): `9cda09f` (allowlist),
   `657502f` (Safe validation), `abf7491` (Vitest), `62ad154` (SOP),
