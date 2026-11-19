@@ -1,0 +1,10 @@
+=== NEG-A: OLD smoke runner + failing stub (expect exit 0 = the bug) ===
+NEG_A_OLD_RUNNER_EXIT: 0
+=== NEG-B: NEW smoke runner + failing stub (expect exit 1 = fix works) ===
+NEG_B_NEW_RUNNER_EXIT: 1
+=== NEG-C: NEW wallet runner + failing stub (expect exit 1) ===
+NEG_C_NEW_WALLET_RUNNER_EXIT: 1
+=== RESTORE CHECK ===
+e2e-smoke.mjs restored OK
+wallet-e2e.mjs restored OK
+smoke runner = repo (new) OK

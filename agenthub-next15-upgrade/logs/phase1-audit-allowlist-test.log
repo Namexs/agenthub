@@ -1,0 +1,48 @@
+(test mode: reading audit output from fixture /var/tmp/agenthub-next15/scripts/pnpm-audit-allowlist.fixture.json — NOT a live audit)
+
+Dependency audit: 3 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+AUDIT PASSED: no new high/critical findings; all allowlist entries still apply.
+
+CASE 1 exit: 0 (expect 0)
+
+(test mode: reading audit output from fixture /tmp/audit-case2.json — NOT a live audit)
+
+Dependency audit: 4 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+BLOCKING findings (high/critical, NOT allowlisted): 1
+  - GHSA-xxxx-yyyy-zzzz [high] some-package: Fake new HIGH finding
+
+AUDIT FAILED.
+Fix the blocking findings (upgrade the dependency), or — only with a documented, independently justified risk acceptance — add an entry to the ALLOWLIST in scripts/pnpm-audit-allowlist.mjs.
+
+CASE 2 exit: 1 (expect 1)
+
+(test mode: reading audit output from fixture /var/tmp/agenthub-next15/scripts/pnpm-audit-allowlist.fixture.json — NOT a live audit)
+
+Dependency audit: 3 advisories reported.
+
+Non-gating (moderate/low — counted, not failing): {"moderate":3}
+
+STALE allowlist entries (no longer reported — prune them): 1
+  - GHSA-bogus-stale-entry (next)
+
+AUDIT FAILED.
+Remove the stale entries from the ALLOWLIST in scripts/pnpm-audit-allowlist.mjs (the advisory is gone — usually because the dependency was upgraded).
+
+CASE 3 exit: 1 (expect 1)
+
+(test mode: reading audit output from fixture /tmp/audit-case4.json — NOT a live audit)
+pnpm-audit-allowlist: ERROR: pnpm audit returned an error (ENETUNREACH): registry unreachable — the audit did not run, so this job cannot pass.
+
+CASE 4 exit: 2 (expect 2)
+
+=== SUMMARY ===
+PASS: CASE 1: fixture (3 moderate, empty allowlist) — expect 0, got 0
+PASS: CASE 2: +1 new HIGH — expect 1, got 1
+PASS: CASE 3: 1 stale entry — expect 1, got 1
+PASS: CASE 4: audit error shape — expect 2, got 2

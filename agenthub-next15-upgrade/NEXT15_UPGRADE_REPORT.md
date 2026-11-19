@@ -1,0 +1,296 @@
+# AGENTHUB — Next.js 15 + React 19 Upgrade & E2E CI Report
+
+**Date:** 2026-11-19. **Baseline:** `7374af7` (FINAL RELEASE BLOCKER
+REMEDIATION, CONDITIONAL GO testnet).
+**Work:** 2 commits (`09dd3f4` Phase 1, `d9c5d26` Phase 2).
+**Decision: unchanged — CONDITIONAL GO for BNB Testnet staging, NO-GO
+for mainnet.** The upgrade closes one pre-mainnet requirement (O1:
+the Next.js 15 upgrade) and one open finding (O3: E2E as a CI job),
+but mainnet still needs the external audit, the live testnet smoke
+test, threshold attestation, and the 8 deployment inputs (§6).
+
+## 1. Verdict per phase
+
+| Phase                     | Gate                                                         | Result                                                                                                                           |
+| ------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — Next.js 15 + React 19 | Full suite green from clean install; 0 CRITICAL from Next.js | **PASSED** — every suite green, OSV 33 → 7 with **0 CRITICAL / 0 HIGH**                                                          |
+| 2 — E2E as a CI job       | Job added; all steps reproduced locally and green            | **PASSED** — `e2e` job added (10 jobs total); smoke 23/23 + wallet 25/25 reproduced; runner exit-code bug found + fixed + proven |
+
+No test was deleted, no assertion weakened, no CI check disabled.
+No deployment, broadcast, or live-network touch happened. No GitHub
+push was made by this work (the parent owns the push decision).
+
+## 2. Phase 1 — the upgrade
+
+### 2.1 Version changes (direct dependencies only)
+
+| Package                                   | Before           | After                     |
+| ----------------------------------------- | ---------------- | ------------------------- |
+| `next` (web)                              | 14.2.35          | **15.5.29** (latest 15.x) |
+| `react` / `react-dom` (web)               | 18.3.1           | **19.3.1**                |
+| `@types/react` / `@types/react-dom` (web) | 18.3.11 / 18.3.1 | **19.3.0**                |
+| `eslint-config-next` (root + web)         | 14.2.35          | **15.5.29**               |
+
+Everything else intentionally untouched: wagmi 2.12.29 (peer
+`react >=18` — already React 19 compatible), viem 2.21.45,
+@tanstack/react-query 5.59.20, vitest 4.1.12, zod 4.6.7, tailwind
+3.4.14, eslint 8.57.1 (accepted by eslint-config-next 15's
+`^7 || ^8 || ^9` peer range). All 7 pnpm overrides kept — Next.js
+15.5.29 still pins `postcss@8.4.31` exactly, so the postcss
+override still applies (verified in the lockfile).
+
+### 2.2 Lockfile regeneration (VM workaround, proven in Phase B)
+
+`pnpm` cannot write in the repo (EPERM chown on this VM). The
+lockfile was regenerated in a `git archive` copy under
+`/var/tmp/agenthub-next15` (tmpfs, chown works), fresh from scratch
+(deleted `pnpm-lock.yaml`, `pnpm install --lockfile-only`), then
+copied back — the Phase B round-3 method. One round only: it
+resolved cleanly in 4m17s (960 packages, exit 0). Log:
+`logs/phase1-lockfile-regen.log`.
+
+Peer warnings (non-fatal, resolution succeeded):
+
+- `use-sync-external-store@1.2.0` wants react ^16/17/18 (outdated
+  peer range; the shim works with React 19).
+- `@metamask/sdk@0.30.1` (+ install-modal-web) want react(-dom)
+  ^18.2.0 — MetaMask SDK 0.30 predates React 19 support. It is a
+  transitive dep via wagmi's connectors; the app only uses the
+  `injected()` connector and no MetaMask SDK code path is exercised
+  by any test. No runtime impact observed in any suite (lint,
+  typecheck, vitest, build, E2E smoke, wallet E2E, anvil). Revisit
+  with the wagmi upgrade (same deferral as the MetaMask MODERATE
+  in §4).
+- `eciesjs@^0.3.16` vs installed 0.4.18 — pre-existing (Phase B).
+
+Fresh-resolution side effects (all benign, verified by the battery):
+
+- A second viem instance entered the tree: `viem@2.58.1`, pulled by
+  `@coinbase/wallet-sdk@4.4.0` (its `viem@^2` range resolving fresh
+  to latest). The app's direct viem stays 2.21.45; pnpm isolates
+  the two. No behavior change observed.
+- The old react-native/React 19 peer noise and the vite 5.4.21
+  reuse from Phase B are gone (fresh resolve, React 19 now real).
+
+### 2.3 Breaking changes: NONE needed
+
+The app has no Next.js 15 / React 19 breaking surface (verified by
+grep before the upgrade):
+
+- No `params` / `searchParams` (no dynamic routes at all), no Server
+  Actions (`'use server'`), no `next/image`, no `next/headers`
+  (`cookies()` / `headers()`), no middleware, no `revalidatePath` /
+  `revalidateTag`, no `fetch` data loading (all data via client-side
+  wagmi) — so the Next 15 async-request-APIs and caching changes
+  do not touch this app.
+- No `useRef()`, `defaultProps`, `ReactDOM.*`, `forwardRef`,
+  `propTypes`, or `react-dom/test-utils` in app code.
+- `next-env.d.ts` regenerated by the Next 15 build (adds the
+  `./.next/types/routes.d.ts` reference + the new docs URL) —
+  committed as part of the upgrade; typecheck passes with it.
+
+### 2.4 Test battery — baseline vs final (clean install)
+
+Full suite run in the clean copy under Node v20.20.2 + pnpm 9.15.4
+
+- forge 1.9.0 + slither 0.11.6 (the CI pins). Install was
+  `pnpm install --frozen-lockfile` against the warm
+  `/var/tmp/.pnpm-store` (exit 0, 1m20s).
+
+| Suite                               | Baseline (`7374af7`)                        | Final (`09dd3f4`)                                      | Verdict  |
+| ----------------------------------- | ------------------------------------------- | ------------------------------------------------------ | -------- |
+| Clean install (`--frozen-lockfile`) | exit 0                                      | exit 0                                                 | SAME     |
+| Foundry tests                       | 255/255                                     | **255/255** (19 suites)                                | SAME     |
+| Fuzz (10,000 runs, seed 42)         | 255/255                                     | **255/255**                                            | SAME     |
+| Vitest web                          | 136 passed + 4 skipped                      | **136 passed + 4 skipped** (140)                       | SAME     |
+| Vitest shared                       | 8/8                                         | **8/8**                                                | SAME     |
+| TypeScript (web + shared)           | exit 0                                      | exit 0                                                 | SAME     |
+| Lint (web + shared)                 | exit 0                                      | exit 0                                                 | SAME     |
+| Production build (chain 97)         | exit 0, 8 routes + `_not-found`, all static | exit 0, 8 routes + `_not-found`, all static            | SAME     |
+| Prettier + `forge fmt`              | exit 0                                      | exit 0                                                 | SAME     |
+| E2E smoke (unconnected)             | 23/23                                       | **23/23**, 0 page/console errors                       | SAME     |
+| Wallet E2E (connected)              | 25/25                                       | **25/25**, 0 page/console errors                       | SAME     |
+| Anvil integration                   | 27/27 + 4/4                                 | **27/27 + 4/4**                                        | SAME     |
+| Slither (`--fail-medium`)           | exit 0, 12 results                          | exit 0, **12 results** (same set; contracts untouched) | SAME     |
+| OSV dependency audit                | 33 (3C/9H/18M/3L)                           | **7 (0C/0H/6M/1L)**                                    | IMPROVED |
+| Gitleaks (full history)             | 0 leaks (73 commits)                        | **0 leaks (77 commits)**                               | SAME     |
+
+**Zero regressions. Zero tests deleted. Zero security assertions
+weakened.**
+
+### 2.5 Behavior changes
+
+- **Bundle size grew modestly** (React 19 + Next 15 runtime):
+  First Load JS shared by all routes 87.3 kB → **102 kB**; `/`
+  172 kB → **181 kB**; other routes +9–15 kB each. No user-facing
+  behavior change; all routes still fully static.
+- No UI, copy, route, or contract change. No env-var change.
+
+## 3. Dependency audit — before / after
+
+`node scripts/osv-audit.mjs` on the new lockfile (log
+`logs/phase1-osv.log`, JSON `test-results/osv-audit-next15.json`):
+
+| Severity  | Before | After | Delta                             |
+| --------- | ------ | ----- | --------------------------------- |
+| CRITICAL  | 3      | **0** | −3 (all Next.js 14 RCEs)          |
+| HIGH      | 9      | **0** | −9 (all Next.js 14)               |
+| MODERATE  | 18     | 6     | −12 (11 Next.js MODERATEs + glob) |
+| LOW       | 3      | 1     | −2 (Next.js LOWs)                 |
+| **Total** | **33** | **7** | **−26**                           |
+
+### 3.1 Remaining 7 findings (all MODERATE/LOW, all pre-existing)
+
+| Finding                                                                       | Severity    | Note                                                                     |
+| ----------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| GHSA-qj3p `@metamask/sdk` 0.30.1 + `@metamask/sdk-communication-layer` 0.30.0 | MODERATE ×2 | Fixed in 0.33.1; deferred to the wagmi upgrade (same call as Phase B §7) |
+| GHSA-x3ff `@stablelib/ed25519` 1.0.3                                          | MODERATE    | No fix exists upstream                                                   |
+| GHSA-848j `elliptic` 6.6.1                                                    | LOW         | No fix exists upstream                                                   |
+| GHSA-g3hv `minimatch` 9.0.9                                                   | MODERATE    | Fix needs minimatch 11.x (transitive major)                              |
+| GHSA-w5hq `uuid` 8.3.2 + 9.0.1                                                | MODERATE ×2 | Fix needs uuid 11+/12+/13+ (transitive major)                            |
+
+None is gating: the CI audit job gates on high/critical only, and
+the OSV re-audit reports zero of those.
+
+### 3.2 Audit allowlist pruned to empty
+
+All 12 allowlisted Next.js 14 advisories are gone from the tree, so
+every entry became stale — and the allowlist script's own rule
+fails the job on stale entries. The 12 entries were removed in the
+same change (`scripts/pnpm-audit-allowlist.mjs`, `ALLOWLIST = []`),
+the fixture was reduced to the 3 moderate advisories, and the
+script's 4 test cases were re-run against the new state — **4/4
+pass** (log `logs/phase1-audit-allowlist-test.log`):
+
+1. fixture (3 moderate, empty allowlist) → exit 0;
+2. fixture + 1 new HIGH → exit 1 (blocking);
+3. temp script with 1 bogus entry → exit 1 (stale);
+4. audit error shape → exit 2.
+   The mechanism is intact for future findings; the ci.yml audit-job
+   comment was updated to match.
+
+## 4. Phase 2 — E2E as a CI job
+
+### 4.1 The job
+
+`.github/workflows/ci.yml` gains a 10th job, `e2e` (30 min
+timeout): checkout with submodules → pnpm + Node 20.20.2 → Foundry
+1.9.0 → frozen install → `pnpm --filter @agenthub/web exec
+playwright install --with-deps chromium` → smoke runner → wallet
+E2E runner → upload both runner logs as an artifact on failure.
+The Playwright install runs through the web workspace on purpose:
+a bare `npx playwright` from the repo root would download the
+latest Playwright instead of the pinned 1.65.1.
+
+The ci.yml header comment was also corrected: the repo **has** a
+remote now (https://github.com/Namexs/agenthub) and the first GitHub
+run (run #44531037033, 2026-11-19) was green **9/9 jobs** —
+verified via `gh run view`, not taken on trust. The comment states
+plainly that the new `e2e` job has NOT run on GitHub yet.
+
+### 4.2 Bug found: the E2E runners masked failures as exit 0
+
+While wiring the job, inspection found both runners ended with a
+bare `echo "log saved: $LOG"` after the `| tee` pipeline — and the
+script's exit status is its last command, so **any failure inside
+the block (including a failing Playwright run) exited 0**. The
+wallet runner's `pipefail` did not save it: pipefail only sets the
+pipeline's status, which the trailing echo then discarded. The
+smoke runner did not even have `pipefail`. A CI job built on these
+runners would have been green no matter what the E2E suite did.
+
+Fix (both runners): capture the pipeline status and exit with it
+(`status=$?; echo "log saved: $LOG"; exit "$status"`), plus
+`pipefail` on the smoke runner. The anvil runner was checked too —
+it ends on the pipeline itself under `set -euo pipefail`, so it
+already propagates failures correctly; untouched.
+
+Proof (log `logs/phase2-ci-e2e-negative.log`, failing stub =
+`process.exit(1)` in place of the Playwright script, restored
+afterwards — diff-verified):
+
+- OLD smoke runner + failing stub → **exit 0** (the bug, reproduced).
+- NEW smoke runner + failing stub → **exit 1**.
+- NEW wallet runner + failing stub → **exit 1**.
+- Green runs with the new runners → exit 0 (smoke 23/23, wallet
+  25/25 — §4.3).
+
+### 4.3 Local reproduction of the job steps
+
+Every job step was reproduced locally in the clean copy (logs
+`logs/phase2-ci-e2e-*.log`):
+
+| Job step                                  | Local result                                                                                                                     |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`          | exit 0                                                                                                                           |
+| `playwright install --with-deps chromium` | **Not reproducible on this VM** (see below); browser-only `playwright install chromium` (pinned 1.65.1) exit 0, browsers present |
+| `run-e2e-smoke.sh`                        | exit 0, **23/23**                                                                                                                |
+| `run-wallet-e2e.sh`                       | exit 0, **25/25**                                                                                                                |
+
+**Honest gap — the `--with-deps` apt step:** the exact command was
+run and timed out at 120 s inside `apt-get update` (the VM's
+proxied apt is very slow; the update was still fetching package
+lists when killed). This is a VM-environment limitation, not a
+repo defect: GitHub's ubuntu-latest runners have local, fast apt,
+and `--with-deps` is the documented Playwright install path there.
+The step cannot be proven green locally — it is proven only when
+the job runs on GitHub after push. The job is written correctly
+for that environment; the risk is confined to the apt install,
+which is outside the repo's control.
+
+## 5. Evidence index
+
+All logs in `agenthub-next15-upgrade/logs/` (17 files), OSV JSON in
+`agenthub-next15-upgrade/test-results/`:
+
+- Phase 1: `phase1-lockfile-regen.log`, `phase1-install.log`,
+  `phase1-web-shared.log` (lint/typecheck/vitest web+shared),
+  `phase1-build-format.log` (build + prettier + forge fmt),
+  `phase1-contracts.log` (forge build + test),
+  `phase1-fuzz.log` (10k, seed 42), `phase1-slither.log`,
+  `phase1-osv.log`, `phase1-e2e-smoke-run.log` (23/23),
+  `phase1-wallet-e2e-run.log` (25/25),
+  `phase1-anvil-run.log` (27/27 + 4/4),
+  `phase1-audit-allowlist-test.log` (4/4 cases).
+- Phase 2: `phase2-ci-e2e-setup.log` (install + `--with-deps`
+  attempt), `phase2-ci-e2e-playwright.log` (browser-only install),
+  `phase2-ci-e2e-smoke-run.log` (23/23, fixed runner),
+  `phase2-ci-e2e-wallet-run.log` (25/25, fixed runner),
+  `phase2-ci-e2e-negative.log` (old 0 / new 1 / new 1).
+
+## 6. Remaining blockers toward full GO
+
+1. **The `e2e` job has not run on GitHub yet.** Push, then confirm
+   the run is green 10/10 — in particular the `--with-deps` apt
+   step (§4.3), which is unproven locally.
+2. **The 8 deployment inputs are still with the user** (tBNB,
+   deployer key, Safe, creator, verifier, pauser, BscScan key,
+   explicit broadcast approval) — unchanged.
+3. **No external security audit** (mainnet gate item 2).
+4. **Testnet smoke test has not run on the live chain** (mainnet
+   gate item 1) — the deploy itself is still unapproved.
+5. **Threshold (M-of-N) attestation not implemented** (mainnet gate
+   item 4; single-verifier attestations stand).
+6. Real wallet-app check outstanding (O4) and Cancun-opcode
+   smoke test on testnet (O5) — unchanged from the final
+   acceptance report.
+7. MetaMask SDK 0.30.x MODERATE + React 19 peer warnings (§2.2) —
+   revisit with the wagmi upgrade; cosmetic until then.
+
+Closed by this work: O1 (Next.js 15 upgrade), O3 (E2E as a CI
+job), mainnet-gate item 3 (dependency upgrades + clean audit —
+OSV 0 High/Critical; `pnpm audit` itself remains unverifiable on
+this VM, and the CI audit job's first post-upgrade run on GitHub
+is the final confirmation).
+
+## 7. Manifest regeneration
+
+`PACKAGE_MANIFEST.md` is regenerated for the final commit after
+this report is committed (the manifest excludes itself and is
+committed separately from the commit it describes — the established
+pattern; `verify-manifest.sh` confirms the recorded commit
+matches).
+
+**Final verdict: CONDITIONAL GO for BNB Testnet staging, NO-GO for
+mainnet.** No deployment is authorized by this report — only the
+user's explicit approval for a specific broadcast authorizes one.

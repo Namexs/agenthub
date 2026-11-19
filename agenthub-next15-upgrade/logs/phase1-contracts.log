@@ -1,0 +1,598 @@
+=== FORGE BUILD ===
+Compiling 93 files with Solc 0.8.24
+Solc 0.8.24 finished in 22.89s
+Compiler run successful with warnings:
+Warning (2018): Function state mutability can be restricted to view
+  --> script/ValidateSafe.s.sol:41:5:
+   |
+41 |     function runWith(address safe, address expectedSingleton, bytes32 expectedProxyCodehash)
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:140:37
+    │
+140 │         if (startTime >= endTime || endTime <= block.timestamp) revert InvalidQuestParams();
+    │                                     ━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+    ╭▸ src/QuestManager.sol:283:9
+    │
+283 │         reputation.addPoints(msg.sender, quest.rewardPoints, questId);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+
+warning[reentrancy-no-eth]: external call can be reentered before `_status` is updated
+    ╭▸ src/QuestManager.sol:288:15
+    │
+288 │             ? achievement.issue(msg.sender, quest.badgeId)
+    │               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-no-eth
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/QuestManager.sol:290:9
+    │
+290 │         emit QuestCompleted(questId, msg.sender, quest.rewardPoints, badgeTokenId);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:213:13
+    │
+213 │         if (deadline < block.timestamp) revert AttestationExpired(deadline, block.timestamp);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:214:13
+    │
+214 │         if (deadline > block.timestamp + MAX_ATTESTATION_LIFETIME) {
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/QuestManager.sol:234:9
+    │
+234 │         emit AttestationUsed(account, questId, nonce, signer);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:244:13
+    │
+244 │         if (block.timestamp < quest.startTime) revert QuestNotStarted(questId);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:245:13
+    │
+245 │         if (block.timestamp > quest.endTime) revert QuestEnded(questId);
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:255:21
+    │
+255 │                 if (block.timestamp < readyAt) {
+    │                     ━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/QuestManager.sol:399:16
+    │
+399 │         return block.timestamp >= ready ? 0 : ready;
+    │                ━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+   ╭▸ src/AgentGate.sol:93:9
+   │
+93 │         emit AgentHolderVerified(msg.sender);
+   │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   │
+   ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[unsafe-oz-erc721-mint]: `ERC721._mint` does not check that the recipient can receive the token; use `_safeMint`
+   ╭▸ src/Achievement.sol:76:9
+   │
+76 │         _mint(account, tokenId);
+   │         ━━━━━━━━━━━━━━━━━━━━━━━
+   │
+   ╰ help: https://getfoundry.sh/forge/linting/unsafe-oz-erc721-mint
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:415:28
+    │
+415 │         uint256 deadline = block.timestamp + 1 days;
+    │                            ━━━━━━━━━━━━━━━
+    ‡
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:426:83
+    │
+426 │                 IQuestManager.CooldownActive.selector, alice, dailyAttestedQuest, block.timestamp + 1 days
+    │                                                                                   ━━━━━━━━━━━━━━━
+    ‡
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Attestation.t.sol:433:17
+    │
+433 │         vm.warp(block.timestamp + 1 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:58:13
+   │
+58 │             block.timestamp,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:59:13
+   │
+59 │             block.timestamp + window,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:75:21
+   │
+75 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:58:13
+   │
+58 │             block.timestamp,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:59:13
+   │
+59 │             block.timestamp + window,
+   │             ━━━━━━━━━━━━━━━
+   ‡
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────────────────────────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+   ╭▸ test/EconomicAttack.t.sol:91:21
+   │
+91 │             vm.warp(block.timestamp + 1 hours);
+   │             ────────━━━━━━━━━━━━━━━─────────── `vm.warp` changes this environment here
+   │
+   ├ help: capture it with `vm.getBlockTimestamp()` instead
+   ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/Integration.t.sol:141:17
+    │
+141 │         vm.warp(block.timestamp + TIMELOCK_DELAY);
+    │         ────────━━━━━━━━━━━━━━━────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:145:13
+    │
+145 │             block.timestamp,
+    │             ━━━━━━━━━━━━━━━
+    ‡
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:146:13
+    │
+146 │             block.timestamp + 90 days,
+    │             ━━━━━━━━━━━━━━━
+    ‡
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ───────────────────────────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/QuestManager.t.sol:427:17
+    │
+427 │         vm.warp(block.timestamp + 6 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+warning[environment-read-across-mutation]: `block.timestamp` may be reused across `vm.warp`
+    ╭▸ test/ValidatorRegistry.t.sol:127:17
+    │
+127 │         vm.warp(block.timestamp + 1 days);
+    │         ────────━━━━━━━━━━━━━━━────────── `vm.warp` changes this environment here
+    │
+    ├ help: capture it with `vm.getBlockTimestamp()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+
+FORGE_BUILD:0
+=== FORGE TEST ===
+No files changed, compilation skipped
+
+Ran 11 tests for test/AccessControl.t.sol:AccessControlTest
+[PASS] test_AchievementPauseRoleMatrix() (gas: 96372)
+[PASS] test_AddPointsRoleMatrix() (gas: 159144)
+[PASS] test_CreateQuestRoleMatrix() (gas: 377050)
+[PASS] test_DeactivateQuestRoleMatrix() (gas: 365780)
+[PASS] test_DefineBadgeRoleMatrix() (gas: 147511)
+[PASS] test_GrantRoleRequiresAdmin() (gas: 194774)
+[PASS] test_IssueRoleMatrix() (gas: 227560)
+[PASS] test_PauseUnpauseRoleMatrix() (gas: 196044)
+[PASS] test_RenounceRoleIsIrreversibleForCaller() (gas: 82803)
+[PASS] test_ReputationPauseRoleMatrix() (gas: 134644)
+[PASS] test_VerifierRoleMatrix() (gas: 260269)
+Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 4.65ms (2.07ms CPU time)
+
+Ran 7 tests for test/AttackSimulation.t.sol:AttackSimulationTest
+[PASS] test_AgentIdTransferBlockedSoNoDoubleClaim() (gas: 556967)
+[PASS] test_DelegatedCompletionImpossible() (gas: 970790)
+[PASS] test_DownstreamRevertIsAtomic() (gas: 3526846)
+[PASS] test_GasExhaustionIsAtomic() (gas: 698821)
+[PASS] test_MaliciousAgentIdFailsClosed() (gas: 7341888)
+[PASS] test_MintCallbackCompletionBoundedToOne() (gas: 1106523)
+[PASS] test_ReentrancyViaBadgeCallbackImpossible() (gas: 864475)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 21.60ms (13.20ms CPU time)
+
+Ran 17 tests for test/SafeValidation.t.sol:SafeValidationTest
+[PASS] test_ExplicitPathRejectsProductionChain() (gas: 703990)
+[PASS] test_ExplicitPathRejectsWrongCodehash() (gas: 727879)
+[PASS] test_ExplicitPathRejectsWrongSingleton() (gas: 729474)
+[PASS] test_ValidateSafeAcceptsExplicitPathLocal() (gas: 741197)
+[PASS] test_ValidateSafeAcceptsGenuineV130() (gas: 691531)
+[PASS] test_ValidateSafeAcceptsGenuineV141() (gas: 633960)
+[PASS] test_ValidateSafeRejectsEoa() (gas: 37858)
+[PASS] test_ValidateSafeRejectsFakeInterface() (gas: 337255)
+[PASS] test_ValidateSafeRejectsMismatchedExplicitValues() (gas: 729308)
+[PASS] test_ValidateSafeRejectsMockProxyOnCanonicalPath() (gas: 730945)
+[PASS] test_ValidateSafeRejectsNonSafeContract() (gas: 1167781)
+[PASS] test_ValidateSafeRejectsSpoofedMasterCopy() (gas: 398720)
+[PASS] test_ValidateSafeRejectsThresholdAboveOwners() (gas: 308230)
+[PASS] test_ValidateSafeRejectsThresholdOne() (gas: 336429)
+[PASS] test_ValidateSafeRejectsWrongChain() (gas: 597916)
+[PASS] test_ValidateSafeRejectsWrongVersion() (gas: 625664)
+[PASS] test_ValidateSafeRejectsZeroAddress() (gas: 33442)
+Suite result: ok. 17 passed; 0 failed; 0 skipped; finished in 21.63ms (20.74ms CPU time)
+
+Ran 14 tests for test/Validator.t.sol:ValidatorTest
+[PASS] testFuzz_TokenBalanceThreshold(uint256,uint256) (runs: 256, μ: 551213, ~: 551242)
+[PASS] test_AlwaysTrueValidatorBehavesLikeCheckIn() (gas: 762217)
+[PASS] test_GarbageValidatorFailsClosed() (gas: 609241)
+[PASS] test_OnChainQuestCompletionAfterGainingBalance() (gas: 996293)
+[PASS] test_OnChainQuestCompletionWithValidator() (gas: 892271)
+[PASS] test_OnChainQuestRechecksBalanceEveryCompletion() (gas: 1173641)
+[PASS] test_OnChainQuestRejectsInsufficientBalance() (gas: 789585)
+[PASS] test_ReentrantValidatorCannotDoubleAward() (gas: 913806)
+[PASS] test_RevertingValidatorFailsClosed() (gas: 677007)
+[PASS] test_TokenBalanceValidatorAcceptsHolderAtThreshold() (gas: 272088)
+[PASS] test_TokenBalanceValidatorFailsClosedOnGarbageToken() (gas: 349445)
+[PASS] test_TokenBalanceValidatorFailsClosedOnRevertingToken() (gas: 382646)
+[PASS] test_TokenBalanceValidatorRejectsEoaToken() (gas: 107888)
+[PASS] test_TokenBalanceValidatorRejectsZeroToken() (gas: 102780)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 188.44ms (183.71ms CPU time)
+
+Ran 14 tests for test/ValidatorAllowlist.t.sol:ValidatorAllowlistTest
+[PASS] testFuzz_RandomAddressesAreNotApproved(address) (runs: 256, μ: 16061, ~: 16061)
+[PASS] test_ApproveIsIdempotent() (gas: 201372)
+[PASS] test_ApproveValidatorByAdminWorks() (gas: 171495)
+[PASS] test_ApproveValidatorOnlyAdmin() (gas: 146109)
+[PASS] test_ApproveValidatorRejectsEoa() (gas: 40047)
+[PASS] test_ApproveValidatorRejectsZeroAddress() (gas: 35458)
+[PASS] test_CreateQuestAcceptsApprovedValidator() (gas: 686017)
+[PASS] test_CreateQuestRejectsUnapprovedValidator() (gas: 46377)
+[PASS] test_ReapprovalRestoresCompletion() (gas: 906649)
+[PASS] test_RevocationBlocksCompletionOfExistingQuest() (gas: 790872)
+[PASS] test_RevokeIsIdempotent() (gas: 252240)
+[PASS] test_RevokeValidatorByAdminWorks() (gas: 197710)
+[PASS] test_RevokeValidatorOnlyAdmin() (gas: 280812)
+[PASS] test_UnapprovedRubberStampCannotBeSmuggled() (gas: 176833)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 12.50ms (10.42ms CPU time)
+
+Ran 11 tests for test/ValidatorRegistry.t.sol:ValidatorRegistryTest
+[PASS] test_ApproveRejectsEmptyDocumentation() (gas: 39513)
+[PASS] test_ApproveRejectsEmptyName() (gas: 39243)
+[PASS] test_ApproveRejectsEmptyVersion() (gas: 39499)
+[PASS] test_ApproveStoresMetadata() (gas: 235927)
+[PASS] test_EmergencyRevokeByNonPauserReverts() (gas: 212473)
+[PASS] test_EmergencyRevokeByPauserBlocksCompletions() (gas: 560775)
+[PASS] test_EmergencyRevokeIdempotent() (gas: 216837)
+[PASS] test_InvalidBoolValidatorReverts() (gas: 609364)
+[PASS] test_ReapproveUpdatesMetadata() (gas: 274750)
+[PASS] test_RevokeKeepsMetadata() (gas: 213332)
+[PASS] test_StateChangingValidatorBlocked() (gas: 1040500199)
+Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 3.65ms (1.93ms CPU time)
+
+Ran 5 tests for test/VerifierSecurity.t.sol:VerifierSecurityTest
+[PASS] test_AttestationUsedEventAttributesSigner() (gas: 261606)
+[PASS] test_DeadlineAtCurrentBlockAccepted() (gas: 264583)
+[PASS] test_FrontRunnerCannotSubmitOthersAttestation() (gas: 393912)
+[PASS] test_NoncesAreIsolatedPerAccount() (gas: 538039)
+[PASS] test_VerifierCannotSubmitForUser() (gas: 113114)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 7.72ms (2.54ms CPU time)
+
+Ran 21 tests for test/DeployScript.t.sol:DeployScriptTest
+[PASS] test_DeployAcceptsThresholdThreeOfThree() (gas: 8148449)
+[PASS] test_DeployDefaultsPauserToMultisig() (gas: 7495319)
+[PASS] test_DeployExplicitPauserOverridesDefault() (gas: 7494633)
+[PASS] test_DeployRejectsEoaMultisig() (gas: 55947)
+[PASS] test_DeployRejectsExplicitSafeValuesOnProduction() (gas: 606898)
+[PASS] test_DeployRejectsMissingLocalSafeConfig() (gas: 50038)
+[PASS] test_DeployRejectsNonSafeContract() (gas: 1185932)
+[PASS] test_DeployRejectsThresholdAboveOwners() (gas: 324044)
+[PASS] test_DeployRejectsThresholdOneSafe() (gas: 351119)
+[PASS] test_DeployRejectsUnsupportedChain() (gas: 51237)
+[PASS] test_DeployRejectsZeroCreator() (gas: 50974)
+[PASS] test_DeployRejectsZeroMultisig() (gas: 50952)
+[PASS] test_DeployWithExplicitAgentIdSkipsMock() (gas: 7612056)
+[PASS] test_DeployWithoutVerifierSkipsRole() (gas: 7450144)
+[PASS] test_DeployedStackWorksEndToEnd() (gas: 8021545)
+[PASS] test_LocalDeployWiresEverything() (gas: 7857662)
+[PASS] test_MainnetAcceptsOfficialAgentId() (gas: 8177099)
+[PASS] test_MainnetRejectsMockAgentId() (gas: 1764357)
+[PASS] test_MainnetRejectsZeroAgentId() (gas: 633332)
+[PASS] test_RunEnvDrivenPaths() (gas: 23301360)
+[PASS] test_TestnetAcceptsMock() (gas: 8030088)
+Suite result: ok. 21 passed; 0 failed; 0 skipped; finished in 87.92ms (81.69ms CPU time)
+
+Ran 19 tests for test/Achievement.t.sol:AchievementTest
+[PASS] testFuzz_IssueGrantsUniqueTokenIds(uint8) (runs: 256, μ: 932889, ~: 740824)
+[PASS] test_ApproveRevertsSoulbound() (gas: 187110)
+[PASS] test_BadgeOfRevertsForNonexistentToken() (gas: 11242)
+[PASS] test_ConstructorRejectsZeroAdmin() (gas: 295704)
+[PASS] test_DefineBadgeRejectsDuplicate() (gas: 38881)
+[PASS] test_DefineBadgeRejectsEmptyName() (gas: 38269)
+[PASS] test_DefineBadgeRejectsZeroId() (gas: 36238)
+[PASS] test_DefineBadgeRequiresManagerRole() (gas: 42289)
+[PASS] test_DefineBadgeStoresMetadata() (gas: 21184)
+[PASS] test_IssueEmitsEvent() (gas: 145013)
+[PASS] test_IssueMintsSoulboundToken() (gas: 204107)
+[PASS] test_IssueRejectsDuplicateBadge() (gas: 187950)
+[PASS] test_IssueRejectsUndefinedBadge() (gas: 47123)
+[PASS] test_IssueRejectsZeroAccount() (gas: 42118)
+[PASS] test_IssueRequiresIssuerRole() (gas: 85312)
+[PASS] test_IssueToNonReceiverContractSucceeds() (gas: 245373)
+[PASS] test_PauseBlocksIssueButNotReads() (gas: 273476)
+[PASS] test_TokenURIRevertsForNonexistentToken() (gas: 13246)
+[PASS] test_TransferRevertsSoulbound() (gas: 205621)
+Suite result: ok. 19 passed; 0 failed; 0 skipped; finished in 424.48ms (423.23ms CPU time)
+
+Ran 18 tests for test/AgentGate.t.sol:AgentGateTest
+[PASS] testFuzz_GateAgreesWithDirectBalance(address,bool) (runs: 256, μ: 68610, ~: 107550)
+[PASS] test_ConstructorRejectsAddressWithoutCode() (gas: 117262)
+[PASS] test_ConstructorRejectsWrongChain() (gas: 117823)
+[PASS] test_ConstructorRejectsZeroAddress() (gas: 112082)
+[PASS] test_ConstructorRejectsZeroChainId() (gas: 117639)
+[PASS] test_ConstructorStoresImmutableConfig() (gas: 18745)
+[PASS] test_FakeAgentIdContractIsIgnored() (gas: 145542)
+[PASS] test_GarbageReturnFailsClosed() (gas: 436386)
+[PASS] test_HolderIsHolder() (gas: 117040)
+[PASS] test_NonHolderIsNotHolder() (gas: 16616)
+[PASS] test_ReentrantAgentIdCannotChangeState() (gas: 1024222749)
+[PASS] test_RequireAgentHolderPassesForHolder() (gas: 97783)
+[PASS] test_RequireAgentHolderRevertsForNonHolder() (gas: 17308)
+[PASS] test_RevertingAgentIdFailsClosed() (gas: 479516)
+[PASS] test_VerifyEmitsEvent() (gas: 124601)
+[PASS] test_VerifyRevertsForNonHolder() (gas: 38586)
+[PASS] test_WrongChainReturnsFalseAndReverts() (gas: 127804)
+[PASS] test_ZeroAccountIsNotHolder() (gas: 8558)
+Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 75.53ms (18.38ms CPU time)
+
+Ran 10 tests for test/AgentGateMainnet.t.sol:AgentGateMainnetTest
+[PASS] test_LocalAcceptsMock() (gas: 346540)
+[PASS] test_MainnetAcceptsOfficialAgentId() (gas: 479549)
+[PASS] test_MainnetRejectsArbitraryContract() (gas: 1247005)
+[PASS] test_MainnetRejectsFakeNft() (gas: 239443)
+[PASS] test_MainnetRejectsMockAddress() (gas: 118419)
+[PASS] test_OfficialAddressConstantMatchesKnownAddress() (gas: 16660)
+[PASS] test_TestnetAcceptsMock() (gas: 361088)
+[PASS] test_UnsupportedChainReverts() (gas: 118145)
+[PASS] test_UnsupportedChainRevertsPolygon() (gas: 118189)
+[PASS] test_WrongChainStillCheckedBeforeMainnetLock() (gas: 117870)
+Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 2.19ms (1.38ms CPU time)
+
+Ran 7 tests for test/Integration.t.sol:IntegrationTest
+[PASS] test_DeployerLostAdminAfterRenounce() (gas: 153596)
+[PASS] test_EmergencyPauseIsFastUnpauseNeedsTimelock() (gas: 865796)
+[PASS] test_EndToEndCompletionAwardsPointsAndBadge() (gas: 709113)
+[PASS] test_NonProposerCannotSchedule() (gas: 53348)
+[PASS] test_TimelockCanGrantRoleAfterDelay() (gas: 574993)
+[PASS] test_TimelockCanGrantVerifierRoleAfterDelay() (gas: 185137)
+[PASS] test_TimelockRejectsShortDelay() (gas: 52978)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 4.40ms (1.82ms CPU time)
+
+Ran 9 tests for test/PauserRole.t.sol:PauserRoleTest
+[PASS] test_AdminHandoverCorrect() (gas: 217468)
+[PASS] test_DefaultPauserIsMultisig() (gas: 16112)
+[PASS] test_DeployerHasNoOperationalRoleAfterHandover() (gas: 207252)
+[PASS] test_NonRoleCannotPause() (gas: 130193)
+[PASS] test_NonRoleCannotUnpause() (gas: 183322)
+[PASS] test_OnlyMultisigCanPause() (gas: 63125)
+[PASS] test_PauseStopsCompletionsUntilTimelockUnpause() (gas: 758577)
+[PASS] test_RoleRevocationWorks() (gas: 194384)
+[PASS] test_TimelockDelayEnforced() (gas: 252623)
+Suite result: ok. 9 passed; 0 failed; 0 skipped; finished in 61.16ms (2.24ms CPU time)
+
+Ran 6 tests for test/EconomicAttack.t.sol:EconomicAttackTest
+[PASS] test_CappedQuestTotalEmissionBounded() (gas: 763170)
+[PASS] test_CooldownFarmingBoundedToOnePerDay() (gas: 42996304)
+[PASS] test_CreatorCannotExceedRewardCap() (gas: 43252)
+[PASS] test_MaxRewardQuestEmissionBounded() (gas: 706214)
+[PASS] test_SybilWithoutAgentIdsEarnsNothing() (gas: 893029)
+[PASS] test_WeeklyFarmingBoundedToOnePerWeek() (gas: 39261359)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 277.96ms (214.10ms CPU time)
+
+Ran 15 tests for test/Reputation.t.sol:ReputationTest
+[PASS] testFuzz_AddPointsAccumulates(uint256,uint256) (runs: 256, μ: 163668, ~: 164000)
+[PASS] test_AddPointsAcceptsExactlyCap() (gas: 97474)
+[PASS] test_AddPointsEmitsEventWithQuestId() (gas: 88799)
+[PASS] test_AddPointsIncreasesTotalAndEvents() (gas: 172402)
+[PASS] test_AddPointsRejectsAboveCap() (gas: 44998)
+[PASS] test_AddPointsRejectsZeroAccount() (gas: 37201)
+[PASS] test_AddPointsRejectsZeroPoints() (gas: 39627)
+[PASS] test_AddPointsRequiresScoreSourceRole() (gas: 93243)
+[PASS] test_ConstructorRejectsZeroAdmin() (gas: 135548)
+[PASS] test_InitialStateIsZero() (gas: 39342)
+[PASS] test_LevelThresholdGetter() (gas: 42447)
+[PASS] test_LevelThresholdRejectsInvalidLevel() (gas: 18667)
+[PASS] test_LevelsFollowThresholds() (gas: 318921)
+[PASS] test_PauseBlocksAddPointsButNotReads() (gas: 210986)
+[PASS] test_RevokingScoreSourceStopsPoints() (gas: 78190)
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 101.64ms (98.56ms CPU time)
+
+Ran 40 tests for test/QuestManager.t.sol:QuestManagerTest
+[PASS] testFuzz_CreateQuestStoresParams(uint256,uint256,uint256) (runs: 256, μ: 339502, ~: 339857)
+[PASS] test_BadgeAlreadyHeldIsSkippedNotReverted() (gas: 643836)
+[PASS] test_CommunityQuestIsOneTimePerAccount() (gas: 735429)
+[PASS] test_CompleteNonexistentQuestReverts() (gas: 42132)
+[PASS] test_CompleteOneTimeAwardsPointsAndBadge() (gas: 677949)
+[PASS] test_CompleteQuestRequiresAgentId() (gas: 326745)
+[PASS] test_CompleteQuestRevertsForAttestedQuest() (gas: 318336)
+[PASS] test_CompleteWithAttestationRevertsForCheckInQuest() (gas: 308773)
+[PASS] test_ConstructorRejectsEoaDependencies() (gas: 1008862)
+[PASS] test_ConstructorRejectsZeroAddresses() (gas: 335945)
+[PASS] test_CreateAttestedQuestStoresKind() (gas: 306011)
+[PASS] test_CreateQuestRejectsBadWindow() (gas: 38069)
+[PASS] test_CreateQuestRejectsEmptyTitle() (gas: 37642)
+[PASS] test_CreateQuestRejectsEndedQuest() (gas: 38037)
+[PASS] test_CreateQuestRejectsOnChainWithEoaValidator() (gas: 43210)
+[PASS] test_CreateQuestRejectsOnChainWithoutValidator() (gas: 38629)
+[PASS] test_CreateQuestRejectsOversizedDescription() (gas: 44694)
+[PASS] test_CreateQuestRejectsOversizedTitle() (gas: 38941)
+[PASS] test_CreateQuestRejectsRewardAboveCap() (gas: 43265)
+[PASS] test_CreateQuestRejectsUndefinedBadge() (gas: 43930)
+[PASS] test_CreateQuestRejectsValidatorForAttested() (gas: 41090)
+[PASS] test_CreateQuestRejectsValidatorForCheckIn() (gas: 41122)
+[PASS] test_CreateQuestRejectsZeroReward() (gas: 37886)
+[PASS] test_CreateQuestRequiresCreatorRole() (gas: 43837)
+[PASS] test_CreateQuestStoresAllFields() (gas: 367879)
+[PASS] test_DailyCooldownEnforced() (gas: 651430)
+[PASS] test_DeactivateByCreatorOrAdminOnly() (gas: 370662)
+[PASS] test_DeactivatedQuestCannotComplete() (gas: 347612)
+[PASS] test_DuplicateOneTimeReverts() (gas: 551910)
+[PASS] test_GetQuestRevertsForUnknownId() (gas: 14906)
+[PASS] test_MaxCompletionsCapEnforced() (gas: 565511)
+[PASS] test_NextCompletionAtForCompletedOneTimeIsMax() (gas: 516354)
+[PASS] test_NextCompletionAtForFreshUserIsZero() (gas: 264045)
+[PASS] test_OnlyPauserCanPauseAndOnlyAdminCanUnpause() (gas: 118349)
+[PASS] test_PauseBlocksCompletionButNotReads() (gas: 656459)
+[PASS] test_QuestCompletedEventCarriesBadgeTokenId() (gas: 595278)
+[PASS] test_QuestCompletedEventHasZeroTokenIdWithoutBadge() (gas: 491109)
+[PASS] test_QuestEndedReverts() (gas: 324094)
+[PASS] test_QuestNotStartedReverts() (gas: 321276)
+[PASS] test_WeeklyCooldownEnforced() (gas: 649429)
+Suite result: ok. 40 passed; 0 failed; 0 skipped; finished in 116.13ms (113.69ms CPU time)
+
+Ran 5 tests for test/MockAgentId.t.sol:MockAgentIdTest
+[PASS] testFuzz_MintGrantsBalance(address) (runs: 256, μ: 96114, ~: 96160)
+[PASS] test_MintGrantsOwnership() (gas: 105104)
+[PASS] test_NonHolderHasZeroBalance() (gas: 12831)
+[PASS] test_OnlyOwnerCanMint() (gas: 36708)
+[PASS] test_TransferIsBlocked_Soulbound() (gas: 125287)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 99.75ms (99.36ms CPU time)
+
+Ran 24 tests for test/Attestation.t.sol:AttestationTest
+[PASS] testFuzz_ValidAttestationAlwaysCompletes(uint256) (runs: 256, μ: 406777, ~: 407058)
+[PASS] testFuzz_WrongNonceAlwaysRejected(uint256) (runs: 256, μ: 95461, ~: 95459)
+[PASS] test_AttestedCompletionEmitsQuestCompleted() (gas: 379791)
+[PASS] test_AttestedCompletionWhilePausedReverts() (gas: 175662)
+[PASS] test_AttestedCompletionWithValidSignature() (gas: 430341)
+[PASS] test_AttestedFarmingBoundedByCooldown() (gas: 541500)
+[PASS] test_CrossChainReplayRejected() (gas: 86779)
+[PASS] test_CrossContractReplayRejected() (gas: 2827139)
+[PASS] test_DeadlineAtMaxLifetimeAccepted() (gas: 390285)
+[PASS] test_DeadlineTooFarReverts() (gas: 89331)
+[PASS] test_EmptySignatureRejected() (gas: 50298)
+[PASS] test_ExpiredAttestationReverts() (gas: 73982)
+[PASS] test_FailedCompletionDoesNotBurnNonce() (gas: 656198)
+[PASS] test_MalleableSignatureRejected() (gas: 82112)
+[PASS] test_NonHolderCannotCompleteWithAttestation() (gas: 132153)
+[PASS] test_OnlyAdminCanGrantVerifierRole() (gas: 50950)
+[PASS] test_ReplaySameAttestationReverts() (gas: 463369)
+[PASS] test_ShortSignatureRejected() (gas: 50904)
+[PASS] test_UnauthorizedSignerRejected() (gas: 102074)
+[PASS] test_VerifierRotationInvalidatesOldAttestations() (gas: 554930)
+[PASS] test_WrongAccountRejected() (gas: 99522)
+[PASS] test_WrongNonceRejected() (gas: 112302)
+[PASS] test_WrongQuestRejected() (gas: 86874)
+[PASS] test_ZeroSignatureRejected() (gas: 54872)
+Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 784.50ms (786.13ms CPU time)
+
+Ran 2 tests for test/Invariant.t.sol:InvariantTest
+[PASS]
+InvariantTest invariants:
+[PASS] invariant_BadgesMatchGhost
+[PASS] invariant_CompletionsMatchAndRespectCap
+[PASS] invariant_EventsMatchGhost
+[PASS] invariant_NonHolderEarnsNothing
+[PASS] invariant_PointsMatchGhost
+ InvariantTest invariants (runs: 256, calls: 32768, reverts: 0)
+
+╭------------------+---------------+-------+---------+----------╮
+| Contract         | Selector      | Calls | Reverts | Discards |
++===============================================================+
+| InvariantHandler | completeQuest | 16376 | 0       | 0        |
+|------------------+---------------+-------+---------+----------|
+| InvariantHandler | warpTime      | 16392 | 0       | 0        |
+╰------------------+---------------+-------+---------+----------╯
+
+[PASS] test_HandlerActuallyCompletesQuests() (gas: 1304581)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 48.33s (48.33s CPU time)
+
+Ran 19 test suites in 48.34s (50.63s CPU time): 255 tests passed, 0 failed, 0 skipped (255 total tests)
+FORGE_TEST:0

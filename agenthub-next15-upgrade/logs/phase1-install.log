@@ -1,0 +1,35 @@
+Scope: all 5 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +862
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 862, reused 212, downloaded 0, added 0
+Progress: resolved 862, reused 413, downloaded 0, added 0
+Progress: resolved 862, reused 840, downloaded 0, added 267
+Progress: resolved 862, reused 840, downloaded 0, added 413
+Progress: resolved 862, reused 840, downloaded 0, added 626
+Progress: resolved 862, reused 840, downloaded 0, added 840
+Progress: resolved 862, reused 840, downloaded 6, added 846
+Progress: resolved 862, reused 840, downloaded 8, added 848
+Progress: resolved 862, reused 840, downloaded 13, added 853
+Progress: resolved 862, reused 840, downloaded 16, added 856
+Progress: resolved 862, reused 840, downloaded 17, added 857
+Progress: resolved 862, reused 840, downloaded 18, added 857
+Progress: resolved 862, reused 840, downloaded 18, added 858
+Progress: resolved 862, reused 840, downloaded 19, added 858
+Progress: resolved 862, reused 840, downloaded 19, added 859
+Progress: resolved 862, reused 840, downloaded 20, added 859
+Progress: resolved 862, reused 840, downloaded 20, added 860
+Progress: resolved 862, reused 840, downloaded 21, added 860
+Progress: resolved 862, reused 840, downloaded 22, added 862, done
+
+devDependencies:
++ @typescript-eslint/eslint-plugin 8.12.2
++ @typescript-eslint/parser 8.12.2
++ eslint 8.57.1
++ eslint-config-next 15.5.29
++ eslint-config-prettier 9.1.0
++ prettier 3.3.3
++ typescript 5.6.3
+
+Done in 1m 19.8s

@@ -1,0 +1,76 @@
+=== WEB BUILD (chain 97) ===
+
+> @agenthub/web@0.1.0 build /var/tmp/agenthub-next15/apps/web
+> NODE_OPTIONS=--max-old-space-size=1024 next build
+
+   ▲ Next.js 15.5.29
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 34.2s
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/var/tmp/agenthub-next15/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@19.3.1_react@19.3.1__react-native@0.88.1_@bab_puiegrugobkqhswru67jgtwxy4/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/var/tmp/agenthub-next15/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@19.3.0_bufferutil@4.2.0_react@19.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@19.3.0_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20_@_fvagbzh3gtywudz2oasyiv744m/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@19.3.1__@types_lerx5qv74wpkhsiop2h5kjh7xe/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully in 59s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      915 B         181 kB
+├ ○ /_not-found                            990 B         103 kB
+├ ○ /campaigns                           1.02 kB         204 kB
+├ ○ /dashboard                           1.92 kB         213 kB
+├ ○ /history                             3.97 kB         203 kB
+├ ○ /leaderboard                         3.26 kB         202 kB
+├ ○ /profile                             1.32 kB         213 kB
+├ ○ /quests                              1.11 kB         204 kB
+└ ○ /security                              121 B         103 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/564e42df-2247f253e50666f7.js  54.2 kB
+  ├ chunks/7-8b623af2d9538d79.js         46.2 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)  prerendered as static content
+
+WEB_BUILD:0
+=== FORMAT:CHECK ===
+
+> agenthub@0.1.0 format:check /var/tmp/agenthub-next15
+> prettier --check "**/*.{ts,tsx,js,jsx,json,md,css}" --ignore-path .prettierignore
+
+Checking formatting...
+All matched files use Prettier code style!
+FORMAT:0
+=== FORGE FMT ===
+FORGE_FMT:0
