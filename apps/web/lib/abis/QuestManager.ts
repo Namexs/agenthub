@@ -81,6 +81,32 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "function",
+    "name": "MAX_ATTESTATION_SIGNATURES",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAX_ATTESTATION_THRESHOLD",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "MAX_DESCRIPTION_BYTES",
     "inputs": [],
     "outputs": [
@@ -114,6 +140,19 @@ export const QUEST_MANAGER_ABI = [
         "name": "",
         "type": "uint256",
         "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MIN_ATTESTATION_THRESHOLD",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
       }
     ],
     "stateMutability": "view"
@@ -258,9 +297,9 @@ export const QUEST_MANAGER_ABI = [
         "internalType": "uint256"
       },
       {
-        "name": "signature",
-        "type": "bytes",
-        "internalType": "bytes"
+        "name": "signatures",
+        "type": "bytes[]",
+        "internalType": "bytes[]"
       }
     ],
     "outputs": [],
@@ -319,6 +358,11 @@ export const QUEST_MANAGER_ABI = [
         "name": "maxCompletions",
         "type": "uint256",
         "internalType": "uint256"
+      },
+      {
+        "name": "attestationThreshold",
+        "type": "uint8",
+        "internalType": "uint8"
       }
     ],
     "outputs": [
@@ -497,6 +541,11 @@ export const QUEST_MANAGER_ABI = [
             "name": "active",
             "type": "bool",
             "internalType": "bool"
+          },
+          {
+            "name": "attestationThreshold",
+            "type": "uint8",
+            "internalType": "uint8"
           }
         ]
       }
@@ -1125,6 +1174,17 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "error",
+    "name": "AttestationThresholdOutOfRange",
+    "inputs": [
+      {
+        "name": "threshold",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "BadgeNotDefined",
     "inputs": [
       {
@@ -1157,6 +1217,17 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "error",
+    "name": "DuplicateAttestationSigner",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "EnforcedPause",
     "inputs": []
   },
@@ -1164,6 +1235,22 @@ export const QUEST_MANAGER_ABI = [
     "type": "error",
     "name": "ExpectedPause",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InsufficientAttestations",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "required",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1335,6 +1422,17 @@ export const QUEST_MANAGER_ABI = [
         "name": "str",
         "type": "string",
         "internalType": "string"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TooManyAttestationSignatures",
+    "inputs": [
+      {
+        "name": "provided",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ]
   },
