@@ -16,6 +16,11 @@ interface IAgentGate {
     /// @dev The configured Agent ID address has no code (not a contract).
     error NoCodeAtAgentId(address agentId);
     error InvalidChainId(uint256 chainId);
+    /// @dev TEMUAN 2 (remediation): on BSC mainnet (56) the gate trusts ONLY
+    /// the official Agent ID contract. Any other address is rejected.
+    error UnofficialAgentId(address agentId, uint256 chainId);
+    /// @dev The chain is not one AGENTHUB supports (56 / 97 / 31337).
+    error UnsupportedChain(uint256 chainId);
 
     /// @notice Emitted when an account's Agent ID ownership is verified on-chain.
     event AgentHolderVerified(address indexed account);

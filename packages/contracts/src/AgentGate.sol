@@ -13,7 +13,21 @@ interface IERC721Balance {
 /// @dev Trusts exactly ONE immutable Agent ID contract address and ONE expected
 /// chainId, both fixed at deploy time. Fails closed: any doubt (wrong chain,
 /// zero account, external-call failure) means "not a holder".
+/// @dev TEMUAN 2 (remediation): on BSC mainnet (chainId 56) the constructor
+/// enforces the OFFICIAL Agent ID address on-chain — a misconfigured mainnet
+/// deploy can no longer silently trust a fake NFT contract. Testnet (97) and
+/// local (31337) accept any contract (MockAgentId). Other chains are rejected.
 contract AgentGate is IAgentGate {
+    /// @notice The official Binance Agent ID contract on BSC mainnet (EIP-55
+    /// checksummed; verified with `cast --to-checksum-address`).
+    address public constant OFFICIAL_AGENT_ID = 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F;
+    /// @notice BSC mainnet — only OFFICIAL_AGENT_ID is trusted here.
+    uint256 public constant BSC_MAINNET_CHAIN_ID = 56;
+    /// @notice BSC testnet — MockAgentId is allowed here.
+    uint256 public constant BSC_TESTNET_CHAIN_ID = 97;
+    /// @notice Local Anvil — any mock is allowed here.
+    uint256 public constant LOCAL_CHAIN_ID = 31337;
+
     /// @notice The only Agent ID contract this gate trusts. Immutable.
     address public immutable agentIdContract;
 
@@ -26,6 +40,20 @@ contract AgentGate is IAgentGate {
         if (expectedChainId_ == 0) revert InvalidChainId(expectedChainId_);
         if (expectedChainId_ != block.chainid) {
             revert WrongChain(expectedChainId_, block.chainid);
+        }
+        // Chain allowlist (mirrors the frontend env allowlist, M5): only
+        // BSC mainnet, BSC testnet, and local Anvil are supported.
+        if (
+            expectedChainId_ != BSC_MAINNET_CHAIN_ID && expectedChainId_ != BSC_TESTNET_CHAIN_ID
+                && expectedChainId_ != LOCAL_CHAIN_ID
+        ) {
+            revert UnsupportedChain(expectedChainId_);
+        }
+        // Mainnet lock: the official Agent ID is the ONLY trusted identity
+        // on chain 56. A fake ERC-721 — even one that behaves correctly —
+        // is rejected at deploy time, before it can ever gate access.
+        if (expectedChainId_ == BSC_MAINNET_CHAIN_ID && agentId_ != OFFICIAL_AGENT_ID) {
+            revert UnofficialAgentId(agentId_, expectedChainId_);
         }
         agentIdContract = agentId_;
         expectedChainId = expectedChainId_;
