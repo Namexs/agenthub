@@ -32,3 +32,7 @@ agenthub-phase9-readiness/audit-package/deployment/
 agenthub-phase9-readiness/audit-package/reports/
 # Phase 9 battery logs must stay byte-identical to tool output.
 agenthub-phase9-readiness/logs/
+# Phase 9.1 battery logs must stay byte-identical to tool output.
+agenthub-phase9-1-finalization/logs/
+# Deployment artifacts — machine-written JSON (RecordDeployment output).
+packages/contracts/deployments/

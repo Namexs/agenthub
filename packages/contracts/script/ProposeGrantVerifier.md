@@ -15,12 +15,12 @@ oleh timelock itu sendiri (satu-satunya pemegang `DEFAULT_ADMIN_ROLE` di
 
 ## Alur: propose → schedule → delay → execute
 
-| Langkah | Siapa | Apa |
-|---|---|---|
-| 1. Propose (preview) | Operator | Jalankan script tanpa `--broadcast`: script memvalidasi state live (timelock adalah admin QM, verifier belum punya role, `minDelay` timelock persis 2 hari) lalu mencetak ringkasan: target, calldata, salt, operation id, dan waktu siap eksekusi. |
-| 2. Schedule | Admin multisig (Safe) | Safe mengeksekusi `timelock.schedule(target, 0, calldata, 0x0, salt, 172800)` sebagai transaksi Safe, memakai argumen persis dari ringkasan. Hanya pemegang `PROPOSER_ROLE` (multisig) yang bisa schedule; yang lain revert. |
-| 3. Delay | — | 2 hari (`minDelay` timelock). Selama jendela ini grant **belum efektif**: `execute()` revert, dan multisig masih bisa membatalkan via `CANCELLER_ROLE` (`timelock.cancel(operationId)`). |
-| 4. Execute | Admin multisig (Safe) | Setelah delay, Safe mengeksekusi `timelock.execute(target, 0, calldata, 0x0, salt)`. Grant mendarat; verifikasi dengan `cast call <QM> "hasRole(bytes32,address)" <VERIFIER_ROLE> <verifier>` (atau `forge script` cek). |
+| Langkah              | Siapa                 | Apa                                                                                                                                                                                                                                                 |
+| -------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Propose (preview) | Operator              | Jalankan script tanpa `--broadcast`: script memvalidasi state live (timelock adalah admin QM, verifier belum punya role, `minDelay` timelock persis 2 hari) lalu mencetak ringkasan: target, calldata, salt, operation id, dan waktu siap eksekusi. |
+| 2. Schedule          | Admin multisig (Safe) | Safe mengeksekusi `timelock.schedule(target, 0, calldata, 0x0, salt, 172800)` sebagai transaksi Safe, memakai argumen persis dari ringkasan. Hanya pemegang `PROPOSER_ROLE` (multisig) yang bisa schedule; yang lain revert.                        |
+| 3. Delay             | —                     | 2 hari (`minDelay` timelock). Selama jendela ini grant **belum efektif**: `execute()` revert, dan multisig masih bisa membatalkan via `CANCELLER_ROLE` (`timelock.cancel(operationId)`).                                                            |
+| 4. Execute           | Admin multisig (Safe) | Setelah delay, Safe mengeksekusi `timelock.execute(target, 0, calldata, 0x0, salt)`. Grant mendarat; verifikasi dengan `cast call <QM> "hasRole(bytes32,address)" <VERIFIER_ROLE> <verifier>` (atau `forge script` cek).                            |
 
 Catatan penting: proposer adalah Safe — Safe tidak punya private key,
 jadi script **tidak bisa** broadcast schedule sebagai Safe di jaringan
