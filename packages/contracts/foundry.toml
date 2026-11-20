@@ -2,17 +2,25 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-solc_version = "0.8.24"
+solc_version = "0.8.39"
+# PHASE 8: upgraded 0.8.24 -> 0.8.39 (2026-11-20, PH7-L13). 0.8.39 is the
+# latest stable solc with zero known bugs in the official list; it closes
+# YulOptimizerKnowledgeBaseStaleBookkeeping (low, "any code may be
+# affected") plus 5 other bugs affecting 0.8.24. Full battery re-verified
+# on 0.8.39 (see agenthub-phase8-remediation/solc-evaluation.md).
 # FINAL REMEDIATION (Phase 7): the local test-stack script writes its
 # deployment JSON into the project root. Scoped to that one file — the
 # script cannot write anywhere else.
 fs_permissions = [{ access = "read-write", path = "./.anvil-deployment.json" }]
 # M2 fix (Phase 1 audit): pin the EVM version explicitly. "cancun" matches
-# the solc 0.8.24 default. Our contracts use no transient storage and no
-# Cancun-only opcodes (OZ 5.0.2 ReentrancyGuard is storage-based — verified
-# from source), so this is a reproducibility pin, not a feature dependency.
-# Cancun-opcode support on BSC must still be smoke-tested on testnet before
-# any mainnet deploy (see SECURITY_DEPLOYMENT_GATE.md).
+# the solc 0.8.39 default. Our contracts use no transient storage, but
+# solc >= 0.8.25 emits MCOPY in generated code (1x in QuestManager, 1x in
+# Achievement under 0.8.39 — verified by metadata-aware disassembly,
+# Phase 8), so Cancun is now a REAL feature dependency, not just a
+# reproducibility pin: do not lower evm_version below cancun. Cancun is
+# proven active on BSC testnet and mainnet (Phase 5 validation), and
+# Cancun-opcode support on BSC must still be smoke-tested on testnet
+# before any mainnet deploy (see SECURITY_DEPLOYMENT_GATE.md).
 evm_version = "cancun"
 optimizer = true
 optimizer_runs = 200

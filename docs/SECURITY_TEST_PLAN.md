@@ -32,7 +32,7 @@ Reputation, Achievement).
 
 ```bash
 cd packages/contracts
-forge build            # solc 0.8.24, evm_version cancun (foundry.toml)
+forge build            # solc 0.8.39, evm_version cancun (foundry.toml)
 forge test             # full suite, ~45 s (invariant suite dominates)
 forge test --match-contract QuestManagerTest   # one suite
 forge fmt --check      # formatting gate (CI)
@@ -47,7 +47,7 @@ NEXT_PUBLIC_CHAIN_ID=97 pnpm --filter @agenthub/web build
 pnpm format:check
 ```
 
-Static analysis (venv `~/workspace/slither-venv`, Slither 0.11.6, solc 0.8.24):
+Static analysis (venv `~/workspace/slither-venv`, Slither 0.11.6, solc 0.8.39):
 
 ```bash
 cd packages/contracts

@@ -207,7 +207,7 @@ badgeTokenId = 0;` followed by conditional assignment, and a ternary
      cannot change state.
   3. `pragma` — two version constraints across the codebase
      (`^0.8.20` in OpenZeppelin, `^0.8.24` in our files). Not an issue:
-     `foundry.toml` pins `solc_version = "0.8.24"` and the CI toolchain
+     `foundry.toml` pins `solc_version = "0.8.39"` and the CI toolchain
      is pinned to 1.9.0, so the actual compiler is fixed and reproducible.
   4. `cyclomatic-complexity` — `QuestManager.completeQuest`, complexity 12. The function is a linear sequence of guard clauses, each
      independently tested (32 QuestManager tests). Splitting it would
