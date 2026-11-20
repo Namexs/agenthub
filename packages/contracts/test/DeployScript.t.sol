@@ -67,7 +67,11 @@ contract DeployScriptTest is CanonicalSafeHelper {
 
     address internal constant OFFICIAL = 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F;
     // Anvil default test account 0 key — public, local simulation only.
-    uint256 internal constant ANVIL_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f3ff80;
+    // (Phase 9.1 fix: this was ...f4f3ff80, a one-character typo that
+    // derives 0x7f22... instead of anvil account 0 0xf39F... — harmless
+    // in tests, which derive the deployer from this constant, but wrong
+    // against a real anvil. Now matches DeployLocalTestStack.)
+    uint256 internal constant ANVIL_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
 
     function setUp() public {
         script = new DeployAgentHub();
