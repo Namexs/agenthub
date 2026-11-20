@@ -3,6 +3,7 @@ pragma solidity ^0.8.24;
 
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {DeployAgentHub} from "../script/DeployAgentHub.s.sol";
+import {DeployLocalTestStack} from "../script/DeployLocalTestStack.s.sol";
 import {SafeValidation} from "../script/SafeValidation.sol";
 import {AgentGate} from "../src/AgentGate.sol";
 import {QuestManager} from "../src/QuestManager.sol";
@@ -35,7 +36,12 @@ contract DeployScriptTest is CanonicalSafeHelper {
     address internal multisig;
     address internal safeSingleton;
     bytes32 internal safeProxyCodehash;
-    address internal creator = makeAddr("creator");
+    // PHASE 8 (PH7-M03): the quest creator is a genuine Safe too — a
+    // second MockSafeProxy (2-of-3, distinct owners) built from the
+    // SAME singleton in setUp, so it passes the same explicit-path
+    // validation as the admin multisig (same singleton + same proxy
+    // codehash — all MockSafeProxy instances share one bytecode).
+    address internal creator;
     address internal pauser = makeAddr("pauser");
     address internal verifier = makeAddr("verifier");
     address internal alice = makeAddr("alice");
@@ -56,7 +62,19 @@ contract DeployScriptTest is CanonicalSafeHelper {
         multisig = address(safeProxy);
         safeSingleton = address(singleton);
         safeProxyCodehash = address(safeProxy).codehash;
+        creator = _creatorSafe(address(singleton));
         vm.warp(1_000_000);
+    }
+
+    /// @notice Build a 2-of-3 MockSafeProxy creator from `singleton_`
+    /// (PH7-M03: on 31337 both Safes validate against the same explicit
+    /// singleton + codehash, so the creator must share the singleton).
+    function _creatorSafe(address singleton_) internal returns (address) {
+        address[] memory creatorOwners = new address[](3);
+        creatorOwners[0] = makeAddr("creator-owner-1");
+        creatorOwners[1] = makeAddr("creator-owner-2");
+        creatorOwners[2] = makeAddr("creator-owner-3");
+        return address(new MockSafeProxy(singleton_, creatorOwners, 2));
     }
 
     function _params() internal view returns (DeployAgentHub.DeployParams memory) {
@@ -80,10 +98,17 @@ contract DeployScriptTest is CanonicalSafeHelper {
         owners[1] = makeAddr("safe-owner-2");
         owners[2] = makeAddr("safe-owner-3");
         address canonicalSafe = deployCanonicalSafe(owners, 2);
+        // PHASE 8 (PH7-M03): the creator is a second canonical Safe
+        // (distinct proxy + owners) on production chains too.
+        address[] memory creatorOwners = new address[](3);
+        creatorOwners[0] = makeAddr("creator-owner-1");
+        creatorOwners[1] = makeAddr("creator-owner-2");
+        creatorOwners[2] = makeAddr("creator-owner-3");
+        address canonicalCreator = deployCanonicalSafe(creatorOwners, 2);
         return DeployAgentHub.DeployParams({
             agentId: address(0),
             adminMultisig: canonicalSafe,
-            questCreator: creator,
+            questCreator: canonicalCreator,
             pauser: pauser,
             verifier: verifier,
             safeSingleton: address(0),
@@ -148,6 +173,10 @@ contract DeployScriptTest is CanonicalSafeHelper {
         assertFalse(timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), deployer));
         assertFalse(timelock.hasRole(timelock.PROPOSER_ROLE(), deployer));
         assertFalse(timelock.hasRole(timelock.EXECUTOR_ROLE(), deployer));
+
+        // PHASE 8 (PH7-M04): the mock is owned by the admin multisig,
+        // not the deployer — the deployer keeps no mint power either.
+        assertEq(MockAgentId(d.mockAgentId).owner(), multisig, "mock owner is not the multisig");
     }
 
     function test_DeployedStackWorksEndToEnd() public {
@@ -156,8 +185,9 @@ contract DeployScriptTest is CanonicalSafeHelper {
         QuestManager qm = QuestManager(d.questManager);
         Reputation reputation = Reputation(d.reputation);
 
-        // The mock's owner is the deployer (the script contract here).
-        vm.prank(deployer);
+        // PHASE 8 (PH7-M04): the mock's owner is the admin multisig —
+        // smoke-test minting goes through the Safe, not the deployer.
+        vm.prank(multisig);
         mock.mint(alice);
         vm.prank(creator);
         uint256 id = qm.createQuest(
@@ -295,6 +325,10 @@ contract DeployScriptTest is CanonicalSafeHelper {
         params.adminMultisig = address(strict);
         params.safeSingleton = address(singleton);
         params.safeProxyCodehash = address(strict).codehash;
+        // PH7-M03: the creator Safe must be built from the SAME
+        // singleton the params point at — both Safes validate against
+        // the same explicit values on 31337.
+        params.questCreator = _creatorSafe(address(singleton));
         DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
         assertTrue(d.questManager != address(0));
         TimelockController timelock = TimelockController(payable(d.timelock));
@@ -311,6 +345,85 @@ contract DeployScriptTest is CanonicalSafeHelper {
         params.safeProxyCodehash = bytes32(uint256(1));
         vm.expectRevert(DeployAgentHub.ExplicitSingletonNotAllowedOnProduction.selector);
         script.deploy(params, deployer);
+    }
+
+    // --- PHASE 8 (PH7-M03): QUEST_CREATOR must be a genuine Safe ---
+
+    function test_DeployRejectsEoaCreator() public {
+        address eoa = makeAddr("eoa-creator");
+        DeployAgentHub.DeployParams memory params = _params();
+        params.questCreator = eoa;
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.NotASafe.selector, eoa, "no code"));
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsNonSafeCreatorContract() public {
+        // A contract WITHOUT the Safe interface: getThreshold staticcall
+        // reverts (no fallback), so validation fails closed — same as
+        // for the admin multisig.
+        MockAgentId notSafe = new MockAgentId();
+        DeployAgentHub.DeployParams memory params = _params();
+        params.questCreator = address(notSafe);
+        vm.expectRevert(
+            abi.encodeWithSelector(SafeValidation.NotASafe.selector, address(notSafe), "getThreshold failed")
+        );
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployRejectsThresholdOneCreatorSafe() public {
+        // 1-of-3 is a single key with extra steps — below the minimum.
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("o1");
+        owners[1] = makeAddr("o2");
+        owners[2] = makeAddr("o3");
+        MockSafe weak = new MockSafe(owners, 1);
+        DeployAgentHub.DeployParams memory params = _params();
+        params.questCreator = address(weak);
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.UnsafeThreshold.selector, address(weak), 1, 3));
+        script.deploy(params, deployer);
+    }
+
+    function test_DeployAcceptsDistinctCreatorSafe() public {
+        // A creator Safe DISTINCT from the admin multisig (different
+        // owners, 3-of-3) deploys fine and receives the creator role.
+        address[] memory owners = new address[](3);
+        owners[0] = makeAddr("c1");
+        owners[1] = makeAddr("c2");
+        owners[2] = makeAddr("c3");
+        MockSafeProxy strictCreator = new MockSafeProxy(safeSingleton, owners, 3);
+        DeployAgentHub.DeployParams memory params = _params();
+        params.questCreator = address(strictCreator);
+        DeployAgentHub.Deployment memory d = script.deploy(params, deployer);
+        QuestManager qm = QuestManager(d.questManager);
+        assertTrue(qm.hasRole(qm.QUEST_CREATOR_ROLE(), address(strictCreator)));
+        assertFalse(qm.hasRole(qm.QUEST_CREATOR_ROLE(), multisig));
+    }
+
+    function test_TestnetRejectsEoaCreator() public {
+        // Canonical path (chain 97): an EOA creator reverts even with
+        // a genuine canonical admin Safe.
+        vm.chainId(97);
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
+        address eoa = makeAddr("eoa-creator-97");
+        params.questCreator = eoa;
+        vm.expectRevert(abi.encodeWithSelector(SafeValidation.NotASafe.selector, eoa, "no code"));
+        script.deploy(params, deployer);
+    }
+
+    // --- PHASE 8 (PH7-M06): DeployLocalTestStack is Anvil-only ---
+
+    function test_LocalTestStackRejectsTestnetChain() public {
+        DeployLocalTestStack stack = new DeployLocalTestStack();
+        vm.chainId(97);
+        vm.expectRevert("DeployLocalTestStack: local Anvil only");
+        stack.run();
+    }
+
+    function test_LocalTestStackRejectsMainnetChain() public {
+        DeployLocalTestStack stack = new DeployLocalTestStack();
+        vm.chainId(56);
+        vm.expectRevert("DeployLocalTestStack: local Anvil only");
+        stack.run();
     }
 
     function test_DeployRejectsMissingLocalSafeConfig() public {
@@ -379,17 +492,18 @@ contract DeployScriptTest is CanonicalSafeHelper {
         vm.setEnv("SAFE_PROXY_CODEHASH", vm.toString(safeProxyCodehash));
         vm.setEnv("AGENT_ID_ADDRESS", "0x0000000000000000000000000000000000000000");
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "false");
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
     }
 
-    /// @notice The four env-driven run() scenarios in ONE test, run
+    /// @notice The six env-driven run() scenarios in ONE test, run
     /// sequentially. This is deliberate, not laziness: forge runs tests
-    /// in parallel threads and vm.setEnv is process-global, so four
+    /// in parallel threads and vm.setEnv is process-global, so six
     /// separate run() tests with CONFLICTING env values flaked against
     /// each other (observed: NoCodeAtAgentId from a leaked
     /// AGENT_ID_ADDRESS, MainnetDeployNotConfirmed from a leaked
     /// CONFIRM_MAINNET_DEPLOY, LocalSafeConfigMissing from leaked
     /// SAFE_* values). Inside one test there is no interleaving — every
-    /// env set sits immediately before its run() call. All four
+    /// env set sits immediately before its run() call. All six
     /// scenarios keep their original assertions; only the grouping
     /// changed.
     function test_RunEnvDrivenPaths() public {
@@ -404,6 +518,8 @@ contract DeployScriptTest is CanonicalSafeHelper {
         assertFalse(qmLocal.hasRole(qmLocal.DEFAULT_ADMIN_ROLE(), anvilDeployer), "(1) deployer kept admin");
         assertFalse(qmLocal.hasRole(qmLocal.VERIFIER_ROLE(), anvilDeployer), "(1) deployer kept verifier");
         assertTrue(qmLocal.hasRole(qmLocal.VERIFIER_ROLE(), verifier), "(1) verifier role missing");
+        // PH7-M04: the mock is owned by the multisig, not the deployer.
+        assertEq(MockAgentId(dLocal.mockAgentId).owner(), multisig, "(1) mock owner is not the multisig");
 
         // (2) FINAL REMEDIATION (Phase 2): PAUSER unset (zero) in run()
         // → PAUSER_ROLE defaults to the verified admin multisig.
@@ -430,16 +546,60 @@ contract DeployScriptTest is CanonicalSafeHelper {
         owners[1] = makeAddr("safe-owner-2");
         owners[2] = makeAddr("safe-owner-3");
         address canonicalSafe = deployCanonicalSafe(owners, 2);
+        // PH7-M03: the creator must be a canonical Safe on chain 56 too.
+        address[] memory creatorOwners = new address[](3);
+        creatorOwners[0] = makeAddr("creator-owner-1");
+        creatorOwners[1] = makeAddr("creator-owner-2");
+        creatorOwners[2] = makeAddr("creator-owner-3");
+        address canonicalCreator = deployCanonicalSafe(creatorOwners, 2);
         MockAgentId mock = new MockAgentId();
         vm.etch(OFFICIAL, address(mock).code);
         _setRunEnv();
         vm.setEnv("AGENT_ID_ADDRESS", vm.toString(OFFICIAL));
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "true");
         vm.setEnv("ADMIN_MULTISIG", vm.toString(canonicalSafe));
+        vm.setEnv("QUEST_CREATOR", vm.toString(canonicalCreator));
         vm.setEnv("SAFE_SINGLETON", "0x0000000000000000000000000000000000000000");
         vm.setEnv("SAFE_PROXY_CODEHASH", "0x0000000000000000000000000000000000000000000000000000000000000000");
         DeployAgentHub.Deployment memory dMainnet = script.run();
         assertEq(dMainnet.mockAgentId, address(0), "(4) mock deployed on mainnet");
         assertEq(AgentGate(dMainnet.agentGate).agentIdContract(), OFFICIAL, "(4) wrong Agent ID");
+
+        // (5) PHASE 8 (PH7-M05): testnet without confirmation → reverts
+        // before any deployment, even with a genuine canonical Safe.
+        vm.chainId(97);
+        address[] memory owners97 = new address[](3);
+        owners97[0] = makeAddr("safe-owner-1");
+        owners97[1] = makeAddr("safe-owner-2");
+        owners97[2] = makeAddr("safe-owner-3");
+        address canonicalSafe97 = deployCanonicalSafe(owners97, 2);
+        address[] memory creatorOwners97 = new address[](3);
+        creatorOwners97[0] = makeAddr("creator-owner-1");
+        creatorOwners97[1] = makeAddr("creator-owner-2");
+        creatorOwners97[2] = makeAddr("creator-owner-3");
+        address canonicalCreator97 = deployCanonicalSafe(creatorOwners97, 2);
+        _setRunEnv();
+        vm.setEnv("AGENT_ID_ADDRESS", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
+        vm.setEnv("ADMIN_MULTISIG", vm.toString(canonicalSafe97));
+        vm.setEnv("QUEST_CREATOR", vm.toString(canonicalCreator97));
+        vm.setEnv("SAFE_SINGLETON", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("SAFE_PROXY_CODEHASH", "0x0000000000000000000000000000000000000000000000000000000000000000");
+        vm.expectRevert(DeployAgentHub.TestnetDeployNotConfirmed.selector);
+        script.run();
+
+        // (6) Testnet with confirmation → deploys with a mock Agent ID
+        // owned by the multisig (PH7-M04).
+        _setRunEnv();
+        vm.setEnv("AGENT_ID_ADDRESS", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "true");
+        vm.setEnv("ADMIN_MULTISIG", vm.toString(canonicalSafe97));
+        vm.setEnv("QUEST_CREATOR", vm.toString(canonicalCreator97));
+        vm.setEnv("SAFE_SINGLETON", "0x0000000000000000000000000000000000000000");
+        vm.setEnv("SAFE_PROXY_CODEHASH", "0x0000000000000000000000000000000000000000000000000000000000000000");
+        DeployAgentHub.Deployment memory dTestnet = script.run();
+        assertTrue(dTestnet.mockAgentId != address(0), "(6) mock not deployed");
+        assertEq(AgentGate(dTestnet.agentGate).agentIdContract(), dTestnet.mockAgentId, "(6) wrong Agent ID");
+        assertEq(MockAgentId(dTestnet.mockAgentId).owner(), canonicalSafe97, "(6) mock owner is not the multisig");
     }
 }

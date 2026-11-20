@@ -31,7 +31,9 @@ contract PauserRoleTest is CanonicalSafeHelper {
 
     address internal deployer;
     address internal multisig;
-    address internal creator = makeAddr("creator");
+    // PHASE 8 (PH7-M03): the quest creator is a genuine Safe — a second
+    // MockSafeProxy built from the same singleton in setUp.
+    address internal creator;
     address internal verifier = makeAddr("verifier");
     address internal stranger = makeAddr("stranger");
     address internal alice = makeAddr("alice");
@@ -46,6 +48,12 @@ contract PauserRoleTest is CanonicalSafeHelper {
         MockSafeSingleton singleton = new MockSafeSingleton("1.4.1");
         MockSafeProxy proxy = new MockSafeProxy(address(singleton), owners, 2);
         multisig = address(proxy);
+        address[] memory creatorOwners = new address[](3);
+        creatorOwners[0] = makeAddr("creator-owner-1");
+        creatorOwners[1] = makeAddr("creator-owner-2");
+        creatorOwners[2] = makeAddr("creator-owner-3");
+        MockSafeProxy creatorProxy = new MockSafeProxy(address(singleton), creatorOwners, 2);
+        creator = address(creatorProxy);
         vm.warp(1_000_000);
         // Default configuration: pauser == address(0) → multisig.
         d = script.deploy(
@@ -86,6 +94,8 @@ contract PauserRoleTest is CanonicalSafeHelper {
         assertFalse(timelock.hasRole(timelock.PROPOSER_ROLE(), deployer));
         assertFalse(timelock.hasRole(timelock.EXECUTOR_ROLE(), deployer));
         assertFalse(timelock.hasRole(timelock.CANCELLER_ROLE(), deployer));
+        // PH7-M04: the deployer does not own the mock either.
+        assertEq(mockId.owner(), multisig);
     }
 
     function test_DefaultPauserIsMultisig() public view {
@@ -195,7 +205,8 @@ contract PauserRoleTest is CanonicalSafeHelper {
     }
 
     function test_PauseStopsCompletionsUntilTimelockUnpause() public {
-        vm.prank(deployer);
+        // PH7-M04: the mock is owned by the multisig — mint via the Safe.
+        vm.prank(multisig);
         mockId.mint(alice);
         vm.prank(creator);
         uint256 id = qm.createQuest(

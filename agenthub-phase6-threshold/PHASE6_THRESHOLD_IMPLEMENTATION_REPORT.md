@@ -8,6 +8,37 @@ implementing M-of-N attestation per
 the manifest is regenerated for the final commit afterwards — see §8).
 **Work:** 9 commits, 43 files changed, +2,532 / −385 lines.
 
+## Errata (Phase 8, 2026-11-20)
+
+Corrections from the Phase 7 independent security review
+(`agenthub-phase7-review/PHASE7_INDEPENDENT_SECURITY_REVIEW.md` §9,
+errata E1/E2/E4/E6). The original text below is left unchanged; these
+notes supersede it where they conflict.
+
+- **E1 — "via-IR menghilangkan MCOPY" is WRONG (PH7-M10).** The
+  baseline legacy build does NOT contain real MCOPY opcodes: the two
+  reported MCOPY hits (Reputation PC `0x946`, Achievement PC `0x1887`)
+  sit inside the CBOR metadata suffix — in the middle of the IPFS
+  hash — not in executable code. **0 Cancun-only opcodes in all four
+  contracts in BOTH builds** (legacy and via-IR). The Phase 5 finding
+  F3 (MCOPY in the legacy build) was never valid; the conclusion
+  "Cancun compatibility is satisfied" still holds, but for the
+  corrected reason. §3's opcode-scan row ("1× MCOPY … → 0") and §5.1
+  ("previously 1× MCOPY … now MOOT") are superseded by this note.
+- **E2 — Slither app-only breakdown (PH7-L25).** The correct
+  breakdown is **4 Low + 8 Info = 12** (not "4 Low + 7 Info" as
+  stated in §3); one `pragma` detector result was dropped during
+  JSON filtering. Total (12) and verdict (0 High/Medium) unchanged.
+- **E4 — Legacy build time (PH7-I11).** A clean legacy-codegen build
+  takes **2 minutes 4 seconds**, not "~8 seconds" as stated in §5.1.
+  The via-IR/legacy ratio is ≈10× CPU, not ≈40×.
+- **E6 — Threshold policy was SOP-only at Phase 6 (PH7-H01,
+  PH7-M02).** The policy "rewardPoints > 1,000 → threshold ≥ 2" (and
+  the real-world-badge rule) was documented as part of the
+  implementation but was NOT enforced by any code at the time of
+  this report. It is now enforced on-chain by the Phase 8
+  remediation (PH7-H01/PH7-M02) — see `agenthub-phase8-remediation/`.
+
 ## 1. Decision
 
 **CONDITIONAL GO for live BNB Testnet validation. NO-GO for mainnet.**

@@ -9,6 +9,22 @@ or test-code changes**).
 no private key used. No push was made by this work (the parent owns
 the push decision).
 
+## Errata (Phase 8, 2026-11-20)
+
+Correction from the Phase 7 independent security review (PH7-M10;
+`agenthub-phase7-review/PHASE7_INDEPENDENT_SECURITY_REVIEW.md` §9,
+erratum E1). The original text below is left unchanged; this note
+supersedes it where they conflict.
+
+- **The reported "1 × MCOPY" hits are false positives.** The
+  disassembly in §3 Phase 6 (O5) counted MCOPY at Reputation PC
+  `0x946` and Achievement PC `0x1887`, but both PCs sit inside the
+  CBOR metadata suffix (in the middle of the IPFS hash), not in
+  executable code. **0 Cancun-only opcodes in all four contracts in
+  both builds** (legacy and via-IR). Finding F3 (§4) was never valid.
+  The conclusion — Cancun is live on BSC testnet and mainnet — is
+  unchanged and still proven by the on-chain evidence in §3.
+
 ## 1. Decision
 
 **CONDITIONAL GO for live BNB Testnet validation. NO-GO for mainnet.**

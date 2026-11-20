@@ -5,7 +5,8 @@ reference that `DeployAgentHub.s.sol`, `SECURITY.md`,
 `SECURITY_DEPLOYMENT_GATE.md`, and `DEPLOYMENT_PLAN.md` must all agree
 with. Any change to role wiring MUST update this file first.
 
-**Last updated:** 2026-11-19 (final remediation, Phase 2: PAUSER_ROLE
+**Last updated:** 2026-11-20 (Phase 8: PH7-M03 creator must be a Safe,
+PH7-M04 MockAgentId owned by the multisig; Phase 2: PAUSER_ROLE
 defaults to the verified admin multisig).
 
 ## 1. Design principles
@@ -13,7 +14,9 @@ defaults to the verified admin multisig).
 1. **The deployer keeps nothing.** After `DeployAgentHub.deploy()`
    finishes, the deployer holds zero roles on every contract (enforced
    by `_verifyWiring`, tested in `PauserRoleTest` +
-   `DeployScriptTest`).
+   `DeployScriptTest`). It also owns nothing: MockAgentId ownership is
+   transferred to the admin multisig (PH7-M04), so the deployer cannot
+   mint test Agent IDs.
 2. **Admin is the timelock, not a person.** `DEFAULT_ADMIN_ROLE` on all
    three AccessControl contracts belongs to the TimelockController
    (2-day delay). The admin multisig proposes + executes through it; it
@@ -31,22 +34,23 @@ defaults to the verified admin multisig).
 
 ## 2. Role matrix (production default)
 
-| Contract     | Role                 | Holder (default)      | Powers                                        | Delay    |
-| ------------ | -------------------- | --------------------- | --------------------------------------------- | -------- |
-| All three    | `DEFAULT_ADMIN_ROLE` | TimelockController    | Grant/revoke any role; unpause                | 2 days   |
-| QuestManager | `PAUSER_ROLE`        | **Admin multisig**    | `pause()` (emergency stop)                    | **None** |
-| QuestManager | `QUEST_CREATOR_ROLE` | Quest creator address | `createQuest`, `deactivateQuest` (own quests) | —        |
-| QuestManager | `VERIFIER_ROLE`      | Named verifier(s)     | Sign EIP-712 attestations (off-chain)         | —        |
-| Reputation   | `SCORE_SOURCE_ROLE`  | QuestManager only     | `addPoints`                                   | —        |
-| Achievement  | `ISSUER_ROLE`        | QuestManager only     | `issue`                                       | —        |
-| Achievement  | `BADGE_MANAGER_ROLE` | Admin multisig        | `defineBadge`                                 | —        |
-| QuestManager | validator allowlist  | Admin (timelock)      | `approveValidator`, `revokeValidator`         | 2 days   |
-| QuestManager | emergency revoke     | `PAUSER_ROLE` holder  | `emergencyRevokeValidator` (Phase 5)          | **None** |
-| Timelock     | `DEFAULT_ADMIN_ROLE` | Timelock itself       | Timelock config changes (via proposals)       | 2 days   |
-| Timelock     | `PROPOSER_ROLE`      | Admin multisig        | Schedule proposals                            | —        |
-| Timelock     | `EXECUTOR_ROLE`      | Admin multisig        | Execute ready proposals                       | —        |
-| Timelock     | `CANCELLER_ROLE`     | Admin multisig        | Cancel proposals                              | —        |
-| All          | any role             | **Deployer: NONE**    | —                                             | —        |
+| Contract                    | Role                 | Holder (default)                        | Powers                                        | Delay    |
+| --------------------------- | -------------------- | --------------------------------------- | --------------------------------------------- | -------- |
+| All three                   | `DEFAULT_ADMIN_ROLE` | TimelockController                      | Grant/revoke any role; unpause                | 2 days   |
+| QuestManager                | `PAUSER_ROLE`        | **Admin multisig**                      | `pause()` (emergency stop)                    | **None** |
+| QuestManager                | `QUEST_CREATOR_ROLE` | Quest creator Safe (≥ 2-of-n, verified) | `createQuest`, `deactivateQuest` (own quests) | —        |
+| QuestManager                | `VERIFIER_ROLE`      | Named verifier(s)                       | Sign EIP-712 attestations (off-chain)         | —        |
+| Reputation                  | `SCORE_SOURCE_ROLE`  | QuestManager only                       | `addPoints`                                   | —        |
+| Achievement                 | `ISSUER_ROLE`        | QuestManager only                       | `issue`                                       | —        |
+| Achievement                 | `BADGE_MANAGER_ROLE` | Admin multisig                          | `defineBadge`                                 | —        |
+| MockAgentId (testnet/local) | `owner()` (Ownable)  | Admin multisig                          | `mint` test Agent IDs                         | —        |
+| QuestManager                | validator allowlist  | Admin (timelock)                        | `approveValidator`, `revokeValidator`         | 2 days   |
+| QuestManager                | emergency revoke     | `PAUSER_ROLE` holder                    | `emergencyRevokeValidator` (Phase 5)          | **None** |
+| Timelock                    | `DEFAULT_ADMIN_ROLE` | Timelock itself                         | Timelock config changes (via proposals)       | 2 days   |
+| Timelock                    | `PROPOSER_ROLE`      | Admin multisig                          | Schedule proposals                            | —        |
+| Timelock                    | `EXECUTOR_ROLE`      | Admin multisig                          | Execute ready proposals                       | —        |
+| Timelock                    | `CANCELLER_ROLE`     | Admin multisig                          | Cancel proposals                              | —        |
+| All                         | any role             | **Deployer: NONE**                      | —                                             | —        |
 
 Notes:
 
@@ -66,18 +70,21 @@ Notes:
   time (`VERIFIER` env var) and more are added via timelock.
 - **QUEST_CREATOR_ROLE** is a trusted role: a creator can create quests
   (with capped rewards) but cannot attach an unapproved validator
-  (Phase 5 registry) or mint points/badges directly.
+  (Phase 5 registry) or mint points/badges directly. The creator MUST
+  be a Safe (threshold ≥ 2), enforced by the deploy script with the
+  same validation as the admin multisig (PH7-M03); a single-key
+  creator is rejected at deploy time.
 
 ## 3. What each actor can and cannot do
 
-| Actor          | Can                                                                 | Cannot                                                                       |
-| -------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Admin multisig | Pause instantly; propose/execute timelock actions; define badges    | Unpause without the 2-day timelock; grant roles directly; mint points/badges |
-| Timelock       | Grant/revoke roles; unpause; approve/revoke validators              | Act without a multisig proposal + 2-day delay                                |
-| Quest creator  | Create/deactivate quests (capped rewards, approved validators only) | Complete quests for others; mint points/badges; pause                        |
-| Verifier       | Attest off-chain completions (signature only)                       | Complete quests on-chain; grant roles; pause                                 |
-| Deployer       | Deploy the contracts                                                | Anything after deployment (zero roles)                                       |
-| Any user       | Complete quests (if Agent ID holder); read all state                | Anything requiring a role                                                    |
+| Actor                | Can                                                                 | Cannot                                                                       |
+| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Admin multisig       | Pause instantly; propose/execute timelock actions; define badges    | Unpause without the 2-day timelock; grant roles directly; mint points/badges |
+| Timelock             | Grant/revoke roles; unpause; approve/revoke validators              | Act without a multisig proposal + 2-day delay                                |
+| Quest creator (Safe) | Create/deactivate quests (capped rewards, approved validators only) | Complete quests for others; mint points/badges; pause                        |
+| Verifier             | Attest off-chain completions (signature only)                       | Complete quests on-chain; grant roles; pause                                 |
+| Deployer             | Deploy the contracts                                                | Anything after deployment (zero roles, zero ownership)                       |
+| Any user             | Complete quests (if Agent ID holder); read all state                | Anything requiring a role                                                    |
 
 ## 4. Emergency sequences
 
@@ -93,7 +100,8 @@ blocks new quests AND completions using it; or pause everything
 
 **Compromised creator:** revoke `QUEST_CREATOR_ROLE` via timelock (2
 days); deactivate their quests (admin or creator); pause if completions
-must stop immediately.
+must stop immediately. (The creator is a Safe, PH7-M03, so compromise
+means quorum compromise.)
 
 **Compromised multisig owner key:** rotate the Safe's owners via the
 Safe itself (threshold still reachable with remaining owners); if

@@ -52,12 +52,16 @@ forge script script/DeployAgentHub.s.sol --fork-url <rpc-url>
 Order (single run): MockAgentId (testnet/local only, when
 `AGENT_ID_ADDRESS` is unset) → AgentGate → TimelockController
 (2-day delay) → Reputation → Achievement → QuestManager, then role
-wiring, admin handover to the timelock, deployer renounce, and
+wiring, MockAgentId ownership transfer to the multisig (PH7-M04),
+admin handover to the timelock, deployer renounce, and
 post-deploy verification (`_verifyWiring` reverts on any mismatch —
-29 checks). The script validates `ADMIN_MULTISIG` as a genuine Safe
-(canonical singleton + proxy codehash + threshold ≥ 2) BEFORE
-deploying anything. Mainnet additionally requires the official Agent
-ID address and `CONFIRM_MAINNET_DEPLOY=true`.
+30 checks on testnet/local, 29 on mainnet where no mock is deployed,
+including `mock.owner() == multisig`). The script validates
+`ADMIN_MULTISIG` AND `QUEST_CREATOR` as genuine Safes (canonical
+singleton + proxy codehash + threshold ≥ 2) BEFORE deploying anything
+(PH7-M03). Testnet requires `CONFIRM_TESTNET_DEPLOY=true` (PH7-M05);
+mainnet additionally requires the official Agent ID address and
+`CONFIRM_MAINNET_DEPLOY=true`.
 
 After each deploy, update `apps/web/.env.local` with the new addresses
 (`NEXT_PUBLIC_*_ADDRESS`, `NEXT_PUBLIC_DEPLOY_BLOCK`) and redeploy the

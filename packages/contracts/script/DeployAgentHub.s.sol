@@ -21,8 +21,12 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   There is NO automatic mainnet deployment.
 /// - The deployer ends with ZERO privileges: admin goes to the timelock
 ///   (2-day delay, multisig proposes + executes), operational roles go to
-///   the configured addresses, and the deployer renounces admin on every
-///   contract. Post-deploy assertions verify this on-chain.
+///   the configured addresses, the deployer renounces admin on every
+///   contract, and MockAgentId ownership is transferred to the admin
+///   multisig (PH7-M04 — the mock is Ownable, not AccessControl, so the
+///   renounce alone would have left the deployer with unlimited mint
+///   power over test Agent IDs). Post-deploy assertions verify this
+///   on-chain, including mock.owner() == adminMultisig.
 /// - FINAL REMEDIATION (Phase 1): ADMIN_MULTISIG is validated as a GENUINE
 ///   Safe BEFORE anything is deployed (SafeValidation library): the
 ///   singleton must be a canonical Safe singleton (v1.3.0 / v1.4.1) and
@@ -34,6 +38,15 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   SAFE_PROXY_CODEHASH); that path reverts on any other chain.
 ///   Run script/ValidateSafe.s.sol first for the human-readable check;
 ///   the check inside deploy() cannot be skipped.
+/// - PHASE 8 (PH7-M03): QUEST_CREATOR is validated as a GENUINE Safe
+///   with the SAME check as ADMIN_MULTISIG (SafeValidation library,
+///   canonical singleton + proxy codehash + threshold >= 2) BEFORE
+///   anything is deployed. A single-key creator is rejected: one
+///   compromised key must never be able to publish high-value quests.
+/// - PHASE 8 (PH7-M05): testnet (97) REQUIRES the explicit opt-in
+///   CONFIRM_TESTNET_DEPLOY=true, symmetric with the mainnet guard.
+///   The guard cannot distinguish a dry-run simulation from a real
+///   broadcast, so the dry-run needs it too.
 /// - `run()` is the env-driven entry point for `forge script`. `deploy()`
 ///   is the parameterized core, unit-tested without env vars or keys.
 /// @dev Usage (dry-run / simulation only — never --broadcast without a
@@ -56,6 +69,10 @@ contract DeployAgentHub is Script {
     error UnsupportedChain(uint256 chainId);
     error MainnetRequiresOfficialAgentId(address agentId);
     error MainnetDeployNotConfirmed();
+    /// @dev PHASE 8 (PH7-M05): testnet broadcast guard, symmetric with
+    /// the mainnet guard — run() on chain 97 reverts without
+    /// CONFIRM_TESTNET_DEPLOY=true.
+    error TestnetDeployNotConfirmed();
     error ZeroAddress(string param);
     error WiringCheckFailed(string check);
     /// @dev FINAL REMEDIATION (Phase 1): on the local chain (31337) the
@@ -73,7 +90,10 @@ contract DeployAgentHub is Script {
         address agentId;
         /// @dev Multisig: timelock proposer/executor/admin + badge manager.
         address adminMultisig;
-        /// @dev Address receiving QUEST_CREATOR_ROLE.
+        /// @dev Address receiving QUEST_CREATOR_ROLE. PHASE 8 (PH7-M03):
+        /// MUST be a genuine Safe (threshold >= 2), validated with the
+        /// same SafeValidation check as adminMultisig — a single-key
+        /// creator is rejected before anything deploys.
         address questCreator;
         /// @dev Address receiving PAUSER_ROLE (fast pause, no timelock).
         /// FINAL REMEDIATION (Phase 2): address(0) means "default to the
@@ -110,6 +130,12 @@ contract DeployAgentHub is Script {
         // to mainnet "by accident" (e.g. a wrong --rpc-url).
         if (block.chainid == 56 && !vm.envOr("CONFIRM_MAINNET_DEPLOY", false)) {
             revert MainnetDeployNotConfirmed();
+        }
+        // PHASE 8 (PH7-M05): testnet requires an explicit opt-in too —
+        // symmetric with the mainnet guard above. No approval = no
+        // broadcast, on either production chain.
+        if (block.chainid == 97 && !vm.envOr("CONFIRM_TESTNET_DEPLOY", false)) {
+            revert TestnetDeployNotConfirmed();
         }
         DeployParams memory params = DeployParams({
             agentId: vm.envOr("AGENT_ID_ADDRESS", address(0)),
@@ -173,6 +199,16 @@ contract DeployAgentHub is Script {
             }
             SafeValidation.validate(params.adminMultisig);
         }
+        // PHASE 8 (PH7-M03): the quest creator must be a GENUINE Safe
+        // too — validated with the SAME helper and the SAME expected
+        // values as the admin multisig, so a single-key creator can
+        // never publish quests (including high-value ones) on its own.
+        // Runs BEFORE any deployment, like the admin check above.
+        if (block.chainid == 31337) {
+            SafeValidation.validate(params.questCreator, params.safeSingleton, params.safeProxyCodehash);
+        } else {
+            SafeValidation.validate(params.questCreator);
+        }
         // Mainnet lock (defense in depth — AgentGate enforces it too):
         // the official Agent ID is the ONLY accepted identity on chain 56.
         if (block.chainid == 56 && params.agentId != OFFICIAL_AGENT_ID) {
@@ -232,7 +268,18 @@ contract DeployAgentHub is Script {
         achievement.renounceRole(achievement.DEFAULT_ADMIN_ROLE(), deployer);
         qm.renounceRole(qm.DEFAULT_ADMIN_ROLE(), deployer);
 
-        // --- 8. Post-deploy verification: revert if wiring is wrong. ---
+        // --- 8. MockAgentId ownership (PH7-M04): the mock is Ownable,
+        // not AccessControl — without this transfer the deployer would
+        // keep unlimited mint power over test Agent IDs after renouncing
+        // every role. Transfer to the verified admin multisig;
+        // smoke-test minting goes through the Safe. No-op on mainnet
+        // (no mock is deployed there). The script itself never mints,
+        // so the transfer happens unconditionally at the end of deploy().
+        if (deployment.mockAgentId != address(0)) {
+            MockAgentId(deployment.mockAgentId).transferOwnership(params.adminMultisig);
+        }
+
+        // --- 9. Post-deploy verification: revert if wiring is wrong. ---
         _verifyWiring(deployment, params, deployer, effectivePauser);
     }
 
@@ -252,6 +299,15 @@ contract DeployAgentHub is Script {
         address expectedAgentId = deployment.mockAgentId != address(0) ? deployment.mockAgentId : params.agentId;
         if (gate.agentIdContract() != expectedAgentId) revert WiringCheckFailed("gate.agentId");
         if (gate.expectedChainId() != block.chainid) revert WiringCheckFailed("gate.chainId");
+        // MockAgentId ownership (PH7-M04): the deployer must not keep
+        // mint power over test Agent IDs — the multisig owns the mock.
+        // (No mock on mainnet, so this check only applies when one was
+        // deployed; with it, _verifyWiring performs 30 checks.)
+        if (deployment.mockAgentId != address(0)) {
+            if (MockAgentId(deployment.mockAgentId).owner() != params.adminMultisig) {
+                revert WiringCheckFailed("mock.owner");
+            }
+        }
         if (address(qm.gate()) != address(gate)) revert WiringCheckFailed("qm.gate");
         if (address(qm.reputation()) != address(reputation)) revert WiringCheckFailed("qm.reputation");
         if (address(qm.achievement()) != address(achievement)) revert WiringCheckFailed("qm.achievement");

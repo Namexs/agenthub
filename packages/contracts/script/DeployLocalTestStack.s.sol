@@ -25,6 +25,10 @@ import {MockERC20} from "../test/mocks/MockERC20.sol";
 /// Writes `.anvil-deployment.json` in the contracts package root
 /// (gitignored); the wrapper copies it to apps/web/ for the checks.
 ///
+/// Chain-guarded: run() reverts on any chainId other than 31337
+/// (PH7-M06) — this script deploys with admin = the PUBLIC anvil
+/// deployer key and must never run against testnet or mainnet.
+///
 /// Run: forge script script/DeployLocalTestStack.s.sol --rpc-url
 /// http://127.0.0.1:8545 --broadcast --private-key <anvil key 0>
 contract DeployLocalTestStack is Script {
@@ -61,6 +65,10 @@ contract DeployLocalTestStack is Script {
     }
 
     function run() external {
+        // PH7-M06: local Anvil only. A mistyped --rpc-url (testnet
+        // instead of 127.0.0.1:8545) + --broadcast would otherwise
+        // publish a full stack whose admin key is public.
+        require(block.chainid == 31337, "DeployLocalTestStack: local Anvil only");
         Stack memory s;
         // fromBlock for the frontend's event queries: the block before
         // the first deployment tx (fresh anvil has no AGENTHUB events

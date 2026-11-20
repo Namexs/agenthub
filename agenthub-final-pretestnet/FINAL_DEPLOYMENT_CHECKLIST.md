@@ -18,16 +18,16 @@ wins — it is the newest document.
 Nothing in §2–§5 can run until these are supplied. Do not substitute
 placeholders.
 
-| #   | Item                                  | Status         | Notes                                                                                                                                                                                                                     |
-| --- | ------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **tBNB** for gas                      | ☐ NOT RECEIVED | Testnet deploy dry-run measured 10,294,857 gas (~0.00103 tBNB at the fork's gas price). Fund the deployer with **≥ 0.05 tBNB** (margin for verification + smoke tests). Faucet: https://testnet.bnbchain.org/faucet-smart |
-| 2   | **Dedicated deployer key**            | ☐ NOT RECEIVED | Fresh key, single-use, funded only for this deployment. Never a key that holds real funds or the user's Agent ID wallet. Supply via a secure channel — never in chat.                                                     |
-| 3   | **Admin multisig (Safe) address**     | ☐ NOT RECEIVED | A genuine Safe on BSC testnet (chain 97), threshold ≥ 2 (2-of-3 recommended). Must pass §3's verification BEFORE the deploy.                                                                                              |
-| 4   | **Quest creator address**             | ☐ NOT RECEIVED | Address receiving QUEST_CREATOR_ROLE.                                                                                                                                                                                     |
-| 5   | **First verifier address** (optional) | ☐ NOT RECEIVED | Address receiving VERIFIER_ROLE at deploy time. Can be granted later via timelock instead.                                                                                                                                |
-| 6   | **Pauser address** (optional)         | ☐ NOT RECEIVED | Defaults to the admin multisig if unset (production default). Only supply if a different pauser is intended.                                                                                                              |
-| 7   | **BscScan API key**                   | ☐ NOT RECEIVED | For contract verification (`--verify`). Supply via a secret manager / env, never in chat or in the repo. Testnet BscScan uses the same key as mainnet BscScan.                                                            |
-| 8   | **Explicit approval to broadcast**    | ☐ NOT RECEIVED | The user inspects the source ZIP + final report first, then approves this specific testnet deployment. No approval = no broadcast.                                                                                        |
+| #   | Item                                  | Status         | Notes                                                                                                                                                                                                                                                                                     |
+| --- | ------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **tBNB** for gas                      | ☐ NOT RECEIVED | Testnet deploy dry-run measured 10,294,857 gas (~0.00103 tBNB at the fork's gas price). Fund the deployer with **≥ 0.05 tBNB** (margin for verification + smoke tests). Faucet: https://testnet.bnbchain.org/faucet-smart                                                                 |
+| 2   | **Dedicated deployer key**            | ☐ NOT RECEIVED | Fresh key, single-use, funded only for this deployment. Never a key that holds real funds or the user's Agent ID wallet. Supply via a secure channel — never in chat.                                                                                                                     |
+| 3   | **Admin multisig (Safe) address**     | ☐ NOT RECEIVED | A genuine Safe on BSC testnet (chain 97), threshold ≥ 2 (2-of-3 recommended). Must pass §3's verification BEFORE the deploy.                                                                                                                                                              |
+| 4   | **Quest creator Safe address**        | ☐ NOT RECEIVED | A genuine Safe on BSC testnet (chain 97), threshold ≥ 2 (2-of-3 recommended), DISTINCT from the admin multisig. The deploy script validates it as a genuine Safe with the same check as item 3 (PH7-M03) — an EOA or non-Safe reverts the deploy. Confirm its owners out-of-band like §3. |
+| 5   | **First verifier address** (optional) | ☐ NOT RECEIVED | Address receiving VERIFIER_ROLE at deploy time. Can be granted later via timelock instead.                                                                                                                                                                                                |
+| 6   | **Pauser address** (optional)         | ☐ NOT RECEIVED | Defaults to the admin multisig if unset (production default). Only supply if a different pauser is intended.                                                                                                                                                                              |
+| 7   | **BscScan API key**                   | ☐ NOT RECEIVED | For contract verification (`--verify`). Supply via a secret manager / env, never in chat or in the repo. Testnet BscScan uses the same key as mainnet BscScan.                                                                                                                            |
+| 8   | **Explicit approval to broadcast**    | ☐ NOT RECEIVED | The user inspects the source ZIP + final report first, then approves this specific testnet deployment. No approval = no broadcast.                                                                                                                                                        |
 
 ## 2. Pre-flight validation (do now, before deployment day)
 
@@ -54,7 +54,9 @@ this remediation.
 The deploy script proves the multisig is a GENUINE Safe; it cannot
 prove it is the TEAM's Safe. Do all five steps from
 DEPLOYMENT_PLAN.md §5.1 and record the evidence in the deployment
-record:
+record. Repeat steps 1–2 (Safe web app + out-of-band owner
+confirmation) for the quest-creator Safe (§1 item 4) — the script
+proves it is genuine (PH7-M03), not that it is the team's.
 
 - [ ] 1. Open the address in the Safe web app (app.safe.global,
      BSC testnet): it loads as a Safe with the expected owners and
@@ -79,13 +81,17 @@ read and matches the expected result.
 ### 4.1 Dry run (no broadcast)
 
 - [ ] 1. Set env (deployer key, `ADMIN_MULTISIG`, `QUEST_CREATOR`,
-     optional `PAUSER`/`VERIFIER`) — from a secure source, never
+     optional `PAUSER`/`VERIFIER`, and `CONFIRM_TESTNET_DEPLOY=true`
+     — required even for the dry-run: the guard cannot distinguish
+     simulation from broadcast, PH7-M05) — from a secure source, never
      typed into a shared log.
 - [ ] 2. `forge script script/DeployAgentHub.s.sol --fork-url
 <testnet-rpc>` (no `--broadcast`).
 - [ ] 3. Read the full dry-run output: 6 CREATEs (MockAgentId,
      AgentGate, Timelock, Reputation, Achievement, QuestManager),
-     11 wiring CALLs, no `WiringCheckFailed`, no
+     12 wiring CALLs (13 if `VERIFIER` is set — 11 role calls + the
+     MockAgentId ownership transfer to the multisig, PH7-M04), no
+     `WiringCheckFailed`, no
      `NotASafe`/`UnknownSingleton`/`UnknownProxyCodehash`.
 - [ ] 4. Confirm the gas estimate is within the deployer balance
      (expect ~0.001–0.002 tBNB at current testnet gas prices;
@@ -94,7 +100,9 @@ read and matches the expected result.
 ### 4.2 Broadcast
 
 - [ ] 5. Same command + `--broadcast --verify` (BscScan API key via
-     env, never on the command line in a shared terminal).
+     env, never on the command line in a shared terminal), with
+     `CONFIRM_TESTNET_DEPLOY=true` set — the script reverts without
+     it (PH7-M05).
 - [ ] 6. Record every deployed address + tx hash in the deployment
      record (`docs/DEPLOYMENT_RECORD.md` — create it; it does not
      exist yet). Copy the addresses into `apps/web/.env.local`
@@ -118,7 +126,8 @@ Read (do not write) against the live addresses and confirm each:
       BADGE_MANAGER_ROLE == multisig; QUEST_CREATOR_ROLE == creator;
       PAUSER_ROLE == multisig (or the explicit pauser);
       VERIFIER_ROLE == first verifier (if set).
-- [ ] 12. Deployer holds NO role on any contract.
+- [ ] 12. Deployer holds NO role on any contract and owns nothing:
+      `MockAgentId.owner()` == multisig (PH7-M04).
 - [ ] 13. Timelock: `getMinDelay()` == 2 days; PROPOSER_ROLE /
       CANCELLER_ROLE / EXECUTOR_ROLE == multisig; DEFAULT_ADMIN_ROLE
       == timelock itself.
@@ -129,13 +138,21 @@ Read (do not write) against the live addresses and confirm each:
 
 ### 5.1 On-chain smoke (via cast / forge script, test wallets only)
 
-- [ ] 1. Mint test Agent IDs to 2 test wallets (MockAgentId is
-     mintable by its owner — the deployer; use it only for testing).
+- [ ] 1. Mint test Agent IDs to 2 test wallets via the admin
+     multisig (MockAgentId is owned by the multisig since Phase 8,
+     PH7-M04 — propose the mint through the Safe; the deployer key
+     holds no mint power and can be discarded right after
+     deployment).
 - [ ] 2. Create one quest of EACH kind (CheckIn, OnChain, Attested)
      via QUEST_CREATOR_ROLE. For the OnChain quest: deploy a
      `TokenBalanceValidator` instance first, then approve it via a
      timelock proposal (2-day delay — start this early; it is the
-     longest pole in the smoke test).
+     longest pole in the smoke test). ORDERING (Phase 8, PH7-M01):
+     grant verifiers BEFORE creating threshold quests — `createQuest`
+     reverts for an Attested quest whose threshold exceeds the live
+     verifier count. `DeployAgentHub` grants at most 1 verifier, so
+     a threshold-2 quest needs a 2nd verifier granted via timelock
+     first (2-day delay — start this early too).
 - [ ] 3. Complete the CheckIn quest from a holder wallet; verify
      points + `QuestCompleted` event.
 - [ ] 4. Complete the OnChain quest from a holder with a sufficient
@@ -150,6 +167,23 @@ Read (do not write) against the live addresses and confirm each:
      reverts; unpause via timelock (2-day delay — schedule it).
 - [ ] 8. Verify the frontend's event queries against the live chain
      (leaderboard + tx history populate from real logs).
+- [ ] 9. Verify on-chain policy enforcement (Phase 8, PH7-H01/M02):
+     `createQuest` with 1,001 points, Attested, threshold 1 REVERTS;
+     1,001 points with threshold 2 SUCCEEDS; 1,000 points with
+     threshold 1 SUCCEEDS. Define a badge, flag it high-value via
+     `setBadgeHighValue`, and verify a threshold-1 quest with that
+     badge REVERTS at creation (threshold 2 succeeds).
+- [ ] 10. Verify the verifier-revoke guardrail (Phase 8, PH7-M01):
+      with a threshold-2 quest live, revoking a verifier REVERTS
+      (`RevocationWouldBrickQuest`); deactivating the quest first,
+      then revoking, SUCCEEDS; re-granting restores completion.
+      Deactivate stale expired-but-active quests before revoking
+      (expired quests still count toward the live threshold).
+- [ ] 11. Verify the recreate procedure (Phase 8, PH7-L07):
+      deactivate a quest, recreate it, and call `setSupersedes`
+      (new questId, old questId) immediately; verify an account that
+      completed the old quest CANNOT complete the new one, while an
+      account that did not complete the old quest still can.
 
 ### 5.2 Frontend smoke (testnet env)
 
@@ -196,7 +230,8 @@ NEXT_PUBLIC_DEPLOY_BLOCK=<block number of the first deployment tx>
   See `VERIFIER_SECURITY_SOP.md` §5.
 - A compromised quest-creator key: revoke QUEST_CREATOR_ROLE via
   timelock; deactivate the malicious quests (admin, timelock);
-  pause if completions are being farmed.
+  pause if completions are being farmed. (The creator is a Safe,
+  PH7-M03, so compromise means quorum compromise.)
 - A lost multisig: the deployment cannot be administered. On
   testnet, redeploy with a new multisig. On mainnet this would be
   catastrophic — multisig custody is a pre-mainnet requirement.
@@ -218,10 +253,18 @@ broadcast, ALL of the following must hold (see
    goes live (R-010). **Status: IMPLEMENTED (Phase 6, 2026-11-19)** —
    per-quest `attestationThreshold` (1–3), `bytes[]` submission,
    distinct-signer enforcement, multi-signature frontend + threshold-2
-   E2E. **NOT closed yet:** the full regression battery and the
+   E2E. **Phase 8 (2026-11-20) enforces the policy on-chain
+   (PH7-H01/M02):** `createQuest` reverts for Attested quests with
+   rewardPoints > 1,000 and threshold 1, and for quests whose badge
+   is flagged high-value with threshold 1; a verifier-revoke
+   guardrail (PH7-M01) blocks revokes that would brick live quests.
+   **NOT closed yet:** the full regression battery and the
    testnet smoke (create + complete threshold-1 and threshold-2
    quests, observe duplicate/insufficient reverts on-chain) are still
-   required to close this item.
+   required to close this item. Smoke must additionally verify the
+   policy on-chain: createQuest(1,001 pts, T1) reverts; (1,001, T2)
+   and (1,000, T1) succeed; high-value badge + T1 reverts
+   (see §5.1 steps 9–12).
 5. Mainnet multisig created + independently verified (§3, on
    chain 56) + owners confirmed out-of-band.
 6. Monitoring + incident response plan in place (completion
