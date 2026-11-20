@@ -1,0 +1,11 @@
+packages in lockfile: 960
+queried 500/960
+queried 960/960
+
+findings: 7
+by severity: {"MODERATE":6,"LOW":1}
+
+HIGH/CRITICAL findings (0):
+
+full JSON written to agenthub-final-pretestnet/logs/phase4-osv-audit.json
+EXIT=0

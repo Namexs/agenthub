@@ -1,0 +1,140 @@
+=== web lint (next lint) ===
+✔ No ESLint warnings or errors
+web EXIT=0
+=== shared lint ===
+shared EXIT=0
+=== contracts lint (forge fmt --check) ===
+Diff in test/DeploymentArtifact.t.sol:
+36  36   |     string internal constant ARTIFACT_MISSING = "deployments/31337-missing.json";
+37  37   | 
+38  38   |     // Distinct fake tx hashes for the fabricated broadcast file.
+39       |-    string internal constant HASH_MOCK =
+40       |-        "0x1111111111111111111111111111111111111111111111111111111111111111";
+41       |-    string internal constant HASH_GATE =
+42       |-        "0x2222222222222222222222222222222222222222222222222222222222222222";
+43       |-    string internal constant HASH_TIMELOCK =
+44       |-        "0x3333333333333333333333333333333333333333333333333333333333333333";
+45       |-    string internal constant HASH_REPUTATION =
+46       |-        "0x4444444444444444444444444444444444444444444444444444444444444444";
+47       |-    string internal constant HASH_ACHIEVEMENT =
+48       |-        "0x5555555555555555555555555555555555555555555555555555555555555555";
+49       |-    string internal constant HASH_QM =
+50       |-        "0x6666666666666666666666666666666666666666666666666666666666666666";
+    39   |+    string internal constant HASH_MOCK = "0x1111111111111111111111111111111111111111111111111111111111111111";
+    40   |+    string internal constant HASH_GATE = "0x2222222222222222222222222222222222222222222222222222222222222222";
+    41   |+    string internal constant HASH_TIMELOCK = "0x3333333333333333333333333333333333333333333333333333333333333333";
+    42   |+    string internal constant HASH_REPUTATION = "0x4444444444444444444444444444444444444444444444444444444444444444";
+    43   |+    string internal constant HASH_ACHIEVEMENT = "0x5555555555555555555555555555555555555555555555555555555555555555";
+    44   |+    string internal constant HASH_QM = "0x6666666666666666666666666666666666666666666666666666666666666666";
+51  45   | 
+52  46   |     function setUp() public {
+53  47   |         script = new DeployAgentHub();
+--------------------------------------------------------------------------------158 152  |         vm.writeFile(FIXTURE_PRESERVE, _broadcastFixture(d));
+159 153  |         recorder.record(ARTIFACT_PRESERVE, FIXTURE_PRESERVE);
+160 154  |         assertEq(
+161      |-            vm.parseJsonString(vm.readFile(ARTIFACT_PRESERVE), ".questManagerTxHash"),
+162      |-            HASH_QM,
+163      |-            "setup: hash not filled"
+    155  |+            vm.parseJsonString(vm.readFile(ARTIFACT_PRESERVE), ".questManagerTxHash"), HASH_QM, "setup: hash not filled"
+164 156  |         );
+165 157  |         // Second run against a dry-run broadcast file (empty receipts
+166 158  |         // array, predicted hashes only): the recorded hashes survive
+
+Diff in test/ProposeGrantVerifier.t.sol:
+100 100  |     }
+101 101  | 
+102 102  |     function test_BuildProposalProducesCorrectOperation() public view {
+103      |-        ProposeGrantVerifier.Proposal memory p =
+104      |-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+    103  |+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+105 104  |         assertEq(p.timelock, address(timelock));
+106 105  |         assertEq(p.questManager, address(qm));
+107 106  |         assertEq(p.verifier, verifier2);
+--------------------------------------------------------------------------------123 122  |     }
+124 123  | 
+125 124  |     function test_ScheduleExecuteGrantsVerifierAfterDelay() public {
+126      |-        ProposeGrantVerifier.Proposal memory p =
+127      |-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+    125  |+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+128 126  |         assertFalse(qm.hasRole(qm.VERIFIER_ROLE(), verifier2), "verifier2 already has the role");
+129 127  | 
+130 128  |         // 2. SCHEDULE — the multisig (proposer) schedules with the
+--------------------------------------------------------------------------------185 183  |         );
+186 184  |         proposer.scheduleGrant(address(timelock), address(qm), verifier2, salt);
+187 185  |         // And a direct schedule call from a non-proposer reverts too.
+188      |-        ProposeGrantVerifier.Proposal memory p =
+189      |-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+    186  |+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+190 187  |         vm.expectRevert(
+191 188  |             abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, proposerRole)
+192 189  |         );
+--------------------------------------------------------------------------------210 207  |     }
+211 208  | 
+212 209  |     function test_CancelBeforeExecutePreventsGrant() public {
+213      |-        ProposeGrantVerifier.Proposal memory p =
+214      |-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+    210  |+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+215 211  |         vm.prank(multisig);
+216 212  |         timelock.schedule(address(qm), 0, p.data, bytes32(0), p.salt, p.delay);
+217 213  |         // The multisig holds CANCELLER_ROLE (PH7-L17) and cancels
+--------------------------------------------------------------------------------261 257  |         // A timelock with a 1-day minDelay that IS the QM admin — the
+262 258  |         // script refuses anything but the 2-day AGENTHUB policy.
+263 259  |         (TimelockController shortTimelock, QuestManager synthQm) = _syntheticStack(1 days);
+264      |-        vm.expectRevert(
+265      |-            abi.encodeWithSelector(ProposeGrantVerifier.UnexpectedTimelockDelay.selector, 1 days, 2 days)
+266      |-        );
+    260  |+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.UnexpectedTimelockDelay.selector, 1 days, 2 days));
+267 261  |         proposer.buildProposal(address(shortTimelock), address(synthQm), verifier2, salt);
+268 262  |     }
+269 263  | 
+270 264  |     function test_BuildProposalRejectsNoCodeAddresses() public {
+271 265  |         address eoa = makeAddr("no-code");
+272      |-        vm.expectRevert(
+273      |-            abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "timelock")
+274      |-        );
+    266  |+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "timelock"));
+275 267  |         proposer.buildProposal(eoa, address(qm), verifier2, salt);
+276      |-        vm.expectRevert(
+277      |-            abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "questManager")
+278      |-        );
+    268  |+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "questManager"));
+279 269  |         proposer.buildProposal(address(timelock), eoa, verifier2, salt);
+280 270  |     }
+281 271  | }
+
+Diff in script/RecordDeployment.s.sol:
+57  57   |         string memory deploymentJson = vm.readFile(deploymentPath);
+58  58   |         string memory broadcastJson = vm.readFile(broadcastPath);
+59  59   | 
+60       |-        string[6] memory names =
+61       |-            ["mockAgentId", "agentGate", "timelock", "reputation", "achievement", "questManager"];
+    60   |+        string[6] memory names = ["mockAgentId", "agentGate", "timelock", "reputation", "achievement", "questManager"];
+62  61   |         address[6] memory addrs;
+63  62   |         string[6] memory hashes;
+64  63   |         uint256 matched;
+--------------------------------------------------------------------------------105 104  |         // on forge 1.9.0: (string, ...) lines silently vanish).
+106 105  |         console.log(
+107 106  |             string.concat(
+108      |-                "RecordDeployment: ",
+109      |-                deploymentPath,
+110      |-                " enriched with ",
+111      |-                vm.toString(matched),
+112      |-                "/6 deployment tx hashes"
+    107  |+                "RecordDeployment: ", deploymentPath, " enriched with ", vm.toString(matched), "/6 deployment tx hashes"
+113 108  |             )
+114 109  |         );
+115 110  |         if (matched == 0) {
+
+Diff in script/ProposeGrantVerifier.s.sol:
+139 139  |         returns (Proposal memory proposal)
+140 140  |     {
+141 141  |         proposal = buildProposal(timelockAddr, questManagerAddr, verifier, salt);
+142      |-        TimelockController(payable(timelockAddr)).schedule(
+143      |-            proposal.questManager, 0, proposal.data, bytes32(0), proposal.salt, proposal.delay
+144      |-        );
+    142  |+        TimelockController(payable(timelockAddr))
+    143  |+            .schedule(proposal.questManager, 0, proposal.data, bytes32(0), proposal.salt, proposal.delay);
+145 144  |     }
+146 145  | 
+147 146  |     function _printProposal(Proposal memory proposal) internal pure {
+contracts EXIT=1

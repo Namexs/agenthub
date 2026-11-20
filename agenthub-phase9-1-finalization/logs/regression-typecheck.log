@@ -1,0 +1,4 @@
+=== web typecheck ===
+web EXIT=0
+=== shared typecheck ===
+shared EXIT=0

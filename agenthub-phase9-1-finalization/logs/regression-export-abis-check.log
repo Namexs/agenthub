@@ -1,0 +1,2 @@
+export-abis --check: all 4 committed ABIs match regeneration
+EXIT=0

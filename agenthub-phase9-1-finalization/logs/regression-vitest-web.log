@@ -1,0 +1,27 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/home/hatch/workspace/agenthub/apps/web[39m
+
+ [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 3294[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 2501[2mms[22m[39m
+ [32m✓[39m lib/attestation.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 984[2mms[22m[39m
+ [32m✓[39m components/AttestationForm.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 2102[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the threshold and one input per required signature [33m 310[2mms[22m[39m
+     [33m[2m✓[22m[39m lets the user add signature inputs up to 5 [33m 1303[2mms[22m[39m
+     [33m[2m✓[22m[39m verifies the pair, then enables submit with both signatures [33m 474[2mms[22m[39m
+ [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m55 tests[22m[2m)[22m[33m 2707[2mms[22m[39m
+     [33m[2m✓[22m[39m accepts a valid attestation from a VERIFIER_ROLE holder [33m 598[2mms[22m[39m
+ [32m✓[39m lib/quests.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 1016[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks during cooldown and names the cooldown [33m 788[2mms[22m[39m
+ [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m5 tests[22m[2m | [22m[33m5 skipped[39m[2m)[22m
+ [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 881[2mms[22m[39m
+     [33m[2m✓[22m[39m fetches logs from the deploy block and maps them to DecodedLog [33m 375[2mms[22m[39m
+ [32m✓[39m lib/events.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 280[2mms[22m[39m
+ [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m9 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (10)[39m
+[2m      Tests [22m [1m[32m173 passed[39m[22m[2m | [22m[33m5 skipped[39m[90m (178)[39m
+[2m   Start at [22m 02:09:17
+[2m   Duration [22m 36.44s[2m (transform 6.37s, setup 0ms, import 41.95s, tests 11.38s, environment 31.21s)[22m
+
+EXIT=0
