@@ -1,0 +1,22 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/home/hatch/workspace/agenthub/apps/web[39m
+
+ [32m✓[39m lib/attestation.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 601[2mms[22m[39m
+ [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 734[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 583[2mms[22m[39m
+ [32m✓[39m components/AttestationForm.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 919[2mms[22m[39m
+     [33m[2m✓[22m[39m lets the user add signature inputs up to 5 [33m 522[2mms[22m[39m
+ [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m55 tests[22m[2m)[22m[33m 802[2mms[22m[39m
+ [32m✓[39m lib/events.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 112[2mms[22m[39m
+ [32m✓[39m lib/quests.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 152[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+ [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 519[2mms[22m[39m
+ [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m5 tests[22m[2m | [22m[33m5 skipped[39m[2m)[22m
+
+[2m Test Files [22m [1m[32m9 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (10)[39m
+[2m      Tests [22m [1m[32m173 passed[39m[22m[2m | [22m[33m5 skipped[39m[90m (178)[39m
+[2m   Start at [22m 00:10:18
+[2m   Duration [22m 10.70s[2m (transform 2.97s, setup 0ms, import 10.56s, tests 3.95s, environment 6.06s)[22m
+
+VITEST_EXIT:0

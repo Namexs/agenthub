@@ -1,0 +1,50 @@
+=== E2E smoke run: 2026-11-19T23:46:32Z ===
+--- next build ---
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+Module not found: Can't resolve 'encoding' in '/home/hatch/workspace/agenthub/node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es'
+
+Import trace for requested module:
+../../node_modules/.pnpm/@metamask+sdk@0.30.1_bufferutil@4.2.0_react-dom@18.3.1_react@18.3.1__react-native@0.88.1_@bab_ylyjaziw7razbv4swop6plcfca/node_modules/@metamask/sdk/dist/node/es/metamask-sdk.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/home/hatch/workspace/agenthub/node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib'
+
+Import trace for requested module:
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/lib/tools.js
+../../node_modules/.pnpm/pino@7.11.0/node_modules/pino/pino.js
+../../node_modules/.pnpm/@walletconnect+logger@2.1.2/node_modules/@walletconnect/logger/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+universal-provider@2.17.0_bufferutil@4.2.0_utf-8-validate@5.0.10/node_modules/@walletconnect/universal-provider/dist/index.es.js
+../../node_modules/.pnpm/@walletconnect+ethereum-provider@2.17.0_@types+react@18.3.11_bufferutil@4.2.0_react@18.3.1_utf-8-validate@5.0.10/node_modules/@walletconnect/ethereum-provider/dist/index.es.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/walletConnect.js
+../../node_modules/.pnpm/@wagmi+connectors@5.3.7_@types+react@18.3.11_@wagmi+core@2.14.4_@tanstack+query-core@5.59.20__prlmj5nzhkbalghvf23i2tygly/node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../../node_modules/.pnpm/wagmi@2.12.29_@tanstack+query-core@5.59.20_@tanstack+react-query@5.59.20_react@18.3.1__@types_3juovevnqbh6bhxkhly5usbq3u/node_modules/wagmi/dist/esm/exports/connectors.js
+./lib/wagmi.ts
+./lib/providers.tsx
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./hooks/useQuests.ts:74:12
+Type error: Type instantiation is excessively deep and possibly infinite.
+
+[0m [90m 72 |[39m   [36mconst[39m quests[33m:[39m [33mQuestWithState[39m[] [33m=[39m useMemo(() [33m=>[39m {[0m
+[0m [90m 73 |[39m     [36mif[39m ([33m![39mquestsRaw) [36mreturn[39m [][33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 74 |[39m     [36mreturn[39m questsRaw[0m
+[0m [90m    |[39m            [31m[1m^[22m[39m[0m
+[0m [90m 75 |[39m       [33m.[39mmap((entry[33m,[39m i) [33m=>[39m {[0m
+[0m [90m 76 |[39m         [36mif[39m (entry[33m.[39mstatus [33m!==[39m [32m'success'[39m [33m||[39m [33m![39mentry[33m.[39mresult) [36mreturn[39m [36mnull[39m[33m;[39m[0m
+[0m [90m 77 |[39m         [36mconst[39m quest [33m=[39m mapQuest(entry[33m.[39mresult [36mas[39m unknown [36mas[39m [33mRawQuest[39m)[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+--- starting next start on :3100 ---
+server did not start in 60s

@@ -1,0 +1,12 @@
+=== forge fmt --check ===
+EXIT=0
+=== prettier --check ===
+Checking formatting...
+[warn] agenthub-final-pretestnet/FINAL_DEPLOYMENT_CHECKLIST.md
+[warn] agenthub-phase7-review/VERIFICATION.md
+[warn] agenthub-phase8-remediation/solc-evaluation.md
+[warn] apps/web/lib/events.test.ts
+[warn] docs/SECURITY_THREAT_MODEL.md
+[warn] docs/VERIFIER_ROLE_SOP.md
+[warn] Code style issues found in 6 files. Run Prettier with --write to fix.
+EXIT=1

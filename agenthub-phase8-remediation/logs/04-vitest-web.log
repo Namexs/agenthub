@@ -1,0 +1,24 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/home/hatch/workspace/agenthub/apps/web[39m
+
+ [32m✓[39m lib/env.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 629[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults to BSC testnet (97) with nothing deployed [33m 569[2mms[22m[39m
+ [32m✓[39m components/AttestationForm.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 542[2mms[22m[39m
+ [32m✓[39m hooks/useContractLogs.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 405[2mms[22m[39m
+ [32m✓[39m hooks/hooks.test.tsx [2m([22m[2m55 tests[22m[2m)[22m[33m 773[2mms[22m[39m
+ [32m✓[39m lib/quests.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 218[2mms[22m[39m
+ [32m✓[39m lib/attestation.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 572[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+ [32m✓[39m lib/events.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m lib/chains.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [2m[90m↓[39m[22m lib/anvil-integration.test.ts [2m([22m[2m5 tests[22m[2m | [22m[33m5 skipped[39m[2m)[22m
+
+[2m Test Files [22m [1m[32m9 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (10)[39m
+[2m      Tests [22m [1m[32m168 passed[39m[22m[2m | [22m[33m5 skipped[39m[90m (173)[39m
+[2m   Start at [22m 23:43:07
+[2m   Duration [22m 10.73s[2m (transform 2.60s, setup 0ms, import 12.02s, tests 3.30s, environment 7.10s)[22m
+
+
+real	0m11.876s
+user	0m11.422s
+sys	0m3.489s

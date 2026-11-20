@@ -1,0 +1,10 @@
+=== web typecheck ===
+hooks/useQuests.ts(74,12): error TS2589: Type instantiation is excessively deep and possibly infinite.
+EXIT=2
+=== shared typecheck ===
+EXIT=0
+=== web lint (next lint) ===
+✔ No ESLint warnings or errors
+EXIT=0
+=== shared lint (eslint src) ===
+EXIT=0

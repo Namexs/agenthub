@@ -1,0 +1,166 @@
+
+===== FINAL Phase 8 — kode Phase 8 @ solc 0.8.39 (../../packages/contracts/out) =====
+
+-- AgentGate -- (artifact: ../../packages/contracts/out/AgentGate.sol/AgentGate.json)
+  compiler          : 0.8.39+commit.ce47f2c8
+  runtime size      : 1058 byte (4.31% EIP-170; headroom 23518)
+  creation size     : 1457 byte (2.96% EIP-3860; headroom 47695)
+  sha256 runtime    : adb2e727d223a34f9a81ea9f886cee76d9020c939ef43f29ea81b974dffb32d8
+  metadata CBOR     : ada, 51 byte, hex: a26469706673582212207b2847725b1974273e4f4b413aad97950d78c29308e2b0f11bbb5bcb382eb7d764736f6c6343000827
+  code section ends : offset 1005 (runtime 1058)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=1, TSTORE=0, TLOAD=0, BLOBBASEFEE=1, BLOBHASH=1
+  total instruksi   : 521
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- QuestManager -- (artifact: ../../packages/contracts/out/QuestManager.sol/QuestManager.json)
+  compiler          : 0.8.39+commit.ce47f2c8
+  runtime size      : 13104 byte (53.32% EIP-170; headroom 11472)
+  creation size     : 14890 byte (30.29% EIP-3860; headroom 34262)
+  sha256 runtime    : c3120d24aebece3131bb77f78844616f61009e5b5cef04794d0066fcdb223e33
+  metadata CBOR     : ada, 51 byte, hex: a2646970667358221220924ad0f3b3a04b3b04a7365b8b0a455717157f027d5542215f0f385570e01ba064736f6c6343000827
+  code section ends : offset 13051 (runtime 13104)
+  opcode Cancun-only (disassembly, code section saja): total 1
+    MCOPY: 1x di PC ['1933 (0x78d)']
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=4, TSTORE=11, TLOAD=6, BLOBBASEFEE=9, BLOBHASH=10
+  total instruksi   : 8029
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- Reputation -- (artifact: ../../packages/contracts/out/Reputation.sol/Reputation.json)
+  compiler          : 0.8.39+commit.ce47f2c8
+  runtime size      : 2255 byte (9.18% EIP-170; headroom 22321)
+  creation size     : 2584 byte (5.26% EIP-3860; headroom 46568)
+  sha256 runtime    : 2444f4eacd0b2dd28081021be417f9dea1f637ad98e2eb1d0202a3c9619c0258
+  metadata CBOR     : ada, 51 byte, hex: a2646970667358221220f82a210c6cbe51ee3ea2bf3b3cd15b4e14ea64a6067d5982938b6577beeb357364736f6c6343000827
+  code section ends : offset 2202 (runtime 2255)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=0, TSTORE=3, TLOAD=2, BLOBBASEFEE=6, BLOBHASH=3
+  total instruksi   : 1303
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- Achievement -- (artifact: ../../packages/contracts/out/Achievement.sol/Achievement.json)
+  compiler          : 0.8.39+commit.ce47f2c8
+  runtime size      : 6246 byte (25.42% EIP-170; headroom 18330)
+  creation size     : 7359 byte (14.97% EIP-3860; headroom 41793)
+  sha256 runtime    : c4af7dedde69b1301c3ebcee2fb81c74f15083dc8b21c2b6ef70ff3d9fd75fe0
+  metadata CBOR     : ada, 51 byte, hex: a26469706673582212201e309c87f8476fe41c8583fa4b97f68e89f2993ccfa8d17af11d88709600dccf64736f6c6343000827
+  code section ends : offset 6193 (runtime 6246)
+  opcode Cancun-only (disassembly, code section saja): total 1
+    MCOPY: 1x di PC ['4432 (0x1150)']
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=7, TSTORE=3, TLOAD=5, BLOBBASEFEE=4, BLOBHASH=8
+  total instruksi   : 3909
+  linkReferences    : kosong (tidak ada library eksternal)
+
+===== BASELINE — HEAD 5723ff3 @ solc 0.8.24 (/home/hatch/workspace/.tmp/phase8-baseline/packages/contracts/out) =====
+
+-- AgentGate -- (artifact: /home/hatch/workspace/.tmp/phase8-baseline/packages/contracts/out/AgentGate.sol/AgentGate.json)
+  compiler          : 0.8.24+commit.e11b9ed9
+  runtime size      : 1069 byte (4.35% EIP-170; headroom 23507)
+  creation size     : 1499 byte (3.05% EIP-3860; headroom 47653)
+  sha256 runtime    : e990c4fc2653f624a5638c593ce1d263158229e9abbdb1ddb5f2d1670b3d82a6
+  vs published Phase 7 hash: COCOK
+  metadata CBOR     : ada, 51 byte, hex: a264697066735822122096442d87d777f884f0ffc966dcdc668e6c0331368c14dbb64637a9f14bfa37f064736f6c6343000818
+  code section ends : offset 1016 (runtime 1069)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=1, TSTORE=0, TLOAD=0, BLOBBASEFEE=0, BLOBHASH=1
+  total instruksi   : 530
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- QuestManager -- (artifact: /home/hatch/workspace/.tmp/phase8-baseline/packages/contracts/out/QuestManager.sol/QuestManager.json)
+  compiler          : 0.8.24+commit.e11b9ed9
+  runtime size      : 12272 byte (49.93% EIP-170; headroom 12304)
+  creation size     : 14155 byte (28.80% EIP-3860; headroom 34997)
+  sha256 runtime    : ce2e7168128e93c28b1a86b33cd06a0e89cd87f2004b43bad888703f2a3501a3
+  vs published Phase 7 hash: COCOK
+  metadata CBOR     : ada, 51 byte, hex: a2646970667358221220772807f8b2dafdd4bb9e9e050156fff2223483a08b3f73e32d9630eb81f0978e64736f6c6343000818
+  code section ends : offset 12219 (runtime 12272)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=2, TSTORE=7, TLOAD=6, BLOBBASEFEE=5, BLOBHASH=15
+  total instruksi   : 7728
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- Reputation -- (artifact: /home/hatch/workspace/.tmp/phase8-baseline/packages/contracts/out/Reputation.sol/Reputation.json)
+  compiler          : 0.8.24+commit.e11b9ed9
+  runtime size      : 2218 byte (9.03% EIP-170; headroom 22358)
+  creation size     : 2540 byte (5.17% EIP-3860; headroom 46612)
+  sha256 runtime    : f75326eb3f94b187f0b93be4099465bdd2df37ec4bd948b308e94fde1e3a4b4d
+  vs published Phase 7 hash: COCOK
+  metadata CBOR     : ada, 51 byte, hex: a264697066735822122046f4e86712ce9c635f41fdd5676e958f2fe0ff376afe473817dfb8f55f1cc10064736f6c6343000818
+  code section ends : offset 2165 (runtime 2218)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=1, TSTORE=3, TLOAD=2, BLOBBASEFEE=3, BLOBHASH=3
+  total instruksi   : 1343
+  linkReferences    : kosong (tidak ada library eksternal)
+
+-- Achievement -- (artifact: /home/hatch/workspace/.tmp/phase8-baseline/packages/contracts/out/Achievement.sol/Achievement.json)
+  compiler          : 0.8.24+commit.e11b9ed9
+  runtime size      : 6010 byte (24.45% EIP-170; headroom 18566)
+  creation size     : 7072 byte (14.39% EIP-3860; headroom 42080)
+  sha256 runtime    : 1beab180e8cc2801a2b868150b39e974a16fa08219ae06fb3e8973dd951cba0f
+  vs published Phase 7 hash: COCOK
+  metadata CBOR     : ada, 51 byte, hex: a2646970667358221220f9282416436ba40b09f66fde11f67ddad25acc0821f51c8625619cc7d96c671a64736f6c6343000818
+  code section ends : offset 5957 (runtime 6010)
+  opcode Cancun-only (disassembly, code section saja): total 0
+  raw-hex grep (SEMUA byte incl. PUSH/metadata — rawan false positive): MCOPY=4, TSTORE=3, TLOAD=4, BLOBBASEFEE=5, BLOBHASH=8
+  total instruksi   : 3804
+  linkReferences    : kosong (tidak ada library eksternal)
+
+===== PERBANDINGAN FINAL vs BASELINE + DEKOMPOSISI =====
+(efek solc = Worker D old-code@0.8.39 − baseline 0.8.24;
+ efek kode = final − Worker D old-code@0.8.39)
+
+-- AgentGate --
+  runtime : baseline 1069 -> WorkerD-0.8.39 1058 -> final 1058
+    efek solc -11 byte; efek kode +0 byte; total -11 (-1.03%)
+    % EIP-170: 4.35% -> 4.31%
+  creation: baseline 1499 -> WorkerD-0.8.39 1457 -> final 1457
+    efek solc -42 byte; efek kode +0 byte; total -42 (-2.80%)
+    % EIP-3860: 3.05% -> 2.96%
+  sha256 baseline: e990c4fc2653f624a5638c593ce1d263158229e9abbdb1ddb5f2d1670b3d82a6
+  sha256 final   : adb2e727d223a34f9a81ea9f886cee76d9020c939ef43f29ea81b974dffb32d8
+  opcode Cancun-only: baseline 0 -> final 0
+  total instruksi   : baseline 530 -> final 521
+  metadata baseline : a264697066735822122096442d87d777f884f0ffc966dcdc668e6c0331368c14dbb64637a9f14bfa37f064736f6c6343000818
+  metadata final    : a26469706673582212207b2847725b1974273e4f4b413aad97950d78c29308e2b0f11bbb5bcb382eb7d764736f6c6343000827
+
+-- QuestManager --
+  runtime : baseline 12272 -> WorkerD-0.8.39 11684 -> final 13104
+    efek solc -588 byte; efek kode +1420 byte; total +832 (+6.78%)
+    % EIP-170: 49.93% -> 53.32%
+  creation: baseline 14155 -> WorkerD-0.8.39 13404 -> final 14890
+    efek solc -751 byte; efek kode +1486 byte; total +735 (+5.19%)
+    % EIP-3860: 28.80% -> 30.29%
+  sha256 baseline: ce2e7168128e93c28b1a86b33cd06a0e89cd87f2004b43bad888703f2a3501a3
+  sha256 final   : c3120d24aebece3131bb77f78844616f61009e5b5cef04794d0066fcdb223e33
+  opcode Cancun-only: baseline 0 -> final 1
+  total instruksi   : baseline 7728 -> final 8029
+  metadata baseline : a2646970667358221220772807f8b2dafdd4bb9e9e050156fff2223483a08b3f73e32d9630eb81f0978e64736f6c6343000818
+  metadata final    : a2646970667358221220924ad0f3b3a04b3b04a7365b8b0a455717157f027d5542215f0f385570e01ba064736f6c6343000827
+
+-- Reputation --
+  runtime : baseline 2218 -> WorkerD-0.8.39 2255 -> final 2255
+    efek solc +37 byte; efek kode +0 byte; total +37 (+1.67%)
+    % EIP-170: 9.03% -> 9.18%
+  creation: baseline 2540 -> WorkerD-0.8.39 2584 -> final 2584
+    efek solc +44 byte; efek kode +0 byte; total +44 (+1.73%)
+    % EIP-3860: 5.17% -> 5.26%
+  sha256 baseline: f75326eb3f94b187f0b93be4099465bdd2df37ec4bd948b308e94fde1e3a4b4d
+  sha256 final   : 2444f4eacd0b2dd28081021be417f9dea1f637ad98e2eb1d0202a3c9619c0258
+  opcode Cancun-only: baseline 0 -> final 0
+  total instruksi   : baseline 1343 -> final 1303
+  metadata baseline : a264697066735822122046f4e86712ce9c635f41fdd5676e958f2fe0ff376afe473817dfb8f55f1cc10064736f6c6343000818
+  metadata final    : a2646970667358221220f82a210c6cbe51ee3ea2bf3b3cd15b4e14ea64a6067d5982938b6577beeb357364736f6c6343000827
+
+-- Achievement --
+  runtime : baseline 6010 -> WorkerD-0.8.39 5980 -> final 6246
+    efek solc -30 byte; efek kode +266 byte; total +236 (+3.93%)
+    % EIP-170: 24.45% -> 25.42%
+  creation: baseline 7072 -> WorkerD-0.8.39 7093 -> final 7359
+    efek solc +21 byte; efek kode +266 byte; total +287 (+4.06%)
+    % EIP-3860: 14.39% -> 14.97%
+  sha256 baseline: 1beab180e8cc2801a2b868150b39e974a16fa08219ae06fb3e8973dd951cba0f
+  sha256 final   : c4af7dedde69b1301c3ebcee2fb81c74f15083dc8b21c2b6ef70ff3d9fd75fe0
+  opcode Cancun-only: baseline 0 -> final 1
+  total instruksi   : baseline 3804 -> final 3909
+  metadata baseline : a2646970667358221220f9282416436ba40b09f66fde11f67ddad25acc0821f51c8625619cc7d96c671a64736f6c6343000818
+  metadata final    : a26469706673582212201e309c87f8476fe41c8583fa4b97f68e89f2993ccfa8d17af11d88709600dccf64736f6c6343000827

@@ -1,0 +1,17 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/home/hatch/workspace/agenthub/apps/web[39m
+
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted QuestManager ABI (threshold shape)[2m > [22mcreateQuest takes 11 params, attestationThreshold (uint8) last[32m 5[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted QuestManager ABI (threshold shape)[2m > [22mcompleteQuestWithAttestation takes a bytes[] signatures array[32m 1[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted QuestManager ABI (threshold shape)[2m > [22mgetQuest returns attestationThreshold in the Quest struct[32m 1[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted QuestManager ABI (threshold shape)[2m > [22mdeclares the four threshold errors[32m 1[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted AgentGate ABI matches the Foundry build[2m > [22mdeep-equals the artifact ABI (regenerate with export-abis.mjs on drift)[32m 1[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted QuestManager ABI matches the Foundry build[2m > [22mdeep-equals the artifact ABI (regenerate with export-abis.mjs on drift)[32m 5[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted Reputation ABI matches the Foundry build[2m > [22mdeep-equals the artifact ABI (regenerate with export-abis.mjs on drift)[32m 2[2mms[22m[39m
+ [32m✓[39m lib/abis/abi-parity.test.ts[2m > [22mcommitted Achievement ABI matches the Foundry build[2m > [22mdeep-equals the artifact ABI (regenerate with export-abis.mjs on drift)[32m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 23:43:23
+[2m   Duration [22m 1.45s[2m (transform 261ms, setup 0ms, import 294ms, tests 21ms, environment 0ms)[22m
+
