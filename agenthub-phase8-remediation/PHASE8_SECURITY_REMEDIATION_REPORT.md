@@ -309,7 +309,36 @@ metode scan lama tidak dapat dipercaya.
 
 ## 8. Hasil CI
 
-_(Diisi setelah push — lihat commit lanjutan.)_
+**Run #44644411279 — SUCCESS, 10/10 job hijau.**
+Trigger: push ke `main`, HEAD `d2ab86d` (commit konten Phase 8),
+20 November 2026, 07:15:39–07:19:09 WIB (3 menit 30 detik).
+Run hijau ke-5 berturut-turut (run #1–#4 Phase 6 juga hijau).
+URL: https://github.com/Namexs/agenthub/actions/runs/44644411279
+
+| Job                                                | Hasil      |
+| -------------------------------------------------- | ---------- |
+| Contracts (forge build + test)                     | ✅ success |
+| Contracts fuzz + invariant (10k runs, pinned seed) | ✅ success |
+| Slither static analysis (fail on Medium+)          | ✅ success |
+| Secret scanning (gitleaks)                         | ✅ success |
+| Dependency audit                                   | ✅ success |
+| Web (lint, typecheck, vitest, build)               | ✅ success |
+| Shared (lint, typecheck, vitest)                   | ✅ success |
+| Format check (prettier + forge fmt)                | ✅ success |
+| E2E (smoke + wallet, real build + anvil)           | ✅ success |
+| Package manifest check                             | ✅ success |
+
+Job Web kini menjalankan `forge build` sebelum vitest (M07) —
+deep-equal parity keempat kontrak (M08) dan `export-abis --check`
+(I09) berjalan di CI untuk pertama kalinya dan hijau. Anotasi
+non-blocking: peringatan deprecasi Node.js 20 pada beberapa action
+(pre-existing, dipaksa berjalan di Node.js 24) — tidak ada
+kegagalan.
+
+**Catatan:** run ini memvalidasi commit konten `d2ab86d`. Commit
+pemutakhiran laporan ini (§8) dan commit manifest terpisah menyusul
+setelahnya (hanya perubahan dokumen); CI pada HEAD final dipantau
+terpisah dan hasilnya dilaporkan ke parent agent.
 
 ## 9. Temuan baru selama Phase 8
 
@@ -432,7 +461,10 @@ di-grant via timelock (jeda 2 hari — mulai lebih awal).
 ## 12. Manifest verifikasi & indeks bukti
 
 - **Baseline:** `5723ff377de3d2cd79854b877124a802fb2c23eb` (`5723ff3`).
-- **HEAD akhir:** _(diisi setelah commit final — lihat §8)_.
+- **HEAD konten Phase 8:** `d2ab86debb4f5f8d909db53c3e3eba4a6a2a99e8`
+  (`d2ab86d`) — divalidasi CI run #44644411279 (10/10 sukses, §8).
+  Commit pemutakhiran laporan ini dan commit manifest terpisah
+  menyusul setelahnya dan menjadi HEAD repo final (lihat git log).
 - **Hash SHA-256 laporan ini** tidak dapat tercantum di dalam
   laporan itu sendiri (self-referential); hash laporan beserta hash
   seluruh file bukti tercatat di
@@ -461,8 +493,10 @@ typecheck gagal TS2589, lihat §9; rerun hijau di log 19),
 `07-next-build.log` (run awal — build gagal TS2589; rerun hijau di
 log 21), `08-format.log` (run awal — lihat §9; final hijau di log
 08b), `08b-format-final.log` (prettier exit 0),
-`09-e2e-smoke.log` (23/23), `10-wallet-e2e.log` (26/26),
-`11-anvil-integration.log` (30/30 + 5/5), `12-slither.log` +
+`09-e2e-smoke.log` (23/23) + `09-e2e-smoke-runner.log`,
+`10-wallet-e2e.log` (26/26) + `10-wallet-e2e-runner.log`,
+`11-anvil-integration.log` (30/30 + 5/5) +
+`11-anvil-integration-runner.log`, `12-slither.log` +
 `12b-slither-json.log` (exit 0, 13 hasil), `13-osv.log` (7 temuan),
 `14-gitleaks.log` (0 leak), `15-export-abis-check.log` (exit 0),
 `16-gas-benchmark.log`, `17-baseline-build.log` (build baseline
@@ -473,7 +507,15 @@ skip), `21-next-build-rerun.log` (exit 0),
 
 ### Commit
 
-_(Diisi setelah commit — daftar commit Phase 8.)_
+| Hash         | Subjek                                                                                                                     |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `969f30d`    | feat(phase-8): on-chain threshold policy + verifier guardrail + high-value badge (PH7-H01/M01/M02/L05/L07/L10)             |
+| `a9d93fe`    | feat(phase-8): deploy guards + Safe creator + MockAgentId ownership (PH7-M03/M04/M05/M06/M10)                              |
+| `1a8e8bf`    | feat(phase-8): ABI parity in CI + export-abis --check + minimal read ABI (PH7-M07/M08/M09/I09, PH8-1)                      |
+| `c380537`    | chore(phase-8): upgrade solc 0.8.24 -> 0.8.39 (PH7-L13)                                                                    |
+| `d2ab86d`    | docs(phase-8): security remediation report + regression evidence — CONDITIONAL GO testnet, R-010 implemented pending smoke |
+| _(menyusul)_ | docs(phase-8): isi §8 hasil CI run #44644411279 + VERIFICATION.md                                                          |
+| _(menyusul)_ | chore(phase-8): regenerate PACKAGE_MANIFEST.md for final commit                                                            |
 
 ---
 
