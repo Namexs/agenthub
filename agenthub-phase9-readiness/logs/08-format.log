@@ -1,0 +1,21 @@
+Checking formatting...
+[warn] agenthub-phase9-readiness/audit-package/abis/abi-parity.test.ts
+[warn] agenthub-phase9-readiness/audit-package/abis/Achievement.ts
+[warn] agenthub-phase9-readiness/audit-package/abis/AgentGate.ts
+[warn] agenthub-phase9-readiness/audit-package/abis/QuestManager.ts
+[warn] agenthub-phase9-readiness/audit-package/abis/Reputation.ts
+[warn] agenthub-phase9-readiness/audit-package/ARCHITECTURE_OVERVIEW.md
+[warn] agenthub-phase9-readiness/audit-package/BUILD_REPRODUCTION.md
+[warn] agenthub-phase9-readiness/audit-package/BYTECODE.md
+[warn] agenthub-phase9-readiness/audit-package/FINDINGS.md
+[warn] agenthub-phase9-readiness/audit-package/KNOWN_LIMITATIONS.md
+[warn] agenthub-phase9-readiness/audit-package/MANIFEST.md
+[warn] agenthub-phase9-readiness/audit-package/README.md
+[warn] agenthub-phase9-readiness/audit-package/TEST_RESULTS.md
+[warn] agenthub-phase9-readiness/audit-package/THREAT_MODEL.md
+[warn] agenthub-phase9-readiness/workstreams/01-reward-policy-review.md
+[warn] agenthub-phase9-readiness/workstreams/02-deployment-review.md
+[warn] agenthub-phase9-readiness/workstreams/03-testnet-preflight.md
+[warn] agenthub-phase9-readiness/workstreams/04-live-testnet-test-plan-fork-dryrun.md
+[warn] agenthub-phase9-readiness/workstreams/04-live-testnet-test-plan.md
+[warn] Code style issues found in 19 files. Run Prettier with --write to fix.

@@ -1,0 +1,26 @@
+No files changed, compilation skipped
+
+Ran 4 tests for test/ThresholdAttestation.t.sol:ThresholdAttestationTest
+[PASS] testGas_MarginalCostPerExtraSignature() (gas: 861727)
+Logs:
+  gas t1 (fresh account): 244840
+  gas t2 (fresh account): 255767
+  gas t3 (fresh account): 266919
+  marginal t1->t2: 10927
+  marginal t2->t3: 11152
+
+[PASS] testGas_Threshold1Completion() (gas: 268844)
+Logs:
+  gas threshold-1 completion: 244840
+
+[PASS] testGas_Threshold2Completion() (gas: 290641)
+Logs:
+  gas threshold-2 completion: 255766
+
+[PASS] testGas_Threshold3Completion() (gas: 311957)
+Logs:
+  gas threshold-3 completion: 266911
+
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 10.16ms (21.37ms CPU time)
+
+Ran 1 test suite in 11.48ms (10.16ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)

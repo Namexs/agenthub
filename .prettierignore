@@ -26,3 +26,9 @@ packages/contracts/.anvil-deployment.json
 agenthub-final-pretestnet/logs/
 # Final-release evidence logs must stay byte-identical to tool output.
 agenthub-final-release/logs/
+# Phase 9 audit package: verbatim copies must stay byte-identical to HEAD.
+agenthub-phase9-readiness/audit-package/abis/
+agenthub-phase9-readiness/audit-package/deployment/
+agenthub-phase9-readiness/audit-package/reports/
+# Phase 9 battery logs must stay byte-identical to tool output.
+agenthub-phase9-readiness/logs/

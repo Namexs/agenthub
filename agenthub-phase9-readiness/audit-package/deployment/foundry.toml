@@ -1,0 +1,62 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.39"
+# PHASE 8: upgraded 0.8.24 -> 0.8.39 (2026-11-20, PH7-L13). 0.8.39 is the
+# latest stable solc with zero known bugs in the official list; it closes
+# YulOptimizerKnowledgeBaseStaleBookkeeping (low, "any code may be
+# affected") plus 5 other bugs affecting 0.8.24. Full battery re-verified
+# on 0.8.39 (see agenthub-phase8-remediation/solc-evaluation.md).
+# FINAL REMEDIATION (Phase 7): the local test-stack script writes its
+# deployment JSON into the project root. Scoped to that one file — the
+# script cannot write anywhere else.
+fs_permissions = [{ access = "read-write", path = "./.anvil-deployment.json" }]
+# M2 fix (Phase 1 audit): pin the EVM version explicitly. "cancun" matches
+# the solc 0.8.39 default. Our contracts use no transient storage, but
+# solc >= 0.8.25 emits MCOPY in generated code (1x in QuestManager, 1x in
+# Achievement under 0.8.39 — verified by metadata-aware disassembly,
+# Phase 8), so Cancun is now a REAL feature dependency, not just a
+# reproducibility pin: do not lower evm_version below cancun. Cancun is
+# proven active on BSC testnet and mainnet (Phase 5 validation), and
+# Cancun-opcode support on BSC must still be smoke-tested on testnet
+# before any mainnet deploy (see SECURITY_DEPLOYMENT_GATE.md).
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+# PHASE 6 (R-010): via-IR is REQUIRED, not optional. The 11-parameter
+# createQuest (threshold added 2026-11-19) exceeds the legacy code
+# generator's stack ("Stack too deep ... Variable dataEnd is 1 slot(s)
+# too deep") even with an empty function body — the failure is in the
+# ABI decoder for the 11 params, so no body restructure can fix it
+# (verified by bisection 2026-11-19: removing the 11th param restores
+# legacy compilation; via-IR compiles the full new code). Bytecode for
+# ALL contracts changes with this flag — no mainnet deployment exists
+# yet, so there is no migration concern; the Phase 5 opcode scan
+# (MCOPY PCs in NEXT_PHASE_VALIDATION.md) must be re-run before the
+# testnet smoke test, since PCs shift under via-IR.
+via_ir = true
+remappings = [
+  "@openzeppelin/=lib/openzeppelin-contracts/",
+  "@agenthub/=src/",
+]
+# Etherscan / BscScan verification (Phase H): foundry does NOT read
+# BSCSCAN_API_KEY — `forge script --verify` and `forge verify-contract`
+# look for ETHERSCAN_API_KEY (verified 2026-11-19: with only
+# BSCSCAN_API_KEY set, --verifier etherscan fails with
+# "ETHERSCAN_API_KEY must be set"). This section maps the repo's
+# documented BSCSCAN_API_KEY env var onto both BSC chains, so the
+# operator sets ONE variable (see .env.example). The value is an env
+# interpolation — no key material lives in this file.
+[etherscan]
+bsc = { key = "${BSCSCAN_API_KEY}" }
+bsc-testnet = { key = "${BSCSCAN_API_KEY}" }
+
+# Fuzz + invariant defaults (Phase 1 smoke tests use these; Phase 2 expands).
+[fuzz]
+runs = 256
+max_test_rejects = 65536
+[invariant]
+runs = 256
+depth = 128
+fail_on_revert = true

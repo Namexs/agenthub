@@ -1,0 +1,46 @@
+-- AgentGate --
+  compiler            : 0.8.39+commit.ce47f2c8
+  creation size       : 1457 byte (2.96% EIP-3860)
+  deployed size       : 1058 byte (4.31% EIP-170)
+  keccak256 creation  : 0x36dff20ab3c5e5d3c1a9a571ce4988d2b8507af1a8ae9c4a1d9aa9853fea08e9
+  keccak256 deployed  : 0xb23085a2b563639ade4c25a04405e457d1257ff8c42958c13c1774c174911ce6
+  sha256 deployed     : adb2e727d223a34f9a81ea9f886cee76d9020c939ef43f29ea81b974dffb32d8
+  sha256 == Phase 8   : MATCH
+  metadata CBOR       : 53 byte
+  Cancun-only opcodes : 0
+  linkReferences      : empty
+-- QuestManager --
+  compiler            : 0.8.39+commit.ce47f2c8
+  creation size       : 14890 byte (30.29% EIP-3860)
+  deployed size       : 13104 byte (53.32% EIP-170)
+  keccak256 creation  : 0x1ee0dc194f17b76745ecd5baace7694aa75ddba475eef10d31c388ae5f269e53
+  keccak256 deployed  : 0x993562f96730ac99ea830b7a266ccf669ccee6df7bd86989330605ac5abd4b9f
+  sha256 deployed     : c3120d24aebece3131bb77f78844616f61009e5b5cef04794d0066fcdb223e33
+  sha256 == Phase 8   : MATCH
+  metadata CBOR       : 53 byte
+  Cancun-only opcodes : MCOPY @ PC 1933 (0x78d)
+  linkReferences      : empty
+-- Reputation --
+  compiler            : 0.8.39+commit.ce47f2c8
+  creation size       : 2584 byte (5.26% EIP-3860)
+  deployed size       : 2255 byte (9.18% EIP-170)
+  keccak256 creation  : 0xae8ff42af61f24109b338f1d65967f1fe3e7feb55a3482eaf79165337c9bc041
+  keccak256 deployed  : 0x10b89e302bb8f9bb55457219ab9b2243d7ba4006c214400c2a205def437804c2
+  sha256 deployed     : 2444f4eacd0b2dd28081021be417f9dea1f637ad98e2eb1d0202a3c9619c0258
+  sha256 == Phase 8   : MATCH
+  metadata CBOR       : 53 byte
+  Cancun-only opcodes : 0
+  linkReferences      : empty
+-- Achievement --
+  compiler            : 0.8.39+commit.ce47f2c8
+  creation size       : 7359 byte (14.97% EIP-3860)
+  deployed size       : 6246 byte (25.42% EIP-170)
+  keccak256 creation  : 0xd14c10490a1ecdaebe711d62b1aa99feacaf519dcfecd2ddeae1ba392705da2d
+  keccak256 deployed  : 0xc317ccd3d2730956e75bdedb7a3607c91fe8c48fe164fe4314d23b490785f4ef
+  sha256 deployed     : c4af7dedde69b1301c3ebcee2fb81c74f15083dc8b21c2b6ef70ff3d9fd75fe0
+  sha256 == Phase 8   : MATCH
+  metadata CBOR       : 53 byte
+  Cancun-only opcodes : MCOPY @ PC 4432 (0x1150)
+  linkReferences      : empty
+
+ALL SHA-256 MATCH PHASE 8: True

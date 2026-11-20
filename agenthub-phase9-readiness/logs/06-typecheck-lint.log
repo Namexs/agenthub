@@ -1,0 +1,9 @@
+=== web typecheck ===
+web-typecheck EXIT=0
+=== shared typecheck ===
+shared-typecheck EXIT=0
+=== web lint (next lint) ===
+✔ No ESLint warnings or errors
+web-lint EXIT=0
+=== shared lint (eslint src) ===
+shared-lint EXIT=0

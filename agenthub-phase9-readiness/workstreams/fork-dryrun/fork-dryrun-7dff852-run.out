@@ -1,0 +1,161 @@
+[01:13:55] == 0. Starting anvil fork of BSC testnet (chain 97) ==
+[01:14:06]   PASS: fork chain-id (expected=97 actual=97)
+[01:14:06]   factory code chars via fork: 6110 (expect ~6110)
+[01:14:06]   singleton code chars via fork: 47160 (expect ~47160)
+[01:14:06]   alice=0x70997970C51812dc3A010C7d01b50e0d17dc79C8 bob=0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC verifier1=0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3 verifier2=0xd81230B81c9445a80109D122F0dAd42dC8aA2802 deployer=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+[01:14:06] == 1. Deploying fork Safes (canonical factory v1.4.1, 2-of-3) ==
+    ADMIN_SAFE: 0xe0dF7b814767A09369D3E69654eb74f7778ee74F
+    CREATOR_SAFE: 0xda10d1A02d0F1754D71121D367bB62636e212d27
+[01:14:16]   PASS: admin safe threshold (expected=2 actual=2)
+[01:14:16]   PASS: creator safe threshold (expected=2 actual=2)
+[01:14:16] == S1. Deploying AGENTHUB via DeployAgentHub (broadcast on fork) ==
+    MockAgentId: 0xcdbf721Ae23D7340E90cD55251146ff3356b5979
+    AgentGate: 0xF7144b91045C96b9300d8012b5dD2514088C79fF
+    TimelockController: 0x668B0Afb7d3Ca832C1ca739BfD4405B25178E9A8
+    Reputation: 0x73866F4409B3E236ec4ABb48C915e9D0cCd27884
+    Achievement: 0xBfC92bc58f965e9E8e17AABf95FdE2750B7ef40b
+    QuestManager: 0x58bB6D4F4c1eC10eA7D2d29A2354f2fE30B6498b
+[01:14:28]   deploy block=143740628 total gas=8307890
+[01:14:28]   MOCK=0xcdbf721Ae23D7340E90cD55251146ff3356b5979 GATE=0xF7144b91045C96b9300d8012b5dD2514088C79fF TIMELOCK=0x668B0Afb7d3Ca832C1ca739BfD4405B25178E9A8 REP=0x73866F4409B3E236ec4ABb48C915e9D0cCd27884 ACH=0xBfC92bc58f965e9E8e17AABf95FdE2750B7ef40b QM=0x58bB6D4F4c1eC10eA7D2d29A2354f2fE30B6498b
+[01:14:28] == S2. Verifying deployed addresses on-chain ==
+[01:14:28]   PASS: gate.agentIdContract (expected=0xcdbf721Ae23D7340E90cD55251146ff3356b5979 actual=0xcdbf721Ae23D7340E90cD55251146ff3356b5979)
+[01:14:28]   PASS: gate.expectedChainId (expected=97 actual=97)
+[01:14:28]   PASS: qm.gate (expected=0xF7144b91045C96b9300d8012b5dD2514088C79fF actual=0xF7144b91045C96b9300d8012b5dD2514088C79fF)
+[01:14:28]   PASS: qm.reputation (expected=0x73866F4409B3E236ec4ABb48C915e9D0cCd27884 actual=0x73866F4409B3E236ec4ABb48C915e9D0cCd27884)
+[01:14:28]   PASS: qm.achievement (expected=0xBfC92bc58f965e9E8e17AABf95FdE2750B7ef40b actual=0xBfC92bc58f965e9E8e17AABf95FdE2750B7ef40b)
+[01:14:28] == S3. Verifying ownership + roles ==
+[01:14:29]   PASS: mock.owner == admin safe (expected=0xe0dF7b814767A09369D3E69654eb74f7778ee74F actual=0xe0dF7b814767A09369D3E69654eb74f7778ee74F)
+[01:14:29]   PASS: qm admin == timelock (expected=true actual=true)
+[01:14:29]   PASS: rep admin == timelock (expected=true actual=true)
+[01:14:29]   PASS: ach admin == timelock (expected=true actual=true)
+[01:14:29]   PASS: rep SCORE_SOURCE == qm (expected=true actual=true)
+[01:14:29]   PASS: ach ISSUER == qm (expected=true actual=true)
+[01:14:29]   PASS: ach BADGE_MANAGER == admin safe (expected=true actual=true)
+[01:14:29]   PASS: qm CREATOR == creator safe (expected=true actual=true)
+[01:14:29]   PASS: qm PAUSER == admin safe (default) (expected=true actual=true)
+[01:14:29]   PASS: qm VERIFIER == v1 (expected=true actual=true)
+[01:14:29]   PASS: deployer qm admin (expected=false actual=false)
+[01:14:29]   PASS: deployer rep admin (expected=false actual=false)
+[01:14:29]   PASS: deployer ach admin (expected=false actual=false)
+[01:14:29]   PASS: deployer timelock admin (expected=false actual=false)
+[01:14:29]   PASS: qm paused (expected=false actual=false)
+[01:14:29]   PASS: rep paused (expected=false actual=false)
+[01:14:29]   PASS: ach paused (expected=false actual=false)
+[01:14:29] == S4. Verifying timelock ==
+[01:14:29]   PASS: timelock minDelay (2 days) (expected=172800 actual=172800)
+[01:14:29]   PASS: timelock PROPOSER == admin safe (expected=true actual=true)
+[01:14:29]   PASS: timelock EXECUTOR == admin safe (expected=true actual=true)
+[01:14:29]   PASS: timelock CANCELLER == admin safe (expected=true actual=true)
+[01:14:29]   PASS: timelock self-admin (expected=true actual=true)
+[01:14:29]   PASS: timelock multisig NOT admin (expected=false actual=false)
+[01:14:29] == Setup. Minting test Agent IDs to alice + bob (admin Safe) ==
+[01:14:30]   PASS: gate.isAgentHolder(alice) (expected=true actual=true)
+[01:14:30]   PASS: gate.isAgentHolder(bob) (expected=true actual=true)
+[01:14:30]   PASS: gate.isAgentHolder(deployer) (expected=false actual=false)
+[01:14:30] == Setup. Granting verifier 2 via timelock (schedule -> warp 2d -> execute) ==
+[01:14:31]   PASS: grant-v2 op state (1=Waiting) (expected=1 actual=1)
+[01:14:31]   (warped +2 days + 1s, new block time: 1795310073)
+[01:14:31]   PASS: grant-v2 op state (2=Ready) (expected=2 actual=2)
+[01:14:31]   PASS: grant-v2 op state (3=Done) (expected=3 actual=3)
+[01:14:31]   PASS: qm VERIFIER == v2 (expected=true actual=true)
+[01:14:31]   PASS: verifierCount (expected=2 actual=2)
+[01:14:31] == S5. Creating Attested threshold-1 quest (100 pts) ==
+[01:14:31]   PASS: quest 1 id (expected=1 actual=1)
+[01:14:31]   getQuest(1): (1, 0xda10d1A02d0F1754D71121D367bB62636e212d27, "Smoke T1", "Fork dry-run threshold-1 quest", 1, 2, 0x0000000000000000000000000000000000000000, 100, 0, 1795310074 [1.795e9], 1797902074 [1.797e9], 0, 0, true, 1) 
+[01:14:31]   PASS: quest 1 reward 100 in getQuest (found 100)
+[01:14:31] == S6. Completing quest 1 with one verifier signature ==
+[01:14:32]   S6 tx: 0x22ee57f27a04889222fcd0d66690559d75fb23df933bdd0f1749a8306759effe
+[01:14:32]   PASS: alice points after S6 (expected=100 actual=100)
+[01:14:32]   PASS: alice hasCompleted q1 (expected=true actual=true)
+[01:14:32]   PASS: alice nonce after S6 (expected=1 actual=1)
+[01:14:32] == S7. Creating Attested threshold-2 quest (100 pts) ==
+[01:14:32]   PASS: quest 2 id (expected=2 actual=2)
+[01:14:32]   PASS: highestLiveThreshold (expected=2 actual=2)
+[01:14:32]   PASS: liveAttestedQuestCount(2) (expected=1 actual=1)
+[01:14:32] == S8. Completing quest 2 with two verifier signatures ==
+[01:14:33]   S8 tx: 0x3f1e20cb105a4c284908c73068a23071ebc500bf7e757b4ef30f71901f4f26b6
+[01:14:33]   PASS: alice points after S8 (expected=200 actual=200)
+[01:14:33]   PASS: alice hasCompleted q2 (expected=true actual=true)
+[01:14:33]   PASS: alice nonce after S8 (expected=2 actual=2)
+[01:14:33] == S9. Duplicate signer on quest 2 (bob) must revert ==
+[01:14:33]   cast call output: Error: execution reverted: DuplicateAttestationSigner(0x9950bc7D7d0bAF695CA9927361739B16b7BC48d3)
+
+Context:
+- server returned an error response: error code 3: execution reverted: custom error 0x168e588e: 0000000000000000000000009950bc7d7d0baf695ca9927361739b16b7bc48d3, data: "0x168e588e0000000000000000000000009950bc7d7d0baf695ca9927361739b16b7bc48d3"
+[01:14:33]   PASS: S9 revert selector DuplicateAttestationSigner 0x168e588e (found 0x168e588e)
+[01:14:34]   PASS: S9 on-chain tx status (0=failed) (expected=0x0 actual=0x0)
+[01:14:34]   S9 failed tx: 0xf472b76041d0a04dca1954a31442fbf059874cddd8d9eb778af69a37e4aad33a
+[01:14:34]   PASS: bob points after S9 (unchanged) (expected=0 actual=0)
+[01:14:34]   PASS: bob nonce after S9 (not burned) (expected=0 actual=0)
+[01:14:34] == S10. One signature on threshold-2 quest (bob) must revert ==
+[01:14:34]   cast call output: Error: execution reverted: InsufficientAttestations(1, 2)
+
+Context:
+- server returned an error response: error code 3: execution reverted: custom error 0x78da11c2: , data: "0x78da11c200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000002"
+[01:14:34]   PASS: S10 revert selector InsufficientAttestations 0x78da11c2 (found 0x78da11c2)
+[01:14:35]   PASS: S10 on-chain tx status (0=failed) (expected=0x0 actual=0x0)
+[01:14:35]   S10 failed tx: 0x9473fb67f04a839eb91b0fdf9dc0d26317a208a6de8349c0a19f4ee1de3e3624
+[01:14:35]   PASS: bob points after S10 (unchanged) (expected=0 actual=0)
+[01:14:35]   PASS: bob nonce after S10 (not burned) (expected=0 actual=0)
+[01:14:35] == S11. Quest 1,001 pts threshold 1 must revert (H01) ==
+[01:14:35]   cast call output: Error: execution reverted: InsufficientAttestations(1, 2)
+
+Context:
+- server returned an error response: error code 3: execution reverted: custom error 0x78da11c2: , data: "0x78da11c200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000002"
+[01:14:35]   PASS: S11 revert selector InsufficientAttestations 0x78da11c2 (found 0x78da11c2)
+[01:14:37]   PASS: S11 on-chain tx status (0=failed) (expected=0x0 actual=0x0)
+[01:14:37]   S11 failed tx: 0xaa8ef83eb3dd62f94ae16f9da2bfb5ac4849ce58b9a1f0c2c8b942e91fb36e19
+[01:14:37]   PASS: questCount unchanged after S11 (expected=2 actual=2)
+[01:14:37]   Positive controls: 1,001/T2 succeeds, 1,000/T1 succeeds
+[01:14:37]   PASS: questCount after controls (expected=4 actual=4)
+[01:14:37] == S12. Revoke verifier 2 while T2 quests live must be blocked ==
+[01:14:37]   (warped +2 days + 1s, new block time: 1795482885)
+[01:14:37]   cast call output: Error: execution reverted: RevocationWouldBrickQuest(1, 2)
+
+Context:
+- server returned an error response: error code 3: execution reverted: custom error 0x8df6077d: , data: "0x8df6077d00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000002"
+[01:14:37]   PASS: S12 revert selector RevocationWouldBrickQuest 0x8df6077d (found 0x8df6077d)
+[01:14:38]   PASS: S12 blocked-execute tx status (0=failed) (expected=0x0 actual=0x0)
+[01:14:38]   S12 failed tx: 0x85876449f996fc7f3011cfbb993c95b2c8f963671c0e0a6612265ad5b13dc908
+[01:14:38]   PASS: S12 op still Ready (2) after failed execute (expected=2 actual=2)
+[01:14:38]   PASS: v2 still holds VERIFIER_ROLE (expected=true actual=true)
+[01:14:38]   PASS: verifierCount still 2 (expected=2 actual=2)
+[01:14:38]   Recovery: deactivate both live T2 quests (2 and 3), then re-execute the same operation
+[01:14:39]   PASS: highestLiveThreshold after deactivate (expected=1 actual=1)
+[01:14:39]   PASS: S12 op Done (3) after re-execute (expected=3 actual=3)
+[01:14:39]   PASS: v2 VERIFIER_ROLE revoked (expected=false actual=false)
+[01:14:39]   PASS: verifierCount after revoke (expected=1 actual=1)
+[01:14:39]   Recovery: re-grant verifier 2 via timelock (restore 2-verifier state)
+[01:14:39]   (warped +2 days + 1s, new block time: 1795655691)
+[01:14:40]   PASS: verifierCount restored (expected=2 actual=2)
+[01:14:40] == S13. Supersedes: recreate quest 2, link, alice blocked, bob completes ==
+[01:14:40]   PASS: quest 5 id (expected=5 actual=5)
+[01:14:40]   (warped +2 days + 1s, new block time: 1795828495)
+[01:14:40]   PASS: supersedes(5) == 2 (expected=2 actual=2)
+[01:14:40]   cast call output: Error: execution reverted: AlreadyCompletedSupersededQuest(0x70997970C51812dc3A010C7d01b50e0d17dc79C8, 5, 2)
+
+Context:
+- server returned an error response: error code 3: execution reverted: custom error 0x89c03273: 00000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000002, data: "0x89c0327300000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000002"
+[01:14:40]   PASS: S13 revert selector AlreadyCompletedSupersededQuest 0x89c03273 (found 0x89c03273)
+[01:14:40]   PASS: alice points after blocked S13 (unchanged) (expected=200 actual=200)
+[01:14:40]   PASS: alice nonce after blocked S13 (not burned) (expected=2 actual=2)
+[01:14:41]   S13 bob tx: 0x34a74c0cb77843cf4be5e833adc9d53ca80339a941ea9def1ddcb1ab84be9e09
+[01:14:41]   PASS: bob points after S13 (expected=100 actual=100)
+[01:14:41]   PASS: bob hasCompleted q5 (expected=true actual=true)
+[01:14:41] == S14. Event counts from deploy block 143740628 (cast logs) ==
+[01:14:41]   PASS: QuestCreated count (expected=5 actual=5)
+[01:14:41]   PASS: QuestCompleted count (expected=3 actual=3)
+[01:14:41]   PASS: PointsAdded count (expected=3 actual=3)
+[01:14:41]   PASS: AttestationUsed count (expected=4 actual=4)
+[01:14:41]   PASS: QuestDeactivated count (expected=2 actual=2)
+[01:14:41]   PASS: QuestSuperseded count (expected=1 actual=1)
+[01:14:41]   PASS: RoleGranted on QM count (expected=7 actual=7)
+[01:14:41]   PASS: RoleRevoked on QM count (expected=2 actual=2)
+[01:14:41]   PASS: CallScheduled on timelock (expected=4 actual=4)
+[01:14:41]   PASS: CallExecuted on timelock (expected=4 actual=4)
+[01:14:41]   PASS: OwnershipTransferred on mock (expected=2 actual=2)
+[01:14:41]   gas S6 (T1 completion): 0x399d6
+[01:14:41]   gas S8 (T2 completion): 0x2fb17
+[01:14:41] == DRY-RUN COMPLETE: PASS=90 FAIL=0 ==
+[01:14:41] Deployed (FORK ONLY, not real testnet): MOCK=0xcdbf721Ae23D7340E90cD55251146ff3356b5979 GATE=0xF7144b91045C96b9300d8012b5dD2514088C79fF TIMELOCK=0x668B0Afb7d3Ca832C1ca739BfD4405B25178E9A8 REP=0x73866F4409B3E236ec4ABb48C915e9D0cCd27884 ACH=0xBfC92bc58f965e9E8e17AABf95FdE2750B7ef40b QM=0x58bB6D4F4c1eC10eA7D2d29A2354f2fE30B6498b
+[01:14:41] Safes (FORK ONLY): ADMIN=0xe0dF7b814767A09369D3E69654eb74f7778ee74F CREATOR=0xda10d1A02d0F1754D71121D367bB62636e212d27
