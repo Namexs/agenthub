@@ -43,6 +43,9 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   canonical singleton + proxy codehash + threshold >= 2) BEFORE
 ///   anything is deployed. A single-key creator is rejected: one
 ///   compromised key must never be able to publish high-value quests.
+///   PHASE 9 (Workstream 2): the two Safes must also be DIFFERENT
+///   addresses (AdminAndCreatorMustDiffer) — the same Safe for both
+///   roles would collapse the separation of duties M03 creates.
 /// - PHASE 8 (PH7-M05): testnet (97) REQUIRES the explicit opt-in
 ///   CONFIRM_TESTNET_DEPLOY=true, symmetric with the mainnet guard.
 ///   The guard cannot distinguish a dry-run simulation from a real
@@ -73,6 +76,13 @@ contract DeployAgentHub is Script {
     /// the mainnet guard — run() on chain 97 reverts without
     /// CONFIRM_TESTNET_DEPLOY=true.
     error TestnetDeployNotConfirmed();
+    /// @dev PHASE 9 (Workstream 2): the admin and creator Safes must be
+    /// DIFFERENT addresses. The checklist (§1 item 4) and
+    /// DEPLOYMENT_PLAN.md require distinct Safes, but before Phase 9
+    /// nothing enforced it — the same Safe passed both Safe validations
+    /// and the deploy succeeded, silently collapsing the separation of
+    /// duties M03 was meant to create.
+    error AdminAndCreatorMustDiffer();
     error ZeroAddress(string param);
     error WiringCheckFailed(string check);
     /// @dev FINAL REMEDIATION (Phase 1): on the local chain (31337) the
@@ -174,6 +184,12 @@ contract DeployAgentHub is Script {
         if (deployer == address(0)) revert ZeroAddress("deployer");
         if (params.adminMultisig == address(0)) revert ZeroAddress("adminMultisig");
         if (params.questCreator == address(0)) revert ZeroAddress("questCreator");
+        // PHASE 9 (Workstream 2): the admin and creator Safes must be
+        // DIFFERENT addresses — enforced here, before any validation or
+        // CREATE, so a copy-paste of the same Safe into both env vars
+        // fails closed instead of silently collapsing the separation of
+        // duties between admin and quest creation.
+        if (params.adminMultisig == params.questCreator) revert AdminAndCreatorMustDiffer();
         // FINAL REMEDIATION (Phase 2): pauser == address(0) is NOT an
         // error — it means "default PAUSER_ROLE to the verified admin
         // multisig" (the production default). The effective pauser is

@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {DeployAgentHub} from "../script/DeployAgentHub.s.sol";
 import {DeployLocalTestStack} from "../script/DeployLocalTestStack.s.sol";
+import {DeployMock} from "../script/DeployMock.s.sol";
 import {SafeValidation} from "../script/SafeValidation.sol";
 import {AgentGate} from "../src/AgentGate.sol";
 import {QuestManager} from "../src/QuestManager.sol";
@@ -399,6 +400,33 @@ contract DeployScriptTest is CanonicalSafeHelper {
         assertFalse(qm.hasRole(qm.QUEST_CREATOR_ROLE(), multisig));
     }
 
+    // --- PHASE 9 (Workstream 2): admin and creator Safes must DIFFER ---
+    // The checklist (§1 item 4) and DEPLOYMENT_PLAN.md require the
+    // creator Safe to be DISTINCT from the admin multisig, but before
+    // Phase 9 nothing enforced it: the same Safe passed both
+    // validations and the deploy succeeded, silently collapsing the
+    // separation of duties M03 was meant to create (one compromised
+    // Safe owner set would control both admin and quest creation).
+    // deploy() now reverts with AdminAndCreatorMustDiffer.
+
+    function test_DeployRejectsSameSafeForAdminAndCreator() public {
+        DeployAgentHub.DeployParams memory params = _params();
+        params.questCreator = multisig; // same Safe as adminMultisig
+        vm.expectRevert(DeployAgentHub.AdminAndCreatorMustDiffer.selector);
+        script.deploy(params, deployer);
+    }
+
+    function test_TestnetRejectsSameSafeForAdminAndCreator() public {
+        // Canonical path (chain 97): the distinctness check is
+        // chain-agnostic (it runs before the Safe validations), so the
+        // same genuine canonical Safe for both roles reverts here too.
+        vm.chainId(97);
+        DeployAgentHub.DeployParams memory params = _canonicalParams();
+        params.questCreator = params.adminMultisig;
+        vm.expectRevert(DeployAgentHub.AdminAndCreatorMustDiffer.selector);
+        script.deploy(params, deployer);
+    }
+
     function test_TestnetRejectsEoaCreator() public {
         // Canonical path (chain 97): an EOA creator reverts even with
         // a genuine canonical admin Safe.
@@ -495,17 +523,17 @@ contract DeployScriptTest is CanonicalSafeHelper {
         vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
     }
 
-    /// @notice The six env-driven run() scenarios in ONE test, run
+    /// @notice The nine env-driven run() scenarios in ONE test, run
     /// sequentially. This is deliberate, not laziness: forge runs tests
-    /// in parallel threads and vm.setEnv is process-global, so six
-    /// separate run() tests with CONFLICTING env values flaked against
+    /// in parallel threads and vm.setEnv is process-global, so separate
+    /// run() tests with CONFLICTING env values flaked against
     /// each other (observed: NoCodeAtAgentId from a leaked
     /// AGENT_ID_ADDRESS, MainnetDeployNotConfirmed from a leaked
     /// CONFIRM_MAINNET_DEPLOY, LocalSafeConfigMissing from leaked
     /// SAFE_* values). Inside one test there is no interleaving — every
-    /// env set sits immediately before its run() call. All six
-    /// scenarios keep their original assertions; only the grouping
-    /// changed.
+    /// env set sits immediately before its run() call. Scenarios (1)–(6)
+    /// cover DeployAgentHub.run(); (7)–(9) cover DeployMock.run()
+    /// (PHASE 9: the mock script gained the same testnet guard).
     function test_RunEnvDrivenPaths() public {
         // (1) Local deploy via run(): mock Agent ID is deployed, the
         // broadcast deployer (Anvil account 0) keeps nothing.
@@ -601,5 +629,33 @@ contract DeployScriptTest is CanonicalSafeHelper {
         assertTrue(dTestnet.mockAgentId != address(0), "(6) mock not deployed");
         assertEq(AgentGate(dTestnet.agentGate).agentIdContract(), dTestnet.mockAgentId, "(6) wrong Agent ID");
         assertEq(MockAgentId(dTestnet.mockAgentId).owner(), canonicalSafe97, "(6) mock owner is not the multisig");
+
+        // (7) PHASE 9 (Workstream 2): DeployMock on testnet without
+        // confirmation → reverts (the mock script had NO guard before
+        // Phase 9 — it was an unguarded broadcast path to chain 97).
+        // Chain is still 97 from scenario (6).
+        DeployMock mockScript = new DeployMock();
+        _setRunEnv();
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
+        vm.expectRevert(DeployMock.TestnetDeployNotConfirmed.selector);
+        mockScript.run();
+
+        // (8) DeployMock on testnet with confirmation → deploys; the
+        // mock is owned by the broadcast deployer (Anvil account 0
+        // here — on testnet the operator owns it until it is handed
+        // over; DeployAgentHub's own mock goes to the multisig).
+        _setRunEnv();
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "true");
+        MockAgentId standaloneMock = mockScript.run();
+        assertTrue(address(standaloneMock) != address(0), "(8) mock not deployed");
+        assertEq(standaloneMock.owner(), anvilDeployer, "(8) mock owner is not the deployer");
+
+        // (9) DeployMock on local Anvil without confirmation → deploys
+        // (local chain is exempt from the guard, like DeployAgentHub).
+        vm.chainId(31337);
+        _setRunEnv();
+        vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
+        MockAgentId localMock = mockScript.run();
+        assertTrue(address(localMock) != address(0), "(9) local mock not deployed");
     }
 }
