@@ -588,6 +588,11 @@ contract DeployScriptTest is CanonicalSafeHelper {
         vm.setEnv("AGENT_ID_ADDRESS", "0x0000000000000000000000000000000000000000");
         vm.setEnv("CONFIRM_MAINNET_DEPLOY", "false");
         vm.setEnv("CONFIRM_TESTNET_DEPLOY", "false");
+        // PHASE 9.1 (PH7-L18): run() writes the deployment artifact by
+        // default — tests opt out, or the mainnet/testnet scenarios
+        // below would write fake 56/97 deployment records. The
+        // artifact format is covered by DeploymentArtifactTest.
+        vm.setEnv("WRITE_DEPLOYMENT_ARTIFACT", "false");
     }
 
     /// @notice The nine env-driven run() scenarios in ONE test, run

@@ -35,6 +35,11 @@ coverage/
 apps/web/.anvil-deployment.json
 packages/contracts/.anvil-deployment.json
 
+# Deployment artifacts (Phase 9.1, PH7-L18): local-chain artifacts are
+# test noise; testnet/mainnet artifacts are committed as the record.
+packages/contracts/deployments/31337*.json
+packages/contracts/deployments/*.fixture.json
+
 # Local E2E smoke server log (Phase 8)
 .e2e-server.log
 

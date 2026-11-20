@@ -11,7 +11,15 @@ solc_version = "0.8.39"
 # FINAL REMEDIATION (Phase 7): the local test-stack script writes its
 # deployment JSON into the project root. Scoped to that one file — the
 # script cannot write anywhere else.
-fs_permissions = [{ access = "read-write", path = "./.anvil-deployment.json" }]
+# PHASE 9.1 (PH7-L18): the deploy script writes the deployment artifact
+# to ./deployments/<chainId>.json, and RecordDeployment reads forge's
+# broadcast artifact to fill in tx hashes. The deployments directory
+# is scoped to deployment records only; broadcast is read-only.
+fs_permissions = [
+  { access = "read-write", path = "./.anvil-deployment.json" },
+  { access = "read-write", path = "./deployments" },
+  { access = "read", path = "./broadcast" },
+]
 # M2 fix (Phase 1 audit): pin the EVM version explicitly. "cancun" matches
 # the solc 0.8.39 default. Our contracts use no transient storage, but
 # solc >= 0.8.25 emits MCOPY in generated code (1x in QuestManager, 1x in

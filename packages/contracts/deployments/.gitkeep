@@ -1,0 +1,5 @@
+# Deployment artifacts (PH7-L18): DeployAgentHub.run() writes
+# <chainId>.json here automatically (addresses, chainId, block number,
+# tx hashes after RecordDeployment). The local-chain artifact
+# (31337.json) is gitignored test noise; testnet/mainnet artifacts are
+# committed as the deployment record. NEVER store keys or secrets here.

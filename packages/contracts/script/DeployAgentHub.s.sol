@@ -50,6 +50,15 @@ import {MockAgentId} from "../src/mocks/MockAgentId.sol";
 ///   CONFIRM_TESTNET_DEPLOY=true, symmetric with the mainnet guard.
 ///   The guard cannot distinguish a dry-run simulation from a real
 ///   broadcast, so the dry-run needs it too.
+/// - PHASE 9.1 (PH7-L18): run() writes the deployment artifact
+///   automatically to deployments/<chainId>.json (addresses, chainId,
+///   block number, timestamp, deployer — NEVER keys or secrets). Tx
+///   hashes are NOT known inside the script: forge sends the broadcast
+///   transactions only after the script returns, so the artifact
+///   records empty tx-hash fields; run script/RecordDeployment.s.sol
+///   after the broadcast to fill them from forge's broadcast
+///   artifact. WRITE_DEPLOYMENT_ARTIFACT=false opts out (used by
+///   tests, which would otherwise write fake mainnet/testnet records).
 /// - `run()` is the env-driven entry point for `forge script`. `deploy()`
 ///   is the parameterized core, unit-tested without env vars or keys.
 /// @dev Usage (dry-run / simulation only — never --broadcast without a
@@ -169,6 +178,55 @@ contract DeployAgentHub is Script {
         console.log("Reputation:", deployment.reputation);
         console.log("Achievement:", deployment.achievement);
         console.log("QuestManager:", deployment.questManager);
+        // PHASE 9.1 (PH7-L18): automatic deployment artifact (see
+        // writeDeploymentArtifact). The opt-out exists for tests only
+        // — a real deploy always records its artifact.
+        if (vm.envOr("WRITE_DEPLOYMENT_ARTIFACT", true)) {
+            writeDeploymentArtifact(deployment, deployer, artifactPath());
+        }
+    }
+
+    /// @notice The artifact path for this chain:
+    /// deployments/<chainId>.json (PH7-L18).
+    function artifactPath() public view returns (string memory) {
+        return string.concat("deployments/", vm.toString(block.chainid), ".json");
+    }
+
+    /// @notice Writes the machine-readable deployment artifact for
+    /// this chain to `path` (PH7-L18).
+    /// @dev Flat schema (16 fields): chainId, blockNumber, timestamp,
+    /// deployer, one address per deployed contract, and one deployment
+    /// transaction hash per contract. The tx-hash fields are empty
+    /// strings here — forge only knows the real hashes after the
+    /// broadcast completes, so RecordDeployment.s.sol fills them in
+    /// afterwards from forge's broadcast artifact. NEVER writes keys,
+    /// mnemonics, or any secret: addresses and public chain data only.
+    /// Called automatically by run() with artifactPath(); the path is
+    /// a parameter so tests can write to per-test files (forge runs
+    /// tests in parallel — a shared path would race).
+    function writeDeploymentArtifact(Deployment memory deployment, address deployer, string memory path) public {
+        vm.createDir("deployments", true);
+        // NOTE: the first serialize arg is the OBJECT KEY (a name), not
+        // the accumulated JSON — keep it constant; the last call returns
+        // the complete JSON (same pattern as DeployLocalTestStack).
+        string memory obj = "deployment";
+        vm.serializeUint(obj, "chainId", block.chainid);
+        vm.serializeUint(obj, "blockNumber", block.number);
+        vm.serializeUint(obj, "timestamp", block.timestamp);
+        vm.serializeAddress(obj, "deployer", deployer);
+        vm.serializeAddress(obj, "mockAgentId", deployment.mockAgentId);
+        vm.serializeAddress(obj, "agentGate", deployment.agentGate);
+        vm.serializeAddress(obj, "timelock", deployment.timelock);
+        vm.serializeAddress(obj, "reputation", deployment.reputation);
+        vm.serializeAddress(obj, "achievement", deployment.achievement);
+        vm.serializeAddress(obj, "questManager", deployment.questManager);
+        vm.serializeString(obj, "mockAgentIdTxHash", "");
+        vm.serializeString(obj, "agentGateTxHash", "");
+        vm.serializeString(obj, "timelockTxHash", "");
+        vm.serializeString(obj, "reputationTxHash", "");
+        vm.serializeString(obj, "achievementTxHash", "");
+        string memory json = vm.serializeString(obj, "questManagerTxHash", "");
+        vm.writeJson(json, path);
     }
 
     /// @notice Parameterized deployment core (no env, no broadcast).
