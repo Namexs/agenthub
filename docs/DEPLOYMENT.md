@@ -55,7 +55,7 @@ Order (single run): MockAgentId (testnet/local only, when
 wiring, MockAgentId ownership transfer to the multisig (PH7-M04),
 admin handover to the timelock, deployer renounce, and
 post-deploy verification (`_verifyWiring` reverts on any mismatch —
-30 checks on testnet/local, 29 on mainnet where no mock is deployed,
+32 checks on testnet/local, 31 on mainnet where no mock is deployed,
 including `mock.owner() == multisig`). The script validates
 `ADMIN_MULTISIG` AND `QUEST_CREATOR` as genuine Safes (canonical
 singleton + proxy codehash + threshold ≥ 2) BEFORE deploying anything

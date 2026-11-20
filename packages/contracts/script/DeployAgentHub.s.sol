@@ -318,7 +318,7 @@ contract DeployAgentHub is Script {
         // MockAgentId ownership (PH7-M04): the deployer must not keep
         // mint power over test Agent IDs — the multisig owns the mock.
         // (No mock on mainnet, so this check only applies when one was
-        // deployed; with it, _verifyWiring performs 30 checks.)
+        // deployed; with it, _verifyWiring performs 32 checks.)
         if (deployment.mockAgentId != address(0)) {
             if (MockAgentId(deployment.mockAgentId).owner() != params.adminMultisig) {
                 revert WiringCheckFailed("mock.owner");
@@ -335,6 +335,15 @@ contract DeployAgentHub is Script {
         }
         if (!timelock.hasRole(timelock.EXECUTOR_ROLE(), params.adminMultisig)) {
             revert WiringCheckFailed("timelock.executor");
+        }
+        // PHASE 9.1 (PH7-L17): the admin multisig is the canceller.
+        // OZ grants CANCELLER_ROLE to every proposer in the
+        // TimelockController constructor, so the multisig holds it by
+        // construction — but nothing asserted it, so a future wiring
+        // change (e.g. a separate canceller) could silently drop the
+        // cancel path ROLE_MATRIX.md promises. Assert it explicitly.
+        if (!timelock.hasRole(timelock.CANCELLER_ROLE(), params.adminMultisig)) {
+            revert WiringCheckFailed("timelock.canceller");
         }
         // Self-administered: only the timelock itself holds its admin role.
         if (!timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), address(timelock))) {
@@ -405,6 +414,12 @@ contract DeployAgentHub is Script {
         }
         if (timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), deployer)) {
             revert WiringCheckFailed("deployer.timelockAdmin");
+        }
+        // PHASE 9.1 (PH7-L17): the deployer must not be able to cancel
+        // timelock proposals either — no privilege of any kind survives
+        // the deployment.
+        if (timelock.hasRole(timelock.CANCELLER_ROLE(), deployer)) {
+            revert WiringCheckFailed("deployer.canceller");
         }
     }
 }

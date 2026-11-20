@@ -16,6 +16,24 @@ import {MockSafe} from "./mocks/MockSafe.sol";
 import {MockSafeProxy, MockSafeSingleton} from "./mocks/MockSafeProxy.sol";
 import {CanonicalSafeHelper} from "./mocks/CanonicalSafe.sol";
 
+/// @notice Test-only harness exposing the internal _verifyWiring so
+/// its negative paths can be tested directly (PH7-L17): deploy()
+/// always builds correct wiring, so a missing or misplaced role is
+/// unreachable through the public entry point. The test deploys a
+/// correct stack, tampers with the timelock roles (as the timelock
+/// itself, the only admin), and asserts _verifyWiring reverts with
+/// the right check name.
+contract DeployAgentHubHarness is DeployAgentHub {
+    function verifyWiring(
+        Deployment memory deployment,
+        DeployParams memory params,
+        address deployer,
+        address effectivePauser
+    ) external view {
+        _verifyWiring(deployment, params, deployer, effectivePauser);
+    }
+}
+
 /// @notice TEMUAN 4 deployment-script tests: the full stack deploys in the
 /// right order with the right roles, the deployer keeps nothing, mainnet
 /// rejects mocks, and the env-driven run() entry point works end-to-end.
@@ -499,6 +517,55 @@ contract DeployScriptTest is CanonicalSafeHelper {
         DeployAgentHub.Deployment memory d = script.deploy(_canonicalParams(), deployer);
         assertTrue(d.mockAgentId != address(0));
         assertEq(AgentGate(d.agentGate).agentIdContract(), d.mockAgentId);
+    }
+
+    // --- PHASE 9.1 (PH7-L17): _verifyWiring checks CANCELLER_ROLE ---
+    // ROLE_MATRIX.md promises Timelock CANCELLER_ROLE to the admin
+    // multisig (OZ grants it to every proposer in the constructor),
+    // but _verifyWiring never asserted it. The positive test checks
+    // the deployed wiring; the two negative tests tamper with the
+    // timelock roles and assert _verifyWiring reverts with the right
+    // check name (via the harness above — deploy() always builds
+    // correct wiring, so the failure modes are unreachable directly).
+
+    function test_CancellerRoleHeldByMultisig() public {
+        DeployAgentHub.Deployment memory d = script.deploy(_params(), deployer);
+        TimelockController timelock = TimelockController(payable(d.timelock));
+        assertTrue(timelock.hasRole(timelock.CANCELLER_ROLE(), multisig), "multisig lacks CANCELLER_ROLE");
+        assertFalse(timelock.hasRole(timelock.CANCELLER_ROLE(), deployer), "deployer holds CANCELLER_ROLE");
+        assertFalse(timelock.hasRole(timelock.CANCELLER_ROLE(), creator), "creator holds CANCELLER_ROLE");
+        assertFalse(timelock.hasRole(timelock.CANCELLER_ROLE(), pauser), "pauser holds CANCELLER_ROLE");
+        assertFalse(timelock.hasRole(timelock.CANCELLER_ROLE(), verifier), "verifier holds CANCELLER_ROLE");
+    }
+
+    function test_VerifyWiringRevertsWhenCancellerMissing() public {
+        DeployAgentHub.Deployment memory d = script.deploy(_params(), deployer);
+        DeployAgentHubHarness harness = new DeployAgentHubHarness();
+        TimelockController timelock = TimelockController(payable(d.timelock));
+        // Hoist before prank: the role getter IS a call and would
+        // consume the prank (same lesson as IntegrationTest).
+        bytes32 cancellerRole = timelock.CANCELLER_ROLE();
+        // Tamper: the timelock itself (its only admin) revokes the
+        // multisig's canceller role.
+        vm.prank(d.timelock);
+        timelock.revokeRole(cancellerRole, multisig);
+        vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.WiringCheckFailed.selector, "timelock.canceller"));
+        harness.verifyWiring(d, _params(), deployer, pauser);
+    }
+
+    function test_VerifyWiringRevertsWhenDeployerHoldsCanceller() public {
+        DeployAgentHub.Deployment memory d = script.deploy(_params(), deployer);
+        DeployAgentHubHarness harness = new DeployAgentHubHarness();
+        TimelockController timelock = TimelockController(payable(d.timelock));
+        // Hoist before prank: the role getter IS a call and would
+        // consume the prank (same lesson as IntegrationTest).
+        bytes32 cancellerRole = timelock.CANCELLER_ROLE();
+        // Tamper: the deployer is granted the canceller role — the
+        // deployer must keep NO privilege of any kind.
+        vm.prank(d.timelock);
+        timelock.grantRole(cancellerRole, deployer);
+        vm.expectRevert(abi.encodeWithSelector(DeployAgentHub.WiringCheckFailed.selector, "deployer.canceller"));
+        harness.verifyWiring(d, _params(), deployer, pauser);
     }
 
     // --- run() entry point (env-driven) ---
