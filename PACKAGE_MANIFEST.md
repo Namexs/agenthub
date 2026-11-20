@@ -7,9 +7,9 @@ commit — something a ZIP alone cannot prove (see §3).
 
 ## 1. Described commit
 
-- Commit: `d9501687728a6ea06bda4c57be404dd31c52559e`
-- Date: 2026-11-20T01:17:32+00:00
-- Subject: docs(phase-9): testnet readiness report + audit package + live test plan
+- Commit: `afa5139dc22a2cf56681f7649cb35f7b5c5675d3`
+- Date: 2026-11-20T01:21:55+00:00
+- Subject: docs(phase-9): fill report §8.3 + §12 with CI run #44652556909 (10/10 success) + VERIFICATION.md
 
 ## 2. Submodules
 
@@ -316,8 +316,8 @@ da3c386c92c2109537081c83f360c5623ff18fa81ce1b4340c43d4addb523aca  agenthub-phase
 6b664225911a01096a70a0cfd6fb505de50452c67cd47f2be540d80cb4bfcc79  agenthub-phase8-remediation/test-results/gas-benchmark-phase8.md
 4e9057cf4757a25bfa1d04c5c6690e234b5b54f8a69ef5095130dbad67ec0170  agenthub-phase8-remediation/test-results/osv-audit-phase8.json
 ce528dbdaf0cae4f3c5e732da08df1db3205e800200d3f8f9864844ec49dafc5  agenthub-phase8-remediation/test-results/slither-phase8.json
-3f74c8737ae8d4905e0cb4d25f0403b55e4e8af76ce354e9e095fe11e5b8a6ca  agenthub-phase9-readiness/PHASE9_TESTNET_READINESS_REPORT.md
-a334af8f482c35f2c07f0fa451233d406a2b4c7b695699de457454c2b28cf0c1  agenthub-phase9-readiness/VERIFICATION.md
+8102ce36a63b1d084b5f748c9e6522f7045543d33352aea4c82deebd810ed07a  agenthub-phase9-readiness/PHASE9_TESTNET_READINESS_REPORT.md
+eeec0600f7ea9f03c72ceabe108fc84545511b0981ce3a422fe9c95ef24342bf  agenthub-phase9-readiness/VERIFICATION.md
 4d61331d2690033aa42c170e51a050b1c6cbac291e636b62617bc3ce449e80be  agenthub-phase9-readiness/audit-package/ARCHITECTURE_OVERVIEW.md
 1979304d2679894abf446f3cabb5bc830a010089a49b229d5600ddf8dba5a951  agenthub-phase9-readiness/audit-package/BUILD_REPRODUCTION.md
 e1cada40664ad3914622a86198bae44d6319d723be766e6677aa896641f222ab  agenthub-phase9-readiness/audit-package/BYTECODE.md
