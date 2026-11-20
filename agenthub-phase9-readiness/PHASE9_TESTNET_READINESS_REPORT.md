@@ -382,9 +382,22 @@ file asli di-restore dengan `git checkout`.
 
 ### 8.3 Sudah diverifikasi melalui CI
 
-_(Diisi setelah push — lihat §12. Pola yang sama dengan Phase 8:
-laporan ini di-commit, di-push, CI di-watch, lalu §8.3 dan §12
-diperbarui dengan run id + hasil pada commit lanjutan.)_
+Run **#44652556909** (HEAD `3fabfa4`, 20 November 2026): **SUCCESS,
+10/10 job hijau** — run hijau ke-7 berturut-turut:
+
+- Contracts (forge build + test): success
+- Contracts fuzz + invariant (10k runs, pinned seed): success
+- Shared (lint, typecheck, vitest): success
+- Web (lint, typecheck, vitest, build): success
+- E2E (smoke + wallet, real build + anvil): success
+- Format check (prettier + forge fmt): success
+- Slither static analysis (fail on Medium+): success
+- Dependency audit: success
+- Secret scanning (gitleaks): success
+- Package manifest check: success
+
+Catatan: peringatan deprecasi Node.js 20 di runner GitHub muncul di log
+(kosmetik, bukan kegagalan — sama seperti run sebelumnya).
 
 ### 8.4 Sudah diverifikasi di live testnet
 
@@ -467,9 +480,14 @@ manifest (tanpa perubahan kode); `7dff852` menambah guard script deploy
 
 - `7dff852` feat(phase-9): enforce distinct admin/creator Safes +
   guard DeployMock testnet (PH9-D01/D02)
-- _(commit dokumen Phase 9 + manifest diisi koordinator setelah finalisasi)_
+- `d950168` docs(phase-9): testnet readiness report + audit package +
+  live test plan
+- `3fabfa4` chore(phase-9): regenerate PACKAGE_MANIFEST.md for final
+  commit d950168
+- _(commit ini: fill §8.3 + §12 dengan hasil CI + manifest)_
 
-**CI:** _(diisi setelah push — run id + hasil tiap job.)_
+**CI:** run **#44652556909** (HEAD `3fabfa4`): **SUCCESS 10/10**
+(lihat §8.3).
 
 **Keputusan akhir: CONDITIONAL GO untuk deployment live BNB Testnet
 (setelah 8 input user + persetujuan broadcast + disposisi 5 item

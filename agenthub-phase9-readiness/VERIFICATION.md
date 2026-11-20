@@ -7,13 +7,13 @@
 ## 1. Hash laporan utama
 
 ```
-3f74c8737ae8d4905e0cb4d25f0403b55e4e8af76ce354e9e095fe11e5b8a6ca  PHASE9_TESTNET_READINESS_REPORT.md
+8102ce36a63b1d084b5f748c9e6522f7045543d33352aea4c82deebd810ed07a  PHASE9_TESTNET_READINESS_REPORT.md
 ```
 
-> Catatan: hash di atas adalah hash laporan sebelum pengisian §8.3/§12
-> (hasil CI). Setelah commit lanjutan yang mengisi hasil CI, hash
-> berubah — hash final tercatat di commit lanjutan itu dan di
-> `PACKAGE_MANIFEST.md` untuk commit final.
+> Catatan: hash di atas adalah hash FINAL laporan (498 baris, setelah
+> pengisian §8.3/§12 dengan hasil CI run #44652556909). Hash sebelum
+> pengisian CI adalah
+> `3f74c8737ae8d4905e0cb4d25f0403b55e4e8af76ce354e9e095fe11e5b8a6ca`.
 
 Verifikasi: `sha256sum agenthub-phase9-readiness/PHASE9_TESTNET_READINESS_REPORT.md`.
 
