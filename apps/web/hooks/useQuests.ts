@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useAccount, useReadContract, useReadContracts } from 'wagmi';
-import { QUEST_MANAGER_ABI, contractAddresses } from '@/lib/contracts';
+import { QUEST_MANAGER_READ_ABI, contractAddresses } from '@/lib/contracts';
 import { mapQuest, type QuestState, type RawQuest } from '@/lib/quests';
 import type { Quest } from '@agenthub/shared';
 
@@ -27,7 +27,7 @@ export function useQuests() {
     error: countError,
   } = useReadContract({
     address: questManager,
-    abi: QUEST_MANAGER_ABI,
+    abi: QUEST_MANAGER_READ_ABI,
     functionName: 'questCount',
     query: { enabled: deployed },
   });
@@ -44,7 +44,7 @@ export function useQuests() {
   } = useReadContracts({
     contracts: questIds.map((id) => ({
       address: questManager as `0x${string}`,
-      abi: QUEST_MANAGER_ABI,
+      abi: QUEST_MANAGER_READ_ABI,
       functionName: 'getQuest',
       args: [BigInt(id)],
     })),
@@ -55,13 +55,13 @@ export function useQuests() {
     contracts: questIds.flatMap((id) => [
       {
         address: questManager as `0x${string}`,
-        abi: QUEST_MANAGER_ABI,
+        abi: QUEST_MANAGER_READ_ABI,
         functionName: 'hasCompleted',
         args: [address as `0x${string}`, BigInt(id)],
       },
       {
         address: questManager as `0x${string}`,
-        abi: QUEST_MANAGER_ABI,
+        abi: QUEST_MANAGER_READ_ABI,
         functionName: 'nextCompletionAt',
         args: [address as `0x${string}`, BigInt(id)],
       },

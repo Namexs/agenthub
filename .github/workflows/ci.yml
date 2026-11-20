@@ -40,9 +40,17 @@ jobs:
   web:
     name: Web (lint, typecheck, vitest, build)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # PHASE 8 (PH7-M07): 20 min, not 15 — the job now runs a via-IR
+    # `forge build` (~5 min measured) plus the foundry toolchain setup
+    # (~1 min) on top of the previous steps. The extra 5 min keeps a
+    # few minutes of margin over the measured total; raise again if a
+    # future run approaches the cap.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          # forge build needs the lib/ submodules (OpenZeppelin).
+          submodules: recursive
       - uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -50,9 +58,36 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
+      # PHASE 8 (PH7-M07): the web job runs forge so the ABI parity
+      # deep-equal tests (lib/abis/abi-parity.test.ts) actually RUN in
+      # CI — before this, out/ never existed in this job and the
+      # deep-equal was always skipped. Design choice: build forge in
+      # THIS job (option a) rather than uploading out/ from the
+      # `contracts` job and downloading it here (option b). (a) keeps
+      # the jobs independent — no `needs: contracts`, so a contracts
+      # failure cannot mask a web lint/typecheck/vitest failure and the
+      # pipeline does not serialize — and CI already runs `forge build`
+      # in four other jobs (contracts, fuzz, slither, e2e), so one more
+      # build adds no new mechanism. (b) would need artifact
+      # upload/download plumbing for a large out/ tree (it holds every
+      # test artifact too) plus a cross-job dependency, for ~5 min of
+      # saved build time — not worth the coupling.
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FOUNDRY_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @agenthub/web lint
       - run: pnpm --filter @agenthub/web typecheck
+      # Forge build BEFORE vitest: the abi-parity deep-equal tests read
+      # packages/contracts/out/. Lint/typecheck run first so fast
+      # failures fail fast; the ~5 min via-IR build only runs when the
+      # cheap checks pass.
+      - run: forge build
+        working-directory: packages/contracts
+      # PHASE 8 (PH7-I09): fail if the committed ABIs differ from a
+      # fresh regeneration — the generator must never be run by hand
+      # and forgotten. --check writes nothing; it only diffs.
+      - run: node packages/contracts/script/export-abis.mjs --check
       # Vitest: the full suite runs, including the 58 hook tests (jsdom).
       # The test deps (@testing-library/react, jsdom, playwright) are
       # declared in apps/web/package.json since Phase C of the final

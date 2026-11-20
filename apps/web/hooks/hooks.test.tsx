@@ -119,6 +119,7 @@ vi.mock('wagmi', () => ({
 vi.mock('@/lib/contracts', () => ({
   AGENT_GATE_ABI: [],
   QUEST_MANAGER_ABI: [],
+  QUEST_MANAGER_READ_ABI: [],
   REPUTATION_ABI: [],
   ACHIEVEMENT_ABI: [],
   AGENT_ID_ABI: [],

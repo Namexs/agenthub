@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { parseAbiItem } from 'viem';
+import { ACHIEVEMENT_ABI } from './abis/Achievement';
+import { QUEST_MANAGER_ABI } from './abis/QuestManager';
+import { REPUTATION_ABI } from './abis/Reputation';
 import {
   EVENT_SIGNATURES,
   aggregateLeaderboard,
@@ -202,4 +205,76 @@ describe('EVENT_SIGNATURES', () => {
       'questCompleted',
     ]);
   });
+});
+
+// PHASE 8 (PH7-M09): the five hand-written EVENT_SIGNATURES strings must
+// match the COMMITTED contract ABIs exactly — not just parse. Drift here
+// fails SILENTLY at runtime: a wrong `indexed` flag changes the topic
+// layout (getLogs returns 0 logs, leaderboard/history go empty with no
+// error), a wrong param name makes the aggregators read `args.<name>`
+// === undefined (points counted as 0), a wrong type breaks viem decoding.
+//
+// Design choice: test-based comparison against the committed ABIs, NOT
+// deriving the strings from the ABI at runtime in events.ts. Deriving
+// would pull the full ABI modules into every events.ts importer and
+// change the module's public shape; a test fails just as loudly in CI
+// and keeps the runtime code untouched. Comparing against the committed
+// ABIs (not out/) means this needs no forge build, so it runs in every
+// CI web job — and the abi-parity deep-equal (which DOES compare the
+// committed ABIs against the forge build) closes the loop to the
+// compiled contracts.
+
+type AbiEventEntry = {
+  type: string;
+  name?: string;
+  inputs?: { name: string; type: string; indexed?: boolean }[];
+};
+
+/** Canonical viem-style event signature string for one ABI event entry. */
+function canonicalEventSignature(entry: AbiEventEntry): string {
+  const params = (entry.inputs ?? [])
+    .map((p) => `${p.type}${p.indexed ? ' indexed' : ''}${p.name ? ` ${p.name}` : ''}`)
+    .join(', ');
+  return `event ${entry.name}(${params})`;
+}
+
+function findEvent(abi: unknown, contract: string, name: string): AbiEventEntry {
+  const entry = (abi as AbiEventEntry[]).find((e) => e.type === 'event' && e.name === name);
+  if (!entry) throw new Error(`event ${name} not found in committed ${contract} ABI`);
+  return entry;
+}
+
+// Which committed ABI each hand-written signature must match.
+const EVENT_SOURCES = [
+  {
+    key: 'questCompleted',
+    contract: 'QuestManager',
+    abi: QUEST_MANAGER_ABI,
+    event: 'QuestCompleted',
+  },
+  { key: 'pointsAdded', contract: 'Reputation', abi: REPUTATION_ABI, event: 'PointsAdded' },
+  { key: 'badgeIssued', contract: 'Achievement', abi: ACHIEVEMENT_ABI, event: 'BadgeIssued' },
+  { key: 'badgeDefined', contract: 'Achievement', abi: ACHIEVEMENT_ABI, event: 'BadgeDefined' },
+  {
+    key: 'attestationUsed',
+    contract: 'QuestManager',
+    abi: QUEST_MANAGER_ABI,
+    event: 'AttestationUsed',
+  },
+] as const;
+
+describe('EVENT_SIGNATURES match the committed ABIs (PH7-M09)', () => {
+  it('every EVENT_SIGNATURES key has a parity entry (no untested signature)', () => {
+    expect(EVENT_SOURCES.map((e) => e.key).sort()).toEqual(Object.keys(EVENT_SIGNATURES).sort());
+  });
+
+  it.each(EVENT_SOURCES)(
+    '$key matches $event in the committed $contract ABI (name, types, param names, indexed)',
+    ({ key, contract, abi, event }) => {
+      const expected = canonicalEventSignature(findEvent(abi, contract, event));
+      // Exact string equality: any drift in event name, param name,
+      // param type, param order, or indexed flags fails this test.
+      expect(EVENT_SIGNATURES[key]).toBe(expected);
+    },
+  );
 });

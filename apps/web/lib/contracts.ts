@@ -25,6 +25,78 @@ export const AGENT_ID_ABI = [
   },
 ] as const;
 
+// Minimal QuestManager read ABI (Phase 8). The full QUEST_MANAGER_ABI
+// (99 entries) makes wagmi's useReadContracts type inference exceed
+// TypeScript's instantiation depth (TS2589, useQuests.ts) — the four
+// read functions below are all useQuests needs. Entries are copied
+// VERBATIM from the committed QUEST_MANAGER_ABI; abi-parity.test.ts
+// asserts each entry deep-equals its full-ABI counterpart, so drift
+// fails CI. Regenerate this subset by hand only when one of these four
+// functions changes (update the test expectation with it).
+export const QUEST_MANAGER_READ_ABI = [
+  {
+    type: 'function',
+    name: 'questCount',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getQuest',
+    inputs: [{ name: 'questId', type: 'uint256', internalType: 'uint256' }],
+    outputs: [
+      {
+        name: 'quest',
+        type: 'tuple',
+        internalType: 'struct IQuestManager.Quest',
+        components: [
+          { name: 'id', type: 'uint256', internalType: 'uint256' },
+          { name: 'creator', type: 'address', internalType: 'address' },
+          { name: 'title', type: 'string', internalType: 'string' },
+          { name: 'description', type: 'string', internalType: 'string' },
+          { name: 'questType', type: 'uint8', internalType: 'enum IQuestManager.QuestType' },
+          {
+            name: 'validationKind',
+            type: 'uint8',
+            internalType: 'enum IQuestManager.ValidationKind',
+          },
+          { name: 'validator', type: 'address', internalType: 'address' },
+          { name: 'rewardPoints', type: 'uint256', internalType: 'uint256' },
+          { name: 'badgeId', type: 'uint256', internalType: 'uint256' },
+          { name: 'startTime', type: 'uint256', internalType: 'uint256' },
+          { name: 'endTime', type: 'uint256', internalType: 'uint256' },
+          { name: 'maxCompletions', type: 'uint256', internalType: 'uint256' },
+          { name: 'completions', type: 'uint256', internalType: 'uint256' },
+          { name: 'active', type: 'bool', internalType: 'bool' },
+          { name: 'attestationThreshold', type: 'uint8', internalType: 'uint8' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'hasCompleted',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'questId', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'nextCompletionAt',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'questId', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: 'readyAt', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+] as const;
+
 export const contractAddresses = {
   agentId: (env.NEXT_PUBLIC_AGENT_ID_ADDRESS ?? undefined) as Address | undefined,
   agentGate: (env.NEXT_PUBLIC_AGENT_GATE_ADDRESS ?? undefined) as Address | undefined,
