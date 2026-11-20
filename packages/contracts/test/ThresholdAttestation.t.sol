@@ -529,6 +529,14 @@ contract ThresholdAttestationTest is Test {
     function test_RevokedSecondVerifierInvalidatesPair() public {
         uint256 deadline = block.timestamp + 1 days;
         bytes[] memory sigs = _signMany(_keys2(), alice, questT2, qm.nonces(alice), deadline);
+        // PHASE 8 (PH7-M01): revoking verifier 2 while the threshold-3
+        // quest is live is BLOCKED by the guardrail (2 verifiers left
+        // < highest live threshold 3) — so deactivate the threshold-3
+        // quest first (the supported recovery path). The threshold-2
+        // quest stays live, and the revoke then succeeds (2 ≥ 2).
+        vm.prank(creator);
+        qm.deactivateQuest(questT3);
+        assertEq(qm.highestLiveThreshold(), 2, "deactivating T3 did not lower the highest live threshold");
         // Revoke verifier 2 AFTER signing: the role is checked at
         // verification time, so the outstanding pair is dead.
         qm.revokeRole(qm.VERIFIER_ROLE(), verifier2);

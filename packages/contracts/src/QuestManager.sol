@@ -29,6 +29,13 @@ import {IAchievement} from "./interfaces/IAchievement.sol";
 ///   (R-010): each quest declares an attestationThreshold (1–3) — the
 ///   minimum number of DISTINCT verifier signatures required. The ONLY kind
 ///   that may represent off-chain activity.
+/// @dev PHASE 8 (PH7-H01 / PH7-M01 / PH7-M02): the threshold policy is now
+/// enforced on-chain — a high-value Attested quest (> 1,000 points or a
+/// high-value badge) requires threshold ≥ 2; an Attested quest cannot be
+/// created with a threshold above the live verifier count; and revoking
+/// a verifier below the highest live threshold is rejected (deactivate
+/// the affected quests first, or grant a replacement before revoking).
+/// See VERIFIER_ROLE_SOP.md §6.1 and QUEST_VALIDATION_DESIGN.md §2.3.
 /// @dev Security properties: role-gated creation, checks-effects-interactions,
 /// nonReentrant completions, per-account cooldowns, duplicate prevention,
 /// capped rewards, bounded strings, pausable, replay-protected attestations.
@@ -65,6 +72,12 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// highest threshold the SOP's verifier set is sized for.
     uint8 public constant MIN_ATTESTATION_THRESHOLD = 1;
     uint8 public constant MAX_ATTESTATION_THRESHOLD = 3;
+    /// @notice PHASE 8 (PH7-H01): an Attested quest whose reward exceeds
+    /// this many points is high-value and REQUIRES attestationThreshold
+    /// ≥ 2 (enforced on-chain in createQuest, not just in the SOP).
+    /// Written as 1_000 per this file's literal convention (10_000
+    /// above); the value is exactly the 1000 from the policy text.
+    uint256 public constant HIGH_VALUE_REWARD_POINTS = 1_000;
 
     IAgentGate public immutable gate;
     IReputation public immutable reputation;
@@ -81,6 +94,23 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
     /// completion. The nonce is global per account, not per quest: a
     /// verifier must read it before signing (see QUEST_VALIDATION_DESIGN.md).
     mapping(address => uint256) public nonces;
+    /// @notice PHASE 8 (PH7-M01): live VERIFIER_ROLE holders. AccessControl
+    /// cannot enumerate role holders, so the _grantRole/_revokeRole
+    /// overrides maintain this counter (only real status changes count).
+    /// Read via verifierCount().
+    uint256 private _verifierCount;
+    /// @notice PHASE 8 (PH7-M01): live (active) Attested quests per
+    /// threshold level (keys 1–3 only). Raised in createQuest, lowered
+    /// in deactivateQuest. highestLiveThreshold() is derived from these
+    /// counters. An expired-but-still-active quest still counts — the
+    /// guard is deliberately conservative (fail-safe): only an explicit
+    /// deactivateQuest lowers the bar.
+    mapping(uint8 => uint256) private _liveAttestedByThreshold;
+    /// @notice PHASE 8 (PH7-L07): questId → the quest it supersedes
+    /// (0 = supersedes none). Set by admin setSupersedes() when a quest
+    /// is recreated; accounts that completed the old quest cannot
+    /// complete the new one (anti-double-claim on deactivate + recreate).
+    mapping(uint256 => uint256) private _supersedes;
     /// @notice The validator registry: per-instance approval + metadata
     /// (name, version, documentation, approval time).
     /// @dev FINAL REMEDIATION (Phase 5): upgrades the pre-testnet
@@ -156,8 +186,31 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (attestationThreshold < MIN_ATTESTATION_THRESHOLD || attestationThreshold > MAX_ATTESTATION_THRESHOLD) {
             revert AttestationThresholdOutOfRange(attestationThreshold);
         }
+        // PHASE 8 (PH7-H01): the threshold policy is enforced ON-CHAIN,
+        // not just in the SOP. A high-value Attested quest needs at
+        // least 2 distinct verifiers — one compromised verifier must
+        // never be able to attest a > 1,000-point quest alone. The
+        // policy applies to Attested quests ONLY: other kinds store a
+        // threshold but never enforce it at completion (PH7-L08), so
+        // the rule has no meaning for them.
+        if (
+            validationKind == ValidationKind.Attested && rewardPoints > HIGH_VALUE_REWARD_POINTS
+                && attestationThreshold < 2
+        ) {
+            revert InsufficientAttestations(attestationThreshold, 2);
+        }
         if (badgeId != 0 && !achievement.isBadgeDefined(badgeId)) {
             revert IAchievement.BadgeNotDefined(badgeId);
+        }
+        // PHASE 8 (PH7-M02): the same policy floor for a high-value
+        // badge — a quest whose badge unlocks real-world value needs
+        // threshold ≥ 2 even when its point reward is small. Cheap
+        // checks first so the external call only runs when it matters.
+        if (
+            validationKind == ValidationKind.Attested && badgeId != 0 && attestationThreshold < 2
+                && achievement.isBadgeHighValue(badgeId)
+        ) {
+            revert InsufficientAttestations(attestationThreshold, 2);
         }
         // Validation-kind rules (TEMUAN 1): OnChain quests REQUIRE a
         // validator contract (code must exist); CheckIn and Attested
@@ -170,6 +223,15 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
             if (!_validatorInfo[validator].approved) revert ValidatorNotApproved(validator);
         } else if (validator != address(0)) {
             revert InvalidValidator(validator);
+        }
+        // PHASE 8 (PH7-M01): an Attested quest must be completable from
+        // birth — creating a threshold-3 quest with 1 verifier would
+        // brick it immediately. Deliberately the LAST check, after the
+        // parameter/validator reverts above, so a malformed call still
+        // reports its own error. Non-Attested quests are not checked:
+        // their threshold is never enforced at completion.
+        if (validationKind == ValidationKind.Attested && _verifierCount < attestationThreshold) {
+            revert InsufficientVerifiers(_verifierCount, attestationThreshold);
         }
         questId = ++_questCount;
         // Field-by-field storage assignment (not a struct literal): the
@@ -192,6 +254,13 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         quest.completions = 0;
         quest.active = true;
         quest.attestationThreshold = attestationThreshold;
+        // PHASE 8 (PH7-M01): a live Attested quest raises the revoke
+        // guardrail's bar for its threshold level.
+        if (validationKind == ValidationKind.Attested) {
+            unchecked {
+                ++_liveAttestedByThreshold[attestationThreshold];
+            }
+        }
         emit QuestCreated(questId, msg.sender, questType, validationKind, rewardPoints);
     }
 
@@ -256,6 +325,15 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (deadline > block.timestamp + MAX_ATTESTATION_LIFETIME) {
             revert AttestationDeadlineTooFar(deadline, block.timestamp + MAX_ATTESTATION_LIFETIME);
         }
+        // PHASE 8 (PH7-L05): the count check runs BEFORE the digest and
+        // the recovery loop — a submission that cannot possibly meet the
+        // threshold fails without paying ecrecover + role SLOADs. No
+        // semantic change to outcomes (a call that succeeded before
+        // still succeeds; a doomed call still reverts), only the gas
+        // and, for an under-threshold array containing a junk signature,
+        // the revert reason (InsufficientAttestations instead of the
+        // recovery error — the more accurate diagnosis).
+        if (provided < threshold) revert InsufficientAttestations(provided, threshold);
         uint256 nonce = nonces[account];
         bytes32 digest = _attestationDigest(account, questId, nonce, deadline);
         address[] memory signers = new address[](provided);
@@ -266,7 +344,6 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
             }
             signers[i] = signer;
         }
-        if (provided < threshold) revert InsufficientAttestations(provided, threshold);
         // Consume the nonce EXACTLY ONCE per completion, regardless of
         // how many signatures were provided: a replayed attestation
         // signs a stale nonce and recovers a different signer.
@@ -337,6 +414,17 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
                     revert CooldownActive(msg.sender, questId, readyAt);
                 }
             }
+        }
+        // PHASE 8 (PH7-L07): a recreate must not pay twice for the same
+        // quest. When this quest supersedes an older one, an account
+        // that completed the old quest cannot complete the new one.
+        // `_completed` is set for every quest type on first completion,
+        // so the guard covers OneTime and repeatable quests alike.
+        // Cost: one extra SLOAD per completion (cold ~2,100 gas the
+        // first time a quest is completed, warm ~100 after).
+        uint256 supersededQuestId = _supersedes[questId];
+        if (supersededQuestId != 0 && _completed[msg.sender][supersededQuestId]) {
+            revert AlreadyCompletedSupersededQuest(msg.sender, questId, supersededQuestId);
         }
         // On-chain validation runs in the CHECKS phase, before any state
         // change. A false result reverts; a reverting validator reverts
@@ -442,8 +530,93 @@ contract QuestManager is IQuestManager, AccessControl, Pausable, ReentrancyGuard
         if (msg.sender != quest.creator && !hasRole(DEFAULT_ADMIN_ROLE, msg.sender)) {
             revert NotQuestCreatorOrAdmin(msg.sender, questId);
         }
+        // PHASE 8 (PH7-M01): only a quest that is STILL active lowers
+        // the counter — deactivateQuest is idempotent (a second call
+        // still succeeds and re-emits), so an unconditional decrement
+        // would underflow the counter. This is also the recovery path
+        // for a blocked verifier revocation: deactivate first, revoke
+        // after.
+        if (quest.active && quest.validationKind == ValidationKind.Attested) {
+            unchecked {
+                --_liveAttestedByThreshold[quest.attestationThreshold];
+            }
+        }
         quest.active = false;
         emit QuestDeactivated(questId);
+    }
+
+    /// @inheritdoc IQuestManager
+    function setSupersedes(uint256 newQuestId, uint256 oldQuestId) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (_quests[newQuestId].id == 0) revert QuestNotFound(newQuestId);
+        if (_quests[oldQuestId].id == 0) revert QuestNotFound(oldQuestId);
+        if (newQuestId == oldQuestId) revert InvalidQuestParams();
+        _supersedes[newQuestId] = oldQuestId;
+        emit QuestSuperseded(newQuestId, oldQuestId);
+    }
+
+    /// @inheritdoc IQuestManager
+    function supersedes(uint256 questId) external view returns (uint256 oldQuestId) {
+        return _supersedes[questId];
+    }
+
+    /// @inheritdoc IQuestManager
+    function verifierCount() external view returns (uint256 count) {
+        return _verifierCount;
+    }
+
+    /// @inheritdoc IQuestManager
+    function highestLiveThreshold() external view returns (uint8 threshold) {
+        return _highestLiveThreshold();
+    }
+
+    /// @inheritdoc IQuestManager
+    function liveAttestedQuestCount(uint8 threshold) external view returns (uint256 count) {
+        return _liveAttestedByThreshold[threshold];
+    }
+
+    /// @notice Highest threshold among live Attested quests (internal
+    /// form, used by the revoke guardrail). 0 when no Attested quest
+    /// is live.
+    function _highestLiveThreshold() internal view returns (uint8) {
+        if (_liveAttestedByThreshold[3] > 0) return 3;
+        if (_liveAttestedByThreshold[2] > 0) return 2;
+        if (_liveAttestedByThreshold[1] > 0) return 1;
+        return 0;
+    }
+
+    /// @notice PHASE 8 (PH7-M01): maintain the verifier counter.
+    /// OpenZeppelin's _grantRole returns false when the account already
+    /// held the role, so the count only moves on a real status change
+    /// (equivalent to a hasRole pre-check, without the extra SLOAD).
+    function _grantRole(bytes32 role, address account) internal override returns (bool) {
+        bool granted = super._grantRole(role, account);
+        if (granted && role == VERIFIER_ROLE) {
+            ++_verifierCount;
+        }
+        return granted;
+    }
+
+    /// @notice PHASE 8 (PH7-M01): the revoke guardrail. Revoking (or
+    /// renouncing — renounceRole routes here too) a VERIFIER_ROLE is
+    /// rejected while it would leave fewer verifiers than the highest
+    /// threshold among live Attested quests. A no-op revoke (the
+    /// account does not hold the role) is NOT blocked: the hasRole
+    /// pre-check keeps emergency revocation idempotent, and the guard
+    /// only fires when a verifier would actually be removed.
+    /// Recovery when blocked: deactivate the affected quests first
+    /// (creator or admin), then revoke — or grant a replacement
+    /// verifier first (rotation order: grant, then revoke).
+    function _revokeRole(bytes32 role, address account) internal override returns (bool) {
+        if (role == VERIFIER_ROLE && hasRole(role, account)) {
+            uint256 remaining = _verifierCount - 1;
+            uint256 highest = _highestLiveThreshold();
+            if (remaining < highest) revert RevocationWouldBrickQuest(remaining, highest);
+        }
+        bool revoked = super._revokeRole(role, account);
+        if (revoked && role == VERIFIER_ROLE) {
+            --_verifierCount;
+        }
+        return revoked;
     }
 
     /// @notice Emergency pause. PAUSER_ROLE can pause; only DEFAULT_ADMIN_ROLE

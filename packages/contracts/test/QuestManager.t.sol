@@ -37,11 +37,21 @@ contract StubAchievement is IAchievement {
     mapping(uint256 => bool) public defined;
     mapping(address => mapping(uint256 => bool)) public badges;
     mapping(uint256 => uint256) public tokenBadge;
+    mapping(uint256 => bool) public highValue;
     uint256 public issueCalls;
     uint256 private _nextTokenId = 1;
 
     function defineBadge(uint256 badgeId, string calldata, string calldata) external {
         defined[badgeId] = true;
+    }
+
+    /// @dev PHASE 8 (PH7-M02): stub of the high-value classification.
+    function setBadgeHighValue(uint256 badgeId, bool highValue_) external {
+        highValue[badgeId] = highValue_;
+    }
+
+    function isBadgeHighValue(uint256 badgeId) external view returns (bool) {
+        return highValue[badgeId];
     }
 
     function issue(address account, uint256 badgeId) external returns (uint256 tokenId) {
@@ -77,6 +87,7 @@ contract QuestManagerTest is Test {
     address internal creator = makeAddr("creator");
     address internal alice = makeAddr("alice");
     address internal bob = makeAddr("bob");
+    address internal verifier = makeAddr("verifier");
 
     uint256 internal constant BADGE_ID = 1;
 
@@ -90,6 +101,10 @@ contract QuestManagerTest is Test {
 
         vm.startPrank(admin);
         qm.grantRole(qm.QUEST_CREATOR_ROLE(), creator);
+        // PHASE 8 (PH7-M01): Attested quests require at least their
+        // threshold in live verifiers at creation — grant one so the
+        // Attested-creation tests below can create threshold-1 quests.
+        qm.grantRole(qm.VERIFIER_ROLE(), verifier);
         // Explicit setup grant (SEC-002): the constructor no longer grants
         // PAUSER_ROLE — the admin holds it here only for the pause tests.
         qm.grantRole(qm.PAUSER_ROLE(), admin);

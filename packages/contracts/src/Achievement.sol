@@ -26,6 +26,12 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
         string name;
         string tokenURI;
         bool defined;
+        /// @dev PHASE 8 (PH7-M02): high-value classification — the badge
+        /// unlocks real-world value (event access, discounts, a future
+        /// airdrop). QuestManager enforces threshold ≥ 2 for Attested
+        /// quests carrying a high-value badge. Set via
+        /// setBadgeHighValue, not defineBadge (see IAchievement).
+        bool highValue;
     }
 
     mapping(uint256 => Badge) private _badges;
@@ -49,8 +55,23 @@ contract Achievement is IAchievement, ERC721, AccessControl, Pausable, Reentranc
         if (badgeId == 0) revert InvalidBadgeId();
         if (_badges[badgeId].defined) revert BadgeAlreadyDefined(badgeId);
         if (bytes(name_).length == 0) revert InvalidBadgeMetadata();
-        _badges[badgeId] = Badge({name: name_, tokenURI: uri, defined: true});
+        _badges[badgeId] = Badge({name: name_, tokenURI: uri, defined: true, highValue: false});
         emit BadgeDefined(badgeId, name_, uri);
+    }
+
+    /// @inheritdoc IAchievement
+    function setBadgeHighValue(uint256 badgeId, bool highValue) external onlyRole(BADGE_MANAGER_ROLE) {
+        if (!_badges[badgeId].defined) revert BadgeNotDefined(badgeId);
+        _badges[badgeId].highValue = highValue;
+        emit BadgeHighValueSet(badgeId, highValue);
+    }
+
+    /// @inheritdoc IAchievement
+    function isBadgeHighValue(uint256 badgeId) external view returns (bool) {
+        // No revert for badgeId 0 / undefined: QuestManager calls this
+        // after its own isBadgeDefined check, and a missing badge is
+        // simply not high-value.
+        return _badges[badgeId].highValue;
     }
 
     /// @inheritdoc IAchievement

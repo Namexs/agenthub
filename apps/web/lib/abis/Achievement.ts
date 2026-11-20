@@ -279,6 +279,25 @@ export const ACHIEVEMENT_ABI = [
   },
   {
     "type": "function",
+    "name": "isBadgeHighValue",
+    "inputs": [
+      {
+        "name": "badgeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "issue",
     "inputs": [
       {
@@ -460,6 +479,24 @@ export const ACHIEVEMENT_ABI = [
   },
   {
     "type": "function",
+    "name": "setBadgeHighValue",
+    "inputs": [
+      {
+        "name": "badgeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "highValue",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "supportsInterface",
     "inputs": [
       {
@@ -610,6 +647,25 @@ export const ACHIEVEMENT_ABI = [
         "type": "string",
         "indexed": false,
         "internalType": "string"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BadgeHighValueSet",
+    "inputs": [
+      {
+        "name": "badgeId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "highValue",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
       }
     ],
     "anonymous": false

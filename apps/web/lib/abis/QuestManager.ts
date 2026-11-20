@@ -68,6 +68,19 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "function",
+    "name": "HIGH_VALUE_REWARD_POINTS",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "MAX_ATTESTATION_LIFETIME",
     "inputs": [],
     "outputs": [
@@ -639,6 +652,38 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "function",
+    "name": "highestLiveThreshold",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "threshold",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "liveAttestedQuestCount",
+    "inputs": [
+      {
+        "name": "threshold",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "nextCompletionAt",
     "inputs": [
       {
@@ -777,6 +822,43 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "function",
+    "name": "setSupersedes",
+    "inputs": [
+      {
+        "name": "newQuestId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "oldQuestId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "supersedes",
+    "inputs": [
+      {
+        "name": "questId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "oldQuestId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "supportsInterface",
     "inputs": [
       {
@@ -843,6 +925,19 @@ export const QUEST_MANAGER_ABI = [
             "internalType": "bool"
           }
         ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "verifierCount",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -971,6 +1066,25 @@ export const QUEST_MANAGER_ABI = [
     "inputs": [
       {
         "name": "questId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "QuestSuperseded",
+    "inputs": [
+      {
+        "name": "newQuestId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "oldQuestId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -1131,6 +1245,27 @@ export const QUEST_MANAGER_ABI = [
   },
   {
     "type": "error",
+    "name": "AlreadyCompletedSupersededQuest",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "questId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "supersededQuestId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "AttestationDeadlineTooFar",
     "inputs": [
       {
@@ -1242,6 +1377,22 @@ export const QUEST_MANAGER_ABI = [
     "inputs": [
       {
         "name": "provided",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "required",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientVerifiers",
+    "inputs": [
+      {
+        "name": "available",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -1413,6 +1564,22 @@ export const QUEST_MANAGER_ABI = [
     "type": "error",
     "name": "ReentrancyGuardReentrantCall",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "RevocationWouldBrickQuest",
+    "inputs": [
+      {
+        "name": "remainingVerifiers",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "highestLiveThreshold",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",

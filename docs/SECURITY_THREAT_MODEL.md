@@ -187,8 +187,14 @@ Goal: gain powers beyond the intended role
 ├── Compromised QUEST_CREATOR_ROLE key creates reward-farming quests
 │   └── MITIGATED: per-quest reward cap (10_000); quests are public and
 │       auditable; admin can deactivate; pause stops all completions.
-│       Residual risk accepted: a rogue creator can still create junk
-│       quests (visible, reversible, capped).
+│       Residual risk accepted (Phase 7 PH7-L01, corrected): the cap is
+│       PER QUEST ONLY — there is no on-chain cap on the TOTAL points
+│       one creator can issue (many quests, or one unlimited repeatable
+│       quest). "Capped" in the old wording did not cover the total.
+│       Accepted because the creator role is trusted (campaign
+│       multisig in production), issuance is public and monitored
+│       (completion spikes), and deactivate + pause bound the damage
+│       window. See QUEST_VALIDATION_DESIGN.md §5.
 ├── Compromised PAUSER_ROLE key pauses the system (DoS)
 │   └── MITIGATED: pause is reversible by DEFAULT_ADMIN_ROLE (multisig +
 │       timelock); reads keep working while paused; no funds at risk.
@@ -253,7 +259,7 @@ Goal: backdoor via a dependency
 │   └── MITIGATED: exact-pinned versions + pnpm-lock.yaml + --frozen-lockfile
 │       in CI; pnpm audit in CI (blocked in this VM — see gate doc).
 ├── Compromised toolchain (solc / forge)
-│   └── MITIGATED: solc 0.8.24 pinned in foundry.toml; forge 1.9.0 pinned
+│   └── MITIGATED: solc 0.8.39 pinned in foundry.toml; forge 1.9.0 pinned
 │       in CI (M3 fix); reproducible builds.
 └── Compromised GitHub Action
     └── MITIGATED: pinned major versions; no third-party actions with
@@ -346,7 +352,7 @@ Goal: trick users into wrong actions
 | ---- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | AR-1 | Official Agent ID contract misbehaves / is compromised.          | Binance-operated, soulbound, ecosystem-wide; out of AGENTHUB's control. Gate fails closed.                                                                                                      |
 | AR-2 | Multisig threshold compromise.                                   | Bounded damage (no funds, no arbitrary points); mitigated by threshold ≥ 2 + timelock delay.                                                                                                    |
-| AR-3 | Rogue quest creator makes junk/capped-reward quests.             | Visible on-chain, capped at 10_000 pts/quest, deactivatable, pausable.                                                                                                                          |
+| AR-3 | Rogue quest creator makes junk/capped-reward quests.             | Visible on-chain, capped at 10_000 pts/quest (PER-QUEST ONLY — no total cap; Phase 7 PH7-L01, accepted: trusted creator role + spike monitoring + deactivate/pause), deactivatable, pausable.   |
 | AR-4 | Front-running of capped-quest slots.                             | No value at stake; victim loses only a slot.                                                                                                                                                    |
 | AR-5 | Frontend/DNS compromise misleads users.                          | Chain remains source of truth; users can verify on BscScan. No signing power in frontend.                                                                                                       |
 | AR-6 | No external audit yet.                                           | Independent review is required before mainnet (see `SECURITY_DEPLOYMENT_GATE.md`); this phase is internal hardening, not a substitute.                                                          |

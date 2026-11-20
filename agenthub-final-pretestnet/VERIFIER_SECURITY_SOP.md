@@ -157,11 +157,16 @@ quest goes live.
   exactly once per completion regardless of M, and `AttestationUsed`
   is emitted once per distinct signer (per-signer monitoring in §5
   works unchanged).
-- **Threshold policy.** Per-quest `attestationThreshold` (1–3), set at
-  creation, immutable afterwards. Threshold 2 for rewardPoints > 1,000
-  or a badge with real-world value; 1 otherwise. The threshold is part
-  of the quest's public data, so the frontend shows "requires N
-  verifier signatures".
+- **Threshold policy — ENFORCED ON-CHAIN (Phase 8, PH7-H01 / PH7-M02).**
+  Per-quest `attestationThreshold` (1–3), set at creation, immutable
+  afterwards. Threshold 2 for rewardPoints > 1,000 or a badge classified
+  high-value (`Achievement.isBadgeHighValue`, set by `BADGE_MANAGER_ROLE`
+  via `setBadgeHighValue`); 1 otherwise. `createQuest` reverts
+  (`InsufficientAttestations(threshold, 2)`) if an Attested quest
+  violates the policy — the policy is no longer SOP-only. It applies to
+  Attested quests only: other kinds store a threshold but never enforce
+  it at completion. The threshold is part of the quest's public data,
+  so the frontend shows "requires N verifier signatures".
 - **Cost.** Each additional signature is one more `ecrecover` (~3k
   gas) plus the UX cost of collecting M signatures (the verifiers sign
   the same digest independently; the user or a coordinator collects
@@ -173,13 +178,17 @@ quest goes live.
   a threshold quest needs M verifiers to sign the same nonce+deadline
   within the coordination window, and the nonce moves on ANY attested
   completion by the account, so a half-collected set goes stale.
-- **Footgun (SOP mitigation only).** `AccessControl` cannot enumerate
-  role holders, so the contract cannot check that threshold ≤ live
-  verifier count: revoking verifiers until fewer than M remain bricks
-  every live threshold-M quest. Grant ≥ threshold verifiers before
-  creating a threshold quest, and never revoke below the highest live
-  threshold without deactivating the affected quests first
-  (`VERIFIER_ROLE_SOP.md` §6.1).
+- **Footgun — now guarded on-chain (Phase 8, PH7-M01).**
+  QuestManager counts live verifiers (`verifierCount()`) and tracks the
+  highest threshold among live Attested quests
+  (`highestLiveThreshold()`). Revoking — or renouncing — `VERIFIER_ROLE`
+  reverts (`RevocationWouldBrickQuest`) while it would leave fewer
+  verifiers than that threshold, and `createQuest` reverts
+  (`InsufficientVerifiers`) when an Attested quest's threshold exceeds
+  the live verifier count. Recovery when a revoke is blocked:
+  deactivate the affected quests first, or grant a replacement verifier
+  first (`VERIFIER_ROLE_SOP.md` §6.1). An expired-but-still-active quest
+  still counts toward the guardrail until deactivated.
 - **Closing R-010.** Implementation alone does not close R-010: the
   full regression battery and the testnet smoke (threshold-1 and
   threshold-2 quests created and completed on the live testnet;

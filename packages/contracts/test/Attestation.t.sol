@@ -268,10 +268,14 @@ contract AttestationTest is Test {
     function test_VerifierRotationInvalidatesOldAttestations() public {
         uint256 deadline = block.timestamp + 1 days;
         bytes memory oldSig = _sign(VERIFIER_KEY, alice, attestedQuest, qm.nonces(alice), deadline);
-        // Rotate: revoke the old verifier, grant a new one.
-        qm.revokeRole(qm.VERIFIER_ROLE(), verifier);
+        // Rotate: grant the new verifier BEFORE revoking the old one.
+        // PHASE 8 (PH7-M01): revoking the only verifier while a
+        // threshold-1 quest is live is blocked by the guardrail
+        // (RevocationWouldBrickQuest) — grant-first rotation is the
+        // supported order, and it keeps the quest completable throughout.
         address newVerifier = vm.addr(NEW_VERIFIER_KEY);
         qm.grantRole(qm.VERIFIER_ROLE(), newVerifier);
+        qm.revokeRole(qm.VERIFIER_ROLE(), verifier);
         // The old attestation is dead the moment the role is revoked.
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(IQuestManager.UnauthorizedVerifier.selector, verifier));

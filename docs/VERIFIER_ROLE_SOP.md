@@ -162,10 +162,21 @@ coordinator) collects the signatures and submits them together via the
 AttestationForm, which shows "requires N verifier signatures" from the
 quest's public threshold.
 
-**Threshold policy.** Threshold 2 for any attested quest with
-rewardPoints > 1,000 or a badge with real-world value; threshold 1 for
-everything else. Threshold 3 is available but needs a 3-verifier set
-and slower coordination — use it only for the highest-value quests.
+**Threshold policy — ENFORCED ON-CHAIN (Phase 8, PH7-H01 / PH7-M02).**
+Threshold 2 for any attested quest with rewardPoints > 1,000 or a badge
+classified high-value (`Achievement.isBadgeHighValue`); threshold 1 for
+everything else. `createQuest` reverts
+(`InsufficientAttestations(threshold, 2)`) if an Attested quest violates
+the policy — no creator, script, or UI can create a high-value
+threshold-1 quest anymore. The policy applies to Attested quests only:
+CheckIn/OnChain quests store a threshold but never enforce it at
+completion, so the rule has no meaning for them. Threshold 3 is
+available but needs a 3-verifier set and slower coordination — use it
+only for the highest-value quests. A badge's high-value classification
+is set by `BADGE_MANAGER_ROLE` via `setBadgeHighValue` and is read at
+quest creation only: re-classifying a badge never changes a live
+quest's threshold (thresholds are immutable) — deactivate + recreate
+such a quest if the policy demands it.
 
 **Coordination flow (threshold 2).**
 
@@ -189,16 +200,23 @@ and slower coordination — use it only for the highest-value quests.
 **Footguns (read before granting or revoking).**
 
 - **Grant first:** grant at least the threshold number of verifiers
-  **before** creating a threshold quest. A threshold-2 quest with only
-  one verifier can never complete.
-- **Do not revoke below the threshold:** OpenZeppelin `AccessControl`
-  cannot enumerate role holders, so the contract **cannot** check that
-  threshold ≤ live verifier count. If verifiers are revoked until
-  fewer than M remain, every live threshold-M quest becomes
-  uncompletable ("bricked"). Before any revocation, check the highest
-  threshold among live Attested quests: either keep at least that many
-  verifiers, or deactivate the affected quests first (the admin can
-  always deactivate a bricked quest and recreate it at threshold 1).
+  **before** creating a threshold quest. The contract now enforces
+  this: `createQuest` reverts (`InsufficientVerifiers`) if an Attested
+  quest's threshold exceeds the live verifier count — a threshold-2
+  quest with only one verifier can never be created.
+- **Do not revoke below the threshold — now guarded on-chain (Phase 8,
+  PH7-M01):** QuestManager counts live verifiers (`verifierCount()`)
+  and tracks the highest threshold among live Attested quests
+  (`highestLiveThreshold()`). Revoking — or renouncing —
+  `VERIFIER_ROLE` reverts (`RevocationWouldBrickQuest`) while it would
+  leave fewer verifiers than that threshold. Before any revocation,
+  read `highestLiveThreshold()`; if the revoke would be blocked, use
+  one of the two recovery paths: (1) **deactivate the affected quests
+  first** (creator or admin via `deactivateQuest`, then revoke), or
+  (2) **grant a replacement verifier first** (rotation order: grant,
+  then revoke). Note: an expired-but-still-active quest still counts
+  toward the guardrail until deactivated — deactivate stale quests
+  rather than waiting for expiry.
 - **Rotation on threshold quests:** grant the replacement verifier
   before revoking the old one (§5 order), and re-issue any in-flight
   attestation sets that included the old signer — its signature stops
@@ -233,6 +251,12 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
   before escalating.
 - **Role events** (`RoleGranted` / `RoleRevoked` for `VERIFIER_ROLE`) —
   any grant/revoke outside a planned change is an incident.
+- **Guardrail reverts (Phase 8)** — a `RevocationWouldBrickQuest`
+  revert means an operator tried to revoke below the highest live
+  threshold: check `highestLiveThreshold()` and follow the recovery
+  path in §6.1 (deactivate first, or grant a replacement first).
+  An `InsufficientVerifiers` revert at quest creation means the
+  creator skipped the grant-first step.
 - **Pause events** — any pause triggers the incident process (§4).
 
 ## 9. Checklists
@@ -260,6 +284,9 @@ the on-chain truth is `hasRole(VERIFIER_ROLE, …)` — the two must agree.
 - [ ] Evidence preserved (signer, timeline, anomalous completions)
 - [ ] Revocation proposed via timelock
 - [ ] Damage assessed (completions since suspected compromise)
-- [ ] Revocation executed + verified on-chain
+- [ ] Revocation executed + verified on-chain — if it reverts with
+      `RevocationWouldBrickQuest`, deactivate the affected live Attested
+      quests first (`deactivateQuest` works while paused), then execute
+      the revocation
 - [ ] Unpause proposed + executed only after revocation
 - [ ] Post-incident note written (what happened, what changed)

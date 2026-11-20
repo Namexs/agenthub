@@ -119,7 +119,14 @@ deadline). A completion needs at least the quest's threshold of
 **distinct** `VERIFIER_ROLE` signers — one compromised verifier can no
 longer attest a threshold-2+ quest alone. Policy (see
 `VERIFIER_ROLE_SOP.md` §6.1): threshold 2 for rewardPoints > 1,000 or
-a badge with real-world value, threshold 1 otherwise. Extra signatures
+a badge with real-world value, threshold 1 otherwise. **Phase 8
+(PH7-H01 / PH7-M02): this policy is now enforced ON-CHAIN in
+`createQuest`** — an Attested quest with rewardPoints >
+`HIGH_VALUE_REWARD_POINTS` (1,000) or a high-value badge
+(`Achievement.isBadgeHighValue`) and threshold < 2 reverts with
+`InsufficientAttestations(threshold, 2)`. The policy applies to
+Attested quests only: other kinds store a threshold but never enforce
+it at completion, so the rule has no meaning for them. Extra signatures
 beyond the threshold are allowed but every signature in the array must
 still recover to a distinct verifier — a junk signature anywhere reverts
 the call. The array is capped at `MAX_ATTESTATION_SIGNATURES` (5).
@@ -164,13 +171,20 @@ signer stop working the moment its role is revoked. There is no on-chain
 "verifier registry" beyond the role; off-chain, the project keeps the list
 of active verifiers and their key-hygiene requirements (hardware-backed keys,
 no shared keys, immediate revocation on suspected compromise).
-**Threshold footgun:** `AccessControl` cannot enumerate role holders, so
-the contract cannot check that threshold ≤ live verifier count — revoking
-verifiers until fewer than M remain bricks every live threshold-M quest.
-Grant at least the threshold number of verifiers before creating a
-threshold quest, and never revoke below the highest live threshold
-without deactivating the affected quests first (see
-`VERIFIER_ROLE_SOP.md` §6.1).
+**Threshold guardrail (Phase 8, PH7-M01):** QuestManager now counts live
+verifiers (`verifierCount()`, maintained by `_grantRole`/`_revokeRole`
+overrides — `AccessControl` itself cannot enumerate role holders) and
+tracks the highest threshold among live Attested quests
+(`highestLiveThreshold()`, derived from per-threshold live counters).
+Revoking — or renouncing — `VERIFIER_ROLE` reverts
+(`RevocationWouldBrickQuest`) while it would leave fewer verifiers than
+that threshold, and `createQuest` reverts (`InsufficientVerifiers`) when
+an Attested quest's threshold exceeds the live verifier count, so a quest
+can never be born bricked. Recovery when a revoke is blocked: deactivate
+the affected quests first, or grant a replacement verifier first. An
+expired-but-still-active quest still counts toward the guardrail until
+deactivated (deliberately conservative). Non-Attested quests never affect
+the counters.
 
 **What attestation does NOT prove:** the verifier is trusted. An attestation
 proves "authorized verifiers signed that this account completed this
@@ -256,6 +270,16 @@ must render it honestly:
 
 A quest must never be displayed as "verified" when its kind is CheckIn.
 
+**Phase 8 additions.** A quest that supersedes an older quest
+(`QuestManager.supersedes`) should be shown with its link to the
+superseded quest, so users can see it is a recreate — and the UI
+should tell an account that already completed the old quest that the
+new one is closed to them (the contract enforces this; the UI should
+explain it, not just show a failed transaction). A high-value badge
+(`Achievement.isBadgeHighValue`) should be marked as such wherever the
+badge is displayed, so users can see why the quest requires two
+verifiers.
+
 ## 4. Migration note
 
 Quests created before this change have no kind. The remediation changes the
@@ -273,3 +297,27 @@ by the verifier (each completion needs a fresh attestation) and by the
 cooldown. OnChain farming is bounded by the live condition. None of this
 prevents a determined user from completing many _different_ quests — that is
 the product working as intended.
+
+**Recreate is not a second payout (Phase 8, PH7-L07).** When a quest is
+deactivated and recreated, the admin links the new quest to the old one
+(`setSupersedes`), and accounts that completed the old quest cannot
+complete the new one. The link is single-hop and set by the admin after
+the recreate — set it promptly, since completions that land before the
+link is set stand.
+
+**No total issuance cap — accepted, with evidence (Phase 7, PH7-L01).**
+There is deliberately no on-chain cap on the total points one creator
+can issue: the only bounds are per-quest (`rewardPoints ≤ 10,000`) and
+per-quest lifetime (`maxCompletions`, when set). A rogue creator could
+still issue unbounded points by creating many quests or one unlimited
+repeatable quest. This is accepted, not overlooked: (1) creating quests
+requires `QUEST_CREATOR_ROLE`, a trusted role held by the campaign
+multisig in production; (2) every quest and completion is public
+on-chain, and completion spikes are a monitored signal
+(`VERIFIER_ROLE_SOP.md` §8); (3) the response is fast —
+`deactivateQuest` per quest, `pause()` for everything. An on-chain cap
+would need an arbitrary number (any value is policy, not security) plus
+a governance reset path, and would risk blocking legitimate long-running
+campaigns — the monitoring + deactivate + pause combination is the
+proportionate control. See `SECURITY_THREAT_MODEL.md` (AR-3) for the
+corrected risk statement.

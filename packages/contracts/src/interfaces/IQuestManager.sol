@@ -114,6 +114,27 @@ interface IQuestManager {
     error TooManyAttestationSignatures(uint256 provided);
     /// @dev PHASE 6 (R-010): attestationThreshold outside 1–3 at creation.
     error AttestationThresholdOutOfRange(uint256 threshold);
+    // PHASE 8 (PH7-H01 / PH7-M02): a high-value Attested quest
+    // (rewardPoints > HIGH_VALUE_REWARD_POINTS, or a high-value badge)
+    // created with attestationThreshold < 2 reverts with
+    // InsufficientAttestations(threshold, 2) — the policy floor is 2
+    // distinct verifiers, so `provided` is the requested threshold and
+    // `required` is 2. No separate error: one error surface for "not
+    // enough verifiers", whether at creation or at completion.
+    /// @dev PHASE 8 (PH7-M01): revoking a verifier would leave fewer
+    /// verifiers than the highest threshold among live Attested quests,
+    /// bricking those quests. `remainingVerifiers` is the count after
+    /// the revoke; `highestLiveThreshold` is the bar it must clear.
+    /// Recovery: deactivate the affected quests first, then revoke.
+    error RevocationWouldBrickQuest(uint256 remainingVerifiers, uint256 highestLiveThreshold);
+    /// @dev PHASE 8 (PH7-M01): an Attested quest was created with a
+    /// threshold above the number of live VERIFIER_ROLE holders — it
+    /// would be bricked from birth. Grant verifiers first.
+    error InsufficientVerifiers(uint256 available, uint256 required);
+    /// @dev PHASE 8 (PH7-L07): `account` already completed the quest
+    /// this quest supersedes (`supersededQuestId`) — the recreate
+    /// cannot pay the same account twice for the same quest.
+    error AlreadyCompletedSupersededQuest(address account, uint256 questId, uint256 supersededQuestId);
     /// @dev The on-chain validator rejected the completion.
     error OnChainValidationFailed(uint256 questId, address account);
     /// @dev Validator address mismatches the quest's validation kind:
@@ -158,6 +179,11 @@ interface IQuestManager {
     /// @notice Emitted when the admin revokes a validator's approval.
     /// Revocation blocks new quests AND completions using that validator.
     event ValidatorRevoked(address indexed validator);
+    /// @notice PHASE 8 (PH7-L07): `newQuestId` supersedes `oldQuestId`
+    /// (a deactivate + recreate). Accounts that completed the old quest
+    /// cannot complete the new one — the link is the anti-double-claim
+    /// record for indexers and the frontend.
+    event QuestSuperseded(uint256 indexed newQuestId, uint256 indexed oldQuestId);
 
     /// @notice Create a quest. Only QUEST_CREATOR_ROLE. Returns the new quest id.
     /// @dev Rules (review R3/R4/R5): title 1–128 bytes, description ≤ 1024 bytes,
@@ -170,6 +196,18 @@ interface IQuestManager {
     /// @dev PHASE 6 (R-010): attestationThreshold (1–3, uniform for all quest
     /// kinds) is the minimum number of DISTINCT VERIFIER_ROLE signatures an
     /// attestation must carry. Immutable after creation — there is no setter.
+    /// @dev PHASE 8 (PH7-H01 / PH7-M02): the threshold policy is enforced
+    /// ON-CHAIN for Attested quests only — a quest with
+    /// rewardPoints > HIGH_VALUE_REWARD_POINTS (1,000) or a high-value
+    /// badge REQUIRES attestationThreshold ≥ 2, else
+    /// InsufficientAttestations(threshold, 2). Non-Attested quests are
+    /// exempt: their threshold is stored but never enforced at
+    /// completion (PH7-L08 / PH7-I07), so the policy has no meaning for
+    /// them — a CheckIn quest may legitimately carry 10,000 points.
+    /// @dev PHASE 8 (PH7-M01): an Attested quest also requires at least
+    /// `attestationThreshold` live VERIFIER_ROLE holders at creation
+    /// (InsufficientVerifiers), so a quest can never be born bricked.
+    /// Non-Attested quests are not checked.
     function createQuest(
         string calldata title,
         string calldata description,
@@ -246,7 +284,47 @@ interface IQuestManager {
     function emergencyRevokeValidator(address validator) external;
 
     /// @notice Deactivate a quest (creator or admin). No new completions after this.
+    /// @dev PHASE 8 (PH7-M01): deactivating an Attested quest lowers the
+    /// live-threshold counters, which is the recovery path when a
+    /// verifier revocation would otherwise be blocked by the guardrail.
     function deactivateQuest(uint256 questId) external;
+
+    /// @notice PHASE 8 (PH7-L07): record that `newQuestId` supersedes
+    /// `oldQuestId` (a deactivate + recreate of the same quest). Admin
+    /// only. Both quests must exist and differ; the old quest SHOULD
+    /// already be deactivated (the recreate flow), but the contract
+    /// does not enforce it — linking a live quest is harmless, since
+    /// the guard only blocks accounts that completed the old quest.
+    /// The link is single-hop and permanent (no clear function):
+    /// completions of the new quest check ONLY the linked old quest,
+    /// so for a chain of recreates, link the new quest to the quest
+    /// that actually has completions. Re-linking overwrites the
+    /// previous link (admin correction path). Accounts that completed
+    /// the new quest BEFORE the link was set keep their completion —
+    /// set the link promptly after recreating.
+    function setSupersedes(uint256 newQuestId, uint256 oldQuestId) external;
+
+    /// @notice PHASE 8 (PH7-L07): the quest `questId` supersedes, or 0
+    /// if it supersedes none.
+    function supersedes(uint256 questId) external view returns (uint256 oldQuestId);
+
+    /// @notice PHASE 8 (PH7-M01): number of live VERIFIER_ROLE holders.
+    /// Maintained by the _grantRole/_revokeRole overrides (AccessControl
+    /// cannot enumerate role holders, so the contract counts them).
+    function verifierCount() external view returns (uint256 count);
+
+    /// @notice PHASE 8 (PH7-M01): highest attestationThreshold among
+    /// live (active) Attested quests, or 0 when none are live. A
+    /// revocation is blocked while it would leave fewer verifiers
+    /// than this number. Expired-but-still-active quests still count
+    /// (conservative: an expired quest can never complete, but its
+    /// threshold still guards the verifier set until deactivated).
+    function highestLiveThreshold() external view returns (uint8 threshold);
+
+    /// @notice PHASE 8 (PH7-M01): number of live (active) Attested
+    /// quests at exactly `threshold` (1–3; any other value returns 0).
+    /// Observability for the SOP pre-revoke check.
+    function liveAttestedQuestCount(uint8 threshold) external view returns (uint256 count);
 
     function getQuest(uint256 questId) external view returns (Quest memory quest);
     function hasCompleted(address account, uint256 questId) external view returns (bool);
