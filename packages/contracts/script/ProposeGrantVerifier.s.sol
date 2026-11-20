@@ -139,9 +139,8 @@ contract ProposeGrantVerifier is Script {
         returns (Proposal memory proposal)
     {
         proposal = buildProposal(timelockAddr, questManagerAddr, verifier, salt);
-        TimelockController(payable(timelockAddr)).schedule(
-            proposal.questManager, 0, proposal.data, bytes32(0), proposal.salt, proposal.delay
-        );
+        TimelockController(payable(timelockAddr))
+            .schedule(proposal.questManager, 0, proposal.data, bytes32(0), proposal.salt, proposal.delay);
     }
 
     function _printProposal(Proposal memory proposal) internal pure {

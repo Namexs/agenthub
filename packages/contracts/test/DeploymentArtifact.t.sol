@@ -36,18 +36,12 @@ contract DeploymentArtifactTest is Test {
     string internal constant ARTIFACT_MISSING = "deployments/31337-missing.json";
 
     // Distinct fake tx hashes for the fabricated broadcast file.
-    string internal constant HASH_MOCK =
-        "0x1111111111111111111111111111111111111111111111111111111111111111";
-    string internal constant HASH_GATE =
-        "0x2222222222222222222222222222222222222222222222222222222222222222";
-    string internal constant HASH_TIMELOCK =
-        "0x3333333333333333333333333333333333333333333333333333333333333333";
-    string internal constant HASH_REPUTATION =
-        "0x4444444444444444444444444444444444444444444444444444444444444444";
-    string internal constant HASH_ACHIEVEMENT =
-        "0x5555555555555555555555555555555555555555555555555555555555555555";
-    string internal constant HASH_QM =
-        "0x6666666666666666666666666666666666666666666666666666666666666666";
+    string internal constant HASH_MOCK = "0x1111111111111111111111111111111111111111111111111111111111111111";
+    string internal constant HASH_GATE = "0x2222222222222222222222222222222222222222222222222222222222222222";
+    string internal constant HASH_TIMELOCK = "0x3333333333333333333333333333333333333333333333333333333333333333";
+    string internal constant HASH_REPUTATION = "0x4444444444444444444444444444444444444444444444444444444444444444";
+    string internal constant HASH_ACHIEVEMENT = "0x5555555555555555555555555555555555555555555555555555555555555555";
+    string internal constant HASH_QM = "0x6666666666666666666666666666666666666666666666666666666666666666";
 
     function setUp() public {
         script = new DeployAgentHub();
@@ -158,9 +152,7 @@ contract DeploymentArtifactTest is Test {
         vm.writeFile(FIXTURE_PRESERVE, _broadcastFixture(d));
         recorder.record(ARTIFACT_PRESERVE, FIXTURE_PRESERVE);
         assertEq(
-            vm.parseJsonString(vm.readFile(ARTIFACT_PRESERVE), ".questManagerTxHash"),
-            HASH_QM,
-            "setup: hash not filled"
+            vm.parseJsonString(vm.readFile(ARTIFACT_PRESERVE), ".questManagerTxHash"), HASH_QM, "setup: hash not filled"
         );
         // Second run against a dry-run broadcast file (empty receipts
         // array, predicted hashes only): the recorded hashes survive

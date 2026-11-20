@@ -57,8 +57,7 @@ contract RecordDeployment is Script {
         string memory deploymentJson = vm.readFile(deploymentPath);
         string memory broadcastJson = vm.readFile(broadcastPath);
 
-        string[6] memory names =
-            ["mockAgentId", "agentGate", "timelock", "reputation", "achievement", "questManager"];
+        string[6] memory names = ["mockAgentId", "agentGate", "timelock", "reputation", "achievement", "questManager"];
         address[6] memory addrs;
         string[6] memory hashes;
         uint256 matched;
@@ -105,11 +104,7 @@ contract RecordDeployment is Script {
         // on forge 1.9.0: (string, ...) lines silently vanish).
         console.log(
             string.concat(
-                "RecordDeployment: ",
-                deploymentPath,
-                " enriched with ",
-                vm.toString(matched),
-                "/6 deployment tx hashes"
+                "RecordDeployment: ", deploymentPath, " enriched with ", vm.toString(matched), "/6 deployment tx hashes"
             )
         );
         if (matched == 0) {

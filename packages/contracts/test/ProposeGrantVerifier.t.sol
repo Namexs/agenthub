@@ -100,8 +100,7 @@ contract ProposeGrantVerifierTest is Test {
     }
 
     function test_BuildProposalProducesCorrectOperation() public view {
-        ProposeGrantVerifier.Proposal memory p =
-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
         assertEq(p.timelock, address(timelock));
         assertEq(p.questManager, address(qm));
         assertEq(p.verifier, verifier2);
@@ -123,8 +122,7 @@ contract ProposeGrantVerifierTest is Test {
     }
 
     function test_ScheduleExecuteGrantsVerifierAfterDelay() public {
-        ProposeGrantVerifier.Proposal memory p =
-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
         assertFalse(qm.hasRole(qm.VERIFIER_ROLE(), verifier2), "verifier2 already has the role");
 
         // 2. SCHEDULE — the multisig (proposer) schedules with the
@@ -185,8 +183,7 @@ contract ProposeGrantVerifierTest is Test {
         );
         proposer.scheduleGrant(address(timelock), address(qm), verifier2, salt);
         // And a direct schedule call from a non-proposer reverts too.
-        ProposeGrantVerifier.Proposal memory p =
-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
         vm.expectRevert(
             abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, alice, proposerRole)
         );
@@ -210,8 +207,7 @@ contract ProposeGrantVerifierTest is Test {
     }
 
     function test_CancelBeforeExecutePreventsGrant() public {
-        ProposeGrantVerifier.Proposal memory p =
-            proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
+        ProposeGrantVerifier.Proposal memory p = proposer.buildProposal(address(timelock), address(qm), verifier2, salt);
         vm.prank(multisig);
         timelock.schedule(address(qm), 0, p.data, bytes32(0), p.salt, p.delay);
         // The multisig holds CANCELLER_ROLE (PH7-L17) and cancels
@@ -261,21 +257,15 @@ contract ProposeGrantVerifierTest is Test {
         // A timelock with a 1-day minDelay that IS the QM admin — the
         // script refuses anything but the 2-day AGENTHUB policy.
         (TimelockController shortTimelock, QuestManager synthQm) = _syntheticStack(1 days);
-        vm.expectRevert(
-            abi.encodeWithSelector(ProposeGrantVerifier.UnexpectedTimelockDelay.selector, 1 days, 2 days)
-        );
+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.UnexpectedTimelockDelay.selector, 1 days, 2 days));
         proposer.buildProposal(address(shortTimelock), address(synthQm), verifier2, salt);
     }
 
     function test_BuildProposalRejectsNoCodeAddresses() public {
         address eoa = makeAddr("no-code");
-        vm.expectRevert(
-            abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "timelock")
-        );
+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "timelock"));
         proposer.buildProposal(eoa, address(qm), verifier2, salt);
-        vm.expectRevert(
-            abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "questManager")
-        );
+        vm.expectRevert(abi.encodeWithSelector(ProposeGrantVerifier.NoCodeAtAddress.selector, eoa, "questManager"));
         proposer.buildProposal(address(timelock), eoa, verifier2, salt);
     }
 }
