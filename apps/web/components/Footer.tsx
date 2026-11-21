@@ -1,10 +1,14 @@
 import Link from 'next/link';
+import { Logo } from './Logo';
 
 export function Footer() {
   return (
     <footer className="border-t border-navy-600/50 py-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 text-sm text-ink-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p>AGENTHUB — Your Agent ID. Your Onchain Reputation.</p>
+        <p className="flex items-center gap-2">
+          <Logo className="h-5 w-5 shrink-0" />
+          <span>AGENTHUB: Your Agent ID. Your Onchain Reputation.</span>
+        </p>
         <div className="flex gap-5">
           <Link href="/security" className="transition hover:text-agent-300">
             Security

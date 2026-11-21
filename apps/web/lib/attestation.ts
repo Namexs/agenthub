@@ -104,7 +104,7 @@ export async function checkAttestation(
   } else if (input.deadline < nowSeconds) {
     errors.push('Attestation has expired');
   } else if (input.deadline > nowSeconds + MAX_ATTESTATION_LIFETIME_SECONDS) {
-    errors.push('Deadline is more than 7 days out — the contract will reject it');
+    errors.push('Deadline is more than 7 days out. The contract will reject it.');
   }
   if (errors.length > 0) return { valid: false, signer: null, errors };
 
@@ -112,7 +112,7 @@ export async function checkAttestation(
   try {
     signer = await recoverAttestationSigner(input, chainId, questManagerAddress);
   } catch {
-    errors.push('Signature could not be recovered — it may be malformed');
+    errors.push('Signature could not be recovered. It may be malformed.');
     return { valid: false, signer: null, errors };
   }
   if (signer === '0x0000000000000000000000000000000000000000') {
@@ -243,7 +243,7 @@ export async function checkAttestations(
         // Duplicate signer: the contract reverts
         // (DuplicateAttestationSigner) — never counts twice.
         entry.valid = false;
-        entry.errors.push(`Duplicate signer ${single.signer} — each verifier may sign only once`);
+        entry.errors.push(`Duplicate signer ${single.signer}. Each verifier may sign only once.`);
       } else {
         seen.add(key);
         signers.push(single.signer);
@@ -263,7 +263,7 @@ export async function checkAttestations(
   }
   if (signers.length < threshold) {
     errors.push(
-      `Only ${signers.length} distinct valid signer${signers.length === 1 ? '' : 's'} — this quest requires ${threshold}`,
+      `Only ${signers.length} distinct valid signer${signers.length === 1 ? '' : 's'}. This quest requires ${threshold}`,
     );
   }
   return { valid: errors.length === 0, signers, perSigner, errors };

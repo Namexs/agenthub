@@ -5,7 +5,7 @@ export function LeaderboardTable({ entries }: { entries: LeaderboardEntry[] }) {
   if (entries.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-ink-400">
-        No ranked agents yet — the leaderboard fills up once quests are completed on-chain.
+        No ranked agents yet. The leaderboard fills up once quests are completed on-chain.
       </p>
     );
   }

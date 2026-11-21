@@ -28,7 +28,7 @@ export default function CampaignsPage() {
           <h2 className="text-lg font-semibold">For campaign creators</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-400">
             Create quests with the QUEST_CREATOR_ROLE, set reward points and time windows, and track
-            completions transparently. No custody of user funds — AGENTHUB never holds participant
+            completions transparently. No custody of user funds. AGENTHUB never holds participant
             assets.
           </p>
         </GlassCard>
@@ -37,7 +37,7 @@ export default function CampaignsPage() {
         <h2 className="text-lg font-semibold">Active campaigns</h2>
         {!deployed ? (
           <p className="mt-2 text-sm text-ink-400">
-            No campaigns yet — the first community campaign launches with the testnet release.
+            No campaigns yet. The first community campaign launches with the testnet release.
           </p>
         ) : isLoading ? (
           <p className="mt-2 text-sm text-ink-400">Loading campaigns…</p>

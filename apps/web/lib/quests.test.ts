@@ -235,7 +235,7 @@ describe('questEligibility', () => {
     expect(questEligibility(q, OPEN_STATE, NOW, true)).toEqual({
       canComplete: false,
       needsAttestation: true,
-      reason: 'Needs a verifier attestation — submit yours below',
+      reason: 'Needs a verifier attestation. Submit yours below.',
     });
   });
 
@@ -248,7 +248,7 @@ describe('questEligibility', () => {
 describe('validationKindLabel', () => {
   it('never calls a CheckIn quest "verified"', () => {
     expect(validationKindLabel(ValidationKind.CheckIn)).toBe(
-      'Check-in — no external proof required',
+      'Check-in: no external proof required',
     );
     expect(validationKindLabel(ValidationKind.CheckIn)).not.toMatch(/verif/i);
   });

@@ -97,7 +97,7 @@ export function QuestCardLive({ quest }: { quest: QuestWithState }) {
             disabled={
               !eligibility.canComplete || !isSupported || isPending || isConfirming || isSuccess
             }
-            className="rounded-pill bg-gradient-to-r from-agent-500 to-electric-600 px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+            className="rounded-lg bg-agent-400 px-4 py-2 text-sm font-semibold text-navy-950 transition-colors hover:bg-agent-300 disabled:opacity-50"
             title={eligibility.reason ?? undefined}
           >
             {isPending
@@ -128,9 +128,9 @@ export function QuestCardLive({ quest }: { quest: QuestWithState }) {
                 <span className="font-mono">{formatAddress(hash)}</span>
               )}{' '}
               {isSuccess
-                ? '— confirmed on-chain ✓'
+                ? '· confirmed on-chain ✓'
                 : isConfirming
-                  ? '— waiting for confirmation…'
+                  ? '· waiting for confirmation…'
                   : ''}
             </p>
           )}

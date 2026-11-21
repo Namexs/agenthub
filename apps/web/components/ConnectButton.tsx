@@ -13,7 +13,7 @@ export function ConnectButton() {
       <button
         type="button"
         onClick={() => disconnect()}
-        className="rounded-pill border border-agent-400/50 bg-agent-500/10 px-4 py-2 text-sm font-medium text-agent-300 transition hover:bg-agent-500/20"
+        className="rounded-lg border border-navy-600 bg-navy-900 px-4 py-2 font-mono text-sm text-ink-200 transition-colors hover:border-ink-400"
         title="Disconnect wallet"
       >
         {formatAddress(address)}
@@ -27,7 +27,7 @@ export function ConnectButton() {
       type="button"
       disabled={!injected || isPending}
       onClick={() => injected && connect({ connector: injected })}
-      className="rounded-pill bg-gradient-to-r from-agent-500 to-electric-600 px-4 py-2 text-sm font-semibold text-white shadow-glow-cyan transition hover:opacity-90 disabled:opacity-50"
+      className="rounded-lg bg-agent-400 px-4 py-2 text-sm font-semibold text-navy-950 transition-colors hover:bg-agent-300 disabled:opacity-50"
     >
       {isPending ? 'Connecting…' : 'Connect Binance Wallet'}
     </button>

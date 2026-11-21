@@ -11,7 +11,7 @@ export function TxHistoryList({ entries }: { entries: TxHistoryEntry[] }) {
   if (entries.length === 0) {
     return (
       <p className="py-6 text-center text-sm text-ink-400">
-        No transactions yet — history appears after your first on-chain quest completion.
+        No transactions yet. History appears after your first on-chain quest completion.
       </p>
     );
   }
@@ -29,7 +29,7 @@ export function TxHistoryList({ entries }: { entries: TxHistoryEntry[] }) {
                 `Earned ${entry.points ?? 0} points (quest #${entry.questId})`}
               {entry.kind === 'badge' && `Badge #${entry.badgeId} issued (token #${entry.tokenId})`}
               {entry.kind === 'attestation' &&
-                `Attested completion — quest #${entry.questId}${entry.signer ? `, signed by ${formatAddress(entry.signer)}` : ''}`}
+                `Attested completion: quest #${entry.questId}${entry.signer ? `, signed by ${formatAddress(entry.signer)}` : ''}`}
             </p>
             <p className="text-xs text-ink-500">
               Block {entry.blockNumber.toLocaleString('en-US')}

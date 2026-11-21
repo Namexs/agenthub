@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ConnectButton } from './ConnectButton';
+import { Logo } from './Logo';
 
 const LINKS = [
   { href: '/quests', label: 'Quests' },
@@ -11,14 +12,12 @@ const LINKS = [
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-navy-600/50 bg-navy-950/80 backdrop-blur-glass">
+    <header className="sticky top-0 z-50 border-b border-navy-600/40 bg-navy-950/85 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-agent-400 to-electric-600 text-base font-bold text-white">
-            A
-          </span>
-          <span className="text-lg font-bold tracking-tight text-ink-100">
-            AGENT<span className="text-agent-400">HUB</span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <Logo className="h-8 w-8" />
+          <span className="font-display text-lg font-bold tracking-tight text-ink-100">
+            AGENTHUB
           </span>
         </Link>
         <div className="hidden items-center gap-6 md:flex">
@@ -26,7 +25,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-ink-300 transition hover:text-agent-300"
+              className="text-sm font-medium text-ink-400 transition-colors hover:text-ink-100"
             >
               {link.label}
             </Link>
@@ -39,7 +38,7 @@ export function Navbar() {
           <Link
             key={link.href}
             href={link.href}
-            className="whitespace-nowrap text-sm font-medium text-ink-300"
+            className="whitespace-nowrap text-sm font-medium text-ink-400"
           >
             {link.label}
           </Link>

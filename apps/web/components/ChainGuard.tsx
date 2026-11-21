@@ -30,7 +30,7 @@ export function ChainGuard() {
           type="button"
           onClick={switchToExpected}
           disabled={isSwitching}
-          className="rounded-pill bg-amber-500 px-4 py-1.5 text-sm font-semibold text-navy-950 transition hover:opacity-90 disabled:opacity-50"
+          className="rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-semibold text-navy-950 transition hover:opacity-90 disabled:opacity-50"
         >
           {isSwitching ? 'Switching…' : `Switch to ${expectedChainName}`}
         </button>

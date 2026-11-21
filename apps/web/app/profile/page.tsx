@@ -56,7 +56,7 @@ export default function ProfilePage() {
       <h2 className="mt-10 text-xl font-bold">Badges</h2>
       {!achievements.deployed ? (
         <p className="mt-5 text-sm text-ink-400">
-          Achievement contract not deployed yet — badges appear after the testnet deploy.
+          Achievement contract not deployed yet. Badges appear after the testnet deploy.
         </p>
       ) : achievements.isLoading ? (
         <p className="mt-5 text-sm text-ink-400">Loading badges from on-chain events…</p>
@@ -64,7 +64,7 @@ export default function ProfilePage() {
         <p className="mt-5 text-sm text-red-300">Could not load badges: {achievements.error}</p>
       ) : achievements.badges.length === 0 ? (
         <p className="mt-5 text-sm text-ink-400">
-          No badges defined yet — the first badges are defined after the deploy.
+          No badges defined yet. The first badges are defined after the deploy.
         </p>
       ) : (
         <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -74,8 +74,8 @@ export default function ProfilePage() {
               name={badge.name}
               description={
                 badge.earned
-                  ? `Earned — soulbound token #${badge.tokenId ?? '?'}. Non-transferable.`
-                  : 'Locked — complete the quest that awards this badge.'
+                  ? `Earned: soulbound token #${badge.tokenId ?? '?'}. Non-transferable.`
+                  : 'Locked. Complete the quest that awards this badge.'
               }
               earned={badge.earned}
             />

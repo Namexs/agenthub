@@ -64,7 +64,7 @@ const envSchema = z
         code: z.ZodIssueCode.custom,
         path: ['NEXT_PUBLIC_AGENT_ID_ADDRESS'],
         message:
-          'on BSC testnet (97) the Agent ID MUST NOT be the official mainnet contract — use the deployed MockAgentId',
+          'on BSC testnet (97) the Agent ID MUST NOT be the official mainnet contract. Use the deployed MockAgentId',
       });
     }
     // Chain 31337 (local Anvil/fork): any non-zero address is allowed.
@@ -87,7 +87,7 @@ if (!parsed.success) {
   // build time, so a bad value here means a misconfigured deploy, not a
   // runtime secret leak.
   console.error('Invalid environment configuration:', parsed.error.flatten().fieldErrors);
-  throw new Error('Invalid environment configuration — see docs/DEPLOYMENT.md');
+  throw new Error('Invalid environment configuration. See docs/DEPLOYMENT.md.');
 }
 
 export const env = parsed.data;

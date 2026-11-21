@@ -13,8 +13,8 @@ export default function QuestsPage() {
       <h1 className="text-3xl font-bold tracking-tight">Quests</h1>
       <p className="mt-2 text-sm text-ink-400">
         {deployed
-          ? 'Live quests from QuestManager — every completion is an on-chain transaction.'
-          : 'Launch catalogue preview — these quests go on-chain with the testnet deploy.'}
+          ? 'Live quests from QuestManager. Every completion is an on-chain transaction.'
+          : 'Launch catalogue preview. These quests go on-chain with the testnet deploy.'}
       </p>
 
       {deployed ? (
@@ -24,7 +24,7 @@ export default function QuestsPage() {
           <p className="mt-8 text-sm text-red-300">Could not load quests from the chain: {error}</p>
         ) : quests.length === 0 ? (
           <p className="mt-8 text-sm text-ink-400">
-            No quests on-chain yet — the first quests are created after the deploy.
+            No quests on-chain yet. The first quests are created after the deploy.
           </p>
         ) : (
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

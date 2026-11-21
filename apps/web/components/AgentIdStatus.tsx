@@ -31,7 +31,7 @@ export function AgentIdStatus() {
     <p className="text-sm">
       {isHolder ? (
         <span className="font-medium text-agent-300">
-          Agent ID verified — you hold an Agent ID.
+          Agent ID verified. You hold an Agent ID.
         </span>
       ) : (
         <span className="font-medium text-amber-300">

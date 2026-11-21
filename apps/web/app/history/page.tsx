@@ -17,7 +17,7 @@ export default function HistoryPage() {
       <GlassCard className="mt-8 p-6">
         {!history.deployed ? (
           <p className="py-6 text-center text-sm text-ink-400">
-            Contracts not deployed yet — history appears after the testnet deploy.
+            Contracts not deployed yet. History appears after the testnet deploy.
           </p>
         ) : history.isLoading ? (
           <p className="py-6 text-center text-sm text-ink-400">Loading your on-chain history…</p>

@@ -139,7 +139,7 @@ export function AttestationForm({
             Number.isNaN(deadlineSeconds) ||
             verification.nonceLoading
           }
-          className="rounded-pill border border-electric-500/50 bg-electric-600/10 px-4 py-2 text-xs font-semibold text-electric-300 transition hover:bg-electric-600/20 disabled:opacity-50"
+          className="rounded-lg border border-navy-600 bg-navy-900 px-4 py-2 text-xs font-semibold text-ink-200 transition-colors hover:border-ink-400 disabled:opacity-50"
         >
           Verify attestation
         </button>
@@ -147,7 +147,7 @@ export function AttestationForm({
           type="button"
           onClick={onSubmit}
           disabled={!verification.valid || !isSupported || isPending || isConfirming || isSuccess}
-          className="rounded-pill bg-gradient-to-r from-agent-500 to-electric-600 px-4 py-2 text-xs font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+          className="rounded-lg bg-agent-400 px-4 py-2 text-xs font-semibold text-navy-950 transition-colors hover:bg-agent-300 disabled:opacity-50"
         >
           {isPending
             ? 'Confirm in wallet…'

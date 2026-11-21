@@ -9,6 +9,30 @@ module.exports = {
     './hooks/**/*.{js,ts,jsx,tsx,mdx}',
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      fontFamily: {
+        // Space Grotesk is loaded via next/font in app/layout.tsx
+        // (CSS variable --font-display on <html>). Display face for
+        // headings, wordmark, and large numerals.
+        display: [
+          'var(--font-display)',
+          'var(--font-inter)',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif',
+        ],
+        // IBM Plex Mono via next/font (--font-plex-mono). Used for
+        // eyebrows, labels, and on-chain values (addresses, hashes).
+        mono: [
+          'var(--font-plex-mono)',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'monospace',
+        ],
+      },
+    },
+  },
   plugins: [],
 };

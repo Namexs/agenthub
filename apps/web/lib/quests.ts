@@ -193,7 +193,7 @@ export function questEligibility(
     return {
       canComplete: false,
       needsAttestation: true,
-      reason: 'Needs a verifier attestation — submit yours below',
+      reason: 'Needs a verifier attestation. Submit yours below.',
     };
   }
   return { canComplete: true, needsAttestation: false, reason: null };
@@ -203,7 +203,7 @@ export function questEligibility(
 export function validationKindLabel(kind: ValidationKind): string {
   switch (kind) {
     case ValidationKind.CheckIn:
-      return 'Check-in — no external proof required';
+      return 'Check-in: no external proof required';
     case ValidationKind.OnChain:
       return 'On-chain validation';
     case ValidationKind.Attested:

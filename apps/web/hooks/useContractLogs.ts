@@ -55,7 +55,7 @@ export function useContractLogs(args: {
     if (deployBlock === undefined) {
       setLogs(null);
       setIsLoading(false);
-      setError('Deployment block not configured — set NEXT_PUBLIC_DEPLOY_BLOCK.');
+      setError('Deployment block not configured. Set NEXT_PUBLIC_DEPLOY_BLOCK.');
       return;
     }
     let cancelled = false;

@@ -115,7 +115,7 @@ describe('useContractLogs', () => {
     );
     await waitFor(() =>
       expect(result.current.error).toBe(
-        'Deployment block not configured — set NEXT_PUBLIC_DEPLOY_BLOCK.',
+        'Deployment block not configured. Set NEXT_PUBLIC_DEPLOY_BLOCK.',
       ),
     );
     expect(result.current.logs).toBeNull();

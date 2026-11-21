@@ -120,7 +120,7 @@ describe('checkAttestation', () => {
     const result = await checkAttestation(input, CHAIN_ID, QUEST_MANAGER, NOW);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain(
-      'Deadline is more than 7 days out — the contract will reject it',
+      'Deadline is more than 7 days out. The contract will reject it.',
     );
   });
 
@@ -274,7 +274,7 @@ describe('checkAttestations (multi-signature, Phase 6 / R-010)', () => {
       NOW,
     );
     expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Only 1 distinct valid signer — this quest requires 2');
+    expect(result.errors).toContain('Only 1 distinct valid signer. This quest requires 2');
   });
 
   it('rejects more than MAX_ATTESTATION_SIGNATURES signatures', async () => {

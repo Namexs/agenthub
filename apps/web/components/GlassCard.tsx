@@ -5,7 +5,7 @@ export function GlassCard({ children, className }: { children: ReactNode; classN
   return (
     <div
       className={cn(
-        'rounded-card border border-navy-600/60 bg-navy-800/60 shadow-glass backdrop-blur-glass',
+        'rounded-xl border border-navy-600/50 bg-navy-900 shadow-card',
         className,
       )}
     >

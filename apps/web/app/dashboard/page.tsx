@@ -18,7 +18,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
       <p className="mt-2 text-sm text-ink-400">
-        Your Agent ID activity at a glance — live on-chain data.
+        Your Agent ID activity at a glance. Live on-chain data.
       </p>
       <div className="mt-8 grid gap-5 md:grid-cols-3">
         <GlassCard className="p-5">
@@ -71,7 +71,7 @@ export default function DashboardPage() {
         <h2 className="text-lg font-semibold">Recent activity</h2>
         {!history.deployed ? (
           <p className="mt-2 text-sm text-ink-400">
-            No on-chain activity yet — contracts are not deployed.
+            No on-chain activity yet. Contracts are not deployed.
           </p>
         ) : history.error ? (
           <p className="mt-2 text-sm text-red-300">Could not load activity: {history.error}</p>
