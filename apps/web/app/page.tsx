@@ -107,8 +107,8 @@ export default function HomePage() {
           ))}
         </div>
         <p className="mt-10 text-center text-sm text-ink-500">
-          Contracts deploy to BSC testnet next — mainnet is the competition target. The frontend
-          already reads and writes the real contracts (tested against a local deployment).
+          Contracts are live on BSC testnet — mainnet is the competition target. The frontend
+          reads and writes the real deployed contracts.
         </p>
       </section>
     </div>
