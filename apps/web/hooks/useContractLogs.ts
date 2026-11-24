@@ -12,6 +12,13 @@ import type { DecodedLog } from '@/lib/events';
 // over large ranges. When NEXT_PUBLIC_DEPLOY_BLOCK is unset, the hook
 // reports a configuration error instead of guessing.
 //
+// Public RPCs also cap a single eth_getLogs range: one
+// deployBlock-to-latest call over ~40k blocks is rejected by the BSC
+// dataseed with "limit exceeded" (seen live 2026-11-23, leaderboard
+// down). The fetch is therefore split into fixed-size chunks and the
+// results concatenated; aggregation in lib/events.ts dedupes by
+// (txHash, logIndex), so chunk boundaries are safe.
+//
 // This is a one-shot fetch (not a live subscription): the UI refetches
 // on mount and when the caller asks for a refresh. A live subscription
 // (watchContractEvent) is a later addition.
@@ -25,6 +32,9 @@ export interface UseContractLogsResult {
   updatedAt: number | null;
   refetch: () => void;
 }
+
+/** Max blocks per eth_getLogs call (BSC dataseed rejects wide ranges). */
+const LOG_CHUNK_BLOCKS = 2000n;
 
 export function useContractLogs(args: {
   address: Address | undefined;
@@ -62,21 +72,28 @@ export function useContractLogs(args: {
     setIsLoading(true);
     setError(null);
     const filter = JSON.parse(filterKey) as Record<string, unknown>;
-    client
-      .getLogs({
-        address: args.address,
-        // parseAbiItem on a runtime string returns a union that includes
-        // AbiConstructor; the caller only ever passes event signatures
-        // (EVENT_SIGNATURES), so the cast is safe.
-        event: parseAbiItem(args.event) as AbiEvent,
-        args: filter,
-        fromBlock: BigInt(deployBlock),
-        toBlock: 'latest',
-      })
-      .then((fetched) => {
-        if (cancelled) return;
-        setLogs(
-          fetched.map((log) => ({
+    // Narrowed to number by the undefined check above; capture it here
+    // because narrowing does not survive into the async closure below.
+    const startBlock = BigInt(deployBlock);
+    const fetchAll = async (): Promise<DecodedLog[] | null> => {
+      const latest = await client.getBlockNumber();
+      const all: DecodedLog[] = [];
+      let from = startBlock;
+      while (from <= latest) {
+        const to = from + LOG_CHUNK_BLOCKS - 1n < latest ? from + LOG_CHUNK_BLOCKS - 1n : latest;
+        const chunk = await client.getLogs({
+          address: args.address,
+          // parseAbiItem on a runtime string returns a union that includes
+          // AbiConstructor; the caller only ever passes event signatures
+          // (EVENT_SIGNATURES), so the cast is safe.
+          event: parseAbiItem(args.event) as AbiEvent,
+          args: filter,
+          fromBlock: from,
+          toBlock: to,
+        });
+        if (cancelled) return null;
+        all.push(
+          ...chunk.map((log) => ({
             transactionHash: log.transactionHash,
             blockNumber: Number(log.blockNumber),
             logIndex: log.logIndex,
@@ -85,6 +102,14 @@ export function useContractLogs(args: {
             args: (log as unknown as { args?: Record<string, unknown> }).args ?? {},
           })),
         );
+        from = to + 1n;
+      }
+      return all;
+    };
+    fetchAll()
+      .then((fetched) => {
+        if (cancelled || fetched === null) return;
+        setLogs(fetched);
         setUpdatedAt(Date.now());
         setIsLoading(false);
       })
