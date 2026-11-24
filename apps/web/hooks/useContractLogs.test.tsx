@@ -88,13 +88,13 @@ describe('useContractLogs', () => {
     expect((call.event as { name?: string }).name).toBe('QuestCompleted');
   });
 
-  it('splits a wide range into 2000-block chunks and merges the results', async () => {
-    // deploy block 100, latest 4500 -> [100,2099], [2100,4099], [4100,4500]
-    mocks.getBlockNumber.mockResolvedValue(4500n);
+  it('splits a wide range into 50000-block chunks and merges the results', async () => {
+    // deploy block 100, latest 100600 -> [100,50099], [50100,100099], [100100,100600]
+    mocks.getBlockNumber.mockResolvedValue(100600n);
     mocks.getLogs
       .mockResolvedValueOnce([viemLog('a1', 120n, 0, { account: ALICE, questId: 1n })])
-      .mockResolvedValueOnce([viemLog('a2', 3000n, 1, { account: ALICE, questId: 2n })])
-      .mockResolvedValueOnce([viemLog('a3', 4200n, 0, { account: ALICE, questId: 3n })]);
+      .mockResolvedValueOnce([viemLog('a2', 60000n, 1, { account: ALICE, questId: 2n })])
+      .mockResolvedValueOnce([viemLog('a3', 100200n, 0, { account: ALICE, questId: 3n })]);
     const { result } = renderHook(() =>
       useContractLogs({
         address: QM,
@@ -111,9 +111,9 @@ describe('useContractLogs', () => {
       return [args.fromBlock, args.toBlock];
     });
     expect(ranges).toEqual([
-      [100n, 2099n],
-      [2100n, 4099n],
-      [4100n, 4500n],
+      [100n, 50099n],
+      [50100n, 100099n],
+      [100100n, 100600n],
     ]);
   });
 

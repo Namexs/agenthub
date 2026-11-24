@@ -12,12 +12,14 @@ import type { DecodedLog } from '@/lib/events';
 // over large ranges. When NEXT_PUBLIC_DEPLOY_BLOCK is unset, the hook
 // reports a configuration error instead of guessing.
 //
-// Public RPCs also cap a single eth_getLogs range: one
-// deployBlock-to-latest call over ~40k blocks is rejected by the BSC
-// dataseed with "limit exceeded" (seen live 2026-11-23, leaderboard
-// down). The fetch is therefore split into fixed-size chunks and the
-// results concatenated; aggregation in lib/events.ts dedupes by
-// (txHash, logIndex), so chunk boundaries are safe.
+// Public RPCs cap a single eth_getLogs range. The BSC dataseed
+// rejects ALL eth_getLogs calls (even 10 blocks, verified live
+// 2026-11-24), which took the leaderboard down on 2026-11-23; log
+// reads are served by the publicnode fallback in lib/wagmi.ts, whose
+// maximum block range is 50,000. The fetch is therefore split into
+// fixed-size chunks and the results concatenated; aggregation in
+// lib/events.ts dedupes by (txHash, logIndex), so chunk boundaries
+// are safe.
 //
 // This is a one-shot fetch (not a live subscription): the UI refetches
 // on mount and when the caller asks for a refresh. A live subscription
@@ -33,8 +35,8 @@ export interface UseContractLogsResult {
   refetch: () => void;
 }
 
-/** Max blocks per eth_getLogs call (BSC dataseed rejects wide ranges). */
-const LOG_CHUNK_BLOCKS = 2000n;
+/** Max blocks per eth_getLogs call (publicnode's documented maximum). */
+const LOG_CHUNK_BLOCKS = 50000n;
 
 export function useContractLogs(args: {
   address: Address | undefined;

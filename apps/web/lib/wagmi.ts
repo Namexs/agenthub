@@ -1,4 +1,4 @@
-import { http, createConfig } from 'wagmi';
+import { http, createConfig, fallback } from 'wagmi';
 import { anvil, bsc, bscTestnet } from 'viem/chains';
 import type { Chain } from 'viem';
 import { injected } from 'wagmi/connectors';
@@ -24,8 +24,18 @@ export const wagmiConfig = createConfig({
   chains,
   connectors: [injected()],
   transports: {
-    [bscTestnet.id]: http(),
-    [bsc.id]: http(),
+    // The BSC dataseed rejects ALL eth_getLogs calls (verified live
+    // 2026-11-24), which broke the leaderboard; publicnode serves them
+    // (max 50,000 blocks per call, see useContractLogs). The dataseed
+    // stays first: it handles every other read fine, and the fallback
+    // only kicks in when it errors. An RPC only reads chain data and
+    // relays transactions — it never sees keys; signing stays in the
+    // user's own wallet.
+    [bscTestnet.id]: fallback([
+      http(),
+      http('https://bsc-testnet-rpc.publicnode.com'),
+    ]),
+    [bsc.id]: fallback([http(), http('https://bsc-rpc.publicnode.com')]),
     [anvil.id]: http('http://127.0.0.1:8545'),
   },
   ssr: true,
