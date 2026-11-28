@@ -42,6 +42,16 @@ const envSchema = z
     NEXT_PUBLIC_REPUTATION_ADDRESS: addressSchema,
     NEXT_PUBLIC_ACHIEVEMENT_ADDRESS: addressSchema,
     NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().optional(),
+    // Keyed BSC testnet RPC (NodeReal MegaNode, free tier) that serves
+    // eth_getLogs over the 50,000-block chunks useContractLogs uses.
+    // The public dataseed rejects ALL getLogs and publicnode is
+    // Cloudflare-blocked / silently drops old logs (ALICE's Nov 23
+    // events missing from the leaderboard, verified 2026-11-28).
+    // Alchemy free does NOT fit: getLogs capped at 10 blocks/query.
+    // Unset = fall back to dataseed + publicnode. The key is a
+    // read-only RPC key, never a signing key; NEXT_PUBLIC_* is inlined
+    // into the browser bundle by design.
+    NEXT_PUBLIC_BSC_TESTNET_RPC_URL: z.string().url().optional(),
     // Block the contracts were deployed at. Event-based features
     // (leaderboard, history, badges) query logs from this block — never
     // from genesis, which public RPCs refuse over large ranges. Unset =
@@ -79,6 +89,8 @@ const parsed = envSchema.safeParse({
   NEXT_PUBLIC_ACHIEVEMENT_ADDRESS: process.env.NEXT_PUBLIC_ACHIEVEMENT_ADDRESS || undefined,
   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || undefined,
+  NEXT_PUBLIC_BSC_TESTNET_RPC_URL:
+    process.env.NEXT_PUBLIC_BSC_TESTNET_RPC_URL || undefined,
   NEXT_PUBLIC_DEPLOY_BLOCK: process.env.NEXT_PUBLIC_DEPLOY_BLOCK || undefined,
 });
 

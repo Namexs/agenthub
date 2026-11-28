@@ -26,12 +26,17 @@ export const wagmiConfig = createConfig({
   transports: {
     // The BSC dataseed rejects ALL eth_getLogs calls (verified live
     // 2026-11-24), which broke the leaderboard; publicnode serves them
-    // (max 50,000 blocks per call, see useContractLogs). The dataseed
-    // stays first: it handles every other read fine, and the fallback
-    // only kicks in when it errors. An RPC only reads chain data and
+    // (max 50,000 blocks per call, see useContractLogs) but is now
+    // Cloudflare-blocked and silently drops old logs (ALICE's Nov 23
+    // events missing, verified 2026-11-28). When the keyed NodeReal
+    // RPC is configured it goes FIRST: it serves getLogs over the
+    // full 50,000-block chunks. An RPC only reads chain data and
     // relays transactions — it never sees keys; signing stays in the
     // user's own wallet.
     [bscTestnet.id]: fallback([
+      ...(env.NEXT_PUBLIC_BSC_TESTNET_RPC_URL
+        ? [http(env.NEXT_PUBLIC_BSC_TESTNET_RPC_URL)]
+        : []),
       http(),
       http('https://bsc-testnet-rpc.publicnode.com'),
     ]),
